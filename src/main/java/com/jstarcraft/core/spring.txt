@@ -1,0 +1,8 @@
+Spring Bean的生命周期:
+http://www.cnblogs.com/zrtqsk/p/3735273.html
+
+AspectJ切入点语法详解:
+http://sishuok.com/forum/posts/list/281.html
+
+关于 Spring AOP (AspectJ) 你该知晓的一切:
+https://blog.csdn.net/javazejian/article/details/56267036

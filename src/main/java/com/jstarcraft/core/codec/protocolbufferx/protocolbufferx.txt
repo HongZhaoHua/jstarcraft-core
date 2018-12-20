@@ -1,0 +1,1 @@
+参考GoogleProtocolBuffers的二进制编解码格式.

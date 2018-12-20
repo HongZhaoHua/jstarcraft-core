@@ -1,0 +1,25 @@
+一看你就懂，超详细java中的ClassLoader详解:
+https://blog.csdn.net/briblue/article/details/54973413
+
+Java运行时动态生成class的方法:
+https://www.liaoxuefeng.com/article/0014617596492474eea2227bf04477e83e6d094683e0536000
+
+Java运行时动态加载类之ClassLoader加载class及其依赖jar包:
+https://blog.csdn.net/fjssharpsword/article/details/65441879
+
+获取字节码的文件路径、获取一个类的具体名称、获取一个类的简单名称、获取一个类的包名:
+https://blog.csdn.net/dajbd/article/details/8245399
+
+关于Class.getResource和ClassLoader.getResource的路径问题:
+https://www.cnblogs.com/yejg1212/p/3270152.html
+
+Java 编程的动态性:
+https://www.ibm.com/developerworks/cn/java/j-dyn0429
+https://www.ibm.com/developerworks/cn/java/j-dyn0603
+https://www.ibm.com/developerworks/cn/java/j-dyn0715
+https://www.ibm.com/developerworks/cn/java/j-dyn0916
+https://www.ibm.com/developerworks/cn/java/j-dyn0203
+https://www.ibm.com/developerworks/cn/java/j-dyn0302
+https://www.ibm.com/developerworks/cn/java/j-dyn0414
+https://www.ibm.com/developerworks/cn/java/j-dyn0610
+

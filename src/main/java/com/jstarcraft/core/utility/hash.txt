@@ -1,0 +1,23 @@
+陌生但默默一统江湖的MurmurHash
+http://calvin1978.blogcn.com/articles/murmur.html
+http://yonik.com/murmurhash3-for-java/
+
+各种字符串Hash函数比较:
+https://www.byvoid.com/zhs/blog/string-hash-compare
+http://www.partow.net/programming/hashfunctions/
+
+整数哈希介绍:
+https://www.cnblogs.com/napoleon_liu/archive/2010/12/29/1920839.html
+http://burtleburtle.net/bob/hash/integer.html
+
+redis中几种哈希函数的研究:
+https://blog.csdn.net/jasper_xulei/article/details/18364313
+
+常见的哈希Hash算法 & MD5 & 对称非对称加密 & 海明码:
+https://www.cnblogs.com/charlesblc/p/6130141.html
+
+Java之——Hash算法大全:
+https://blog.csdn.net/l1028386804/article/details/54573106
+
+Hash算法大全(java实现):
+http://tdcq.iteye.com/blog/1968756
