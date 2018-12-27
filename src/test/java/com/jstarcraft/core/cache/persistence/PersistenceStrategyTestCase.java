@@ -115,7 +115,7 @@ public abstract class PersistenceStrategyTestCase {
 			for (int index = 0; index < size; index++) {
 				manager.createInstance(MockEntityObject.instanceOf(index, "birdy" + index, "hong", index, index));
 			}
-			Assert.assertTrue(manager.getCreatedCount() == 0);
+			Assert.assertEquals(0, manager.getCreatedCount());
 			for (int index = 0; index < size; index++) {
 				MockEntityObject instance = manager.getInstance(index);
 				Assert.assertNotNull(instance);
@@ -127,14 +127,14 @@ public abstract class PersistenceStrategyTestCase {
 			}
 			Thread.sleep(1);
 		}
-		Assert.assertTrue(manager.getCreatedCount() == size);
+		Assert.assertEquals(size, manager.getCreatedCount());
 
 		synchronized (accessor) {
 			// 修改数据
 			for (int index = 0; index < size; index++) {
 				manager.updateInstance(MockEntityObject.instanceOf(index, "xiao" + index, "xiao", index * index, index * index));
 			}
-			Assert.assertTrue(manager.getUpdatedCount() == 0);
+			Assert.assertEquals(0, manager.getUpdatedCount());
 			for (int index = 0; index < size; index++) {
 				MockEntityObject instance = manager.getInstance(index);
 				Assert.assertThat(instance.getLastName(), CoreMatchers.equalTo("xiao"));
@@ -146,14 +146,14 @@ public abstract class PersistenceStrategyTestCase {
 			}
 			Thread.sleep(1);
 		}
-		Assert.assertTrue(manager.getUpdatedCount() == size);
+		Assert.assertEquals(size, manager.getUpdatedCount());
 
 		synchronized (accessor) {
 			// 删除数据
 			for (int index = 0; index < size; index++) {
 				manager.deleteInstance(index);
 			}
-			Assert.assertTrue(manager.getDeletedCount() == 0);
+			Assert.assertEquals(0, manager.getDeletedCount());
 			for (int index = 0; index < size; index++) {
 				MockEntityObject instance = manager.getInstance(index);
 				Assert.assertNull(instance);
@@ -165,7 +165,7 @@ public abstract class PersistenceStrategyTestCase {
 			}
 			Thread.sleep(1);
 		}
-		Assert.assertTrue(manager.getDeletedCount() == size);
+		Assert.assertEquals(size, manager.getDeletedCount());
 
 		strategy.stop();
 	}
