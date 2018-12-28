@@ -1,5 +1,7 @@
 package com.jstarcraft.core.utility;
 
+import java.util.Map.Entry;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -22,9 +24,24 @@ public class KeyValue<K, V> {
 	KeyValue() {
 	}
 
+	public KeyValue(Entry<K, V> term) {
+		this.key = term.getKey();
+		this.value = term.getValue();
+	}
+
 	public KeyValue(K key, V value) {
 		this.key = key;
 		this.value = value;
+	}
+
+	/**
+	 * 设置键值
+	 * 
+	 * @param term
+	 */
+	public void setKeyValue(Entry<K, V> term) {
+		this.key = term.getKey();
+		this.value = term.getValue();
 	}
 
 	/**
