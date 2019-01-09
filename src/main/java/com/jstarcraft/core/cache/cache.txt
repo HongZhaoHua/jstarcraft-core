@@ -1,3 +1,6 @@
+缓存更新的套路:
+https://coolshell.cn/articles/17416.html
+
 缓存穿透，缓存击穿，缓存雪崩解决方案分析:
 https://blog.csdn.net/zeb_perfect/article/details/54135506
 
