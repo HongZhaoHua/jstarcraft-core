@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Configuration的2个属性status和monitorInterval,分别是状态日志级别以及重新刷新配置文件间隔 -->
-<Configuration status="FATAL" packages="com.jstarcraft.core.log">
+<Configuration status="FATAL" packages="com.jstarcraft.core">
 	<Properties>
 		<Property name="path">logs2/{type}/{$yyyy}-{$MM}-{$dd}/{file}.{$HH}-{$mm}-{$ss}.log</Property>
 	</Properties>
@@ -15,12 +15,14 @@
 			<PatternLayout pattern="%m%n" />
 		</Storage>
 	</Appenders>
+	
 	<Loggers>
-		<Root level="ERROR">
+		<Root level="DEBUG">
 			<AppenderRef ref="Console" />
 		</Root>
 		<Logger name="log4j.logger.com.jstarcraft" level="ERROR" />
-		<Logger name="log4j.logger.com.jstarcraft.core.cache.persistence" level="DEBUG" />
+		<Logger name="log4j.logger.com.jstarcraft.core.cache" level="DEBUG" />
+		<Logger name="log4j.logger.com.jstarcraft.core.codec" level="DEBUG" />
 		<Logger name="log4j.logger.com.jstarcraft.core.communication" level="DEBUG" />
 		<Logger name="log4j.logger.com.jstarcraft.core.log" level="DEBUG" />
 		<Logger name="Storage" level="DEBUG" additivity="false">
