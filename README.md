@@ -7,7 +7,6 @@ JStarCraft Core
 
 #### JStarCraft Core是一个面向对象的轻量级框架,目标是为其它框架提供必要的基础特性.遵循Apache 2.0协议.
 
-
 |作者|洪钊桦|
 |---|---
 |E-mail|110399057@qq.com, jstarcraft@gmail.com
