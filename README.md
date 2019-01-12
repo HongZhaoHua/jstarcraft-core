@@ -1,19 +1,18 @@
-JStarCraft Core 1.0
+JStarCraft Core
 ==========
 
 *****
 
-#### JStarCraft Core 1.0是一个面向对象的轻量级框架,目标是为其它框架提供必要的基础特性.
+## JStarCraft Core是一个面向对象的轻量级框架,目标是为其它框架提供必要的基础特性.遵循Apache 2.0协议.
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 |作者|洪钊桦|
 |---|---
-|E-mail|110399057@qq.com,jstarcraft@gmail.com
-
-此版本遵循Apache 2.0协议[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+|E-mail|110399057@qq.com, jstarcraft@gmail.com
 
 *****
 
-## JStarCraft Core 1.0主要特性如下:
+## JStarCraft Core主要特性如下:
 * 1.缓存即记录(Cache as Record)
     * Delayed Pattern
     * LRU Pattern
