@@ -285,12 +285,8 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 				List<T> list = query.getResultList();
 				return list;
 			}
+
 		});
-
-	}
-
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> query(Class<T> clazz, String name, I... values) {
-		return null;
 	}
 
 	private <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
