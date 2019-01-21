@@ -44,6 +44,7 @@ import com.jstarcraft.core.utility.csv.CsvUtility;
 public class Log4Java2Storage extends AbstractAppender {
 
 	public static class Builder<B extends Builder<B>> extends AbstractOutputStreamAppender.Builder<B> implements org.apache.logging.log4j.core.util.Builder<Log4Java2Storage> {
+
 		/** CRON表达式 */
 		@PluginBuilderAttribute
 		@Required
@@ -77,6 +78,7 @@ public class Log4Java2Storage extends AbstractAppender {
 		public Log4Java2Storage build() {
 			return new Log4Java2Storage(getName(), getFilter(), getOrCreateLayout(), isIgnoreExceptions(), cron, format, names, path, zone, period);
 		}
+
 	}
 
 	private static enum Format {
@@ -160,6 +162,7 @@ public class Log4Java2Storage extends AbstractAppender {
 			context.put(names[index], parameters[index]);
 		}
 		StrSubstitutor substitutor = new StrSubstitutor(new StrLookup() {
+
 			@Override
 			public String lookup(String key) {
 				try {
@@ -179,6 +182,7 @@ public class Log4Java2Storage extends AbstractAppender {
 					throw new LogException(exception);
 				}
 			}
+
 		}, prefix, suffix, $);
 
 		return substitutor.replace(path);
@@ -228,6 +232,7 @@ public class Log4Java2Storage extends AbstractAppender {
 		cleaner.start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
+
 			public void run() {
 				try {
 					synchronized (cache) {
@@ -248,6 +253,7 @@ public class Log4Java2Storage extends AbstractAppender {
 					throw new LogException(exception);
 				}
 			}
+
 		});
 	}
 
