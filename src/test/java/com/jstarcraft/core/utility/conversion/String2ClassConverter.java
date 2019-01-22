@@ -2,8 +2,6 @@ package com.jstarcraft.core.utility.conversion;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.jstarcraft.core.utility.Configuration;
-
 public class String2ClassConverter implements Converter<String, Class<?>> {
 
 	private static ClassLoader container;
@@ -11,7 +9,7 @@ public class String2ClassConverter implements Converter<String, Class<?>> {
 	static {
 		container = Thread.currentThread().getContextClassLoader();
 		if (container == null) {
-			container = Configuration.class.getClassLoader();
+			container = Converter.class.getClassLoader();
 		}
 	}
 
