@@ -25,8 +25,8 @@ public class InstantUtilityTestCase {
 
 		ZonedDateTime dateTime = ZonedDateTime.of(today, zero, ZoneId.systemDefault());
 		Instant instant = Instant.from(dateTime);
-		Instant before = InstantUtility.getInstantBefore(cron, instant);
-		Instant after = InstantUtility.getInstantAfter(cron, instant);
+		Instant before = InstantUtility.getInstantBefore(cron, instant, ZoneId.systemDefault());
+		Instant after = InstantUtility.getInstantAfter(cron, instant, ZoneId.systemDefault());
 
 		dateTime = ZonedDateTime.of(yesterday, offset, ZoneId.systemDefault());
 		Assert.assertThat(before, CoreMatchers.equalTo(Instant.from(dateTime)));

@@ -48,9 +48,21 @@ public class InstantUtility extends DateUtils {
 	 * @return
 	 */
 	public static Instant getInstantAfter(String cron, Instant instant) {
+		return getInstantAfter(cron, instant, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 获取下次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @param zone
+	 * @return
+	 */
+	public static Instant getInstantAfter(String cron, Instant instant, ZoneId zone) {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
-		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, zone);
 		dateTime = executionTime.nextExecution(dateTime);
 		return dateTime.toInstant();
 	}
@@ -63,9 +75,20 @@ public class InstantUtility extends DateUtils {
 	 * @return
 	 */
 	public static Instant getInstantBefore(String cron, Instant instant) {
+		return getInstantBefore(cron, instant, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 获取上次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @return
+	 */
+	public static Instant getInstantBefore(String cron, Instant instant, ZoneId zone) {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
-		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, zone);
 		dateTime = executionTime.lastExecution(dateTime);
 		return dateTime.toInstant();
 	}
