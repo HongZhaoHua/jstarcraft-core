@@ -1,6 +1,7 @@
 package com.jstarcraft.core.utility;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,6 +39,59 @@ public class InstantUtility extends DateUtils {
 			}
 			return expression;
 		}
+	}
+	
+	/**
+	 * 获取下次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @return
+	 */
+	public static LocalDateTime getDateTimeAfter(String cron, LocalDateTime instant) {
+		return getDateTimeAfter(cron, instant, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 获取下次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @param zone
+	 * @return
+	 */
+	public static LocalDateTime getDateTimeAfter(String cron, LocalDateTime instant, ZoneId zone) {
+		Cron expression = getCronExpression(cron);
+		ExecutionTime executionTime = ExecutionTime.forCron(expression);
+		ZonedDateTime dateTime = ZonedDateTime.of(instant, zone);
+		dateTime = executionTime.nextExecution(dateTime);
+		return dateTime.toLocalDateTime();
+	}
+
+	/**
+	 * 获取上次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @return
+	 */
+	public static LocalDateTime getDateTimeBefore(String cron, LocalDateTime instant) {
+		return getDateTimeBefore(cron, instant, ZoneId.systemDefault());
+	}
+
+	/**
+	 * 获取上次执行时间
+	 * 
+	 * @param cron
+	 * @param instant
+	 * @return
+	 */
+	public static LocalDateTime getDateTimeBefore(String cron, LocalDateTime instant, ZoneId zone) {
+		Cron expression = getCronExpression(cron);
+		ExecutionTime executionTime = ExecutionTime.forCron(expression);
+		ZonedDateTime dateTime = ZonedDateTime.of(instant, zone);
+		dateTime = executionTime.lastExecution(dateTime);
+		return dateTime.toLocalDateTime();
 	}
 
 	/**
