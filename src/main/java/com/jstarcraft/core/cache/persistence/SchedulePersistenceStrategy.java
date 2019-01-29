@@ -75,7 +75,7 @@ public class SchedulePersistenceStrategy implements PersistenceStrategy {
 		if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
 			throw new CacheConfigurationException();
 		}
-		LOGGER.error("开始等待写队列[{}]清理", name);
+		LOGGER.info("开始等待写队列[{}]清理", name);
 		for (SchedulePersistenceManager manager : this.managers.values()) {
 			manager.interrupt();
 			while (true) {
@@ -91,7 +91,7 @@ public class SchedulePersistenceStrategy implements PersistenceStrategy {
 			}
 		}
 		this.managers.clear();
-		LOGGER.error("结束等待写队列[{}]清理", name);
+		LOGGER.info("结束等待写队列[{}]清理", name);
 	}
 
 	@Override
