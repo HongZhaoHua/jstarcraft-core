@@ -14,10 +14,10 @@ import org.junit.Test;
 import com.jstarcraft.core.utility.InstantUtility;
 
 public class InstantUtilityTestCase {
-	
+
 	@Test
 	public void testDateTime() {
-		String cron = "0 15 10 ? * *";
+		String cron = "0 15 10 * * ?";
 		LocalDate today = LocalDate.now();
 		LocalDate yesterday = today.minusDays(1);
 
@@ -37,7 +37,7 @@ public class InstantUtilityTestCase {
 
 	@Test
 	public void testInstant() {
-		String cron = "0 15 10 ? * *";
+		String cron = "0 15 10 * * ?";
 		LocalDate today = LocalDate.now();
 		LocalDate yesterday = today.minusDays(1);
 
@@ -55,7 +55,5 @@ public class InstantUtilityTestCase {
 		dateTime = ZonedDateTime.of(today, offset, ZoneId.systemDefault());
 		Assert.assertThat(after, CoreMatchers.equalTo(Instant.from(dateTime)));
 	}
-	
-	
 
 }
