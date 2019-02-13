@@ -56,4 +56,15 @@ public class InstantUtilityTestCase {
 		Assert.assertThat(after, CoreMatchers.equalTo(Instant.from(dateTime)));
 	}
 
+	@Test
+	public void testYear() {
+		String cron = "0 0 0 1 1 ? 2000-2002";
+
+		LocalDateTime dateTime = LocalDateTime.of(2001, 1, 1, 0, 0, 0);
+		LocalDateTime before = InstantUtility.getDateTimeBefore(cron, dateTime, ZoneId.systemDefault());
+		Assert.assertThat(before, CoreMatchers.equalTo(LocalDateTime.of(2000, 1, 1, 0, 0, 0)));
+		LocalDateTime after = InstantUtility.getDateTimeAfter(cron, dateTime, ZoneId.systemDefault());
+		Assert.assertThat(after, CoreMatchers.equalTo(LocalDateTime.of(2002, 1, 1, 0, 0, 0)));
+	}
+
 }
