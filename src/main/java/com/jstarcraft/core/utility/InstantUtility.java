@@ -56,7 +56,6 @@ public class InstantUtility extends DateUtils {
 					expression = parser.parse(cron);
 					crons.put(cron, expression);
 				}
-
 			}
 		}
 		return expression;
