@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.BitSet;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -14,6 +14,8 @@ import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 
 /**
  * 时间工具
@@ -24,23 +26,42 @@ public class InstantUtility extends DateUtils {
 
 	private static final CronParser parser = new CronParser(cronDefinition);
 
-	private static final ConcurrentHashMap<String, Cron> caches = new ConcurrentHashMap<>();
+	private static final ConcurrentLinkedHashMap<String, Cron> crons;
+	
+	private static final ConcurrentLinkedHashMap<String, BitSet[]> bits; 
 
-	private static Cron getCronExpression(String cron) {
-		synchronized (caches) {
-			Cron expression = caches.get(cron);
-			if (expression == null) {
-				try {
-					expression = parser.parse(cron);
-				} catch (Exception exception) {
-					throw new IllegalArgumentException(exception);
-				}
-				caches.put(cron, expression);
-			}
-			return expression;
+	static {
+		{
+			Builder<String, Cron> builder = new Builder<>();
+			builder.initialCapacity(1000);
+			builder.maximumWeightedCapacity(1000);
+			builder.concurrencyLevel(Runtime.getRuntime().availableProcessors());
+			crons = builder.build();
+		}
+		{
+			Builder<String, BitSet[]> builder = new Builder<>();
+			builder.initialCapacity(1000);
+			builder.maximumWeightedCapacity(1000);
+			builder.concurrencyLevel(Runtime.getRuntime().availableProcessors());
+			bits = builder.build();
 		}
 	}
-	
+
+	private static Cron getCronExpression(String cron) {
+		Cron expression = crons.get(cron);
+		if (expression == null) {
+			synchronized (crons) {
+				expression = crons.get(cron);
+				if (expression == null) {
+					expression = parser.parse(cron);
+					crons.put(cron, expression);
+				}
+
+			}
+		}
+		return expression;
+	}
+
 	/**
 	 * 获取下次执行时间
 	 * 
