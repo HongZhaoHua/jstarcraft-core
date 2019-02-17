@@ -1,0 +1,6 @@
+统计(每个方法某个时间段执行次数,最大/最小/平均执行时间.)
+限流
+隔离(锁/线程池)(Hash锁,缓存锁)
+日志
+
+https://github.com/alibaba/Sentinel
