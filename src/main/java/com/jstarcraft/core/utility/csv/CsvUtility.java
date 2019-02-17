@@ -1,12 +1,15 @@
 package com.jstarcraft.core.utility.csv;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
@@ -27,6 +30,8 @@ import com.jstarcraft.core.utility.ConversionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.TypeUtility;
 import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
+
+import it.unimi.dsi.fastutil.Arrays;
 
 /**
  * CSV工具
@@ -73,14 +78,13 @@ public class CsvUtility {
 
 	private static void writeValue(Object object, Type type, CSVPrinter output) {
 		try {
-			// TODO 处理null
-			if (object == null) {
-				output.print(StringUtility.EMPTY);
-				return;
-			}
 			Class<?> clazz = TypeUtility.getRawType(type, null);
 			// 处理枚举/字符串/原始类型
 			if (clazz.isEnum() || String.class == clazz || ClassUtility.isPrimitiveOrWrapper(clazz)) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				Object value = object.toString();
 				if (String.class == clazz) {
 					value = value + SEMICOLON;
@@ -90,17 +94,29 @@ public class CsvUtility {
 			}
 			// 处理日期类型
 			if (Date.class.isAssignableFrom(clazz)) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				Object value = String.valueOf(Date.class.cast(object).getTime());
 				output.print(value);
 				return;
 			}
 			if (Instant.class.isAssignableFrom(clazz)) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				Object value = String.valueOf(Instant.class.cast(object).toEpochMilli());
 				output.print(value);
 				return;
 			}
 			// 处理数组类型
 			if (clazz.isArray()) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				Class<?> componentClass = null;
 				Type componentType = null;
 				if (type instanceof GenericArrayType) {
@@ -119,39 +135,41 @@ public class CsvUtility {
 					if (information == null) {
 						writeValue(element, componentType, output);
 					} else {
-						for (Field field : information.getFields()) {
-							Object value = field.get(element);
-							writeValue(value, field.getGenericType(), output);
-						}
+						writeValue(element, componentType, componentClass, information, output);
 					}
 				}
 				return;
 			}
 			// 处理集合类型
 			if (Collection.class.isAssignableFrom(clazz)) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 				Type[] types = parameterizedType.getActualTypeArguments();
-				CsvInformation information = CsvUtility.getInformation(Class.class.cast(types[0]));
+				CsvInformation information = CsvUtility.getInformation(TypeUtility.getRawType(types[0], null));
 				Collection<?> collection = Collection.class.cast(object);
 				output.print(collection.size());
 				for (Object element : collection) {
 					if (information == null) {
 						writeValue(element, types[0], output);
 					} else {
-						for (Field field : information.getFields()) {
-							Object value = field.get(element);
-							writeValue(value, field.getGenericType(), output);
-						}
+						writeValue(element, types[0], TypeUtility.getRawType(types[0], null), information, output);
 					}
 				}
 				return;
 			}
 			// 处理映射类型
 			if (Map.class.isAssignableFrom(clazz)) {
+				if (object == null) {
+					output.print(StringUtility.EMPTY);
+					return;
+				}
 				ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 				Type[] types = parameterizedType.getActualTypeArguments();
-				CsvInformation keyInformation = CsvUtility.getInformation(Class.class.cast(types[0]));
-				CsvInformation valueInformation = CsvUtility.getInformation(Class.class.cast(types[1]));
+				CsvInformation keyInformation = CsvUtility.getInformation(TypeUtility.getRawType(types[0], null));
+				CsvInformation valueInformation = CsvUtility.getInformation(TypeUtility.getRawType(types[1], null));
 				Map<Object, Object> map = Map.class.cast(object);
 				output.print(map.size());
 				for (Entry<Object, Object> keyValue : map.entrySet()) {
@@ -159,37 +177,55 @@ public class CsvUtility {
 					if (keyInformation == null) {
 						writeValue(key, types[0], output);
 					} else {
-						for (Field field : keyInformation.getFields()) {
-							Object element = field.get(key);
-							writeValue(element, field.getGenericType(), output);
-						}
+						writeValue(key, types[0], TypeUtility.getRawType(types[0], null), keyInformation, output);
 					}
 					Object value = keyValue.getValue();
 					if (valueInformation == null) {
 						writeValue(value, types[1], output);
 					} else {
-						for (Field field : valueInformation.getFields()) {
-							Object element = field.get(value);
-							writeValue(element, field.getGenericType(), output);
-						}
+						writeValue(value, types[1], TypeUtility.getRawType(types[1], null), valueInformation, output);
 					}
 				}
 				return;
 			}
 			// 处理对象类型
 			CsvInformation information = CsvUtility.getInformation(clazz);
-			for (Field field : information.getFields()) {
-				Object value = field.get(object);
-				writeValue(value, field.getGenericType(), output);
-			}
+			writeValue(object, type, clazz, information, output);
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
 	}
 
+	private static void writeValue(Object object, Type type, Class<?> clazz, CsvInformation information, CSVPrinter output) throws IllegalArgumentException, IllegalAccessException, IOException {
+		if (object == null) {
+			output.print(StringUtility.EMPTY);
+			return;
+		} else {
+			output.print(information.getFields().length);
+		}
+		// TODO 此处代码需要优化
+		HashMap<String, Type> types = new HashMap<>();
+		TypeVariable<?>[] typeVariables = clazz.getTypeParameters();
+		if (typeVariables.length > 0) {
+			ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+			for (int index = 0; index < typeVariables.length; index++) {
+				types.put(typeVariables[index].getName(), parameterizedType.getActualTypeArguments()[index]);
+			}
+		}
+		for (Field field : information.getFields()) {
+			Object value = field.get(object);
+			type = field.getGenericType();
+			if (type instanceof TypeVariable) {
+				TypeVariable<?> typeVariable = TypeVariable.class.cast(type);
+				writeValue(value, types.get(typeVariable.getName()), output);
+			} else {
+				writeValue(value, type, output);
+			}
+		}
+	}
+
 	private static Object readValue(Type type, Iterator<String> input) {
 		try {
-			// TODO 处理null
 			Class<?> clazz = TypeUtility.getRawType(type, null);
 			// 处理枚举/字符串/原始类型
 			if (clazz.isEnum() || String.class == clazz || ClassUtility.isPrimitiveOrWrapper(clazz)) {
@@ -244,12 +280,7 @@ public class CsvUtility {
 					if (information == null) {
 						element = readValue(componentType, input);
 					} else {
-						Constructor<?> constructor = information.getConstructor();
-						element = constructor.newInstance();
-						for (Field field : information.getFields()) {
-							Object value = readValue(field.getGenericType(), input);
-							field.set(element, value);
-						}
+						element = readValue(componentType, componentClass, information, input);
 					}
 					Array.set(array, index, element);
 				}
@@ -264,19 +295,14 @@ public class CsvUtility {
 				int length = Integer.valueOf(check);
 				ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 				Type[] types = parameterizedType.getActualTypeArguments();
-				CsvInformation information = getInformation(Class.class.cast(types[0]));
+				CsvInformation information = getInformation(TypeUtility.getRawType(types[0], null));
 				Collection<Object> collection = Collection.class.cast(clazz.newInstance());
 				for (int index = 0; index < length; index++) {
 					Object element = null;
 					if (information == null) {
 						element = readValue(types[0], input);
 					} else {
-						Constructor<?> constructor = information.getConstructor();
-						element = constructor.newInstance();
-						for (Field field : information.getFields()) {
-							Object value = readValue(field.getGenericType(), input);
-							field.set(element, value);
-						}
+						element = readValue(types[0], TypeUtility.getRawType(types[0], null), information, input);
 					}
 					collection.add(element);
 				}
@@ -291,48 +317,63 @@ public class CsvUtility {
 				int length = Integer.valueOf(check);
 				ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 				Type[] types = parameterizedType.getActualTypeArguments();
-				CsvInformation keyInformation = getInformation(Class.class.cast(types[0]));
-				CsvInformation valueInformation = getInformation(Class.class.cast(types[1]));
+				CsvInformation keyInformation = getInformation(TypeUtility.getRawType(types[0], null));
+				CsvInformation valueInformation = getInformation(TypeUtility.getRawType(types[1], null));
 				Map<Object, Object> map = Map.class.cast(clazz.newInstance());
 				for (int index = 0; index < length; index++) {
 					Object key = null;
 					if (keyInformation == null) {
 						key = readValue(types[0], input);
 					} else {
-						Constructor<?> constructor = keyInformation.getConstructor();
-						key = constructor.newInstance();
-						for (Field field : keyInformation.getFields()) {
-							Object value = readValue(field.getGenericType(), input);
-							field.set(key, value);
-						}
+						key = readValue(types[0], TypeUtility.getRawType(types[0], null), keyInformation, input);
 					}
-					Object element = null;
+					Object value = null;
 					if (valueInformation == null) {
-						element = readValue(types[1], input);
+						value = readValue(types[1], input);
 					} else {
-						Constructor<?> constructor = valueInformation.getConstructor();
-						element = constructor.newInstance();
-						for (Field field : valueInformation.getFields()) {
-							Object value = readValue(field.getGenericType(), input);
-							field.set(element, value);
-						}
+						value = readValue(types[1], TypeUtility.getRawType(types[1], null), valueInformation, input);
 					}
-					map.put(key, element);
+					map.put(key, value);
 				}
 				return map;
 			}
 			// 处理对象类型
 			CsvInformation information = CsvUtility.getInformation(clazz);
-			Constructor<?> constructor = information.getConstructor();
-			Object object = constructor.newInstance();
-			for (Field field : information.getFields()) {
-				Object value = readValue(field.getGenericType(), input);
-				field.set(object, value);
-			}
+			Object object = readValue(type, clazz, information, input);
 			return object;
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+
+	private static Object readValue(Type type, Class<?> clazz, CsvInformation information, Iterator<String> input) throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
+		String check = input.next();
+		if (StringUtility.isEmpty(check)) {
+			return null;
+		}
+		Constructor<?> constructor = information.getConstructor();
+		Object object = constructor.newInstance();
+		// TODO 此处代码需要优化
+		HashMap<String, Type> types = new HashMap<>();
+		TypeVariable<?>[] typeVariables = clazz.getTypeParameters();
+		if (typeVariables.length > 0) {
+			ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
+			for (int index = 0; index < typeVariables.length; index++) {
+				types.put(typeVariables[index].getName(), parameterizedType.getActualTypeArguments()[index]);
+			}
+		}
+		for (Field field : information.getFields()) {
+			Object value;
+			type = field.getGenericType();
+			if (type instanceof TypeVariable) {
+				TypeVariable<?> typeVariable = TypeVariable.class.cast(type);
+				value = readValue(types.get(typeVariable.getName()), input);
+			} else {
+				value = readValue(type, input);
+			}
+			field.set(object, value);
+		}
+		return object;
 	}
 
 	/**

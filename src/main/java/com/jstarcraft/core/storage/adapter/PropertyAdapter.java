@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,7 +52,20 @@ public class PropertyAdapter implements FormatAdapter {
 				Field field = ReflectionUtility.findField(instanceClazz, matcher.group(1));
 				field.setAccessible(true);
 				if (fieldNames.isEmpty()) {
-					field.set(instanceObject, ConversionUtility.convert(fieldValue, field.getGenericType()));
+					Type fieldType = field.getGenericType();
+					if (fieldType instanceof TypeVariable) {
+						// TODO 此处代码需要优化
+						HashMap<String, Type> types = new HashMap<>();
+						TypeVariable<?>[] typeVariables = instanceClazz.getTypeParameters();
+						ParameterizedType parameterizedType = ParameterizedType.class.cast(instanceType);
+						for (int index = 0; index < typeVariables.length; index++) {
+							types.put(typeVariables[index].getName(), parameterizedType.getActualTypeArguments()[index]);
+						}
+						TypeVariable<?> typeVariable = TypeVariable.class.cast(fieldType);
+						field.set(instanceObject, ConversionUtility.convert(fieldValue, types.get(typeVariable.getName())));
+					} else {
+						field.set(instanceObject, ConversionUtility.convert(fieldValue, fieldType));
+					}
 				} else {
 					Object property = field.get(instanceObject);
 					instanceType = field.getGenericType();

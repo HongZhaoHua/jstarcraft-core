@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
+
 /**
  * 键值对
  * 
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @param <K>
  * @param <V>
  */
+@CsvConfiguration({ "key", "value" })
 public class KeyValue<K, V> {
 
 	/** 键 */

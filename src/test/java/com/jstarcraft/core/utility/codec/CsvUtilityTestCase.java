@@ -12,12 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.utility.JsonUtility;
+import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.TypeUtility;
 import com.jstarcraft.core.utility.csv.CsvUtility;
 
 public class CsvUtilityTestCase {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Test
@@ -27,7 +28,7 @@ public class CsvUtilityTestCase {
 		Object intance = CsvUtility.string2Object(csv, CsvObject.class);
 		Assert.assertThat(intance, CoreMatchers.equalTo(object));
 
-		CsvObject[] array = new CsvObject[] { object };
+		Object[] array = new CsvObject[] { object };
 		csv = CsvUtility.object2String(array, CsvObject[].class);
 		intance = CsvUtility.string2Object(csv, CsvObject[].class);
 		Assert.assertThat(intance, CoreMatchers.equalTo(array));
@@ -45,6 +46,19 @@ public class CsvUtilityTestCase {
 		csv = CsvUtility.object2String(map, mapType);
 		intance = CsvUtility.string2Object(csv, mapType);
 		Assert.assertThat(intance, CoreMatchers.equalTo(map));
+
+		Type keyValueType = TypeUtility.parameterize(KeyValue.class, Integer.class, CsvObject.class);
+		KeyValue<Integer, CsvObject> keyValue = new KeyValue<>(0, object);
+		csv = CsvUtility.object2String(keyValue, keyValueType);
+		intance = CsvUtility.string2Object(csv, keyValueType);
+		Assert.assertThat(intance, CoreMatchers.equalTo(keyValue));
+
+		// 测试区分对象为null与属性为null的情况.
+		Type arrayType = TypeUtility.genericArrayType(keyValueType);
+		array = new KeyValue[] { null, new KeyValue<>(null, null), keyValue };
+		csv = CsvUtility.object2String(array, arrayType);
+		intance = CsvUtility.string2Object(csv, arrayType);
+		Assert.assertThat(intance, CoreMatchers.equalTo(array));
 	}
 
 	@Test
