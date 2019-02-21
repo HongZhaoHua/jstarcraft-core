@@ -48,7 +48,8 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 	/** 此读写锁用于配合elementMap,保证在查询过程中不存在增删改 */
 	private ReentrantReadWriteLock waitForLock = new ReentrantReadWriteLock();
 	/** 等待的缓存元素实例 */
-	private ConcurrentHashMap<Object, PersistenceElement> elements = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Object, PersistenceElement> oldElements = null;
+	private ConcurrentHashMap<Object, PersistenceElement> newElements = new ConcurrentHashMap<>();
 
 	/** ORM访问器 */
 	private OrmAccessor accessor;
@@ -89,7 +90,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 		Lock readLock = waitForLock.readLock();
 		try {
 			readLock.lock();
-			PersistenceElement element = elements.get(cacheId);
+			PersistenceElement element = newElements.get(cacheId);
 			if (element != null) {
 				if (element.getOperation().equals(PersistenceOperation.DELETE)) {
 					return null;
@@ -110,8 +111,24 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 		try {
 			readLock.lock();
 			Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
-
-			for (PersistenceElement element : elements.values()) {
+			for (PersistenceElement element : oldElements.values()) {
+				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
+					Object value = information.getIndexValue(element.getCacheObject(), indexName);
+					if (indexValue.equals(value)) {
+						values.put((K) element.getCacheId(), value);
+					}
+				}
+				if (element.getOperation().equals(PersistenceOperation.UPDATE)) {
+					Object value = information.getIndexValue(element.getCacheObject(), indexName);
+					if (indexValue.equals(value)) {
+						values.put((K) element.getCacheId(), value);
+					}
+				}
+				if (element.getOperation().equals(PersistenceOperation.DELETE)) {
+					values.remove(element.getCacheId());
+				}
+			}
+			for (PersistenceElement element : newElements.values()) {
 				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
 					Object value = information.getIndexValue(element.getCacheObject(), indexName);
 					if (indexValue.equals(value)) {
@@ -145,8 +162,24 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 			for (T value : values) {
 				instances.put(value.getId(), value);
 			}
-
-			for (PersistenceElement element : elements.values()) {
+			for (PersistenceElement element : oldElements.values()) {
+				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
+					Object value = information.getIndexValue(element.getCacheObject(), indexName);
+					if (indexValue.equals(value)) {
+						instances.put((K) element.getCacheId(), (T) element.getCacheObject());
+					}
+				}
+				if (element.getOperation().equals(PersistenceOperation.UPDATE)) {
+					Object value = information.getIndexValue(element.getCacheObject(), indexName);
+					if (indexValue.equals(value)) {
+						instances.put((K) element.getCacheId(), (T) element.getCacheObject());
+					}
+				}
+				if (element.getOperation().equals(PersistenceOperation.DELETE)) {
+					instances.remove(element.getCacheId());
+				}
+			}
+			for (PersistenceElement element : newElements.values()) {
 				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
 					Object value = information.getIndexValue(element.getCacheObject(), indexName);
 					if (indexValue.equals(value)) {
@@ -209,7 +242,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 	@Override
 	public int getWaitSize() {
 		synchronized (waitSize) {
-			int size = waitSize.get() + elements.size();
+			int size = waitSize.get() + newElements.size();
 			return size;
 		}
 	}
@@ -239,9 +272,8 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 			Lock writeLock = waitForLock.writeLock();
 			try {
 				writeLock.lock();
-				ConcurrentHashMap<Object, PersistenceElement> newElements = new ConcurrentHashMap<>();
-				ConcurrentHashMap<Object, PersistenceElement> oldElements = elements;
-				elements = newElements;
+				oldElements = newElements;
+				newElements = new ConcurrentHashMap<>();
 				waitSize.addAndGet(oldElements.size());
 				return oldElements;
 			} finally {
@@ -264,15 +296,15 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 		Lock writeLock = waitForLock.writeLock();
 		try {
 			writeLock.lock();
-			PersistenceElement current = elements.get(cacheId);
+			PersistenceElement current = newElements.get(cacheId);
 			if (current == null) {
 				current = element;
-				elements.put(cacheId, current);
+				newElements.put(cacheId, current);
 			} else {
 				current.modify(element);
 				if (current.isIgnore()) {
 					// 忽略只清理elementMap,不清理elementQueue
-					elements.remove(cacheId);
+					newElements.remove(cacheId);
 				}
 			}
 		} catch (CacheOperationException exception) {
@@ -339,7 +371,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 	public synchronized void run() {
 		while (true) {
 			if (state.get().equals(CacheState.STOPPED)) {
-				if (elements.isEmpty()) {
+				if (newElements.isEmpty()) {
 					break;
 				}
 			} else {
