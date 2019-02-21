@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyOperationException;
@@ -158,54 +159,140 @@ public class BerkeleyManager<K extends Comparable, T extends CacheObject<K>> {
 		}
 	}
 
-	public <I> Map<K, I> queryIdentities(BerkeleyTransactor transactor, String name, I... values) {
+	public <I> Map<K, I> queryIdentities(BerkeleyTransactor transactor, OrmCondition condition, String name, I... values) {
 		SecondaryIndex secondaryIndex = secondaryIndexes.get(name);
 		StoredSortedMap storeMap = (StoredSortedMap) secondaryIndex.keysIndex().sortedMap();
 		HashMap<K, I> identities = new HashMap<>();
-		if (values.length > 2) {
-			for (I value : values) {
+		switch (condition) {
+		case All: {
+			for (Object value : storeMap.keySet()) {
 				for (Object identity : storeMap.duplicates(value)) {
-					identities.put((K) identity, value);
+					identities.put((K) identity, (I) value);
 				}
 			}
-		} else if (values.length > 1) {
+			break;
+		}
+		case Between: {
 			storeMap = (StoredSortedMap) storeMap.subMap(values[0], true, values[1], true);
 			for (Object value : storeMap.keySet()) {
 				for (Object identity : storeMap.duplicates(value)) {
 					identities.put((K) identity, (I) value);
 				}
 			}
-		} else if (values.length > 0) {
+			break;
+		}
+		case Equal: {
 			I value = values[0];
 			for (Object identity : storeMap.duplicates(value)) {
 				identities.put((K) identity, value);
 			}
+			break;
+		}
+		case Higher: {
+			storeMap = (StoredSortedMap) storeMap.subMap(values[0], false, null, true);
+			for (Object value : storeMap.keySet()) {
+				for (Object identity : storeMap.duplicates(value)) {
+					identities.put((K) identity, (I) value);
+				}
+			}
+			break;
+		}
+		case In: {
+			for (I value : values) {
+				for (Object identity : storeMap.duplicates(value)) {
+					identities.put((K) identity, value);
+				}
+			}
+			break;
+		}
+		case Lower: {
+			storeMap = (StoredSortedMap) storeMap.subMap(null, true, values[0], false);
+			for (Object value : storeMap.keySet()) {
+				for (Object identity : storeMap.duplicates(value)) {
+					identities.put((K) identity, (I) value);
+				}
+			}
+			break;
+		}
+		case Unequal: {
+			for (Object value : storeMap.keySet()) {
+				if (!values[0].equals(value)) {
+					for (Object identity : storeMap.duplicates(value)) {
+						identities.put((K) identity, (I) value);
+					}
+				}
+			}
+			break;
+		}
 		}
 		return identities;
 	}
 
-	public <I> List<T> queryInstances(BerkeleyTransactor transactor, String name, I... values) {
+	public <I> List<T> queryInstances(BerkeleyTransactor transactor, OrmCondition condition, String name, I... values) {
 		SecondaryIndex secondaryIndex = secondaryIndexes.get(name);
 		StoredSortedMap storeMap = (StoredSortedMap) secondaryIndex.sortedMap();
 		ArrayList<T> instances = new ArrayList<>();
-		if (values.length > 2) {
-			for (I value : values) {
+		switch (condition) {
+		case All: {
+			for (Object value : storeMap.keySet()) {
 				for (Object instance : storeMap.duplicates(value)) {
 					instances.add((T) instance);
 				}
 			}
-		} else if (values.length > 1) {
+			break;
+		}
+		case Between: {
 			storeMap = (StoredSortedMap) storeMap.subMap(values[0], true, values[1], true);
 			for (Object value : storeMap.keySet()) {
 				for (Object instance : storeMap.duplicates(value)) {
 					instances.add((T) instance);
 				}
 			}
-		} else if (values.length > 0) {
+			break;
+		}
+		case Equal: {
 			I value = values[0];
 			for (Object instance : storeMap.duplicates(value)) {
 				instances.add((T) instance);
 			}
+			break;
+		}
+		case Higher: {
+			storeMap = (StoredSortedMap) storeMap.subMap(values[0], false, null, true);
+			for (Object value : storeMap.keySet()) {
+				for (Object instance : storeMap.duplicates(value)) {
+					instances.add((T) instance);
+				}
+			}
+			break;
+		}
+		case In: {
+			for (I value : values) {
+				for (Object instance : storeMap.duplicates(value)) {
+					instances.add((T) instance);
+				}
+			}
+			break;
+		}
+		case Lower: {
+			storeMap = (StoredSortedMap) storeMap.subMap(null, true, values[0], false);
+			for (Object value : storeMap.keySet()) {
+				for (Object instance : storeMap.duplicates(value)) {
+					instances.add((T) instance);
+				}
+			}
+			break;
+		}
+		case Unequal: {
+			for (Object value : storeMap.keySet()) {
+				if (!values[0].equals(value)) {
+					for (Object instance : storeMap.duplicates(value)) {
+						instances.add((T) instance);
+					}
+				}
+			}
+			break;
+		}
 		}
 		return instances;
 	}

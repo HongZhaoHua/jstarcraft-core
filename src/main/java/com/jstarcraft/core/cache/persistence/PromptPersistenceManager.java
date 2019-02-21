@@ -16,6 +16,7 @@ import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -77,7 +78,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends CacheObjec
 		Lock readLock = lock.readLock();
 		try {
 			readLock.lock();
-			Map<K, Object> values = accessor.queryIdentities(cacheClass, indexName, indexValue);
+			Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
 			return values;
 		} finally {
 			readLock.unlock();
@@ -89,7 +90,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends CacheObjec
 		Lock readLock = lock.readLock();
 		try {
 			readLock.lock();
-			List<T> values = accessor.queryInstances(cacheClass, indexName, indexValue);
+			List<T> values = accessor.queryInstances(cacheClass, OrmCondition.Equal, indexName, indexValue);
 			return values;
 		} finally {
 			readLock.unlock();

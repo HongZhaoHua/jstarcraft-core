@@ -18,10 +18,12 @@ import org.springframework.data.util.CloseableIterator;
 
 import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
+import com.jstarcraft.core.utility.StringUtility;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.UpdateResult;
 
@@ -97,21 +99,38 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		MongoMetadata metadata = metadatas.get(objectType);
 		if (metadata.getPrimaryName().equals(name)) {
 			name = MongoMetadata.mongoId;
 		}
-		Query query = null;
 		// TODO 此处存在问题(需要处理values)
-		if (values.length > 2) {
-			query = Query.query(Criteria.where(name).in(values));
-		} else if (values.length > 1) {
-			query = Query.query(Criteria.where(name).gte(values[0]).lte(values[1]));
-		} else if (values.length > 0) {
-			query = Query.query(Criteria.where(name).is(values[0]));
-		} else {
+		Query query = null;
+		switch (condition) {
+		case All:
 			query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
+			break;
+		case Between:
+			query = Query.query(Criteria.where(name).gte(values[0]).lte(values[1]));
+			break;
+		case Equal:
+			query = Query.query(Criteria.where(name).is(values[0]));
+			break;
+		case Higher:
+			query = Query.query(Criteria.where(name).gt(values[0]));
+			break;
+		case In:
+			query = Query.query(Criteria.where(name).in(values));
+			break;
+		case Lower:
+			query = Query.query(Criteria.where(name).lt(values[0]));
+			break;
+		case Unequal:
+			query = Query.query(Criteria.where(name).ne(values[0]));
+			break;
 		}
 		query.fields().include(MongoMetadata.mongoId).include(name);
 		Map<K, I> map = new HashMap<>();
@@ -125,21 +144,38 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		MongoMetadata metadata = metadatas.get(objectType);
 		if (metadata.getPrimaryName().equals(name)) {
 			name = MongoMetadata.mongoId;
 		}
-		Query query = null;
 		// TODO 此处存在问题(需要处理values)
-		if (values.length > 2) {
-			query = Query.query(Criteria.where(name).in(values));
-		} else if (values.length > 1) {
-			query = Query.query(Criteria.where(name).gte(values[0]).lte(values[1]));
-		} else if (values.length > 0) {
-			query = Query.query(Criteria.where(name).is(values[0]));
-		} else {
+		Query query = null;
+		switch (condition) {
+		case All:
 			query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
+			break;
+		case Between:
+			query = Query.query(Criteria.where(name).gte(values[0]).lte(values[1]));
+			break;
+		case Equal:
+			query = Query.query(Criteria.where(name).is(values[0]));
+			break;
+		case Higher:
+			query = Query.query(Criteria.where(name).gt(values[0]));
+			break;
+		case In:
+			query = Query.query(Criteria.where(name).in(values));
+			break;
+		case Lower:
+			query = Query.query(Criteria.where(name).lt(values[0]));
+			break;
+		case Unequal:
+			query = Query.query(Criteria.where(name).ne(values[0]));
+			break;
 		}
 		return mongoTemplate.find(query, objectType, objectType.getName());
 	}

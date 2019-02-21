@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmPagination;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -57,30 +58,30 @@ public class MongoAccessorTestCase {
 		Assert.assertThat(minimum, CoreMatchers.equalTo(0));
 
 		// 查询指定范围的主键与对象
-		Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockObject.class, "money");
+		Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.All, "money");
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(size));
-		List<MockObject> objects = accessor.queryInstances(MockObject.class, "money");
+		List<MockObject> objects = accessor.queryInstances(MockObject.class, OrmCondition.All, "money");
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, "money", 0);
+		id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.Equal, "money", 0);
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(1));
-		objects = accessor.queryInstances(MockObject.class, "money", 0);
+		objects = accessor.queryInstances(MockObject.class, OrmCondition.Equal, "money", 0);
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, "money", 1, 50);
+		id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.Between, "money", 1, 50);
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(50));
-		objects = accessor.queryInstances(MockObject.class, "money", 1, 50);
+		objects = accessor.queryInstances(MockObject.class, OrmCondition.Between, "money", 1, 50);
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, "money", 25, 50, 75);
+		id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.In, "money", 25, 50, 75);
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(3));
-		objects = accessor.queryInstances(MockObject.class, "money", 25, 50, 75);
+		objects = accessor.queryInstances(MockObject.class, OrmCondition.In, "money", 25, 50, 75);
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}

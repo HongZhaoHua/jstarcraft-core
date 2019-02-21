@@ -42,62 +42,67 @@ public abstract class PersistenceStrategyTestCase {
 
 		// 创建数据
 		long begin = System.currentTimeMillis();
-		for (int index = 0; index < size; index++) {
-			manager.createInstance(MockEntityObject.instanceOf(index, "birdy" + index, "hong", index, index));
+		synchronized (accessor) {
+			for (int index = 0; index < size; index++) {
+				manager.createInstance(MockEntityObject.instanceOf(index, "birdy" + index, "hong", index, index));
+			}
 		}
 		long end = System.currentTimeMillis();
 		String message = StringUtility.format("创建{}数据的时间:{}毫秒", size, end - begin);
 		logger.debug(message);
-
 		while (true) {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 
 		// 修改数据
 		begin = System.currentTimeMillis();
-		for (int index = 0; index < size; index++) {
-			manager.updateInstance(MockEntityObject.instanceOf(index, "xiao" + index, "xiao", index * index, 100));
-			List<MockEntityObject> objects = manager.getInstances("firstName", "xiao" + index);
-			Assert.assertThat(objects.size(), CoreMatchers.equalTo(1));
-			for (MockEntityObject object : objects) {
-				Assert.assertThat(object.getFirstName(), CoreMatchers.equalTo("xiao" + index));
+		synchronized (accessor) {
+			for (int index = 0; index < size; index++) {
+				manager.updateInstance(MockEntityObject.instanceOf(index, "xiao" + index, "xiao", index * index, 100));
+				List<MockEntityObject> objects = manager.getInstances("firstName", "xiao" + index);
+				Assert.assertThat(objects.size(), CoreMatchers.equalTo(1));
+				for (MockEntityObject object : objects) {
+					Assert.assertThat(object.getFirstName(), CoreMatchers.equalTo("xiao" + index));
+				}
 			}
 		}
 		end = System.currentTimeMillis();
 		message = StringUtility.format("修改{}数据的时间:{}毫秒", size, end - begin);
 		logger.debug(message);
-
 		while (true) {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 
 		// 查询数据
-		List<MockEntityObject> objects = manager.getInstances("token", 100);
-		Assert.assertThat(objects.size(), CoreMatchers.equalTo(size));
-		for (MockEntityObject object : objects) {
-			Assert.assertThat(object.getLastName(), CoreMatchers.equalTo("xiao"));
+		synchronized (accessor) {
+			List<MockEntityObject> objects = manager.getInstances("token", 100);
+			Assert.assertThat(objects.size(), CoreMatchers.equalTo(size));
+			for (MockEntityObject object : objects) {
+				Assert.assertThat(object.getLastName(), CoreMatchers.equalTo("xiao"));
+			}
 		}
 
 		// 删除数据
 		begin = System.currentTimeMillis();
-		for (int index = 0; index < size; index++) {
-			manager.deleteInstance(index);
+		synchronized (accessor) {
+			for (int index = 0; index < size; index++) {
+				manager.deleteInstance(index);
+			}
 		}
 		end = System.currentTimeMillis();
 		message = StringUtility.format("删除{}数据的时间:{}毫秒", size, end - begin);
 		logger.debug(message);
-
 		while (true) {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 
 		strategy.stop();
@@ -125,7 +130,7 @@ public abstract class PersistenceStrategyTestCase {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		Assert.assertEquals(size, manager.getCreatedCount());
 
@@ -144,7 +149,7 @@ public abstract class PersistenceStrategyTestCase {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		Assert.assertEquals(size, manager.getUpdatedCount());
 
@@ -163,7 +168,7 @@ public abstract class PersistenceStrategyTestCase {
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		Assert.assertEquals(size, manager.getDeletedCount());
 

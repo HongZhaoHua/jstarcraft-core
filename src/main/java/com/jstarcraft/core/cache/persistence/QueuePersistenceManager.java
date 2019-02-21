@@ -23,6 +23,7 @@ import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -102,8 +103,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends CacheObject
 		Lock readLock = waitForLock.readLock();
 		try {
 			readLock.lock();
-			Map<K, Object> values = accessor.queryIdentities(cacheClass, indexName, indexValue);
-
+			Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
 			for (PersistenceElement element : elements.values()) {
 				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
 					Object value = information.getIndexValue(element.getCacheObject(), indexName);
@@ -132,7 +132,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends CacheObject
 		Lock readLock = waitForLock.readLock();
 		try {
 			readLock.lock();
-			List<T> values = accessor.queryInstances(cacheClass, indexName, indexValue);
+			List<T> values = accessor.queryInstances(cacheClass, OrmCondition.Equal, indexName, indexValue);
 
 			Map<K, T> instances = new HashMap<>();
 			for (T value : values) {

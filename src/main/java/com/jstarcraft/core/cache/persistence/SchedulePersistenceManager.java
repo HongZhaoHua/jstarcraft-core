@@ -26,6 +26,7 @@ import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.utility.InstantUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -108,7 +109,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 		Lock readLock = waitForLock.readLock();
 		try {
 			readLock.lock();
-			Map<K, Object> values = accessor.queryIdentities(cacheClass, indexName, indexValue);
+			Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
 
 			for (PersistenceElement element : elements.values()) {
 				if (element.getOperation().equals(PersistenceOperation.CREATE)) {
@@ -138,7 +139,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 		Lock readLock = waitForLock.readLock();
 		try {
 			readLock.lock();
-			List<T> values = accessor.queryInstances(cacheClass, indexName, indexValue);
+			List<T> values = accessor.queryInstances(cacheClass, OrmCondition.Equal, indexName, indexValue);
 
 			Map<K, T> instances = new HashMap<>();
 			for (T value : values) {
@@ -235,11 +236,17 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 
 	private ConcurrentHashMap<Object, PersistenceElement> switchElements() {
 		synchronized (waitSize) {
-			ConcurrentHashMap<Object, PersistenceElement> newElements = new ConcurrentHashMap<>();
-			ConcurrentHashMap<Object, PersistenceElement> oldElements = elements;
-			elements = newElements;
-			waitSize.addAndGet(oldElements.size());
-			return oldElements;
+			Lock writeLock = waitForLock.writeLock();
+			try {
+				writeLock.lock();
+				ConcurrentHashMap<Object, PersistenceElement> newElements = new ConcurrentHashMap<>();
+				ConcurrentHashMap<Object, PersistenceElement> oldElements = elements;
+				elements = newElements;
+				waitSize.addAndGet(oldElements.size());
+				return oldElements;
+			} finally {
+				writeLock.unlock();
+			}
 		}
 	}
 
@@ -277,54 +284,53 @@ public class SchedulePersistenceManager<K extends Comparable, T extends CacheObj
 
 	private void persist(Collection<PersistenceElement> elements) {
 		synchronized (accessor) {
-			// TODO 此处保证单元测试
-		}
-		for (PersistenceElement element : elements) {
-			// 保证异步持久与异步操作不会冲突
-			Object cacheId = element.getCacheId();
-			try {
-				Object instance = element.getCacheObject();
-				synchronized (instance == null ? Thread.currentThread() : instance) {
-					Lock writeLock = waitForLock.writeLock();
-					try {
-						writeLock.lock();
-						if (element.isIgnore()) {
-							LOGGER.error("此处不应该有忽略的元素[{}]", element);
-							continue;
-						}
+			for (PersistenceElement element : elements) {
+				// 保证异步持久与异步操作不会冲突
+				Object cacheId = element.getCacheId();
+				try {
+					Object instance = element.getCacheObject();
+					synchronized (instance == null ? Thread.currentThread() : instance) {
+						Lock writeLock = waitForLock.writeLock();
+						try {
+							writeLock.lock();
+							if (element.isIgnore()) {
+								LOGGER.error("此处不应该有忽略的元素[{}]", element);
+								continue;
+							}
 
-						switch (element.getOperation()) {
-						case CREATE:
-							accessor.create(cacheClass, element.getCacheObject());
-							createdCount.incrementAndGet();
-							break;
-						case DELETE:
-							accessor.delete(cacheClass, element.getCacheId());
-							deletedCount.incrementAndGet();
-							break;
-						case UPDATE:
-							accessor.update(cacheClass, element.getCacheObject());
-							updatedCount.incrementAndGet();
-							break;
-						default:
-							LOGGER.error("未支持的元素类型[{}]", element);
-							break;
+							switch (element.getOperation()) {
+							case CREATE:
+								accessor.create(cacheClass, element.getCacheObject());
+								createdCount.incrementAndGet();
+								break;
+							case DELETE:
+								accessor.delete(cacheClass, element.getCacheId());
+								deletedCount.incrementAndGet();
+								break;
+							case UPDATE:
+								accessor.update(cacheClass, element.getCacheObject());
+								updatedCount.incrementAndGet();
+								break;
+							default:
+								LOGGER.error("未支持的元素类型[{}]", element);
+								break;
+							}
+						} finally {
+							waitSize.decrementAndGet();
+							writeLock.unlock();
 						}
-					} finally {
-						waitSize.decrementAndGet();
-						writeLock.unlock();
 					}
+					if (monitor != null) {
+						monitor.notifyOperate(element.getOperation(), element.getCacheId(), element.getCacheObject(), null);
+					}
+				} catch (Exception exception) {
+					if (monitor != null && element != null) {
+						monitor.notifyOperate(element.getOperation(), element.getCacheId(), element.getCacheObject(), exception);
+					}
+					exceptionCount.incrementAndGet();
+					String message = StringUtility.format("定时策略[{}]处理元素[{}]时异常", new Object[] { name, element });
+					LOGGER.error(message, exception);
 				}
-				if (monitor != null) {
-					monitor.notifyOperate(element.getOperation(), element.getCacheId(), element.getCacheObject(), null);
-				}
-			} catch (Exception exception) {
-				if (monitor != null && element != null) {
-					monitor.notifyOperate(element.getOperation(), element.getCacheId(), element.getCacheObject(), exception);
-				}
-				exceptionCount.incrementAndGet();
-				String message = StringUtility.format("定时策略[{}]处理元素[{}]时异常", new Object[] { name, element });
-				LOGGER.error(message, exception);
 			}
 		}
 	}

@@ -94,7 +94,7 @@ public interface OrmAccessor {
 	 * @param values
 	 * @return
 	 */
-	<K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, String name, I... values);
+	<K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values);
 
 	/**
 	 * 查询指定索引范围的对象集合
@@ -104,7 +104,7 @@ public interface OrmAccessor {
 	 * @param values
 	 * @return
 	 */
-	<K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, String name, I... values);
+	<K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values);
 
 	// 结构化查询接口部分
 

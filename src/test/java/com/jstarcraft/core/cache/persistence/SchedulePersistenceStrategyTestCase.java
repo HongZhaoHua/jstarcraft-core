@@ -76,6 +76,7 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
+			Thread.sleep(1000);
 		}
 		manager.updateInstance(MockEntityObject.instanceOf(id, "wolfy" + id, "xiao", id * id, id * id));
 		Assert.assertThat(manager.getWaitSize(), is(1));
@@ -97,6 +98,7 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
+			Thread.sleep(1000);
 		}
 		// 操作统计校验
 		Assert.assertThat(manager.getCreatedCount(), is(1L));
@@ -109,6 +111,7 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
+			Thread.sleep(1000);
 		}
 		manager.deleteInstance(id);
 		Assert.assertThat(manager.getWaitSize(), is(1));
@@ -130,6 +133,7 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
+			Thread.sleep(1000);
 		}
 		// 操作统计校验
 		Assert.assertThat(manager.getCreatedCount(), is(2L));
@@ -141,6 +145,7 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
+			Thread.sleep(1000);
 		}
 		strategy.stop();
 	}

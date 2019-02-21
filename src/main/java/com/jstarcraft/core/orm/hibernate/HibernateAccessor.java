@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
@@ -73,7 +74,13 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 
 	private final static String EQUAL_CONDITION = " WHERE clazz.{} = ?0";
 
+	private final static String HIGHER_CONDITION = " WHERE clazz.{} > ?0";
+
 	private final static String IN_CONDITION = " WHERE clazz.{} IN (?0{})";
+
+	private final static String LOWER_CONDITION = " WHERE clazz.{} < ?0";
+
+	private final static String UNEQUAL_CONDITION = " WHERE clazz.{} <> ?0";
 
 	/** HQL删除语句 */
 	private Map<String, String> deleteHqls = new ConcurrentHashMap<>();
@@ -221,23 +228,41 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> clazz, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> clazz, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Map<K, I>>() {
 
 			@Override
 			public Map<K, I> doInHibernate(Session session) throws HibernateException {
 				StringBuilder buffer = new StringBuilder(INDEX_2_ID_MAP);
-				if (values.length > 2) {
+				switch (condition) {
+				case All:
+					break;
+				case Between:
+					buffer.append(BETWEEN_CONDITION);
+					break;
+				case Equal:
+					buffer.append(EQUAL_CONDITION);
+					break;
+				case Higher:
+					buffer.append(HIGHER_CONDITION);
+					break;
+				case In:
 					StringBuilder string = new StringBuilder();
 					for (int index = 1, size = values.length - 1; index <= size; index++) {
 						string.append(", ?");
 						string.append(index);
 					}
 					buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
-				} else if (values.length > 1) {
-					buffer.append(BETWEEN_CONDITION);
-				} else if (values.length > 0) {
-					buffer.append(EQUAL_CONDITION);
+					break;
+				case Lower:
+					buffer.append(LOWER_CONDITION);
+					break;
+				case Unequal:
+					buffer.append(UNEQUAL_CONDITION);
+					break;
 				}
 				String hql = buffer.toString();
 				HibernateMetadata hibernateMetadata = hibernateMetadatas.get(clazz.getName());
@@ -258,23 +283,41 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> clazz, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> clazz, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<T>>() {
 
 			@Override
 			public List<T> doInHibernate(Session session) throws HibernateException {
 				StringBuilder buffer = new StringBuilder(INDEX_2_OBJECT_SET);
-				if (values.length > 2) {
+				switch (condition) {
+				case All:
+					break;
+				case Between:
+					buffer.append(BETWEEN_CONDITION);
+					break;
+				case Equal:
+					buffer.append(EQUAL_CONDITION);
+					break;
+				case Higher:
+					buffer.append(HIGHER_CONDITION);
+					break;
+				case In:
 					StringBuilder string = new StringBuilder();
 					for (int index = 1, size = values.length - 1; index <= size; index++) {
 						string.append(", ?");
 						string.append(index);
 					}
 					buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
-				} else if (values.length > 1) {
-					buffer.append(BETWEEN_CONDITION);
-				} else if (values.length > 0) {
-					buffer.append(EQUAL_CONDITION);
+					break;
+				case Lower:
+					buffer.append(LOWER_CONDITION);
+					break;
+				case Unequal:
+					buffer.append(UNEQUAL_CONDITION);
+					break;
 				}
 				String hql = buffer.toString();
 				hql = StringUtility.format(hql, clazz.getSimpleName(), name);

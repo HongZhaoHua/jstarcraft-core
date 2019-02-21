@@ -21,12 +21,13 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyStateException;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyVersionException;
-import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.orm.exception.OrmQueryException;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 import com.jstarcraft.core.utility.StringUtility;
@@ -306,17 +307,23 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
-		return manager.queryIdentities(transactor, name, values);
+		return manager.queryIdentities(transactor, condition, name, values);
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, String name, I... values) {
+	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+		if (!condition.checkValues(values)) {
+			throw new OrmQueryException();
+		}
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
-		return manager.queryInstances(transactor, name, values);
+		return manager.queryInstances(transactor, condition, name, values);
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class QueuePersistenceStrategyTestCase extends PersistenceStrategyTestCas
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		long end = System.currentTimeMillis();
 		String message = StringUtility.format("创建{}数据的时间:{}毫秒", size, end - begin);
@@ -69,7 +69,7 @@ public class QueuePersistenceStrategyTestCase extends PersistenceStrategyTestCas
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		end = System.currentTimeMillis();
 		message = StringUtility.format("修改{}数据的时间:{}毫秒", times, end - begin);
@@ -84,7 +84,7 @@ public class QueuePersistenceStrategyTestCase extends PersistenceStrategyTestCas
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		end = System.currentTimeMillis();
 		message = StringUtility.format("删除{}数据的时间:{}毫秒", size, end - begin);

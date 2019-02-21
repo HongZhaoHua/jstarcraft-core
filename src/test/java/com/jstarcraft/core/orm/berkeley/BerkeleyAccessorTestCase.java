@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.berkeley.entity.Pack;
 import com.jstarcraft.core.orm.berkeley.entity.Person;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyOperationException;
@@ -73,13 +74,13 @@ public class BerkeleyAccessorTestCase {
 			}
 		}
 
-		Collection<Pack> packs = accessor.queryInstances(Pack.class, "personId", birdy.getId());
+		Collection<Pack> packs = accessor.queryInstances(Pack.class, OrmCondition.Equal, "personId", birdy.getId());
 		Assert.assertThat(packs.size(), CoreMatchers.equalTo(size));
 
 		accessor.delete(Person.class, 1L);
 
 		// 由于级联操作,所有Pack的personId会被重置为null
-		packs = accessor.queryInstances(Pack.class, "personId", birdy.getId());
+		packs = accessor.queryInstances(Pack.class, OrmCondition.Equal, "personId", birdy.getId());
 		Assert.assertTrue(packs.isEmpty());
 
 		Assert.assertTrue(accessor.count(Pack.class) == size);
@@ -108,7 +109,7 @@ public class BerkeleyAccessorTestCase {
 		pack = accessor.get(Pack.class, 1L);
 		Assert.assertNull(pack);
 	}
-	
+
 	private void testCommitTransactor(Pack pack, BerkeleyIsolation isolation) {
 		accessor.openTransactor(isolation);
 		Assert.assertNotNull(accessor.getTransactor());

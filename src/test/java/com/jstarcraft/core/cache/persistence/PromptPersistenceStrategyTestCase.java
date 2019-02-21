@@ -72,7 +72,7 @@ public class PromptPersistenceStrategyTestCase extends PersistenceStrategyTestCa
 			if (manager.getWaitSize() == 0) {
 				break;
 			}
-			Thread.sleep(1);
+			Thread.sleep(1000);
 		}
 		Assert.assertTrue(manager.getDeletedCount() == size);
 
