@@ -29,7 +29,7 @@ import com.jstarcraft.core.utility.StringUtility;
  *
  */
 public class JsonType implements UserType {
-	
+
 	public final static String CLASS_NAME = "com.jstarcraft.core.orm.hibernate.JsonType";
 
 	private static Map<Class<?>, Map<String, String>> CLAZZ_2_COLUMN = new ConcurrentHashMap<>();
@@ -126,23 +126,26 @@ public class JsonType implements UserType {
 			return fieldName;
 		}
 		synchronized (column2Field) {
-			Field[] fields = clazz.getDeclaredFields();
-			for (Field field : fields) {
-				org.hibernate.annotations.Type typeAnnotation = field.getDeclaredAnnotation(org.hibernate.annotations.Type.class);
-				if (typeAnnotation != null && typeAnnotation.type().equals(JsonType.class.getName())) {
-					if (field.getName().equalsIgnoreCase(columnName)) {
-						fieldName = field.getName();
-						column2Field.put(columnName, fieldName);
-						return fieldName;
-					} else {
-						Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
-						if (columnAnnotation != null && columnAnnotation.name().equalsIgnoreCase(columnName)) {
+			while (clazz != null) {
+				Field[] fields = clazz.getDeclaredFields();
+				for (Field field : fields) {
+					org.hibernate.annotations.Type typeAnnotation = field.getDeclaredAnnotation(org.hibernate.annotations.Type.class);
+					if (typeAnnotation != null && typeAnnotation.type().equals(JsonType.class.getName())) {
+						if (field.getName().equalsIgnoreCase(columnName)) {
 							fieldName = field.getName();
 							column2Field.put(columnName, fieldName);
 							return fieldName;
+						} else {
+							Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+							if (columnAnnotation != null && columnAnnotation.name().equalsIgnoreCase(columnName)) {
+								fieldName = field.getName();
+								column2Field.put(columnName, fieldName);
+								return fieldName;
+							}
 						}
 					}
 				}
+				clazz = clazz.getSuperclass();
 			}
 		}
 		String message = StringUtility.format("数据列{}对应字段的不存在", columnName);
