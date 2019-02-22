@@ -86,7 +86,7 @@ public class HibernateAccessorTestCase {
 		condition.put("id", 0);
 
 		// 查询分页
-		OrmPagination pagination = OrmPagination.valueOf(1, 15);
+		OrmPagination pagination = new OrmPagination(1, 15);
 		objects = accessor.query(MockObject.class, pagination);
 		Assert.assertTrue(objects.size() == 15);
 		AtomicInteger times = new AtomicInteger();
@@ -95,7 +95,7 @@ public class HibernateAccessorTestCase {
 		}, MockObject.class, pagination);
 		Assert.assertTrue(times.get() == 15);
 
-		pagination = OrmPagination.valueOf(7, 15);
+		pagination = new OrmPagination(7, 15);
 		objects = accessor.query(MockObject.class, pagination);
 		Assert.assertTrue(objects.size() == 10);
 		times.set(0);

@@ -13,7 +13,10 @@ public class OrmPagination {
 	/** 大小(至少为1) */
 	private final int size;
 
-	private OrmPagination(int page, int size) {
+	public OrmPagination(int page, int size) {
+		if (page < 1 || size < 1) {
+			throw new IllegalArgumentException("分页的页码与大小至少为1");
+		}
 		this.page = page;
 		this.size = size;
 	}
@@ -52,19 +55,6 @@ public class OrmPagination {
 	 */
 	public int getSize() {
 		return size;
-	}
-
-	/**
-	 * @param page
-	 *            页码(至少为1)
-	 * @param size
-	 *            大小(至少为1)
-	 */
-	public static OrmPagination valueOf(int page, int size) {
-		if (page < 1 || size < 1) {
-			throw new IllegalArgumentException("分页的页码与大小至少为1");
-		}
-		return new OrmPagination(page, size);
 	}
 
 }
