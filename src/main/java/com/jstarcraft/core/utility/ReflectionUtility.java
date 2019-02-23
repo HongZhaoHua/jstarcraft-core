@@ -28,6 +28,18 @@ public abstract class ReflectionUtility extends ReflectionUtils {
 	/** 属性描述符的缓存 */
 	private static final WeakHashMap<Class<?>, PropertyDescriptor[]> DESCRIPTORS_CACHE = new WeakHashMap<Class<?>, PropertyDescriptor[]>();
 
+	public static Field getField(Class<?> clazz, String name) {
+		Field field = null;
+		while (field == null && clazz != null) {
+			try {
+				field = clazz.getDeclaredField(name);
+			} catch (Exception exception) {
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return field;
+	}
+
 	/**
 	 * 查找指定类型包含指定注解的唯一字段
 	 * 
@@ -62,6 +74,18 @@ public abstract class ReflectionUtility extends ReflectionUtils {
 			}
 		});
 		return fields;
+	}
+
+	public static Method getMethod(Class<?> clazz, String name) {
+		Method method = null;
+		while (method == null && clazz != null) {
+			try {
+				method = clazz.getDeclaredMethod(name);
+			} catch (Exception exception) {
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return method;
 	}
 
 	/**
@@ -103,12 +127,9 @@ public abstract class ReflectionUtility extends ReflectionUtils {
 	/**
 	 * 判断虚拟参数与实际参数是否匹配
 	 * 
-	 * @param variable
-	 *            是否为可变
-	 * @param parameterTypes
-	 *            虚拟参数
-	 * @param argumentTypes
-	 *            实际参数
+	 * @param variable       是否为可变
+	 * @param parameterTypes 虚拟参数
+	 * @param argumentTypes  实际参数
 	 * @return
 	 */
 	private static boolean match(boolean variable, Class<?>[] parameterTypes, Class<?>[] argumentTypes) {

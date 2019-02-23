@@ -220,7 +220,7 @@ public class CacheInformation {
 		for (String index : instance.cacheConfiguration.indexes()) {
 			Field field = null;
 			try {
-				field = clazz.getDeclaredField(index);
+				field = ReflectionUtility.getField(clazz, index);
 			} catch (Exception exception) {
 				String message = StringUtility.format("类型[{}]的缓存配置指定的索引[{}]不存在", clazz.getName(), index);
 				LOGGER.error(message, exception);
