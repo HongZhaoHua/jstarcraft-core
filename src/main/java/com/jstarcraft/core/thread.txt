@@ -1,0 +1,2 @@
+Java语言定义的线程状态分析:
+https://www.cnblogs.com/trust-freedom/p/6606594.html
