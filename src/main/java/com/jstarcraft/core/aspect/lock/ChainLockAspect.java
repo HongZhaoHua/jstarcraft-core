@@ -1,4 +1,4 @@
-package com.jstarcraft.core.cache.aspect;
+package com.jstarcraft.core.aspect.lock;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;

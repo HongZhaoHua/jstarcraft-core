@@ -1,4 +1,4 @@
-package com.jstarcraft.core.cache.aspect;
+package com.jstarcraft.core.aspect.lock;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;

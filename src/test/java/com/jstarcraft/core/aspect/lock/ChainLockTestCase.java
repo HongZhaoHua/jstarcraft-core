@@ -1,4 +1,4 @@
-package com.jstarcraft.core.cache.aspect;
+package com.jstarcraft.core.aspect.lock;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.cache.aspect.ChainLock;
-import com.jstarcraft.core.cache.aspect.CompareLockManager;
+import com.jstarcraft.core.aspect.lock.ChainLock;
+import com.jstarcraft.core.aspect.lock.CompareLockManager;
 import com.jstarcraft.core.utility.RandomUtility;
 
 /**
@@ -93,7 +93,7 @@ public class ChainLockTestCase {
 		Assert.assertThat(count.get(), CoreMatchers.is(20));
 	}
 
-	@Test(timeout = 5000)
+	@Test(timeout = 10000)
 	public void testPerformance() throws InterruptedException {
 		List<Comparable> objects = new ArrayList<>(10);
 		objects.add(Byte.valueOf("0"));

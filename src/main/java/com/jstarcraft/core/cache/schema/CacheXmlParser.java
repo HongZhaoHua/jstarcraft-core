@@ -30,7 +30,6 @@ import org.w3c.dom.NodeList;
 
 import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
-import com.jstarcraft.core.cache.aspect.ChainLockAspect;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
@@ -61,13 +60,6 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 		BeanDefinitionRegistry registry = context.getRegistry();
 		String name = StringUtility.uncapitalize(CacheAccessorProcessor.class.getSimpleName());
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CacheAccessorProcessor.class);
-		registry.registerBeanDefinition(name, factory.getBeanDefinition());
-	}
-
-	private void assembleLockAspect(ParserContext context) {
-		BeanDefinitionRegistry registry = context.getRegistry();
-		String name = StringUtility.uncapitalize(ChainLockAspect.class.getSimpleName());
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(ChainLockAspect.class);
 		registry.registerBeanDefinition(name, factory.getBeanDefinition());
 	}
 
@@ -105,11 +97,6 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext context) {
 		// 装配缓存处理器
 		assembleProcessor(context);
-
-		// 装配锁拦截切面
-		if (Boolean.valueOf(element.getAttribute(AttributeDefinition.LOCK.getName()))) {
-			assembleLockAspect(context);
-		}
 
 		// 缓存服务工厂
 		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CacheServiceFactory.class);
@@ -247,10 +234,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 		TYPE("type"),
 
 		/** 参数 */
-		PARAMETERS("parameters"),
-
-		/** 自动锁机制 */
-		LOCK("lock");
+		PARAMETERS("parameters");
 
 		private String name;
 

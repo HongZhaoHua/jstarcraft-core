@@ -14,7 +14,6 @@
 				<xsd:element name="scan" type="scan" />
 			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:string" use="required" />
-			<xsd:attribute name="lock" type="xsd:boolean" use="required" />
 		</xsd:complexType>
 	</xsd:element>
 
