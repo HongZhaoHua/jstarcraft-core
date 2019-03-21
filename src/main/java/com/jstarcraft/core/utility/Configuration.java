@@ -2,7 +2,6 @@ package com.jstarcraft.core.utility;
 
 import java.io.InputStream;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 /**
@@ -19,9 +18,7 @@ public class Configuration {
 	public Configuration(Map<String, String>... configurations) {
 		this.property = new Properties();
 		for (Map<String, String> configuration : configurations) {
-			for (Entry<String, String> keyValue : configuration.entrySet()) {
-				this.property.setProperty(keyValue.getKey(), keyValue.getValue());
-			}
+			this.property.putAll(configuration);
 		}
 	}
 
