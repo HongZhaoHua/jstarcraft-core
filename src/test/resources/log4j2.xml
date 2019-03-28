@@ -8,7 +8,7 @@
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss} [%t] %p (%F:%L) - %m%n" />
-			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
 		</Console>
 
 		<Storage name="Storage" ignoreExceptions="false" cron="0 0/5 * ? * *" format="CSV" names="type,file" path="${path}" zone="UTC" period="10">
