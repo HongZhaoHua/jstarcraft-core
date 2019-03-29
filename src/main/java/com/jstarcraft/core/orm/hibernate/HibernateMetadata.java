@@ -33,7 +33,7 @@ public class HibernateMetadata implements OrmMetadata {
 	private String ormName;
 	/** 实体类型 */
 	private Class ormClass;
-	/** 主键名 */
+	/** 主键名称 */
 	private String primaryName;
 	/** 主键类型 */
 	private Class primaryClass;
@@ -85,22 +85,27 @@ public class HibernateMetadata implements OrmMetadata {
 		}
 	}
 
+	@Override
 	public String getOrmName() {
 		return ormName;
 	}
 
+	@Override
 	public Map<String, Class<?>> getFields() {
 		return fields;
 	}
 
+	@Override
 	public String getPrimaryName() {
 		return primaryName;
 	}
 
+	@Override
 	public Collection<String> getIndexNames() {
 		return indexNames;
 	}
 
+	@Override
 	public String getVersionName() {
 		return versionName;
 	}

@@ -83,13 +83,13 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	private final static String UNEQUAL_CONDITION = " WHERE clazz.{} <> ?0";
 
 	/** HQL删除语句 */
-	private Map<String, String> deleteHqls = new ConcurrentHashMap<>();
+	private Map<Class, String> deleteHqls = new ConcurrentHashMap<>();
 
 	/** HQL查询语句(查询指定范围的最大主键标识),用于IdentityManager */
-	private Map<String, String> maximumIdHqls = new ConcurrentHashMap<>();
+	private Map<Class, String> maximumIdHqls = new ConcurrentHashMap<>();
 
 	/** HQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
-	private Map<String, String> minimumIdHqls = new ConcurrentHashMap<>();
+	private Map<Class, String> minimumIdHqls = new ConcurrentHashMap<>();
 
 	/** Hibernate元信息 */
 	protected Map<String, HibernateMetadata> hibernateMetadatas = new ConcurrentHashMap<>();
@@ -105,13 +105,13 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 					HibernateMetadata hibernateMetadata = new HibernateMetadata(ormClass);
 					hibernateMetadatas.put(ormName, hibernateMetadata);
 					String deleteHql = StringUtility.format(DELETE_HQL, ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
-					deleteHqls.put(ormName, deleteHql);
+					deleteHqls.put(ormClass, deleteHql);
 
 					String maximumIdHql = StringUtility.format(MAXIMUM_ID, hibernateMetadata.getPrimaryName(), ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
-					maximumIdHqls.put(ormName, maximumIdHql);
+					maximumIdHqls.put(ormClass, maximumIdHql);
 
 					String minimumIdHql = StringUtility.format(MINIMUM_ID, hibernateMetadata.getPrimaryName(), ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
-					minimumIdHqls.put(ormName, minimumIdHql);
+					minimumIdHqls.put(ormClass, minimumIdHql);
 				} catch (ClassNotFoundException exception) {
 					throw new OrmException(exception);
 				}
@@ -159,7 +159,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 
 			@Override
 			public Void doInHibernate(Session session) throws HibernateException {
-				String hql = deleteHqls.get(clazz.getName());
+				String hql = deleteHqls.get(clazz);
 				Query<?> query = session.createQuery(hql);
 				query.setParameter(0, id);
 				query.executeUpdate();
@@ -201,7 +201,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 
 			@Override
 			public K doInHibernate(Session session) throws HibernateException {
-				String hql = maximumIdHqls.get(clazz.getName());
+				String hql = maximumIdHqls.get(clazz);
 				Query<?> query = session.createQuery(hql);
 				query.setParameter(0, from);
 				query.setParameter(1, to);
@@ -217,7 +217,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 
 			@Override
 			public K doInHibernate(Session session) throws HibernateException {
-				String hql = minimumIdHqls.get(clazz.getName());
+				String hql = minimumIdHqls.get(clazz);
 				Query<?> query = session.createQuery(hql);
 				query.setParameter(0, from);
 				query.setParameter(1, to);
