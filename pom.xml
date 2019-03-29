@@ -126,14 +126,14 @@
 			<artifactId>curator-framework</artifactId>
 			<version>4.0.1</version>
 		</dependency>
-		
+
 		<!-- 日志框架依赖 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -145,7 +145,7 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.8.2</version>
 		</dependency>
-		
+
 		<!-- 对象关系映射框架依赖 -->
 		<dependency>
 			<groupId>com.sleepycat</groupId>
@@ -175,6 +175,12 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>2.0.8.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
@@ -290,7 +296,7 @@
 			<version>4.0.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- 桥接器:Slf4j使用Log4j2 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
