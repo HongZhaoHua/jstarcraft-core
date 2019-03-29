@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ItervalExpressionTestCase {
+public class IntervalExpressionTestCase {
 
 	private List<LocalDateTime> dateTimes = new ArrayList<>();
 	{
@@ -19,7 +19,7 @@ public class ItervalExpressionTestCase {
 	@Test
 	public void testGetPreviousDateTime() {
 		{
-			ItervalExpression expression = new ItervalExpression("0 0 0 1 1 2020 15");
+			IntervalExpression expression = new IntervalExpression("0 0 0 1 1 2020 15");
 
 			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 0);
 			for (int index = dateTimes.size() - 1; index > 0; index--) {
@@ -34,7 +34,7 @@ public class ItervalExpressionTestCase {
 			}
 		}
 		{
-			ItervalExpression expression = new ItervalExpression("0 1 0 1 1 2020 -15");
+			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 -15");
 
 			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 0);
 			for (int index = dateTimes.size() - 1; index > 0; index--) {
@@ -53,7 +53,7 @@ public class ItervalExpressionTestCase {
 	@Test
 	public void testGetNextDateTime() {
 		{
-			ItervalExpression expression = new ItervalExpression("0 0 0 1 1 2020 15");
+			IntervalExpression expression = new IntervalExpression("0 0 0 1 1 2020 15");
 
 			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 			for (int index = 0, size = dateTimes.size(); index < size; index++) {
@@ -68,7 +68,7 @@ public class ItervalExpressionTestCase {
 			}
 		}
 		{
-			ItervalExpression expression = new ItervalExpression("0 1 0 1 1 2020 -15");
+			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 -15");
 
 			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 			for (int index = 0, size = dateTimes.size(); index < size; index++) {

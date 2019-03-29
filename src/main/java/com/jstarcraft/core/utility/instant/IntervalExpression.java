@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
  * @author Birdy
  *
  */
-public class ItervalExpression extends DateTimeExpression {
+public class IntervalExpression extends DateTimeExpression {
 
 	/** 参考日期时间 */
 	private LocalDateTime reference;
@@ -18,7 +18,7 @@ public class ItervalExpression extends DateTimeExpression {
 	/** 间隔 */
 	private int iterval;
 
-	public ItervalExpression(String expression) {
+	public IntervalExpression(String expression) {
 		super(expression);
 
 		String[] fields = expression.split(" ");
