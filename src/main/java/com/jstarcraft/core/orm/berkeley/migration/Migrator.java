@@ -83,7 +83,6 @@ public class Migrator {
 			// 检测数据库名称是否符合EntityStore的名称规范(persist#STORE_NAME#ENTITY_CLASS)
 			if (databaseName.startsWith(PERSIST_PREFIX) && !databaseName.endsWith(FORMAT_SUFFIX) && !databaseName.endsWith(SEQUENCE_SUFFIX)) {
 				final String[] databasePartNames = databaseName.split("#");
-				System.out.println(databaseName);
 				entityStoreSet.add(databasePartNames[2]);
 			}
 		}
