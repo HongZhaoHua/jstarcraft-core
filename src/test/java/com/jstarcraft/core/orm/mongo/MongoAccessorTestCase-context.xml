@@ -28,7 +28,7 @@ http://www.jstarcraft.com/core/orm/mongo/mongo.xsd">
 	<!-- 注解配置 -->
 	<context:annotation-config />
 
-	<!-- Mongo访问器配置 -->
+	<!-- 访问器配置 -->
 	<mongodb:mongo-client id="mongo" host="${mongo.host}" port="${mongo.port}" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">

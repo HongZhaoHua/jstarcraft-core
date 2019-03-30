@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mybatis="http://www.jstarcraft.com/core/orm/mybatis"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -10,9 +10,11 @@ http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/tx
-http://www.springframework.org/schema/tx/spring-tx.xsd">
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.jstarcraft.com/core/orm/mybatis
+http://www.jstarcraft.com/core/orm/mybatis/mybatis.xsd">
 
-	<!--1 引入属性文件,在配置中占位使用 -->
+	<!-- 配置文件配置 -->
 	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
@@ -21,7 +23,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		</property>
 	</bean>
 
-	<!--2 配置数据源 -->
+	<!-- 数据源配置 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -38,11 +40,9 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		<property name="minIdle" value="1" />
 	</bean>
 
-	<!--3 会话工厂bean sqlSessionFactoryBean -->
+	<!-- 访问器配置 -->
 	<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
-		<!-- 数据源 -->
 		<property name="dataSource" ref="dataSource" />
-		<!-- 扫描包 -->
 		<property name="typeAliasesPackage" value="com.jstarcraft.core.orm.mybatis" />
 		<property name="plugins">
 			<array>
@@ -58,33 +58,24 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
-	<bean id="myBatisAccessor" class="com.jstarcraft.core.orm.mybatis.MyBatisAccessor">
-		<constructor-arg ref="sqlSessionTemplate" />
-	</bean>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 
-	<!--4 自动扫描对象关系映射 -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<!--指定会话工厂,如果当前上下文中只定义了一个则该属性可省去 -->
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-		<!-- 指定要自动扫描接口的基础包,实现接口 -->
-		<property name="basePackage" value="com.jstarcraft.core.orm.mybatis" />
-	</bean>
+	<mybatis:configuration id="myBatisAccessor" template="sqlSessionTemplate">
+		<mybatis:scan>
+			<mybatis:package name="com.jstarcraft.core.orm.mybatis" />
+		</mybatis:scan>
+	</mybatis:configuration>
 
-	<!--5 声明式事务管理 -->
-	<!--定义事物管理器,由spring管理事务 -->
+	<!-- 事务配置 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<!--支持注解驱动的事务管理,指定事务管理器 -->
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!--6 容器自动扫描IOC组件 -->
-	<context:component-scan base-package="com.jstarcraft.core.orm.mybatis" />
 
-	<!--7 aspectj支持自动代理实现AOP功能 -->
-	<aop:aspectj-autoproxy proxy-target-class="true" />
 
-	<!--8 Hibernate配置 -->
+	<!-- Hibernate配置 -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.jstarcraft.core.orm.mybatis" />

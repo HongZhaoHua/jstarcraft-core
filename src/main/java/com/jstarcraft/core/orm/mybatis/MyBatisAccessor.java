@@ -50,14 +50,15 @@ public class MyBatisAccessor implements OrmAccessor {
 	/** HQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
 	private Map<Class, String> minimumIdHqls = new ConcurrentHashMap<>();
 
-	public MyBatisAccessor(SqlSessionTemplate sessionTemplate) {
+	public MyBatisAccessor(Collection<Class<?>> classes, SqlSessionTemplate sessionTemplate) {
 		this.sessionTemplate = sessionTemplate;
-	}
 
-	// TODO 此方法应该想办法取消
-	public void initialize() {
 		Configuration configuration = sessionTemplate.getConfiguration();
-		for (Class clazz : configuration.getMapperRegistry().getMappers()) {
+		for (Class clazz : classes) {
+			if (!configuration.hasMapper(clazz)) {
+				configuration.addMapper(clazz);
+			}
+
 			MyBatisMetadata metadata = new MyBatisMetadata(clazz);
 			myBatisMetadatas.put(metadata.getOrmClass(), metadata);
 

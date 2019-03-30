@@ -26,7 +26,6 @@ public class MyBatisAccessorTestCase {
 
 	@Test
 	public void testCRUD() {
-		accessor.initialize();
 		int size = 100;
 
 		for (int index = 0; index < size; index++) {
