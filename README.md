@@ -29,6 +29,7 @@ JStarCraft Core
     * TCP
     * UDP
 * 4.分布式封装
+    * 数据路由
     * 一致性哈希
     * 标识生成策略
     * 分布式锁
@@ -37,7 +38,7 @@ JStarCraft Core
     * Log4j 2
 * 6.ORM
     * 键值数据库(Berkeley DB)
-    * 关系型数据库(Hibernate)
+    * 关系型数据库(Hibernate/MyBatis)
     * 文档型数据库(Mongo DB)
 * 7.脚本
     * Groovy
