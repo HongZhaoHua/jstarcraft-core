@@ -14,38 +14,40 @@ JStarCraft Core
 *****
 
 ## JStarCraft Core主要特性如下:
-* 1.缓存即记录(Cache as Record)
+* 1.切面
+    * 排序锁
+* 2.缓存即记录(Cache as Record)
     * Delayed Pattern
     * LRU Pattern
     * User Defined Pattern
     * Read/Write Through Pattern
     * Write Behind Pattern
-* 2.编解码协议
+* 3.编解码协议
     * CSV
     * JSON
     * Kryo
     * ProtocolBufferX
-* 3.多种通讯机制
+* 4.多种通讯机制
     * TCP
     * UDP
-* 4.分布式封装
+* 5.分布式封装
     * 数据路由
     * 一致性哈希
     * 标识生成策略
     * 分布式锁
-* 5.日志
+* 6.日志
     * Log4j 1
     * Log4j 2
-* 6.ORM
+* 7.ORM
     * 键值数据库(Berkeley DB)
     * 关系型数据库(Hibernate/MyBatis)
     * 文档型数据库(Mongo DB)
-* 7.脚本
+* 8.脚本
     * Groovy
     * JS
     * Lua
     * MVEL
-* 8.配置管理
+* 9.配置管理
     * JSON
     * Properties
     * XLSX
