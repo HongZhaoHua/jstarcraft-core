@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import com.jstarcraft.core.cache.CacheObject;
 
 @Entity
-public class MockCacheObject implements CacheObject<Long> {
+public class MockObject implements CacheObject<Long> {
 
 	@Id
 	private Long id;
@@ -19,7 +19,7 @@ public class MockCacheObject implements CacheObject<Long> {
 
 	private int token;
 
-	public MockCacheObject() {
+	public MockObject() {
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class MockCacheObject implements CacheObject<Long> {
 		return new int[] { money, token };
 	}
 
-	public static MockCacheObject instanceOf(Long id, String firstName, String lastName, int money, int token) {
-		MockCacheObject instance = new MockCacheObject();
+	public static MockObject instanceOf(Long id, String firstName, String lastName, int money, int token) {
+		MockObject instance = new MockObject();
 		instance.id = id;
 		instance.firstName = firstName;
 		instance.lastName = lastName;
