@@ -99,7 +99,7 @@ public class CommunicationXmlParser extends AbstractBeanDefinitionParser {
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
 		// 通信调度器工厂
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CommunicationDispatcherFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CommunicationDispatcherFactory.class);
 
 		// 设置通讯端
 		String sideName = element.getAttribute(AttributeDefinition.SIDE.getName());

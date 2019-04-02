@@ -83,7 +83,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 	private void assembleProcessor(ParserContext parserContext) {
 		BeanDefinitionRegistry registry = parserContext.getRegistry();
 		String name = StringUtility.uncapitalize(StorageAccessorProcessor.class.getSimpleName());
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(StorageAccessorProcessor.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageAccessorProcessor.class);
 		registry.registerBeanDefinition(name, factory.getBeanDefinition());
 	}
 
@@ -92,7 +92,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 		assembleProcessor(parserContext);
 		
 		// 仓储管理器工厂
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(StorageManagerFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageManagerFactory.class);
 
 		String formatName = element.getAttribute(AttributeDefinition.FORMAT.getName());
 
@@ -104,7 +104,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 			String name = formatElement.getAttribute(AttributeDefinition.NAME.getName());
 			String path = formatElement.getAttribute(AttributeDefinition.PATH.getName());
 			String suffix = formatElement.getAttribute(AttributeDefinition.SUFFIX.getName());
-			BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(FormatDefinition.class);
+			BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FormatDefinition.class);
 			builder.addConstructorArgReference(adapter);
 			builder.addConstructorArgValue(name);
 			builder.addConstructorArgValue(path);

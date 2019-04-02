@@ -72,7 +72,7 @@ public class MyBatisXmlParser extends AbstractBeanDefinitionParser {
 
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(MyBatisAccessorFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(MyBatisAccessorFactory.class);
 
 		String templateBeanName = element.getAttribute(AttributeDefinition.TEMPLATE.getName());
 		factory.addPropertyReference(AttributeDefinition.TEMPLATE.getName(), templateBeanName);

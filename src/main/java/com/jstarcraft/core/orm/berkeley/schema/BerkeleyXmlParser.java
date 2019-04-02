@@ -80,7 +80,7 @@ public class BerkeleyXmlParser extends AbstractBeanDefinitionParser {
 
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(BerkeleyAccessorFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(BerkeleyAccessorFactory.class);
 		// 设置目录
 		String directory = element.getAttribute(AttributeDefinition.DIRECTORY.getName());
 		factory.addPropertyValue(AttributeDefinition.DIRECTORY.getName(), directory);

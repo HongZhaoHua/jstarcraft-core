@@ -46,7 +46,7 @@ public class CodecXmlParser extends AbstractBeanDefinitionParser {
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
 
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CodecDefinitionFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CodecDefinitionFactory.class);
 
 		// 要创建的对象信息
 		HashSet<Class<?>> protocolClasses = new HashSet<>();

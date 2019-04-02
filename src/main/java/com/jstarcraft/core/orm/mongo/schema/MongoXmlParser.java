@@ -78,7 +78,7 @@ public class MongoXmlParser extends AbstractBeanDefinitionParser {
 
 	@Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(MongoAccessorFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(MongoAccessorFactory.class);
 
 		String templateBeanName = element.getAttribute(AttributeDefinition.TEMPLATE.getName());
 		factory.addPropertyReference(AttributeDefinition.TEMPLATE.getName(), templateBeanName);

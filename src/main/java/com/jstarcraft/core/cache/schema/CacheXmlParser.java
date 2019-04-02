@@ -59,7 +59,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 	private void assembleProcessor(ParserContext context) {
 		BeanDefinitionRegistry registry = context.getRegistry();
 		String name = StringUtility.uncapitalize(CacheAccessorProcessor.class.getSimpleName());
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CacheAccessorProcessor.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CacheAccessorProcessor.class);
 		registry.registerBeanDefinition(name, factory.getBeanDefinition());
 	}
 
@@ -99,7 +99,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 		assembleProcessor(context);
 
 		// 缓存服务工厂
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.rootBeanDefinition(CacheServiceFactory.class);
+		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CacheServiceFactory.class);
 
 		// 设置访问器
 		Element accessorElement = XmlUtility.getUniqueElement(element, ElementDefinition.ACCESSOR.getName());

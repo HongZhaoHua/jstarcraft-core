@@ -45,10 +45,10 @@ public class MyBatisAccessor implements OrmAccessor {
 	protected Map<Class<? extends BaseMapper<?>>, MyBatisMetadata> myBatisMetadatas = new ConcurrentHashMap<>();
 
 	/** HQL查询语句(查询指定范围的最大主键标识),用于IdentityManager */
-	private Map<Class, String> maximumIdHqls = new ConcurrentHashMap<>();
+	private Map<Class, String> maximumIdSqls = new ConcurrentHashMap<>();
 
 	/** HQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
-	private Map<Class, String> minimumIdHqls = new ConcurrentHashMap<>();
+	private Map<Class, String> minimumIdSqls = new ConcurrentHashMap<>();
 
 	public MyBatisAccessor(Collection<Class<?>> classes, SqlSessionTemplate sessionTemplate) {
 		this.sessionTemplate = sessionTemplate;
@@ -62,11 +62,11 @@ public class MyBatisAccessor implements OrmAccessor {
 			MyBatisMetadata metadata = new MyBatisMetadata(clazz);
 			myBatisMetadatas.put(metadata.getOrmClass(), metadata);
 
-			String maximumIdHql = StringUtility.format(MAXIMUM_ID, metadata.getColumnName(metadata.getPrimaryName()));
-			maximumIdHqls.put(metadata.getOrmClass(), maximumIdHql);
+			String maximumIdSql = StringUtility.format(MAXIMUM_ID, metadata.getColumnName(metadata.getPrimaryName()));
+			maximumIdSqls.put(metadata.getOrmClass(), maximumIdSql);
 
-			String minimumIdHql = StringUtility.format(MINIMUM_ID, metadata.getColumnName(metadata.getPrimaryName()));
-			minimumIdHqls.put(metadata.getOrmClass(), minimumIdHql);
+			String minimumIdSql = StringUtility.format(MINIMUM_ID, metadata.getColumnName(metadata.getPrimaryName()));
+			minimumIdSqls.put(metadata.getOrmClass(), minimumIdSql);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class MyBatisAccessor implements OrmAccessor {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
-		query.select(maximumIdHqls.get(metadata.getOrmClass()));
+		query.select(maximumIdSqls.get(metadata.getOrmClass()));
 		query.between(metadata.getColumnName(metadata.getPrimaryName()), from, to);
 		List<K> values = mapper.selectObjs(query);
 		return values.get(0);
@@ -128,7 +128,7 @@ public class MyBatisAccessor implements OrmAccessor {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
-		query.select(minimumIdHqls.get(metadata.getOrmClass()));
+		query.select(minimumIdSqls.get(metadata.getOrmClass()));
 		query.between(metadata.getColumnName(metadata.getPrimaryName()), from, to);
 		List<K> values = mapper.selectObjs(query);
 		return values.get(0);
