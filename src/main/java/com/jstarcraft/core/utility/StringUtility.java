@@ -64,6 +64,9 @@ public class StringUtility extends StringUtils {
 	/** 单引号 */
 	public static final String SINGLE_QUOTATION = "'";
 
+	/** 下划线 */
+	public static final String UNDERSCORE = "_";
+
 	/**
 	 * 使用指定参数格式化指定模板,并转换为字符串
 	 * 
