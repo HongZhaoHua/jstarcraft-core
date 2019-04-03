@@ -27,8 +27,8 @@ public class InstantUtility extends DateUtils {
 	private static final CronParser parser = new CronParser(cronDefinition);
 
 	private static final ConcurrentLinkedHashMap<String, Cron> crons;
-	
-	private static final ConcurrentLinkedHashMap<String, BitSet[]> bits; 
+
+	private static final ConcurrentLinkedHashMap<String, BitSet[]> bits;
 
 	static {
 		{
@@ -84,7 +84,7 @@ public class InstantUtility extends DateUtils {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
 		ZonedDateTime dateTime = ZonedDateTime.of(instant, zone);
-		dateTime = executionTime.nextExecution(dateTime);
+		dateTime = executionTime.nextExecution(dateTime).get();
 		return dateTime.toLocalDateTime();
 	}
 
@@ -110,7 +110,7 @@ public class InstantUtility extends DateUtils {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
 		ZonedDateTime dateTime = ZonedDateTime.of(instant, zone);
-		dateTime = executionTime.lastExecution(dateTime);
+		dateTime = executionTime.lastExecution(dateTime).get();
 		return dateTime.toLocalDateTime();
 	}
 
@@ -137,7 +137,7 @@ public class InstantUtility extends DateUtils {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
 		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, zone);
-		dateTime = executionTime.nextExecution(dateTime);
+		dateTime = executionTime.nextExecution(dateTime).get();
 		return dateTime.toInstant();
 	}
 
@@ -163,7 +163,7 @@ public class InstantUtility extends DateUtils {
 		Cron expression = getCronExpression(cron);
 		ExecutionTime executionTime = ExecutionTime.forCron(expression);
 		ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, zone);
-		dateTime = executionTime.lastExecution(dateTime);
+		dateTime = executionTime.lastExecution(dateTime).get();
 		return dateTime.toInstant();
 	}
 

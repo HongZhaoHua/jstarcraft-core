@@ -29,13 +29,13 @@ public class SolarExpression extends DateTimeExpression {
 
 	@Override
 	public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
-		dateTime = execution.lastExecution(dateTime);
+		dateTime = execution.lastExecution(dateTime).get();
 		return dateTime;
 	}
 
 	@Override
 	public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
-		dateTime = execution.nextExecution(dateTime);
+		dateTime = execution.nextExecution(dateTime).get();
 		return dateTime;
 	}
 

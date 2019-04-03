@@ -67,4 +67,14 @@ public class InstantUtilityTestCase {
 		Assert.assertThat(after, CoreMatchers.equalTo(LocalDateTime.of(2002, 1, 1, 0, 0, 0)));
 	}
 
+	@Test
+	public void testLastDay() {
+		String cron = "0 0 0 L 2 ?";
+		LocalDateTime dateTime = LocalDateTime.of(2001, 1, 1, 0, 0, 0);
+		LocalDateTime before = InstantUtility.getDateTimeBefore(cron, dateTime, ZoneId.systemDefault());
+		Assert.assertThat(before, CoreMatchers.equalTo(LocalDateTime.of(2000, 2, 29, 0, 0, 0)));
+		LocalDateTime after = InstantUtility.getDateTimeAfter(cron, dateTime, ZoneId.systemDefault());
+		Assert.assertThat(after, CoreMatchers.equalTo(LocalDateTime.of(2001, 2, 28, 0, 0, 0)));
+	}
+
 }
