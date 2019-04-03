@@ -39,6 +39,9 @@ public class StringUtility extends StringUtils {
 
 	/** 惊叹号 */
 	public static final String EXCLAMATION = "!";
+	
+	/** 井号 */
+	public static final String HASH = "#";
 
 	/** 连字符 */
 	public static final String HYPHEN = "-";
