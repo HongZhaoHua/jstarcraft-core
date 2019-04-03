@@ -556,7 +556,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 		});
 	}
 
-	public <R> List<R> query(final String name, Class<R> queryType, final OrmPagination pagination, final Object... parameters) {
+	public <R> List<R> query(String name, Class<R> queryType, OrmPagination pagination, Object... parameters) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<R>>() {
 
 			@Override
@@ -606,7 +606,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 		});
 	}
 
-	public <R> R unique(final String name, Class<R> queryType, final Object... parameters) {
+	public <R> R unique(String name, Class<R> queryType, Object... parameters) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<R>() {
 
 			@Override
@@ -622,13 +622,13 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 		});
 	}
 
-	public int modify(final String name, Map<String, Object> condition) {
+	public int modify(String name, Map<String, Object> parameters) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Integer>() {
 
 			@Override
 			public Integer doInHibernate(Session session) throws HibernateException {
 				Query<?> query = session.getNamedQuery(name);
-				for (Entry<String, Object> keyValue : condition.entrySet()) {
+				for (Entry<String, Object> keyValue : parameters.entrySet()) {
 					String name = keyValue.getKey();
 					Object value = keyValue.getValue();
 					query.setParameter(name, value);
@@ -639,7 +639,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 		});
 	}
 
-	public int modify(final String name, final Object... parameters) {
+	public int modify(String name, Object... parameters) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Integer>() {
 
 			@Override
