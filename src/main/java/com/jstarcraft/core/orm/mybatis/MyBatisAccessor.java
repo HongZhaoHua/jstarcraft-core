@@ -39,7 +39,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	/** 查询指定范围的最小主键标识 */
 	private final static String MINIMUM_ID = "MIN({})";
 
-	private SqlSessionTemplate sessionTemplate;
+	private SqlSessionTemplate template;
 
 	/** MyBatis元信息 */
 	protected Map<Class<? extends BaseMapper<?>>, MyBatisMetadata> myBatisMetadatas = new ConcurrentHashMap<>();
@@ -50,10 +50,10 @@ public class MyBatisAccessor implements OrmAccessor {
 	/** HQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
 	private Map<Class, String> minimumIdSqls = new ConcurrentHashMap<>();
 
-	public MyBatisAccessor(Collection<Class<?>> classes, SqlSessionTemplate sessionTemplate) {
-		this.sessionTemplate = sessionTemplate;
+	public MyBatisAccessor(Collection<Class<?>> classes, SqlSessionTemplate template) {
+		this.template = template;
 
-		Configuration configuration = sessionTemplate.getConfiguration();
+		Configuration configuration = template.getConfiguration();
 		for (Class clazz : classes) {
 			if (!configuration.hasMapper(clazz)) {
 				configuration.addMapper(clazz);
@@ -78,14 +78,14 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> T get(Class<T> objectType, K id) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		return (T) mapper.selectById((Serializable) id);
 	}
 
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> K create(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.insert(object);
 		return object.getId();
 	}
@@ -93,21 +93,21 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, K id) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.deleteById((Serializable) id);
 	}
 
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.deleteById((Serializable) object.getId());
 	}
 
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void update(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.updateById(object);
 	}
 
@@ -115,7 +115,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		query.select(maximumIdSqls.get(metadata.getOrmClass()));
 		query.between(metadata.getColumnName(metadata.getPrimaryName()), from, to);
@@ -126,7 +126,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		query.select(minimumIdSqls.get(metadata.getOrmClass()));
 		query.between(metadata.getColumnName(metadata.getPrimaryName()), from, to);
@@ -140,7 +140,7 @@ public class MyBatisAccessor implements OrmAccessor {
 			throw new OrmQueryException();
 		}
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		String id = metadata.getColumnName(metadata.getPrimaryName());
 		String column = metadata.getColumnName(name);
@@ -181,7 +181,7 @@ public class MyBatisAccessor implements OrmAccessor {
 			throw new OrmQueryException();
 		}
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		String column = metadata.getColumnName(name);
 		switch (condition) {
@@ -213,7 +213,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		if (pagination == null) {
 			return mapper.selectList(query);
@@ -226,7 +226,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.and((wrapper) -> {
@@ -244,7 +244,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.or((wrapper) -> {
@@ -262,7 +262,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> long count(Class<T> objectType) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		return mapper.selectCount(query);
 	}
@@ -270,7 +270,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.and((wrapper) -> {
@@ -283,7 +283,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.or((wrapper) -> {
@@ -296,7 +296,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		IPage<T> page = mapper.selectPage(new Page(pagination.getPage(), pagination.getSize()), query);
 		for (T object : page.getRecords()) {
@@ -307,7 +307,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.and((wrapper) -> {
@@ -323,7 +323,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	@Override
 	public <K extends Comparable, T extends CacheObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
-		BaseMapper mapper = sessionTemplate.getMapper(metadata.getMapperClass());
+		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
 		for (Entry<String, Object> term : condition.entrySet()) {
 			query.or((wrapper) -> {
