@@ -37,6 +37,7 @@ public class MockObject implements CacheObject<Integer> {
 	public MockObject() {
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
