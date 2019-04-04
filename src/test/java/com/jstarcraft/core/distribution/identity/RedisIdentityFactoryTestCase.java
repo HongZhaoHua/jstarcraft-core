@@ -6,14 +6,11 @@ import org.redisson.Redisson;
 import org.redisson.api.RKeys;
 import org.redisson.config.Config;
 
-import com.jstarcraft.core.distribution.identity.IdentityFactory;
-import com.jstarcraft.core.distribution.identity.RedisIdentityFactory;
+public abstract class RedisIdentityFactoryTestCase extends IdentityFactoryTestCase {
 
-public class RedisIdentityFactoryTestCase extends IdentityFactoryTestCase {
+	protected Redisson redisson;
 
-	private Redisson redisson;
-
-	private RKeys keys;
+	protected RKeys keys;
 
 	@Before
 	public void testBefore() {
@@ -28,12 +25,6 @@ public class RedisIdentityFactoryTestCase extends IdentityFactoryTestCase {
 	public void testAfter() {
 		keys.flushdb();
 		redisson.shutdown();
-	}
-
-	@Override
-	protected IdentityFactory getIdentityFactory() {
-		RedisIdentityFactory identityFactory = new RedisIdentityFactory(redisson.getAtomicLong("atomic"), 1000L, 0, 58);
-		return identityFactory;
 	}
 
 }
