@@ -23,23 +23,23 @@ public class IdentityDefinition {
 	/** 分段定义 */
 	protected final IdentitySection[] sections;
 
-	public IdentityDefinition(LinkedHashMap<String, Integer> sections) {
+	public IdentityDefinition(int... sections) {
 		int bit = 0;
 		int index = 0;
-		this.sections = new IdentitySection[sections.size()];
-		for (Entry<String, Integer> keyValue : sections.entrySet()) {
-			if (keyValue.getValue() <= 0) {
+		this.sections = new IdentitySection[sections.length];
+		for (int section : sections) {
+			if (section <= 0) {
 				// TODO 异常
 				throw new IllegalArgumentException();
 			}
-			bit += keyValue.getValue();
+			bit += section;
 			if (bit > DATA_BIT) {
 				// TODO 异常
 				throw new IllegalArgumentException();
 			}
 			// 制作掩码
-			long mask = -1L ^ (-1L << keyValue.getValue());
-			this.sections[index] = new IdentitySection(keyValue.getValue(), mask, keyValue.getKey());
+			long mask = -1L ^ (-1L << section);
+			this.sections[index] = new IdentitySection(section, mask);
 			index++;
 		}
 

@@ -37,10 +37,7 @@ public abstract class RedisIdentityFactory implements IdentityFactory {
 	protected RedisIdentityFactory(long step, int partition, int sequenceBit) {
 		this.step = step;
 		int partitionBit = IdentityDefinition.DATA_BIT - sequenceBit;
-		LinkedHashMap<String, Integer> sections = new LinkedHashMap<>();
-		sections.put("partition", partitionBit);
-		sections.put("sequence", sequenceBit);
-		this.definition = new IdentityDefinition(sections);
+		this.definition = new IdentityDefinition(partitionBit, sequenceBit);
 		this.partition = partition;
 	}
 

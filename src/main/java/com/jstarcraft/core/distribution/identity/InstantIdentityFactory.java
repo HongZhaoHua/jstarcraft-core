@@ -1,7 +1,6 @@
 package com.jstarcraft.core.distribution.identity;
 
 import java.time.Instant;
-import java.util.LinkedHashMap;
 
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -42,11 +41,7 @@ public class InstantIdentityFactory implements IdentityFactory {
 
 	public InstantIdentityFactory(int partitionBit, int partitionIndex, int instantBit, Instant offsetInstant) {
 		int sequenceBit = IdentityDefinition.DATA_BIT - partitionBit - instantBit;
-		LinkedHashMap<String, Integer> sections = new LinkedHashMap<>();
-		sections.put("partition", partitionBit);
-		sections.put("instant", instantBit);
-		sections.put("sequence", sequenceBit);
-		this.definition = new IdentityDefinition(sections);
+		this.definition = new IdentityDefinition(partitionBit, instantBit, sequenceBit);
 		this.mask = -1L ^ (-1L << sequenceBit);
 		this.offset = offsetInstant.toEpochMilli();
 		this.partition = partitionIndex;

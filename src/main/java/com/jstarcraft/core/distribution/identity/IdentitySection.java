@@ -14,13 +14,9 @@ public class IdentitySection {
 	/** 掩码 */
 	private final long mask;
 
-	/** 名称 */
-	private final String name;
-
-	IdentitySection(int bit, long mask, String name) {
+	IdentitySection(int bit, long mask) {
 		this.bit = bit;
 		this.mask = mask;
-		this.name = name;
 	}
 
 	public int getBit() {
@@ -29,10 +25,6 @@ public class IdentitySection {
 
 	public long getMask() {
 		return mask;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 }

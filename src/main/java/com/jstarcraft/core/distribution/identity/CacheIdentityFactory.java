@@ -47,10 +47,7 @@ public class CacheIdentityFactory implements IdentityFactory {
 		this.accessor = accessor;
 		this.clazz = clazz;
 		int partitionBit = IdentityDefinition.DATA_BIT - sequenceBit;
-		LinkedHashMap<String, Integer> sections = new LinkedHashMap<>();
-		sections.put("partition", partitionBit);
-		sections.put("sequence", sequenceBit);
-		this.definition = new IdentityDefinition(sections);
+		this.definition = new IdentityDefinition(partitionBit, sequenceBit);
 		this.partition = partition;
 		Long maximum = definition.make(partition, -1L);
 		Long minimum = definition.make(partition, 0L);
