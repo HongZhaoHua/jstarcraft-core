@@ -1,3 +1,6 @@
+log4j日志封装说明—slf4j对于log4j的日志封装-正确获取调用堆栈:
+http://www.coderli.com/log4j-slf4j-logger-linenumber/
+
 Log4j2的日志配置文件(log4j2.xml文件的配置-实现控制台输出,各级别分别文件输出,自动压缩等...):
 http://www.cnblogs.com/hyyq/p/7171227.html
 
