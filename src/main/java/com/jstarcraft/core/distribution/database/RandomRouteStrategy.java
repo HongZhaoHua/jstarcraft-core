@@ -13,8 +13,8 @@ import com.jstarcraft.core.utility.RandomUtility;
 public class RandomRouteStrategy implements RouteStrategy {
 
 	@Override
-	public String chooseIndex(List<String> indexes) {
-		return indexes.get(RandomUtility.randomInteger(indexes.size()));
+	public String chooseDataSource(List<String> names) {
+		return names.get(RandomUtility.randomInteger(names.size()));
 	}
 
 }

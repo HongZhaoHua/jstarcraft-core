@@ -15,8 +15,8 @@ public class PollRouteStrategy implements RouteStrategy {
 	private AtomicInteger count = new AtomicInteger(0);
 
 	@Override
-	public String chooseIndex(List<String> indexes) {
-		return indexes.get(Math.abs(count.getAndIncrement()) % indexes.size());
+	public String chooseDataSource(List<String> names) {
+		return names.get(Math.abs(count.getAndIncrement()) % names.size());
 	}
 
 }

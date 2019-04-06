@@ -11,10 +11,11 @@ import java.util.List;
 public interface RouteStrategy {
 
 	/**
-	 * 选择索引
+	 * 选择数据源
 	 * 
+	 * @param names
 	 * @return
 	 */
-	String chooseIndex(List<String> indexes);
+	String chooseDataSource(List<String> names);
 
 }

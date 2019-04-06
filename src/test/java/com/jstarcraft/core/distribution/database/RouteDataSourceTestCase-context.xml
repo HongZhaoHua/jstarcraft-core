@@ -63,7 +63,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	</bean>
 
 	<bean id="mockRouteStrategy" class="com.jstarcraft.core.distribution.database.MockRouteStrategy">
-		<constructor-arg value="leftDataSource" />
+		<constructor-arg value="rightDataSource" />
 	</bean>
 
 	<bean id="routeDataSource" class="com.jstarcraft.core.distribution.database.RouteDataSource">

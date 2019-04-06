@@ -25,7 +25,7 @@ public class MockRouteStrategy implements RouteStrategy {
 	}
 
 	@Override
-	public String chooseIndex(List<String> indexes) {
+	public String chooseDataSource(List<String> names) {
 		return name;
 	}
 
