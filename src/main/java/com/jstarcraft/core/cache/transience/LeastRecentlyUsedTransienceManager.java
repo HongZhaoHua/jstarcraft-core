@@ -10,11 +10,11 @@ import com.googlecode.concurrentlinkedhashmap.EvictionListener;
  * @author Birdy
  *
  */
-public class LeastRecentlyUesedTransienceManager<K, T> implements TransienceManager<K, T> {
+public class LeastRecentlyUsedTransienceManager<K, T> implements TransienceManager<K, T> {
 
 	private ConcurrentLinkedHashMap<K, T> transience;
 
-	LeastRecentlyUesedTransienceManager(int minimunSize, int maximunSize, int concurrencyLevel, TransienceMonitor monitor) {
+	LeastRecentlyUsedTransienceManager(int minimunSize, int maximunSize, int concurrencyLevel, TransienceMonitor monitor) {
 		Builder<K, T> builder = new Builder<>();
 		builder.initialCapacity(minimunSize);
 		builder.maximumWeightedCapacity(maximunSize);

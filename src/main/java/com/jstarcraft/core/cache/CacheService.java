@@ -19,7 +19,7 @@ import com.jstarcraft.core.cache.persistence.PromptPersistenceStrategy;
 import com.jstarcraft.core.cache.persistence.QueuePersistenceStrategy;
 import com.jstarcraft.core.cache.persistence.SchedulePersistenceStrategy;
 import com.jstarcraft.core.cache.transience.DelayedTransienceStrategy;
-import com.jstarcraft.core.cache.transience.LeastRecentlyUesedTransienceStrategy;
+import com.jstarcraft.core.cache.transience.LeastRecentlyUsedTransienceStrategy;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.UserDefinedTransienceStrategy;
@@ -183,8 +183,8 @@ public class CacheService implements CacheMonitor {
 		case DELAYED:
 			result = new DelayedTransienceStrategy();
 			break;
-		case LEAST_RECENTLY_UESED:
-			result = new LeastRecentlyUesedTransienceStrategy();
+		case LEAST_RECENTLY_USED:
+			result = new LeastRecentlyUsedTransienceStrategy();
 			break;
 		case USER_DEFINED:
 			result = new UserDefinedTransienceStrategy();

@@ -23,7 +23,7 @@ public interface TransienceStrategy {
 		DELAYED,
 
 		/** 使用最近最少使用策略管理内存 */
-		LEAST_RECENTLY_UESED,
+		LEAST_RECENTLY_USED,
 
 		/** 使用自定义策略管理内存 */
 		USER_DEFINED,

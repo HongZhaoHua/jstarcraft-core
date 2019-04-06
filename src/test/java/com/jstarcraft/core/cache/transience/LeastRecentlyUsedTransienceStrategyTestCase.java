@@ -19,7 +19,7 @@ import com.jstarcraft.core.cache.transience.TransienceStrategy.TransienceType;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class LeastRecentlyUesedTransienceStrategyTestCase {
+public class LeastRecentlyUsedTransienceStrategyTestCase {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -31,11 +31,11 @@ public class LeastRecentlyUesedTransienceStrategyTestCase {
 	@Test(timeout = 20000)
 	public void testExpire() {
 		Map<String, String> parameters = new HashMap<>();
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_MINIMUN_SIZE, String.valueOf(MINIMUN_SIZE));
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_MAXIMUN_SIZE, String.valueOf(MAXIMUN_SIZE));
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_CONCURRENCY_LEVEL, String.valueOf(THREAD_SIZE));
-		TransienceConfiguration configuration = new TransienceConfiguration("leastRecentlyUesedMemoryStrategy", TransienceType.LEAST_RECENTLY_UESED, parameters);
-		LeastRecentlyUesedTransienceStrategy strategy = new LeastRecentlyUesedTransienceStrategy();
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_MINIMUN_SIZE, String.valueOf(MINIMUN_SIZE));
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_MAXIMUN_SIZE, String.valueOf(MAXIMUN_SIZE));
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_CONCURRENCY_LEVEL, String.valueOf(THREAD_SIZE));
+		TransienceConfiguration configuration = new TransienceConfiguration("leastRecentlyUesedMemoryStrategy", TransienceType.LEAST_RECENTLY_USED, parameters);
+		LeastRecentlyUsedTransienceStrategy strategy = new LeastRecentlyUsedTransienceStrategy();
 		strategy.start(configuration);
 
 		AtomicInteger expireCount = new AtomicInteger();
@@ -71,11 +71,11 @@ public class LeastRecentlyUesedTransienceStrategyTestCase {
 	@Test
 	public void testPerformance() throws Exception {
 		Map<String, String> parameters = new HashMap<>();
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_MINIMUN_SIZE, String.valueOf(MINIMUN_SIZE));
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_MAXIMUN_SIZE, String.valueOf(MAXIMUN_SIZE));
-		parameters.put(LeastRecentlyUesedTransienceStrategy.PARAMETER_CONCURRENCY_LEVEL, String.valueOf(THREAD_SIZE));
-		TransienceConfiguration configuration = new TransienceConfiguration("leastRecentlyUesedMemoryStrategy", TransienceType.LEAST_RECENTLY_UESED, parameters);
-		LeastRecentlyUesedTransienceStrategy strategy = new LeastRecentlyUesedTransienceStrategy();
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_MINIMUN_SIZE, String.valueOf(MINIMUN_SIZE));
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_MAXIMUN_SIZE, String.valueOf(MAXIMUN_SIZE));
+		parameters.put(LeastRecentlyUsedTransienceStrategy.PARAMETER_CONCURRENCY_LEVEL, String.valueOf(THREAD_SIZE));
+		TransienceConfiguration configuration = new TransienceConfiguration("leastRecentlyUesedMemoryStrategy", TransienceType.LEAST_RECENTLY_USED, parameters);
+		LeastRecentlyUsedTransienceStrategy strategy = new LeastRecentlyUsedTransienceStrategy();
 		strategy.start(configuration);
 		TransienceManager manager = strategy.getTransienceManager(null);
 

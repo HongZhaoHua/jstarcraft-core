@@ -11,7 +11,7 @@ import com.jstarcraft.core.cache.exception.CacheConfigurationException;
  * @author Birdy
  *
  */
-public class LeastRecentlyUesedTransienceStrategy implements TransienceStrategy {
+public class LeastRecentlyUsedTransienceStrategy implements TransienceStrategy {
 
 	/** 参数:最小大小 */
 	public static final String PARAMETER_MINIMUN_SIZE = "minimunSize";
@@ -61,7 +61,7 @@ public class LeastRecentlyUesedTransienceStrategy implements TransienceStrategy 
 
 	@Override
 	public TransienceManager getTransienceManager(TransienceMonitor monitor) {
-		return new LeastRecentlyUesedTransienceManager<>(minimunSize, maximunSize, concurrencyLevel, monitor);
+		return new LeastRecentlyUsedTransienceManager<>(minimunSize, maximunSize, concurrencyLevel, monitor);
 	}
 
 }
