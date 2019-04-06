@@ -1,8 +1,6 @@
 package com.jstarcraft.core.distribution.database;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * 路由策略
@@ -13,10 +11,10 @@ import javax.sql.DataSource;
 public interface RouteStrategy {
 
 	/**
-	 * 选择数据源
+	 * 选择索引
 	 * 
 	 * @return
 	 */
-	DataSource chooseDataSource(Map<String, DataSource> dataSources);
+	String chooseIndex(List<String> indexes);
 
 }

@@ -1,8 +1,6 @@
 package com.jstarcraft.core.distribution.database;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
+import java.util.List;
 
 /**
  * 模仿路由策略
@@ -27,8 +25,8 @@ public class MockRouteStrategy implements RouteStrategy {
 	}
 
 	@Override
-	public DataSource chooseDataSource(Map<String, DataSource> dataSources) {
-		return dataSources.get(name);
+	public String chooseIndex(List<String> indexes) {
+		return name;
 	}
 
 }

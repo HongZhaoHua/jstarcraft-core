@@ -2,7 +2,10 @@ package com.jstarcraft.core.distribution.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -19,11 +22,15 @@ public class RouteDataSource extends AbstractDataSource {
 	/** 路由策略 */
 	private RouteStrategy strategy;
 
+	/** 所有索引 */
+	private List<String> indexes;
+
 	/** 所有数据源 */
-	private HashMap<String, DataSource> dataSources = new HashMap<>();
+	private Map<String, DataSource> dataSources;
 
 	public RouteDataSource(RouteStrategy strategy, HashMap<String, DataSource> dataSources) {
 		this.strategy = strategy;
+		this.indexes = new ArrayList<>(dataSources.keySet());
 		this.dataSources = new HashMap<>(dataSources);
 	}
 
@@ -33,7 +40,8 @@ public class RouteDataSource extends AbstractDataSource {
 	 * @return
 	 */
 	protected DataSource switchDataSource() {
-		return strategy.chooseDataSource(dataSources);
+		String index = strategy.chooseIndex(indexes);
+		return dataSources.get(index);
 	}
 
 	@Override
