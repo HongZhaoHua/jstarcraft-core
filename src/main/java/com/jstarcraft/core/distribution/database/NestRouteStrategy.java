@@ -15,8 +15,16 @@ import java.util.List;
  */
 public class NestRouteStrategy implements RouteStrategy {
 
-	/** 堆栈(后入先出) */
-	private LinkedList<String> stack = new LinkedList<>();
+	/** 上下文 */
+	private ThreadLocal<LinkedList<String>> contexts = new ThreadLocal<>();
+
+	private LinkedList<String> getContext() {
+		LinkedList<String> context = contexts.get();
+		if (context == null) {
+			context = new LinkedList<>();
+		}
+		return context;
+	}
 
 	/**
 	 * 推入索引
@@ -24,19 +32,22 @@ public class NestRouteStrategy implements RouteStrategy {
 	 * @param index
 	 */
 	public void pushIndex(String index) {
-		stack.addLast(index);
+		LinkedList<String> context = getContext();
+		context.addLast(index);
 	}
 
 	/**
 	 * 拉出索引
 	 */
 	public void pullIndex() {
-		stack.removeLast();
+		LinkedList<String> context = getContext();
+		context.removeLast();
 	}
 
 	@Override
 	public String chooseIndex(List<String> indexes) {
-		return stack.peekLast();
+		LinkedList<String> context = getContext();
+		return context.peekLast();
 	}
 
 }
