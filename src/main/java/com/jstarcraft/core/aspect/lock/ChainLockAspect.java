@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 自动锁切面
+ * 链锁切面
  * 
  * @author Birdy
  */
@@ -22,9 +22,9 @@ public class ChainLockAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChainLockAspect.class);
 
 	/** 链映射 */
-	private ConcurrentHashMap<Method, ChainLockManager> factories = new ConcurrentHashMap<Method, ChainLockManager>();
+	private ConcurrentHashMap<Method, ChainLockManager> factories = new ConcurrentHashMap<>();
 	/** 标记映射(用于非强制锁) */
-	private ThreadLocal<Object> marks = new ThreadLocal<Object>();
+	private ThreadLocal<Object> marks = new ThreadLocal<>();
 
 	/** 锁方法拦截处理 */
 	@Around("@annotation(lock4Method)")
