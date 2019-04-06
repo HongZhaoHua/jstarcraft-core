@@ -1,4 +1,4 @@
-package com.jstarcraft.core.cache.annotation;
+package com.jstarcraft.core.aspect.lock;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

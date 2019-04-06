@@ -11,8 +11,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.cache.annotation.Lock4Method;
-
 /**
  * 自动锁切面
  * 
