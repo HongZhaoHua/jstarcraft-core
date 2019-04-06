@@ -3,6 +3,7 @@ package com.jstarcraft.core.distribution.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class RouteDataSource extends AbstractDataSource {
 
 	public RouteDataSource(RouteStrategy strategy, HashMap<String, DataSource> dataSources) {
 		this.strategy = strategy;
-		this.indexes = new ArrayList<>(dataSources.keySet());
+		this.indexes = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
 		this.dataSources = new HashMap<>(dataSources);
 	}
 
