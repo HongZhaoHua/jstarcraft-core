@@ -25,8 +25,8 @@ public class RouteDataSource extends AbstractDataSource {
 	/** 路由策略 */
 	private RouteStrategy strategy;
 
-	/** 所有名称 */
-	private List<String> names;
+	/** 所有数据键 */
+	private List<String> keys;
 
 	/** 所有数据源 */
 	private Map<String, DataSource> dataSources;
@@ -36,7 +36,7 @@ public class RouteDataSource extends AbstractDataSource {
 
 	public RouteDataSource(RouteStrategy strategy, HashMap<String, DataSource> dataSources) {
 		this.strategy = strategy;
-		this.names = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
+		this.keys = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
 		this.dataSources = new HashMap<>(dataSources);
 	}
 
@@ -59,20 +59,20 @@ public class RouteDataSource extends AbstractDataSource {
 	/**
 	 * 添加数据源
 	 * 
-	 * @param name
+	 * @param key
 	 * @param dataSource
 	 * @return
 	 */
-	public boolean attachDataSource(String name, DataSource dataSource) {
-		assert name != null;
+	public boolean attachDataSource(String key, DataSource dataSource) {
+		assert key != null;
 		Lock write = lock.writeLock();
 		try {
 			write.lock();
-			if (dataSources.containsKey(name)) {
+			if (dataSources.containsKey(key)) {
 				return false;
 			} else {
-				dataSources.put(name, dataSource);
-				this.names = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
+				dataSources.put(key, dataSource);
+				this.keys = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
 				return true;
 			}
 		} finally {
@@ -83,17 +83,17 @@ public class RouteDataSource extends AbstractDataSource {
 	/**
 	 * 移除数据源
 	 * 
-	 * @param name
+	 * @param key
 	 * @return
 	 */
-	public boolean detachDataSource(String name) {
-		assert name != null;
+	public boolean detachDataSource(String key) {
+		assert key != null;
 		Lock write = lock.writeLock();
 		try {
 			write.lock();
-			if (dataSources.containsKey(name)) {
-				dataSources.remove(name);
-				this.names = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
+			if (dataSources.containsKey(key)) {
+				dataSources.remove(key);
+				this.keys = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
 				return true;
 			} else {
 				return false;
@@ -112,8 +112,8 @@ public class RouteDataSource extends AbstractDataSource {
 		Lock read = lock.readLock();
 		try {
 			read.lock();
-			String name = strategy.chooseDataSource(names);
-			return dataSources.get(name);
+			String key = strategy.chooseDataSource(keys);
+			return dataSources.get(key);
 		} finally {
 			read.unlock();
 		}

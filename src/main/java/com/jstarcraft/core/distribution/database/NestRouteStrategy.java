@@ -27,25 +27,25 @@ public class NestRouteStrategy implements RouteStrategy {
 	}
 
 	/**
-	 * 推入名称
+	 * 推入数据键
 	 * 
-	 * @param name
+	 * @param key
 	 */
-	public void pushName(String name) {
+	public void pushKey(String key) {
 		LinkedList<String> context = getContext();
-		context.addLast(name);
+		context.addLast(key);
 	}
 
 	/**
-	 * 拉出名称
+	 * 拉出数据键
 	 */
-	public void pullName() {
+	public void pullKey() {
 		LinkedList<String> context = getContext();
 		context.removeLast();
 	}
 
 	@Override
-	public String chooseDataSource(List<String> names) {
+	public String chooseDataSource(List<String> keys) {
 		LinkedList<String> context = getContext();
 		return context.peekLast();
 	}

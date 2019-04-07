@@ -12,7 +12,7 @@ import com.jstarcraft.core.orm.OrmAccessor;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RouteDataSourceTestCase {
-	
+
 	@Autowired
 	private MockRouteStrategy strategy;
 
@@ -24,12 +24,12 @@ public class RouteDataSourceTestCase {
 	 */
 	@Test
 	public void testSwitch() {
-		strategy.setName("leftDataSource");
+		strategy.setKey("leftDataSource");
 		MockObject left = MockObject.instanceOf("left");
 		accessor.create(MockObject.class, left);
 		Assert.assertEquals(1L, accessor.count(MockObject.class));
-		
-		strategy.setName("rightDataSource");
+
+		strategy.setKey("rightDataSource");
 		MockObject right = MockObject.instanceOf("right");
 		accessor.create(MockObject.class, right);
 		Assert.assertEquals(1L, accessor.count(MockObject.class));

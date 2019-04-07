@@ -13,9 +13,9 @@ public interface RouteStrategy {
 	/**
 	 * 选择数据源
 	 * 
-	 * @param names
+	 * @param keys
 	 * @return
 	 */
-	String chooseDataSource(List<String> names);
+	String chooseDataSource(List<String> keys);
 
 }

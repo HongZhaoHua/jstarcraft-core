@@ -10,23 +10,23 @@ import java.util.List;
  */
 public class MockRouteStrategy implements RouteStrategy {
 
-	private String name;
+	private String key;
 
-	public MockRouteStrategy(String name) {
-		this.name = name;
+	public MockRouteStrategy(String key) {
+		this.key = key;
 	}
 
-	public String getName() {
-		return name;
+	public String getKey() {
+		return key;
 	}
 
-	void setName(String name) {
-		this.name = name;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	@Override
-	public String chooseDataSource(List<String> names) {
-		return name;
+	public String chooseDataSource(List<String> keys) {
+		return key;
 	}
 
 }
