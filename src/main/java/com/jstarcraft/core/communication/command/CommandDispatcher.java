@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.CsvContentCodec;
 import com.jstarcraft.core.codec.JsonContentCodec;
@@ -26,6 +25,7 @@ import com.jstarcraft.core.communication.CommunicationState;
 import com.jstarcraft.core.communication.annotation.CommunicationCommand;
 import com.jstarcraft.core.communication.annotation.CommunicationModule;
 import com.jstarcraft.core.communication.annotation.CommunicationModule.ModuleSide;
+import com.jstarcraft.core.communication.exception.CommunicationConfigurationException;
 import com.jstarcraft.core.communication.exception.CommunicationDefinitionException;
 import com.jstarcraft.core.communication.exception.CommunicationStateException;
 import com.jstarcraft.core.communication.exception.CommunicationWaitException;
@@ -189,13 +189,13 @@ public class CommandDispatcher<T> {
 	 */
 	public void start(Collection<Object> objects, int threadSize, int contextWait) {
 		if (threadSize <= 0) {
-			throw new CacheConfigurationException();
+			throw new CommunicationConfigurationException();
 		}
 		if (contextWait <= 0) {
-			throw new CacheConfigurationException();
+			throw new CommunicationConfigurationException();
 		}
 		if (!state.compareAndSet(null, CommunicationState.STARTED)) {
-			throw new CacheConfigurationException();
+			throw new CommunicationStateException();
 		}
 		for (Object object : objects) {
 			for (Map<Byte, CommandDefinition> definitions : definitions.values()) {
@@ -224,7 +224,7 @@ public class CommandDispatcher<T> {
 	 */
 	public void stop() {
 		if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
-			throw new CacheConfigurationException();
+			throw new CommunicationStateException();
 		}
 	}
 
