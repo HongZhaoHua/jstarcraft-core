@@ -1,6 +1,6 @@
 package com.jstarcraft.core.cache.proxy;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 代理管理器
@@ -14,7 +14,7 @@ import com.jstarcraft.core.cache.CacheObject;
  * @param <K>
  * @param <T>
  */
-public interface ProxyManager<K extends Comparable, T extends CacheObject<K>> {
+public interface ProxyManager<K extends Comparable, T extends IdentityObject<K>> {
 
 	/**
 	 * 修改指定缓存对象的数据

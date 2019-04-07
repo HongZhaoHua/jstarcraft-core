@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.distribution.lock.DistributionDefinition;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * Hibernate分布式定义
@@ -22,7 +22,7 @@ import com.jstarcraft.core.distribution.lock.DistributionDefinition;
 		@NamedQuery(name = HibernateDistributionDefinition.LOCK_HQL, query = "update HibernateDistributionDefinition clazz set clazz.most=:most where clazz.name=:name and clazz.most<=:now"),
 
 		@NamedQuery(name = HibernateDistributionDefinition.UNLOCK_HQL, query = "update HibernateDistributionDefinition clazz set clazz.most=:now where clazz.name=:name and clazz.most=:most and clazz.most>:now"), })
-public class HibernateDistributionDefinition implements CacheObject<String> {
+public class HibernateDistributionDefinition implements IdentityObject<String> {
 
 	public static final String LOCK_HQL = "HibernateDistributionDefinition.lock";
 

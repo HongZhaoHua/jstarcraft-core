@@ -25,6 +25,7 @@ import com.jstarcraft.core.cache.transience.TransienceElement;
 import com.jstarcraft.core.cache.transience.TransienceManager;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.WeakElementManager;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 区域缓存管理器
@@ -35,7 +36,7 @@ import com.jstarcraft.core.cache.transience.WeakElementManager;
  * @param <T>
  */
 @SuppressWarnings("unchecked")
-public class RegionCacheManager<K extends Comparable<K> & Serializable, T extends CacheObject<K>> implements RegionManager<K, T> {
+public class RegionCacheManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> implements RegionManager<K, T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegionCacheManager.class);
 

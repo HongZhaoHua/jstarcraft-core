@@ -11,12 +11,12 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyOperationException;
 import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
 import com.sleepycat.collections.StoredSortedMap;
 import com.sleepycat.je.CursorConfig;
@@ -37,7 +37,7 @@ import com.sleepycat.persist.SecondaryIndex;
  * @param <K>
  * @param <T>
  */
-public class BerkeleyManager<K extends Comparable, T extends CacheObject<K>> {
+public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> {
 
 	private static final Logger logger = LoggerFactory.getLogger(BerkeleyManager.class);
 

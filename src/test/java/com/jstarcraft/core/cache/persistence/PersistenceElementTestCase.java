@@ -4,16 +4,16 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.MockEntityObject;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
+import com.jstarcraft.core.utility.IdentityObject;
 
 public class PersistenceElementTestCase {
 
 	@Test
 	public void testIgnore() {
-		Class<? extends CacheObject> cacheClass = MockEntityObject.class;
+		Class<? extends IdentityObject> cacheClass = MockEntityObject.class;
 		Integer cacheId = 0;
 		MockEntityObject cacheObject = MockEntityObject.instanceOf(cacheId, "birdy", "hong", 100, 100);
 		PersistenceElement element = new PersistenceElement(PersistenceOperation.CREATE, cacheId, cacheObject);
@@ -30,7 +30,7 @@ public class PersistenceElementTestCase {
 
 	@Test
 	public void testCreate() {
-		Class<? extends CacheObject> cacheClass = MockEntityObject.class;
+		Class<? extends IdentityObject> cacheClass = MockEntityObject.class;
 		Integer cacheId = 0;
 		MockEntityObject cacheObject = MockEntityObject.instanceOf(cacheId, "birdy", "hong", 100, 100);
 		{
@@ -64,7 +64,7 @@ public class PersistenceElementTestCase {
 
 	@Test
 	public void testUpdate() {
-		Class<? extends CacheObject> cacheClass = MockEntityObject.class;
+		Class<? extends IdentityObject> cacheClass = MockEntityObject.class;
 		Integer cacheId = 0;
 		MockEntityObject cacheObject = MockEntityObject.instanceOf(cacheId, "birdy", "hong", 100, 100);
 		{
@@ -98,7 +98,7 @@ public class PersistenceElementTestCase {
 
 	@Test
 	public void testDelete() {
-		Class<? extends CacheObject> cacheClass = MockEntityObject.class;
+		Class<? extends IdentityObject> cacheClass = MockEntityObject.class;
 		Integer cacheId = 0;
 		MockEntityObject cacheObject = MockEntityObject.instanceOf(cacheId, "birdy", "hong", 100, 100);
 		{

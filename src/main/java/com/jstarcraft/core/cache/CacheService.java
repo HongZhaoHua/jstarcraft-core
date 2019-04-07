@@ -24,6 +24,7 @@ import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.UserDefinedTransienceStrategy;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 缓存服务
@@ -50,21 +51,21 @@ public class CacheService implements CacheMonitor {
 	private final Map<String, PersistenceStrategy> persistenceStrategies = new HashMap<>();
 
 	/** 实体缓存管理器 */
-	private final Map<Class<? extends CacheObject>, EntityCacheManager> entityManagers = new HashMap<>();
+	private final Map<Class<? extends IdentityObject>, EntityCacheManager> entityManagers = new HashMap<>();
 	/** 区域缓存管理器 */
-	private final Map<Class<? extends CacheObject>, RegionCacheManager> regionManagers = new HashMap<>();
+	private final Map<Class<? extends IdentityObject>, RegionCacheManager> regionManagers = new HashMap<>();
 
 	/** 状态 */
 	private AtomicReference<CacheState> state = new AtomicReference<>(null);
 
-	public CacheService(Set<Class<CacheObject>> cacheClasses, OrmAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
+	public CacheService(Set<Class<IdentityObject>> cacheClasses, OrmAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
 		if (cacheClasses == null || accessor == null) {
 			throw new IllegalArgumentException();
 		}
 		this.accessor = accessor;
 		this.transienceConfigurations = new HashMap<>(transienceConfigurations);
 		this.persistenceConfigurations = new HashMap<>(persistenceConfigurations);
-		for (Class<? extends CacheObject> cacheClass : cacheClasses) {
+		for (Class<? extends IdentityObject> cacheClass : cacheClasses) {
 			if (!CacheInformation.checkCacheClass(cacheClass)) {
 				throw new CacheConfigurationException("非法缓存类型[" + cacheClass.getName() + "]配置");
 			}
@@ -108,7 +109,7 @@ public class CacheService implements CacheMonitor {
 	 * @param cacheClass
 	 * @return
 	 */
-	public EntityManager getEntityManager(Class<? extends CacheObject> cacheClass) {
+	public EntityManager getEntityManager(Class<? extends IdentityObject> cacheClass) {
 		CacheInformation information = cacheInformations.get(cacheClass);
 		if (information == null) {
 			throw new CacheException("[" + cacheClass.getName() + "]不是缓存类型");
@@ -137,7 +138,7 @@ public class CacheService implements CacheMonitor {
 	 * @param cacheClass
 	 * @return
 	 */
-	public RegionManager getRegionManager(Class<? extends CacheObject> cacheClass) {
+	public RegionManager getRegionManager(Class<? extends IdentityObject> cacheClass) {
 		CacheInformation information = cacheInformations.get(cacheClass);
 		if (information == null) {
 			throw new CacheException("[" + cacheClass.getName() + "]不是缓存类型");
@@ -224,13 +225,13 @@ public class CacheService implements CacheMonitor {
 	@Override
 	public Map<String, Integer> getInstanceCounts() {
 		Map<String, Integer> result = new HashMap<String, Integer>();
-		for (Entry<Class<? extends CacheObject>, EntityCacheManager> keyValue : entityManagers.entrySet()) {
-			Class<? extends CacheObject> key = keyValue.getKey();
+		for (Entry<Class<? extends IdentityObject>, EntityCacheManager> keyValue : entityManagers.entrySet()) {
+			Class<? extends IdentityObject> key = keyValue.getKey();
 			EntityCacheManager value = keyValue.getValue();
 			result.put(key.getName(), value.getInstanceCount());
 		}
-		for (Entry<Class<? extends CacheObject>, RegionCacheManager> keyValue : regionManagers.entrySet()) {
-			Class<? extends CacheObject> key = keyValue.getKey();
+		for (Entry<Class<? extends IdentityObject>, RegionCacheManager> keyValue : regionManagers.entrySet()) {
+			Class<? extends IdentityObject> key = keyValue.getKey();
 			RegionCacheManager value = keyValue.getValue();
 			result.put(key.getName(), value.getInstanceCount());
 		}
@@ -240,13 +241,13 @@ public class CacheService implements CacheMonitor {
 	@Override
 	public Map<String, Map<String, Integer>> getIndexesCounts() {
 		Map<String, Map<String, Integer>> result = new HashMap<String, Map<String, Integer>>();
-		for (Entry<Class<? extends CacheObject>, EntityCacheManager> keyValue : entityManagers.entrySet()) {
-			Class<? extends CacheObject> key = keyValue.getKey();
+		for (Entry<Class<? extends IdentityObject>, EntityCacheManager> keyValue : entityManagers.entrySet()) {
+			Class<? extends IdentityObject> key = keyValue.getKey();
 			EntityCacheManager value = keyValue.getValue();
 			result.put(key.getName(), value.getIndexesCount());
 		}
-		for (Entry<Class<? extends CacheObject>, RegionCacheManager> keyValue : regionManagers.entrySet()) {
-			Class<? extends CacheObject> key = keyValue.getKey();
+		for (Entry<Class<? extends IdentityObject>, RegionCacheManager> keyValue : regionManagers.entrySet()) {
+			Class<? extends IdentityObject> key = keyValue.getKey();
 			RegionCacheManager value = keyValue.getValue();
 			result.put(key.getName(), value.getIndexesCount());
 		}

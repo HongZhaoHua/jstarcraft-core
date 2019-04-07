@@ -3,10 +3,10 @@ package com.jstarcraft.core.distribution.identity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 @Entity
-public class MockObject implements CacheObject<Long> {
+public class MockObject implements IdentityObject<Long> {
 
 	@Id
 	private Long id;

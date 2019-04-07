@@ -1,7 +1,7 @@
 package com.jstarcraft.core.cache.persistence;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 持久监听器
@@ -19,6 +19,6 @@ public interface PersistenceMonitor {
 	 * @param object
 	 * @param exception
 	 */
-	void notifyOperate(PersistenceOperation operation, Object id, CacheObject<?> object, Exception exception);
+	void notifyOperate(PersistenceOperation operation, Object id, IdentityObject<?> object, Exception exception);
 
 }

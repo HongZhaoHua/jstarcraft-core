@@ -1,5 +1,7 @@
 package com.jstarcraft.core.cache;
 
+import com.jstarcraft.core.utility.IdentityObject;
+
 /**
  * 缓存匹配器
  * 
@@ -7,7 +9,7 @@ package com.jstarcraft.core.cache;
  *
  * @param <K>
  */
-public interface CacheMatcher<K extends Comparable, T extends CacheObject<K>> {
+public interface CacheMatcher<K extends Comparable, T extends IdentityObject<K>> {
 
 	/**
 	 * 指定对象是否匹配

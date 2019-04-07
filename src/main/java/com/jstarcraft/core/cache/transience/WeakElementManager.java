@@ -5,15 +5,15 @@ import java.util.WeakHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.proxy.ProxyTransformer;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 弱引用元素管理器
  * 
  * @author Birdy
  */
-public class WeakElementManager<K extends Comparable, T extends CacheObject<K>> {
+public class WeakElementManager<K extends Comparable, T extends IdentityObject<K>> {
 
 	/** 转换器 */
 	private final ProxyTransformer transformer;

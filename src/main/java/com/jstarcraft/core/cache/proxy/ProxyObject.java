@@ -1,6 +1,6 @@
 package com.jstarcraft.core.cache.proxy;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 代理对象
@@ -18,6 +18,6 @@ public interface ProxyObject {
 	 * 
 	 * @return
 	 */
-	CacheObject getInstance();
+	IdentityObject getInstance();
 
 }

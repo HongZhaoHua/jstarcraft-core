@@ -3,8 +3,8 @@ package com.jstarcraft.core.orm.berkeley.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 import com.sleepycat.persist.model.Relationship;
@@ -18,7 +18,7 @@ import com.sleepycat.persist.model.SecondaryKey;
  */
 @BerkeleyConfiguration(store = "berkeley")
 @Entity
-public class Person implements CacheObject<Long> {
+public class Person implements IdentityObject<Long> {
 
 	@PrimaryKey
 	private long id;

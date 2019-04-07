@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
@@ -29,6 +28,7 @@ import com.jstarcraft.core.orm.berkeley.exception.BerkeleyStateException;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyVersionException;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
 import com.jstarcraft.core.utility.DelayElement;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.SensitivityQueue;
 import com.jstarcraft.core.utility.StringUtility;
 import com.sleepycat.je.Environment;
@@ -250,21 +250,21 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> T get(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> objectType, K id) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return (T) manager.get(transactor, id);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K create(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> objectType, T object) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return (K) manager.create(transactor, object);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, K id) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		manager.delete(transactor, id);
@@ -272,7 +272,7 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, T object) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		K id = (K) manager.getMetadata().getPrimaryValue(object);
@@ -280,7 +280,7 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void update(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> objectType, T object) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		BerkeleyMetadata metadata = manager.getMetadata();
@@ -293,21 +293,21 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.maximumIdentity(transactor, from, to);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.minimumIdentity(transactor, from, to);
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -317,7 +317,7 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -327,63 +327,63 @@ public class BerkeleyAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.query(transactor, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.queryIntersection(transactor, condition, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.queryUnion(transactor, condition, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long count(Class<T> objectType) {
+	public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> objectType) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.count(transactor);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.countIntersection(transactor, condition);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		return manager.countUnion(transactor, condition);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		manager.iterate(iterator, transactor, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		manager.iterateIntersection(iterator, transactor, condition, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		BerkeleyManager<K, T> manager = managers.get(objectType);
 		BerkeleyTransactor transactor = transactors.get();
 		manager.iterateUnion(iterator, transactor, condition, pagination);

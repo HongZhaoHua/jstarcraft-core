@@ -13,9 +13,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -123,7 +123,7 @@ public class MyBatisMetadata implements OrmMetadata {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends CacheObject> Class<T> getOrmClass() {
+	public <T extends IdentityObject> Class<T> getOrmClass() {
 		return ormClass;
 	}
 

@@ -22,6 +22,7 @@ import com.jstarcraft.core.cache.proxy.JavassistEntityProxy;
 import com.jstarcraft.core.cache.proxy.ProxyTransformer;
 import com.jstarcraft.core.cache.transience.TransienceManager;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 实体缓存管理器
@@ -31,7 +32,7 @@ import com.jstarcraft.core.cache.transience.TransienceStrategy;
  * @param <K>
  * @param <T>
  */
-public class EntityCacheManager<K extends Comparable<K> & Serializable, T extends CacheObject<K>> implements EntityManager<K, T> {
+public class EntityCacheManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> implements EntityManager<K, T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityCacheManager.class);
 

@@ -16,9 +16,9 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**
@@ -118,7 +118,7 @@ public class HibernateMetadata implements OrmMetadata {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends CacheObject> Class<T> getOrmClass() {
+	public <T extends IdentityObject> Class<T> getOrmClass() {
 		return ormClass;
 	}
 

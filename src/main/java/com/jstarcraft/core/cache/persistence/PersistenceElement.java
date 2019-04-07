@@ -4,9 +4,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 持久元素
@@ -26,11 +26,11 @@ public class PersistenceElement {
 	/** 缓存主键 */
 	private final  Comparable  cacheId;
 	/** 缓存对象({@link PersistenceOperation.DELETE}时为null) */
-	private CacheObject<?> cacheObject;
+	private IdentityObject<?> cacheObject;
 	/** 是否忽略 */
 	private boolean ignore;
 
-	PersistenceElement(PersistenceOperation operation, Comparable cacheId, CacheObject<?> cacheObject) {
+	PersistenceElement(PersistenceOperation operation, Comparable cacheId, IdentityObject<?> cacheObject) {
 		this.operation = operation;
 		this.cacheId = cacheId;
 		this.cacheObject = cacheObject;
@@ -155,7 +155,7 @@ public class PersistenceElement {
 	 * 
 	 * @return
 	 */
-	public CacheObject<?> getCacheObject() {
+	public IdentityObject<?> getCacheObject() {
 		return cacheObject;
 	}
 

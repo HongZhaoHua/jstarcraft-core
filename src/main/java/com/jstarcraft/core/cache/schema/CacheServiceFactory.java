@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.annotation.AfterCacheStarted;
@@ -21,6 +20,7 @@ import com.jstarcraft.core.cache.annotation.BeforeCacheStoped;
 import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**
@@ -40,7 +40,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
 	private ApplicationContext applicationContext;
 
 	private OrmAccessor accessor;
-	private Set<Class<CacheObject>> cacheClasses;
+	private Set<Class<IdentityObject>> cacheClasses;
 	private Map<String, TransienceConfiguration> transienceConfigurations;
 	private Map<String, PersistenceConfiguration> persistenceConfigurations;
 	private CacheService cacheService;
@@ -120,7 +120,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
 		this.accessor = accessor;
 	}
 
-	public void setCacheClasses(Set<Class<CacheObject>> cacheClasses) {
+	public void setCacheClasses(Set<Class<IdentityObject>> cacheClasses) {
 		this.cacheClasses = cacheClasses;
 	}
 

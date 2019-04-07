@@ -22,6 +22,7 @@ import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.JsonUtility;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -44,7 +45,7 @@ public class CacheInformation {
 	}
 
 	/** 缓存类型 */
-	private Class<? extends CacheObject> cacheClass;
+	private Class<? extends IdentityObject> cacheClass;
 	/** 缓存配置 */
 	private CacheConfiguration cacheConfiguration;
 	/** 索引信息 */
@@ -88,7 +89,7 @@ public class CacheInformation {
 	 * @param entity
 	 * @return
 	 */
-	public Comparable getIndexValue(CacheObject entity, String name) {
+	public Comparable getIndexValue(IdentityObject entity, String name) {
 		if (entity instanceof ProxyObject) {
 			entity = ((ProxyObject) entity).getInstance();
 		}
@@ -109,7 +110,7 @@ public class CacheInformation {
 	 * @param entity
 	 * @return
 	 */
-	public Map<String, Comparable> getIndexValues(CacheObject entity) {
+	public Map<String, Comparable> getIndexValues(IdentityObject entity) {
 		if (entity instanceof ProxyObject) {
 			entity = ((ProxyObject) entity).getInstance();
 		}
@@ -148,7 +149,7 @@ public class CacheInformation {
 	 * 
 	 * @return
 	 */
-	public Class<? extends CacheObject> getCacheClass() {
+	public Class<? extends IdentityObject> getCacheClass() {
 		return cacheClass;
 	}
 
@@ -191,7 +192,7 @@ public class CacheInformation {
 		if (Modifier.isInterface(clazz.getModifiers())) {
 			return false;
 		}
-		if (!CacheObject.class.isAssignableFrom(clazz)) {
+		if (!IdentityObject.class.isAssignableFrom(clazz)) {
 			return false;
 		}
 		if (!clazz.isAnnotationPresent(CacheConfiguration.class)) {
@@ -206,7 +207,7 @@ public class CacheInformation {
 	 * @param memoryStrategies
 	 * @return
 	 */
-	public static CacheInformation instanceOf(Class<? extends CacheObject> clazz) {
+	public static CacheInformation instanceOf(Class<? extends IdentityObject> clazz) {
 		CacheInformation instance = new CacheInformation();
 		instance.cacheClass = clazz;
 		instance.cacheConfiguration = clazz.getAnnotation(CacheConfiguration.class);

@@ -16,13 +16,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -76,14 +76,14 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> T get(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> objectType, K id) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		return (T) mapper.selectById((Serializable) id);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K create(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.insert(object);
@@ -91,21 +91,21 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, K id) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.deleteById((Serializable) id);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.deleteById((Serializable) object.getId());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void update(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> objectType, T object) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		mapper.updateById(object);
@@ -113,7 +113,7 @@ public class MyBatisAccessor implements OrmAccessor {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -124,7 +124,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -135,7 +135,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -176,7 +176,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -211,7 +211,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -224,7 +224,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -242,7 +242,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -260,7 +260,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long count(Class<T> objectType) {
+	public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> objectType) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -268,7 +268,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -281,7 +281,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -294,7 +294,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -305,7 +305,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();
@@ -321,7 +321,7 @@ public class MyBatisAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MyBatisMetadata metadata = myBatisMetadatas.get(objectType);
 		BaseMapper mapper = template.getMapper(metadata.getMapperClass());
 		QueryWrapper<?> query = new QueryWrapper<>();

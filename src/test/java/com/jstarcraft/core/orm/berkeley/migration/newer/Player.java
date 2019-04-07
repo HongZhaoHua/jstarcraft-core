@@ -1,7 +1,7 @@
 package com.jstarcraft.core.orm.berkeley.migration.newer;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 import com.sleepycat.persist.model.Relationship;
@@ -9,7 +9,7 @@ import com.sleepycat.persist.model.SecondaryKey;
 
 @Entity
 @BerkeleyConfiguration(store = "migration")
-public class Player implements CacheObject<Long> {
+public class Player implements IdentityObject<Long> {
 
 	@PrimaryKey(sequence = "Player_ID")
 	private long id;

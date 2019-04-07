@@ -30,7 +30,6 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
@@ -38,6 +37,7 @@ import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -128,7 +128,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> T get(Class<T> clazz, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
 		T value = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<T>() {
 
 			@Override
@@ -141,7 +141,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K create(Class<T> clazz, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
 		K value = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<K>() {
 
 			@Override
@@ -154,7 +154,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> clazz, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
 		getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
 
 			@Override
@@ -170,7 +170,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> clazz, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
 		getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
 
 			@Override
@@ -183,7 +183,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void update(Class<T> clazz, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
 		getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
 
 			@Override
@@ -196,7 +196,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<K>() {
 
 			@Override
@@ -212,7 +212,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<K>() {
 
 			@Override
@@ -228,7 +228,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> clazz, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -283,7 +283,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> clazz, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -332,7 +332,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 		});
 	}
 
-	private <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
+	private <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<T>>() {
 
 			@Override
@@ -378,21 +378,21 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> clazz, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, OrmPagination pagination) {
 		return query(clazz, null, null, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryIntersection(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
 		return query(clazz, Operation.AND, condition, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryUnion(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
 		return query(clazz, Operation.OR, condition, pagination);
 	}
 
-	private <K extends Comparable, T extends CacheObject<K>> long count(Class<T> clazz, Operation operation, Map<String, Object> condition) {
+	private <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz, Operation operation, Map<String, Object> condition) {
 		return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Long>() {
 
 			@Override
@@ -435,21 +435,21 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long count(Class<T> clazz) {
+	public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
 		return count(clazz, null, null);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countIntersection(Class<T> clazz, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> clazz, Map<String, Object> condition) {
 		return count(clazz, Operation.AND, condition);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countUnion(Class<T> clazz, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> clazz, Map<String, Object> condition) {
 		return count(clazz, Operation.OR, condition);
 	}
 
-	private <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, final Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
+	private <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, final Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
 		getHibernateTemplate().executeWithNativeSession(new HibernateCallback<T>() {
 
 			@Override
@@ -510,17 +510,17 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, final Class<T> clazz, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, final Class<T> clazz, OrmPagination pagination) {
 		iterate(iterator, clazz, null, null, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateIntersection(OrmIterator<T> iterator, final Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, final Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
 		iterate(iterator, clazz, Operation.AND, condition, pagination);
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateUnion(OrmIterator<T> iterator, final Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, final Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
 		iterate(iterator, clazz, Operation.OR, condition, pagination);
 	}
 

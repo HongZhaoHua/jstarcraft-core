@@ -16,13 +16,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.util.CloseableIterator;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.UpdateResult;
@@ -55,33 +55,33 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> T get(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> objectType, K id) {
 		return mongoTemplate.findById(id, objectType, objectType.getName());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K create(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> objectType, T object) {
 		mongoTemplate.insert(object, objectType.getName());
 		return object.getId();
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, K id) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, K id) {
 		mongoTemplate.remove(Query.query(Criteria.where(MongoMetadata.mongoId).is(id)), objectType.getName());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void delete(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, T object) {
 		mongoTemplate.remove(object, objectType.getName());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void update(Class<T> objectType, T object) {
+	public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> objectType, T object) {
 		mongoTemplate.save(object, objectType.getName());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
 		Query query = Query.query(Criteria.where(MongoMetadata.mongoId).gte(from).lte(to));
 		query.fields().include(MongoMetadata.mongoId);
 		query.with(Sort.by(Direction.DESC, MongoMetadata.mongoId));
@@ -90,7 +90,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
+	public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
 		Query query = Query.query(Criteria.where(MongoMetadata.mongoId).gte(from).lte(to));
 		query.fields().include(MongoMetadata.mongoId);
 		query.with(Sort.by(Direction.ASC, MongoMetadata.mongoId));
@@ -99,7 +99,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -144,7 +144,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, I, T extends CacheObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+	public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
 		if (!condition.checkValues(values)) {
 			throw new OrmQueryException();
 		}
@@ -181,7 +181,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
 		Query query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
 		if (pagination != null) {
 			query.skip(pagination.getFirst());
@@ -191,7 +191,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -215,7 +215,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -239,13 +239,13 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long count(Class<T> objectType) {
+	public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> objectType) {
 		Query query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
 		return mongoTemplate.count(query, objectType.getName());
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -265,7 +265,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
+	public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -285,7 +285,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
 		Query query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
 		if (pagination != null) {
 			query.skip(pagination.getFirst());
@@ -305,7 +305,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -339,7 +339,7 @@ public class MongoAccessor implements OrmAccessor {
 	}
 
 	@Override
-	public <K extends Comparable, T extends CacheObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+	public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
 		MongoMetadata metadata = metadatas.get(objectType);
 		final Iterator<Entry<String, Object>> conditionIterator = condition.entrySet().iterator();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).exists(true);
@@ -372,7 +372,7 @@ public class MongoAccessor implements OrmAccessor {
 		}
 	}
 
-	public <K extends Comparable, T extends CacheObject<K>> long update(Class<T> objectType, Query query, Update update) {
+	public <K extends Comparable, T extends IdentityObject<K>> long update(Class<T> objectType, Query query, Update update) {
 		UpdateResult count = mongoTemplate.updateMulti(query, update, objectType.getName());
 		return count.getModifiedCount();
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import com.jstarcraft.core.cache.proxy.ProxyManager;
+import com.jstarcraft.core.utility.IdentityObject;
 
 
 /**
@@ -21,7 +22,7 @@ import com.jstarcraft.core.cache.proxy.ProxyManager;
  * @param <K>
  * @param <T>
  */
-public interface RegionManager<K extends Comparable<K> & Serializable, T extends CacheObject<K>> extends CacheManager<K, T>, ProxyManager<K, T> {
+public interface RegionManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> extends CacheManager<K, T>, ProxyManager<K, T> {
 
 	/**
 	 * 获取指定区域的缓存集合

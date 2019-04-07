@@ -28,13 +28,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy.TransienceType;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.JsonUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.TypeUtility;
@@ -133,7 +133,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 
 		// 设置实体集合
 		NodeList nodes = XmlUtility.getChildElementByTagName(element, ElementDefinition.SCAN.getName()).getChildNodes();
-		Set<Class<? extends CacheObject>> classes = new HashSet<Class<? extends CacheObject>>();
+		Set<Class<? extends IdentityObject>> classes = new HashSet<Class<? extends IdentityObject>>();
 
 		for (int index = 0; index < nodes.getLength(); index++) {
 			Node node = nodes.item(index);
@@ -146,9 +146,9 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 				String packageName = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
 				String[] names = getResources(packageName);
 				for (String resource : names) {
-					Class<? extends CacheObject> clazz = null;
+					Class<? extends IdentityObject> clazz = null;
 					try {
-						clazz = (Class<? extends CacheObject>) Class.forName(resource);
+						clazz = (Class<? extends IdentityObject>) Class.forName(resource);
 					} catch (ClassNotFoundException exception) {
 						String message = StringUtility.format("无法获取类型[{}]", resource);
 						LOGGER.error(message);
@@ -161,9 +161,9 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
 			if (name.equals(ElementDefinition.CLASS.getName())) {
 				// 自动类加载处理
 				String className = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
-				Class<? extends CacheObject> clazz = null;
+				Class<? extends IdentityObject> clazz = null;
 				try {
-					clazz = (Class<? extends CacheObject>) Class.forName(className);
+					clazz = (Class<? extends IdentityObject>) Class.forName(className);
 				} catch (ClassNotFoundException exception) {
 					String message = StringUtility.format("无法获取类型[{}]", className);
 					LOGGER.error(message);

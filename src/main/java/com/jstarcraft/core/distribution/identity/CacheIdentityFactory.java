@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 基于分区标识管理器
@@ -32,7 +32,7 @@ public class CacheIdentityFactory implements IdentityFactory {
 	private final OrmAccessor accessor;
 
 	/** 类型 */
-	private final Class<? extends CacheObject<Long>> clazz;
+	private final Class<? extends IdentityObject<Long>> clazz;
 
 	/** 标识定义 */
 	private final IdentityDefinition definition;
@@ -43,7 +43,7 @@ public class CacheIdentityFactory implements IdentityFactory {
 	/** 序列 */
 	private AtomicLong sequence;
 
-	public CacheIdentityFactory(OrmAccessor accessor, Class<? extends CacheObject<Long>> clazz, int partition, int sequenceBit) {
+	public CacheIdentityFactory(OrmAccessor accessor, Class<? extends IdentityObject<Long>> clazz, int partition, int sequenceBit) {
 		this.accessor = accessor;
 		this.clazz = clazz;
 		int partitionBit = IdentityDefinition.DATA_BIT - sequenceBit;
@@ -55,7 +55,7 @@ public class CacheIdentityFactory implements IdentityFactory {
 		this.sequence = new AtomicLong(current == null ? minimum : current);
 	}
 
-	public Class<? extends CacheObject<Long>> getClazz() {
+	public Class<? extends IdentityObject<Long>> getClazz() {
 		return clazz;
 	}
 

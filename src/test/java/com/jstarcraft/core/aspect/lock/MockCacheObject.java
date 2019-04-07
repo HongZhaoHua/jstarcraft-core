@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 模仿缓存对象
@@ -14,7 +14,7 @@ import com.jstarcraft.core.cache.CacheObject;
  *
  * @param <T>
  */
-public class MockCacheObject<T extends Comparable<T> & Serializable> implements CacheObject<T> {
+public class MockCacheObject<T extends Comparable<T> & Serializable> implements IdentityObject<T> {
 
 	private T id;
 

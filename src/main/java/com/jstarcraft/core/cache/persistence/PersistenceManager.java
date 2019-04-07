@@ -3,14 +3,14 @@ package com.jstarcraft.core.cache.persistence;
 import java.util.List;
 import java.util.Map;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 持久管理器
  * 
  * @author Birdy
  */
-public interface PersistenceManager<K extends Comparable, T extends CacheObject<K>> {
+public interface PersistenceManager<K extends Comparable, T extends IdentityObject<K>> {
 
 	/**
 	 * 获取实例
@@ -44,7 +44,7 @@ public interface PersistenceManager<K extends Comparable, T extends CacheObject<
 	 * @param cacheObject
 	 * @return
 	 */
-	PersistenceElement createInstance(CacheObject<?> cacheObject);
+	PersistenceElement createInstance(IdentityObject<?> cacheObject);
 
 	/**
 	 * 删除实例
@@ -60,7 +60,7 @@ public interface PersistenceManager<K extends Comparable, T extends CacheObject<
 	 * @param cacheObject
 	 * @return
 	 */
-	PersistenceElement updateInstance(CacheObject<?> cacheObject);
+	PersistenceElement updateInstance(IdentityObject<?> cacheObject);
 
 	/**
 	 * 设置监控器

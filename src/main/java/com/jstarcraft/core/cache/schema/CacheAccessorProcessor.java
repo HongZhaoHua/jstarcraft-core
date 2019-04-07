@@ -10,12 +10,12 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.EntityManager;
 import com.jstarcraft.core.cache.RegionManager;
 import com.jstarcraft.core.cache.annotation.CacheAccessor;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -33,12 +33,12 @@ public class CacheAccessorProcessor extends InstantiationAwareBeanPostProcessorA
 	private CacheService cacheService;
 
 	private void assembleEntityManager(Object instance, String name, Field field) {
-		Class<? extends CacheObject> clazz = null;
+		Class<? extends IdentityObject> clazz = null;
 		EntityManager manager = null;
 		try {
 			Type type = field.getGenericType();
 			Type[] types = ((ParameterizedType) type).getActualTypeArguments();
-			clazz = (Class<? extends CacheObject>) types[1];
+			clazz = (Class<? extends IdentityObject>) types[1];
 			manager = cacheService.getEntityManager(clazz);
 		} catch (Exception exception) {
 			String message = StringUtility.format("无法装配Bean[{}]的属性[{}]", name, field.getName());
@@ -54,12 +54,12 @@ public class CacheAccessorProcessor extends InstantiationAwareBeanPostProcessorA
 	}
 
 	private void assembleRegionManager(Object instance, String name, Field field) {
-		Class<? extends CacheObject> clazz = null;
+		Class<? extends IdentityObject> clazz = null;
 		RegionManager manager = null;
 		try {
 			Type type = field.getGenericType();
 			Type[] types = ((ParameterizedType) type).getActualTypeArguments();
-			clazz = (Class<? extends CacheObject>) types[1];
+			clazz = (Class<? extends IdentityObject>) types[1];
 			manager = cacheService.getRegionManager(clazz);
 		} catch (Exception exception) {
 			String message = StringUtility.format("无法装配Bean[{}]的属性[{}]", name, field.getName());

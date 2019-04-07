@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
 import com.jstarcraft.core.orm.berkeley.migration.persistent.Enumerate;
 import com.jstarcraft.core.orm.berkeley.migration.persistent.Persist;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 
 @Entity
 @BerkeleyConfiguration(store = "migration")
-public class Information implements CacheObject<Long> {
+public class Information implements IdentityObject<Long> {
 
 	@PrimaryKey(sequence = "Entity_ID")
 	private long id;

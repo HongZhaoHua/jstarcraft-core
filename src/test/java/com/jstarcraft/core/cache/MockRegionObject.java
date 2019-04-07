@@ -9,10 +9,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
+import com.jstarcraft.core.utility.IdentityObject;
 
 @Entity
 @CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
-public class MockRegionObject implements CacheObject<Integer> {
+public class MockRegionObject implements IdentityObject<Integer> {
 
 	@Id
 	private Integer id;

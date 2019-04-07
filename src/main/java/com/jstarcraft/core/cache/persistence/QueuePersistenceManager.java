@@ -17,13 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -32,7 +32,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class QueuePersistenceManager<K extends Comparable, T extends CacheObject<K>> extends Thread implements PersistenceManager<K, T> {
+public class QueuePersistenceManager<K extends Comparable, T extends IdentityObject<K>> extends Thread implements PersistenceManager<K, T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuePersistenceManager.class);
 
@@ -163,7 +163,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends CacheObject
 	}
 
 	@Override
-	public PersistenceElement createInstance(CacheObject<?> cacheObject) {
+	public PersistenceElement createInstance(IdentityObject<?> cacheObject) {
 		if (cacheObject instanceof ProxyObject) {
 			cacheObject = ((ProxyObject) cacheObject).getInstance();
 		}
@@ -180,7 +180,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends CacheObject
 	}
 
 	@Override
-	public PersistenceElement updateInstance(CacheObject<?> cacheObject) {
+	public PersistenceElement updateInstance(IdentityObject<?> cacheObject) {
 		if (cacheObject instanceof ProxyObject) {
 			cacheObject = ((ProxyObject) cacheObject).getInstance();
 		}

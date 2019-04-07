@@ -2,7 +2,7 @@ package com.jstarcraft.core.cache.transience;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 内存元素
@@ -15,9 +15,9 @@ public class TransienceElement {
 	/** 缓存主键 */
 	private final Comparable cacheId;
 	/** 缓存对象 */
-	private final CacheObject<?> cacheObject;
+	private final IdentityObject<?> cacheObject;
 
-	public TransienceElement(CacheObject<?> cacheObject) {
+	public TransienceElement(IdentityObject<?> cacheObject) {
 		this.cacheId = cacheObject.getId();
 		this.cacheObject = cacheObject;
 	}
@@ -26,7 +26,7 @@ public class TransienceElement {
 		return cacheId;
 	}
 
-	public CacheObject<?> getCacheObject() {
+	public IdentityObject<?> getCacheObject() {
 		return cacheObject;
 	}
 

@@ -1,7 +1,7 @@
 package com.jstarcraft.core.cache.proxy;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.exception.CacheProxyException;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 代理转换器
@@ -17,6 +17,6 @@ public interface ProxyTransformer {
 	 * @return
 	 * @throws CacheProxyException
 	 */
-	<T extends CacheObject<?>> T transform(T instance) throws CacheProxyException;
+	<T extends IdentityObject<?>> T transform(T instance) throws CacheProxyException;
 
 }

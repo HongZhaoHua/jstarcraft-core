@@ -1,8 +1,8 @@
 package com.jstarcraft.core.cache.proxy;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
-public class MockProxyManager implements ProxyManager<Integer, CacheObject<Integer>> {
+public class MockProxyManager implements ProxyManager<Integer, IdentityObject<Integer>> {
 
 	private int modifyDatas;
 
@@ -11,7 +11,7 @@ public class MockProxyManager implements ProxyManager<Integer, CacheObject<Integ
 	}
 
 	@Override
-	public void modifyInstance(CacheObject<Integer> object) {
+	public void modifyInstance(IdentityObject<Integer> object) {
 		this.modifyDatas++;
 	}
 

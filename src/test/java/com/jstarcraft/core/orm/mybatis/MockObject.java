@@ -12,11 +12,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 @Entity
 @TableName("MockObject")
-public class MockObject implements CacheObject<Integer> {
+public class MockObject implements IdentityObject<Integer> {
 
 	@Id
 	@TableId

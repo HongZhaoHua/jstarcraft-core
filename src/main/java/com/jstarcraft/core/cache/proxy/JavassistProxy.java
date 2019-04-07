@@ -9,11 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheIndexException;
 import com.jstarcraft.core.cache.exception.CacheProxyException;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -77,7 +77,7 @@ abstract class JavassistProxy implements ProxyTransformer {
 
 	protected CacheInformation cacheInformation;
 
-	protected ConcurrentHashMap<Class<?>, Constructor<? extends CacheObject<?>>> constructors = new ConcurrentHashMap<>();
+	protected ConcurrentHashMap<Class<?>, Constructor<? extends IdentityObject<?>>> constructors = new ConcurrentHashMap<>();
 
 	JavassistProxy(ProxyManager proxyManager, CacheInformation cacheInformation) {
 		this.proxyManager = proxyManager;
@@ -85,8 +85,8 @@ abstract class JavassistProxy implements ProxyTransformer {
 	}
 
 	@Override
-	public <T extends CacheObject<?>> T transform(T object) {
-		Class<? extends CacheObject> clazz = object.getClass();
+	public <T extends IdentityObject<?>> T transform(T object) {
+		Class<? extends IdentityObject> clazz = object.getClass();
 		if (proxyManager == null) {
 			String message = StringUtility.format("指定类[{}]所对应的缓存管理器不存在", clazz.getName());
 			throw new CacheProxyException(object, message);
@@ -107,7 +107,7 @@ abstract class JavassistProxy implements ProxyTransformer {
 	 * @return
 	 * @throws Exception
 	 */
-	private <T extends CacheObject<?>> Constructor<T> getConstructor(Class<T> clazz) throws Exception {
+	private <T extends IdentityObject<?>> Constructor<T> getConstructor(Class<T> clazz) throws Exception {
 		if (constructors.containsKey(clazz)) {
 			return (Constructor<T>) constructors.get(clazz);
 		}
@@ -245,7 +245,7 @@ abstract class JavassistProxy implements ProxyTransformer {
 	 * @throws Exception
 	 */
 	private void proxyCacheMethods(Class<?> clazz, CtClass proxyClass) throws Exception {
-		CtClass returnType = classPool.get(CacheObject.class.getName());
+		CtClass returnType = classPool.get(IdentityObject.class.getName());
 		CtClass[] parameters = new CtClass[0];
 		ConstPool constPool = proxyClass.getClassFile2().getConstPool();
 		String descriptor = Descriptor.ofMethod(returnType, parameters);

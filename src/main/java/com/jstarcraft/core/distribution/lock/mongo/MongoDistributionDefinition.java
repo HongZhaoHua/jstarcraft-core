@@ -5,8 +5,8 @@ import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.distribution.lock.DistributionDefinition;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * Mongo分布式定义
@@ -15,7 +15,7 @@ import com.jstarcraft.core.distribution.lock.DistributionDefinition;
  *
  */
 @Document
-public class MongoDistributionDefinition implements CacheObject<String> {
+public class MongoDistributionDefinition implements IdentityObject<String> {
 
 	/** 锁名称 */
 	@Id

@@ -19,8 +19,8 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.jstarcraft.core.cache.CacheObject;
 import com.jstarcraft.core.orm.OrmMetadata;
+import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**
@@ -147,7 +147,7 @@ public class MongoMetadata implements OrmMetadata {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T extends CacheObject> Class<T> getOrmClass() {
+	public <T extends IdentityObject> Class<T> getOrmClass() {
 		return ormClass;
 	}
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import com.jstarcraft.core.cache.CacheObject;
+import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * ORM元信息
@@ -26,7 +26,7 @@ public interface OrmMetadata {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	<T extends CacheObject> Class<T> getOrmClass();
+	<T extends IdentityObject> Class<T> getOrmClass();
 
 	/**
 	 * 获取ORM的字段名称与类型
