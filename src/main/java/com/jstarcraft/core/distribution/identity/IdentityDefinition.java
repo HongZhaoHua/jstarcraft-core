@@ -21,7 +21,7 @@ public class IdentityDefinition {
 	public final static byte DATA_BIT = 63;
 
 	/** 分段定义 */
-	protected final IdentitySection[] sections;
+	private final IdentitySection[] sections;
 
 	public IdentityDefinition(int... sections) {
 		int bit = 0;

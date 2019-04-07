@@ -83,15 +83,14 @@ public class InstantIdentityFactory implements IdentityFactory {
 			sequence = (sequence + 1) & mask;
 			if (sequence == 0) {
 				// 阻塞到下一个时间戳
-				now = waitInstant(current);
+				current = waitInstant(current);
 			}
 		} else {
 			// 时间戳改变,重置序列
 			sequence = 0L;
+			current = now;
 		}
-		// 记录时间截
-		current = now;
-		return definition.make(partition, now - offset, sequence);
+		return definition.make(partition, current - offset, sequence);
 	}
 
 	public long getOffset() {
