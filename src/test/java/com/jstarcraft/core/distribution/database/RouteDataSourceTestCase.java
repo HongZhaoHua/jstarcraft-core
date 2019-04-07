@@ -1,5 +1,7 @@
 package com.jstarcraft.core.distribution.database;
 
+import java.sql.SQLException;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,32 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.orm.OrmAccessor;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RouteDataSourceTestCase {
 
 	@Autowired
-	private MockRouteStrategy strategy;
+	private NestRouteStrategy strategy;
 
 	@Autowired
-	private OrmAccessor accessor;
+	private RouteDataSource dataSource;
 
 	/**
 	 * 测试切换数据源
+	 * 
+	 * @throws SQLException
 	 */
 	@Test
-	public void testSwitch() {
-		strategy.setKey("leftDataSource");
-		MockObject left = MockObject.instanceOf("left");
-		accessor.create(MockObject.class, left);
-		Assert.assertEquals(1L, accessor.count(MockObject.class));
+	public void testSwitch() throws SQLException {
+		strategy.pushKey("leftDataSource");
+		Assert.assertEquals("jdbc:h2:nio:/target/database/left", dataSource.getConnection().getMetaData().getURL());
+		strategy.pullKey();
 
-		strategy.setKey("rightDataSource");
-		MockObject right = MockObject.instanceOf("right");
-		accessor.create(MockObject.class, right);
-		Assert.assertEquals(1L, accessor.count(MockObject.class));
+		strategy.pushKey("rightDataSource");
+		Assert.assertEquals("jdbc:h2:nio:/target/database/right", dataSource.getConnection().getMetaData().getURL());
+		strategy.pullKey();
 	}
 
 }

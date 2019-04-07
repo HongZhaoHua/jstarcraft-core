@@ -62,75 +62,16 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 		<property name="minIdle" value="1" />
 	</bean>
 
-	<bean id="mockRouteStrategy" class="com.jstarcraft.core.distribution.database.MockRouteStrategy">
-		<constructor-arg value="rightDataSource" />
+	<bean id="nestRouteStrategy" class="com.jstarcraft.core.distribution.database.NestRouteStrategy">
 	</bean>
 
 	<bean id="routeDataSource" class="com.jstarcraft.core.distribution.database.RouteDataSource">
-		<constructor-arg ref="mockRouteStrategy" />
+		<constructor-arg ref="nestRouteStrategy" />
 		<constructor-arg>
 			<map>
 				<entry key="leftDataSource" value-ref="leftDataSource"></entry>
 				<entry key="rightDataSource" value-ref="rightDataSource"></entry>
 			</map>
 		</constructor-arg>
-	</bean>
-
-	<!-- Hibernate配置 -->
-	<bean id="leftSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="leftDataSource" />
-		<property name="packagesToScan" value="com.jstarcraft.core.distribution.database" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="current_session_context_class">thread</prop>
-				<prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-			</props>
-		</property>
-	</bean>
-	
-	<bean id="rightSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="rightDataSource" />
-		<property name="packagesToScan" value="com.jstarcraft.core.distribution.database" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="current_session_context_class">thread</prop>
-				<prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-			</props>
-		</property>
-	</bean>
-	
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="routeDataSource" />
-		<property name="packagesToScan" value="com.jstarcraft.core.distribution.database" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="current_session_context_class">thread</prop>
-				<prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.hbm2ddl.auto">none</prop>
-			</props>
-		</property>
-	</bean>
-
-	<!-- 事务配置 -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
-	<!-- 访问器配置 -->
-	<bean id="accessor" class="com.jstarcraft.core.orm.hibernate.HibernateAccessor">
-		<constructor-arg ref="sessionFactory" />
 	</bean>
 </beans>
