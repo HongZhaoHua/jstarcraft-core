@@ -30,7 +30,7 @@ public class InstantIdentityFactory implements IdentityFactory {
 	/** 掩码 */
 	private final long mask;
 
-	/** 偏移 (2015-01-01) */
+	/** 偏移 */
 	private final long offset;
 
 	/** 分区 */
