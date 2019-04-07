@@ -22,6 +22,7 @@ public class NestRouteStrategy implements RouteStrategy {
 		LinkedList<String> context = contexts.get();
 		if (context == null) {
 			context = new LinkedList<>();
+			contexts.set(context);
 		}
 		return context;
 	}
