@@ -74,4 +74,5 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 			</map>
 		</constructor-arg>
 	</bean>
+
 </beans>

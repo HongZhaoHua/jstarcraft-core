@@ -13,6 +13,7 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/communication
 http://www.jstarcraft.com/core/communication/communication.xsd">
+
 	<bean id="clientService" class="com.jstarcraft.core.communication.command.MockClientClass"></bean>
 
 	<bean id="serverService" class="com.jstarcraft.core.communication.command.MockServerClass"></bean>
@@ -90,4 +91,5 @@ http://www.jstarcraft.com/core/communication/communication.xsd">
 		<constructor-arg ref="serverDispatcher" />
 		<constructor-arg ref="serverSessionManager" />
 	</bean>
+
 </beans>

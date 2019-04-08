@@ -13,6 +13,7 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/orm/berkeley
 http://www.jstarcraft.com/core/orm/berkeley/berkeley.xsd">
+
 	<!-- Berkeley访问器配置 -->
 	<berkeley:configuration id="older" directory="target/older" properties="classpath:berkeley.properties" versionKeep="60000">
 		<berkeley:scan>
@@ -29,4 +30,5 @@ http://www.jstarcraft.com/core/orm/berkeley/berkeley.xsd">
 			<berkeley:package name="com.jstarcraft.core.orm.berkeley.proxy" />
 		</berkeley:scan>
 	</berkeley:configuration>
+
 </beans>
