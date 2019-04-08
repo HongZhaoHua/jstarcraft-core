@@ -77,7 +77,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	<!-- 缓存配置 -->
 	<cache:configuration id="cacheService">
 		<cache:accessor reference="accessor" />
-		<cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_UESED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
+		<cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_USED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
 		<cache:persistenceStrategy name="queuePersistenceStrategy" type="QUEUE" parameters="{&quot;size&quot;:&quot;100&quot;}" />
 		<cache:scan>
 			<cache:package name="com.jstarcraft.core.cache" />

@@ -60,6 +60,7 @@ public class EntityCacheManager<K extends Comparable<K> & Serializable, T extend
 	 */
 	private Map<String, TransienceManager<Object, Collection<K>>> indexes;
 
+	private Object[] hashLocks;
 	/** 标识锁 */
 	private Map<K, ReentrantLock> idLocks = new ConcurrentHashMap<K, ReentrantLock>();
 	/** 索引锁 */
@@ -111,38 +112,50 @@ public class EntityCacheManager<K extends Comparable<K> & Serializable, T extend
 	}
 
 	private ReentrantLock lockIdLock(K id) {
-		ReentrantLock lock = idLocks.get(id);
-		if (lock == null) {
-			lock = new ReentrantLock();
-			ReentrantLock value = idLocks.putIfAbsent(id, lock);
-			lock = value != null ? value : lock;
+		// 此处可以考虑使用HashLock代替synchronized降低锁竞争
+		synchronized (idLocks) {
+			ReentrantLock lock = idLocks.get(id);
+			if (lock == null) {
+				lock = new ReentrantLock();
+				ReentrantLock value = idLocks.putIfAbsent(id, lock);
+				lock = value != null ? value : lock;
+			}
+			lock.lock();
+			return lock;
 		}
-		lock.lock();
-		return lock;
 	}
 
 	private void unlockIdLock(K id, ReentrantLock lock) {
-		lock.unlock();
-		if (lock.getHoldCount() == 0) {
-			idLocks.remove(id, lock);
+		// 此处可以考虑使用HashLock代替synchronized降低锁竞争
+		synchronized (idLocks) {
+			lock.unlock();
+			if (lock.getHoldCount() == 0) {
+				idLocks.remove(id, lock);
+			}
 		}
 	}
 
 	private ReentrantLock lockIndexLock(CacheIndex index) {
-		ReentrantLock lock = indexLocks.get(index);
-		if (lock == null) {
-			lock = new ReentrantLock();
-			ReentrantLock value = indexLocks.putIfAbsent(index, lock);
-			lock = value != null ? value : lock;
+		// 此处可以考虑使用HashLock代替synchronized降低锁竞争
+		synchronized (indexLocks) {
+			ReentrantLock lock = indexLocks.get(index);
+			if (lock == null) {
+				lock = new ReentrantLock();
+				ReentrantLock value = indexLocks.putIfAbsent(index, lock);
+				lock = value != null ? value : lock;
+			}
+			lock.lock();
+			return lock;
 		}
-		lock.lock();
-		return lock;
 	}
 
 	private void unlockIndexLock(CacheIndex index, ReentrantLock lock) {
-		lock.unlock();
-		if (lock.getHoldCount() == 0) {
-			indexLocks.remove(index, lock);
+		// 此处可以考虑使用HashLock代替synchronized降低锁竞争
+		synchronized (indexLocks) {
+			lock.unlock();
+			if (lock.getHoldCount() == 0) {
+				indexLocks.remove(index, lock);
+			}
 		}
 	}
 

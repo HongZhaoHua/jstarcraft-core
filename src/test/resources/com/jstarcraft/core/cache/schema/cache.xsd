@@ -55,7 +55,7 @@
 	<xsd:simpleType name="transienceType">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="DELAYED" />
-			<xsd:enumeration value="LEAST_RECENTLY_UESED" />
+			<xsd:enumeration value="LEAST_RECENTLY_USED" />
 			<xsd:enumeration value="USER_DEFINED" />
 		</xsd:restriction>
 	</xsd:simpleType>
