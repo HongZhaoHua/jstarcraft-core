@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.text.StrLookup;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.lookup.StringLookup;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Core;
 import org.apache.logging.log4j.core.Filter;
@@ -161,7 +161,7 @@ public class Log4Java2Storage extends AbstractAppender {
 		for (int index = 0; index < parameters.length; index++) {
 			context.put(names[index], parameters[index]);
 		}
-		StrSubstitutor substitutor = new StrSubstitutor(new StrLookup() {
+		StringSubstitutor substitutor = new StringSubstitutor(new StringLookup() {
 
 			@Override
 			public String lookup(String key) {
