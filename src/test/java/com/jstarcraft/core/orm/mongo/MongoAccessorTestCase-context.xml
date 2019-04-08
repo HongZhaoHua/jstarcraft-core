@@ -11,32 +11,16 @@ http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
-http://www.springframework.org/schema/data/mongo
-http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
 http://www.jstarcraft.com/core/orm/mongo
 http://www.jstarcraft.com/core/orm/mongo/mongo.xsd">
-
-	<!-- 配置文件配置 -->
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>/com/jstarcraft/core/orm/mongo/mongo.properties</value>
-			</list>
-		</property>
-	</bean>
 
 	<!-- 注解配置 -->
 	<context:annotation-config />
 
-	<!-- 访问器配置 -->
-	<mongodb:mongo-client id="mongo" host="${mongo.host}" port="${mongo.port}" />
+	<!-- 自动包扫描配置 -->
+	<context:component-scan base-package="com.jstarcraft.core.orm.mongo" />
 
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg ref="mongo" />
-		<constructor-arg name="databaseName" value="test" />
-	</bean>
-
-	<mongo:configuration id="accessor" template="mongoTemplate">
+	<mongo:configuration id="accessor" template="template">
 		<mongo:scan>
 			<mongo:package name="com.jstarcraft.core.orm.mongo" />
 		</mongo:scan>

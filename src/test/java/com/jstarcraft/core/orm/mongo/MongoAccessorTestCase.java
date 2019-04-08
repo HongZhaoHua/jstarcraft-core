@@ -23,7 +23,7 @@ import com.jstarcraft.core.orm.OrmPagination;
 public class MongoAccessorTestCase {
 
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	private MongoTemplate template;
 
 	@Autowired
 	private MongoAccessor accessor;
@@ -31,7 +31,7 @@ public class MongoAccessorTestCase {
 	@Test
 	public void testCRUD() {
 		int size = 100;
-		mongoTemplate.dropCollection(MockObject.class.getName());
+		template.dropCollection(MockObject.class.getName());
 
 		for (int index = 0; index < size; index++) {
 			// 创建对象并保存
@@ -125,7 +125,7 @@ public class MongoAccessorTestCase {
 		objects = accessor.queryUnion(MockObject.class, condition, null);
 		Assert.assertTrue(objects.size() == 25);
 
-		mongoTemplate.dropCollection(MockObject.class.getName());
+		template.dropCollection(MockObject.class.getName());
 	}
 
 }
