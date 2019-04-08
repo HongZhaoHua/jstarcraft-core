@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.redisson.Redisson;
 import org.redisson.api.RKeys;
+import org.redisson.client.codec.Codec;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
 import com.jstarcraft.core.distribution.lock.DistributionManager;
@@ -16,7 +18,10 @@ public class RedisDistributionManagerTestCase extends DistributionManagerTestCas
 
 	@Before
 	public void testBefore() {
+		// 注意此处的编解码器
+		Codec codec = new JsonJacksonCodec();
 		Config configuration = new Config();
+		configuration.setCodec(codec);
 		configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
 		redisson = (Redisson) Redisson.create(configuration);
 		keys = redisson.getKeys();

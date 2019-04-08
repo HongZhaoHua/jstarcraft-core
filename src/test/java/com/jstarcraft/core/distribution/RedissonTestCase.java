@@ -21,6 +21,8 @@ import org.redisson.api.RScheduledExecutorService;
 import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
+import org.redisson.client.codec.Codec;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.redisson.config.RedissonNodeConfig;
 import org.slf4j.Logger;
@@ -69,7 +71,10 @@ public class RedissonTestCase {
 
 	@Test
 	public void testScript() {
+		// 注意此处的编解码器
+		Codec codec = new JsonJacksonCodec();
 		Config configuration = new Config();
+		configuration.setCodec(codec);
 		configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
 		Redisson redisson = null;
 		RKeys keys = null;
