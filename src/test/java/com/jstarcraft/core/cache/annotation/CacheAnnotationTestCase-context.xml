@@ -13,7 +13,6 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/cache
 http://www.jstarcraft.com/core/cache/cache.xsd">
-
 	<!-- 配置文件配置 -->
 	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -83,5 +82,8 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 			<cache:package name="com.jstarcraft.core.cache" />
 		</cache:scan>
 	</cache:configuration>
+
+	<bean id="springService" class="com.jstarcraft.core.cache.annotation.MockSpringService">
+	</bean>
 
 </beans>

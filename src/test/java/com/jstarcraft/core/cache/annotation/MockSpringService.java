@@ -12,12 +12,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.CacheState;
 
-@Component
 public class MockSpringService implements ApplicationContextAware, InitializingBean, DisposableBean {
 
 	enum State {
