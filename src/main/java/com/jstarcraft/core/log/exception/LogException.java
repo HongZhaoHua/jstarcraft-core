@@ -1,17 +1,15 @@
 package com.jstarcraft.core.log.exception;
 
+import org.apache.logging.log4j.LoggingException;
+
 /**
  * 日志异常
  * 
  * @author Birdy
  */
-public class LogException extends RuntimeException {
+public class LogException extends LoggingException {
 
 	private static final long serialVersionUID = -6807194955167819578L;
-
-	public LogException() {
-		super();
-	}
 
 	public LogException(String message, Throwable exception) {
 		super(message, exception);

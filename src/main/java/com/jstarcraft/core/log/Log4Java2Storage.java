@@ -22,6 +22,7 @@ import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender;
+import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginBuilderAttribute;
 import org.apache.logging.log4j.core.config.plugins.PluginBuilderFactory;
@@ -216,7 +217,7 @@ public class Log4Java2Storage extends AbstractAppender {
 	}
 
 	Log4Java2Storage(final String name, final Filter filter, final Layout<? extends Serializable> layout, boolean ignores, String cron, String format, String names, String path, String zone, String period) {
-		super(name, filter, layout, ignores);
+		super(name, filter, layout, ignores, Property.EMPTY_ARRAY);
 		this.cron = cron;
 		this.format = Format.valueOf(format);
 		if (names.indexOf($) != -1) {
