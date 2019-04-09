@@ -15,7 +15,7 @@
 			<PatternLayout pattern="%m%n" />
 		</Storage>
 	</Appenders>
-	
+
 	<Loggers>
 		<Root level="DEBUG">
 			<AppenderRef ref="Console" />
@@ -25,7 +25,7 @@
 		<Logger name="log4j.logger.com.jstarcraft.core.codec" level="DEBUG" />
 		<Logger name="log4j.logger.com.jstarcraft.core.communication" level="DEBUG" />
 		<Logger name="log4j.logger.com.jstarcraft.core.log" level="DEBUG" />
-		<Logger name="Storage" level="DEBUG" additivity="false">
+		<Logger name="Storage" level="INFO" additivity="false">
 			<AppenderRef ref="Storage" />
 		</Logger>
 	</Loggers>
