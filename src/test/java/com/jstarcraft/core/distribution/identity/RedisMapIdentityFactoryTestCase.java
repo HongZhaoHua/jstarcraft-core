@@ -4,7 +4,8 @@ public class RedisMapIdentityFactoryTestCase extends RedisIdentityFactoryTestCas
 
 	@Override
 	protected IdentityFactory getIdentityFactory() {
-		RedisIdentityFactory identityFactory = new RedisMapIdentityFactory(redisson.getMap("redis"), 1000L, 0, 58);
+		IdentityDefinition definition = new IdentityDefinition(5, 58);
+		RedisIdentityFactory identityFactory = new RedisMapIdentityFactory(redisson.getMap("redis"), definition, 0, 1000L);
 		return identityFactory;
 	}
 

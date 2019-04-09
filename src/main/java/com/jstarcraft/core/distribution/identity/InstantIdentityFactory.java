@@ -1,6 +1,7 @@
 package com.jstarcraft.core.distribution.identity;
 
 import java.time.Instant;
+import java.util.List;
 
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -38,12 +39,14 @@ public class InstantIdentityFactory implements IdentityFactory {
 	/** 序列 */
 	private long sequence;
 
-	public InstantIdentityFactory(int partitionBit, int partitionIndex, int instantBit, Instant offsetInstant) {
-		int sequenceBit = IdentityDefinition.DATA_BIT - partitionBit - instantBit;
-		this.definition = new IdentityDefinition(partitionBit, instantBit, sequenceBit);
+	public InstantIdentityFactory(IdentityDefinition definition, int partition, Instant offsetInstant) {
+		List<IdentitySection> sections = definition.getSections();
+		assert sections.size() == 3;
+		this.definition = definition;
+		this.partition = partition;
+		int sequenceBit = sections.get(2).getBit();
 		this.mask = -1L ^ (-1L << sequenceBit);
 		this.offset = offsetInstant.toEpochMilli();
-		this.partition = partitionIndex;
 	}
 
 	/**

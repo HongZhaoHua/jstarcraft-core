@@ -1,6 +1,6 @@
 package com.jstarcraft.core.distribution.identity;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +34,12 @@ public abstract class RedisIdentityFactory implements IdentityFactory {
 
 	abstract protected long getLimit(long step);
 
-	protected RedisIdentityFactory(long step, int partition, int sequenceBit) {
-		this.step = step;
-		int partitionBit = IdentityDefinition.DATA_BIT - sequenceBit;
-		this.definition = new IdentityDefinition(partitionBit, sequenceBit);
+	protected RedisIdentityFactory(IdentityDefinition definition, int partition, long step) {
+		List<IdentitySection> sections = definition.getSections();
+		assert sections.size() == 2;
+		this.definition = definition;
 		this.partition = partition;
+		this.step = step;
 	}
 
 	@Override

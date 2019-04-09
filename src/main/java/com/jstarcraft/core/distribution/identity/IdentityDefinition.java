@@ -1,9 +1,7 @@
 package com.jstarcraft.core.distribution.identity;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 /**
  * 标识定义

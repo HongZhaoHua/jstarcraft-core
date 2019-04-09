@@ -6,8 +6,8 @@ public class RedisMapIdentityFactory extends RedisIdentityFactory {
 
 	private RMap<Integer, Number> redisson;
 
-	public RedisMapIdentityFactory(RMap<Integer, Number> redisson, long step, int partition, int sequenceBit) {
-		super(step, partition, sequenceBit);
+	public RedisMapIdentityFactory(RMap<Integer, Number> redisson, IdentityDefinition definition, int partition, long step) {
+		super(definition, partition, step);
 		this.redisson = redisson;
 	}
 

@@ -1,13 +1,7 @@
 package com.jstarcraft.core.distribution.identity;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jstarcraft.core.orm.OrmAccessor;
-import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 基于分区标识管理器
@@ -24,15 +18,7 @@ import com.jstarcraft.core.utility.IdentityObject;
  */
 public class CacheIdentityFactory implements IdentityFactory {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CacheIdentityFactory.class);
-
 	public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
-
-	/** 访问器 */
-	private final OrmAccessor accessor;
-
-	/** 类型 */
-	private final Class<? extends IdentityObject<Long>> clazz;
 
 	/** 标识定义 */
 	private final IdentityDefinition definition;
@@ -43,20 +29,17 @@ public class CacheIdentityFactory implements IdentityFactory {
 	/** 序列 */
 	private AtomicLong sequence;
 
-	public CacheIdentityFactory(OrmAccessor accessor, Class<? extends IdentityObject<Long>> clazz, int partition, int sequenceBit) {
-		this.accessor = accessor;
-		this.clazz = clazz;
-		int partitionBit = IdentityDefinition.DATA_BIT - sequenceBit;
-		this.definition = new IdentityDefinition(partitionBit, sequenceBit);
+	public CacheIdentityFactory(IdentityDefinition definition, int partition, Long current) {
+		List<IdentitySection> sections = definition.getSections();
+		assert sections.size() == 2;
+		this.definition = definition;
 		this.partition = partition;
 		Long maximum = definition.make(partition, -1L);
 		Long minimum = definition.make(partition, 0L);
-		Long current = accessor.maximumIdentity(clazz, minimum, maximum);
+		if (current != null) {
+			assert current >= minimum && current < maximum;
+		}
 		this.sequence = new AtomicLong(current == null ? minimum : current);
-	}
-
-	public Class<? extends IdentityObject<Long>> getClazz() {
-		return clazz;
 	}
 
 	@Override

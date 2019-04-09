@@ -6,8 +6,8 @@ public class RedisAtomicIdentityFactory extends RedisIdentityFactory {
 
 	private RAtomicLong redisson;
 
-	public RedisAtomicIdentityFactory(RAtomicLong redisson, long step, int partition, int sequenceBit) {
-		super(step, partition, sequenceBit);
+	public RedisAtomicIdentityFactory(RAtomicLong redisson, IdentityDefinition definition, int partition, long step) {
+		super(definition, partition, step);
 		this.redisson = redisson;
 	}
 
