@@ -39,7 +39,10 @@ public class RedissonTestCase {
 
 	@Test
 	public void testConnection() {
+		// 注意此处的编解码器
+		Codec codec = new JsonJacksonCodec();
 		Config configuration = new Config();
+		configuration.setCodec(codec);
 		configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
 		Redisson redisson = null;
 
@@ -199,7 +202,10 @@ public class RedissonTestCase {
 
 	@Test
 	public void testSchedule() {
+		// 注意此处的编解码器
+		Codec codec = new JsonJacksonCodec();
 		Config redisConfiguration = new Config();
+		redisConfiguration.setCodec(codec);
 		redisConfiguration.useSingleServer().setAddress("redis://127.0.0.1:6379");
 		Redisson redisson = null;
 		RedissonNodeConfig nodeConfiguration = new RedissonNodeConfig(redisConfiguration);
