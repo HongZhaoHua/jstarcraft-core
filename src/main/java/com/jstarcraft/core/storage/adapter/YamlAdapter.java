@@ -30,6 +30,7 @@ public class YamlAdapter implements FormatAdapter {
 		TYPE_CONVERTER.registerModule(module);
 	}
 
+	@Override
 	public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
 		try {
 			JavaType type = JsonUtility.type2Java(TypeUtility.parameterize(LinkedList.class, clazz));

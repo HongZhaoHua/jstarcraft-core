@@ -24,6 +24,7 @@ public class CsvAdapter implements FormatAdapter {
 		this.delimiter = delimiter;
 	}
 
+	@Override
 	public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
 		try {
 			List<E> list = new LinkedList<>();
