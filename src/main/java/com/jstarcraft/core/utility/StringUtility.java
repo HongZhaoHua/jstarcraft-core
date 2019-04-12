@@ -22,6 +22,9 @@ public class StringUtility extends StringUtils {
 	/** 星号 */
 	public static final String ASTERISK = "*";
 
+	/** 反斜杆 */
+	public static final String BACKWARD_SLASH = "\\";
+
 	/** 冒号 */
 	public static final String COLON = ":";
 
@@ -39,7 +42,10 @@ public class StringUtility extends StringUtils {
 
 	/** 惊叹号 */
 	public static final String EXCLAMATION = "!";
-	
+
+	/** 正斜杆 */
+	public static final String FORWARD_SLASH = "/";
+
 	/** 井号 */
 	public static final String HASH = "#";
 
