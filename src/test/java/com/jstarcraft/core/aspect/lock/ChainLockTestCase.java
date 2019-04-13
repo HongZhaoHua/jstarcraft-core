@@ -17,11 +17,6 @@ import com.jstarcraft.core.aspect.lock.ChainLock;
 import com.jstarcraft.core.aspect.lock.CompareLockManager;
 import com.jstarcraft.core.utility.RandomUtility;
 
-/**
- * 
- * @author Administrator
- *
- */
 public class ChainLockTestCase {
 
 	private CompareLockManager objectLockManager = CompareLockManager.getManager(MockCacheObject.class);

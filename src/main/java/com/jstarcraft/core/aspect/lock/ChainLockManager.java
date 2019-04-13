@@ -18,14 +18,30 @@ import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
  * 
  * @author Birdy
  */
-public class ChainLockManager {
+public class ChainLockManager implements LockableManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChainLockManager.class);
 
-	/**
-	 * 参数位置与锁形式(true为锁参数;false为锁元素;)
-	 */
-	private Int2BooleanMap configurations = new Int2BooleanOpenHashMap();
+	/** 参数位置与锁形式(true为锁参数;false为锁元素;) */
+	private Int2BooleanMap configurations;
+
+	public ChainLockManager(Method method) {
+		this.configurations = new Int2BooleanOpenHashMap();
+		Annotation[][] annotations = method.getParameterAnnotations();
+		for (int index = 0; index < annotations.length; index++) {
+			for (Annotation annotation : annotations[index]) {
+				if (annotation instanceof Lock4Parameter) {
+					this.configurations.put(index, true);
+					break;
+				}
+				if (annotation instanceof Lock4Element) {
+					// TODO 是否要检查参数的类型为数组/集合/映射
+					this.configurations.put(index, false);
+					break;
+				}
+			}
+		}
+	}
 
 	/**
 	 * 获取指定的参数列表对应的链锁
@@ -33,8 +49,8 @@ public class ChainLockManager {
 	 * @param arguments
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public ChainLock getLock(Object[] arguments) {
+	@Override
+	public ChainLock getLock(Object... arguments) {
 		LinkedList<Comparable> chain = new LinkedList<>();
 		for (Int2BooleanMap.Entry keyValue : configurations.int2BooleanEntrySet()) {
 			Object argument = arguments[keyValue.getIntKey()];
@@ -76,25 +92,6 @@ public class ChainLockManager {
 			LOGGER.error("不支持的类型[{}]", argument.getClass().getName());
 		}
 		return ChainLock.instanceOf(chain.toArray(new Comparable[chain.size()]));
-	}
-
-	public static ChainLockManager instanceOf(Method method) {
-		ChainLockManager instance = new ChainLockManager();
-		Annotation[][] annotations = method.getParameterAnnotations();
-		for (int index = 0; index < annotations.length; index++) {
-			for (Annotation annotation : annotations[index]) {
-				if (annotation instanceof Lock4Parameter) {
-					instance.configurations.put(index, true);
-					break;
-				}
-				if (annotation instanceof Lock4Element) {
-					// TODO 是否要检查参数的类型为数组/集合/映射
-					instance.configurations.put(index, false);
-					break;
-				}
-			}
-		}
-		return instance;
 	}
 
 }

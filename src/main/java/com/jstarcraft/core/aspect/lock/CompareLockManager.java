@@ -24,6 +24,15 @@ public class CompareLockManager {
 	}
 
 	/**
+	 * 获取类型锁
+	 * 
+	 * @return
+	 */
+	public Lock getClassLock() {
+		return clazzLock;
+	}
+
+	/**
 	 * 获取实例锁
 	 * 
 	 * @param instance
@@ -40,24 +49,17 @@ public class CompareLockManager {
 		}
 	}
 
-	/**
-	 * 获取类型唯一锁
-	 * 
-	 * @return
-	 */
-	public Lock getClassLock() {
-		return clazzLock;
-	}
-
 	public static CompareLockManager getManager(Class clazz) {
-		synchronized (clazz) {
-			CompareLockManager manager = sortLockManagers.get(clazz);
-			if (manager == null) {
-				manager = new CompareLockManager();
-				sortLockManagers.put(clazz, manager);
+		CompareLockManager manager = sortLockManagers.get(clazz);
+		if (manager == null) {
+			synchronized (clazz) {
+				if (manager == null) {
+					manager = new CompareLockManager();
+					sortLockManagers.put(clazz, manager);
+				}
 			}
-			return manager;
 		}
+		return manager;
 	}
 
 }

@@ -6,25 +6,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.utility.ReflectionUtility;
+
 /**
- * 链锁切面
+ * 锁切面
  * 
  * @author Birdy
  */
-@Aspect
-public class ChainLockAspect {
+public class LockableAspect {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ChainLockAspect.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LockableAspect.class);
 
-	/** 链映射 */
-	private ConcurrentHashMap<Method, ChainLockManager> factories = new ConcurrentHashMap<>();
+	private Class<? extends LockableManager> managerClazz;
+
+	/** 方法映射 */
+	private ConcurrentHashMap<Method, LockableManager> factories = new ConcurrentHashMap<>();
 	/** 标记映射(用于非强制锁) */
 	private ThreadLocal<Object> marks = new ThreadLocal<>();
+
+	public LockableAspect(Class<? extends LockableManager> managerClazz) {
+		this.managerClazz = managerClazz;
+	}
 
 	/** 锁方法拦截处理 */
 	@Around("@annotation(lock4Method)")
@@ -36,7 +42,7 @@ public class ChainLockAspect {
 		} else {
 			// 非强制锁处理
 			if (marks.get() == null) {
-				marks.set(ChainLockAspect.class);
+				marks.set(LockableAspect.class);
 				try {
 					Object result = execute(point, signature);
 					return result;
@@ -52,17 +58,17 @@ public class ChainLockAspect {
 	private Object execute(ProceedingJoinPoint point, Signature signature) throws Throwable {
 		Method method = ((MethodSignature) signature).getMethod();
 		// 获取自动链
-		ChainLockManager factory = null;
-		synchronized (method) {
-			factory = factories.get(method);
-			if (factory == null) {
-				factory = ChainLockManager.instanceOf(method);
-				factories.put(method, factory);
+		LockableManager factory = factories.get(method);
+		if (factory == null) {
+			synchronized (method) {
+				if (factory == null) {
+					factory = ReflectionUtility.getInstance(managerClazz, method);
+					factories.put(method, factory);
+				}
 			}
 		}
-
 		Object[] arguments = point.getArgs();
-		try (ChainLock lock = factory.getLock(arguments)) {
+		try (Lockable lock = factory.getLock(arguments)) {
 			lock.open();
 			return point.proceed(arguments);
 		}
