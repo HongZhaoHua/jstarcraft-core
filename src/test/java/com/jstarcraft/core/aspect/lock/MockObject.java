@@ -14,13 +14,13 @@ import com.jstarcraft.core.utility.IdentityObject;
  *
  * @param <T>
  */
-public class MockCacheObject<T extends Comparable<T> & Serializable> implements IdentityObject<T> {
+public class MockObject<T extends Comparable<T> & Serializable> implements IdentityObject<T> {
 
 	private T id;
 
 	private int hash;
 
-	public MockCacheObject(T id) {
+	public MockObject(T id) {
 		this.id = id;
 		HashCodeBuilder hash = new HashCodeBuilder();
 		hash.append(this.id);
@@ -44,9 +44,9 @@ public class MockCacheObject<T extends Comparable<T> & Serializable> implements 
 			return true;
 		if (object == null)
 			return false;
-		if (!(object instanceof MockCacheObject))
+		if (!(object instanceof MockObject))
 			return false;
-		MockCacheObject that = (MockCacheObject) object;
+		MockObject that = (MockObject) object;
 		EqualsBuilder equal = new EqualsBuilder();
 		equal.append(this.getId(), that.getId());
 		return equal.isEquals();

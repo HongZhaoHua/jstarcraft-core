@@ -19,13 +19,13 @@ import com.jstarcraft.core.utility.RandomUtility;
 
 public class ChainLockTestCase {
 
-	private CompareLockManager objectLockManager = CompareLockManager.getManager(MockCacheObject.class);
+	private CompareLockManager objectLockManager = CompareLockManager.getManager(MockObject.class);
 	private CompareLockManager integerLockManager = CompareLockManager.getManager(Integer.class);
 
 	@Test
 	public void testSortLocks() {
-		Comparable left = new MockCacheObject<>("0");
-		Comparable right = new MockCacheObject<>("1");
+		Comparable left = new MockObject<>("0");
+		Comparable right = new MockObject<>("1");
 		Comparable[] objects = null;
 		List<Lock> locks = null;
 
@@ -58,8 +58,8 @@ public class ChainLockTestCase {
 	@Test
 	public void testChainLock() throws InterruptedException {
 		AtomicInteger count = new AtomicInteger();
-		Comparable first = new MockCacheObject<>(0);
-		Comparable right = new MockCacheObject<>(1);
+		Comparable first = new MockObject<>(0);
+		Comparable right = new MockObject<>(1);
 		Comparable[] objects = new Comparable[] { first, right };
 		ExecutorService executor = Executors.newFixedThreadPool(5);
 		for (Comparable object : objects) {
@@ -99,8 +99,8 @@ public class ChainLockTestCase {
 		objects.add(Short.valueOf("0"));
 		objects.add(String.valueOf("0"));
 		objects.add(Instant.now());
-		objects.add(new MockCacheObject<>("left"));
-		objects.add(new MockCacheObject<>("right"));
+		objects.add(new MockObject<>("left"));
+		objects.add(new MockObject<>("right"));
 
 		int count = 500; // 线程数
 		int times = 2000; // 任务数
