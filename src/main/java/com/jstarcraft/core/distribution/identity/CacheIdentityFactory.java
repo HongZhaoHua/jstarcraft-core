@@ -54,7 +54,7 @@ public class CacheIdentityFactory implements IdentityFactory {
 
 	@Override
 	public long getSequence() {
-		return sequence.incrementAndGet();
+		return sequence.getAndIncrement();
 	}
 
 }
