@@ -10,8 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class NameThreadFactory implements ThreadFactory {
 
-	/** 冒号分隔符 */
-	protected static final String COLON = ":";
 	/** 线程组 */
 	protected ThreadGroup group;
 	/** 线程数量 */
@@ -23,7 +21,7 @@ public class NameThreadFactory implements ThreadFactory {
 
 	@Override
 	public Thread newThread(Runnable runnable) {
-		String name = group.getName() + COLON + number.incrementAndGet();
+		String name = group.getName() + StringUtility.COLON + number.incrementAndGet();
 		Thread thread = new Thread(group, runnable, name, 0);
 		return thread;
 	}

@@ -31,18 +31,17 @@ import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.TypeUtility;
 import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
 
-import it.unimi.dsi.fastutil.Arrays;
-
 /**
  * CSV工具
+ * 
+ * <pre>
+ * 为了兼容null与AWK搜索,所有字符串以分号结束.
+ * </pre>
  * 
  * @author Birdy
  *
  */
 public class CsvUtility {
-
-	/** 分号(为了兼容null与AWK搜索,所有字符串以分号结束.) */
-	public static final String SEMICOLON = ";";
 
 	private static final CSVFormat FORMAT = CSVFormat.DEFAULT;
 
@@ -87,7 +86,7 @@ public class CsvUtility {
 				}
 				Object value = object.toString();
 				if (String.class == clazz) {
-					value = value + SEMICOLON;
+					value = value + StringUtility.SEMICOLON;
 				}
 				output.print(value);
 				return;

@@ -12,13 +12,14 @@ import com.jstarcraft.core.utility.StringUtility;
 /**
  * 字符串转换器
  * 
+ * <pre>
+ * 为了兼容null与AWK搜索,所有字符串以分号结束.
+ * </pre>
+ * 
  * @author Birdy
  *
  */
 public class StringConverter implements CsvConverter<Object> {
-
-	/** 分号(为了兼容null与AWK搜索,所有字符串以分号结束.) */
-	public static final String SEMICOLON = ";";
 
 	@Override
 	public Object readValueFrom(CsvReader context, Type type) throws Exception {
@@ -42,7 +43,7 @@ public class StringConverter implements CsvConverter<Object> {
 			out.print(StringUtility.EMPTY);
 			return;
 		}
-		value = value + SEMICOLON;
+		value = value + StringUtility.SEMICOLON;
 		out.print(value);
 	}
 

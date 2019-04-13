@@ -52,11 +52,6 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NettyTcpServerConnector.class);
 
-	/** 冒号 */
-	private static final String COLON = ":";
-	/** 星号 */
-	private static final String ASTERISK = "*";
-
 	/** 修复时间间隔 */
 	private static final long FIX_TIME = 1000;
 
@@ -90,7 +85,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 	private final SensitivityQueue<DelayElement<CommunicationSession<Channel>>> queue = new SensitivityQueue<>(FIX_TIME);
 	/** 清理者线程 */
 	private final Runnable cleaner = new Runnable() {
-		
+
 		public void run() {
 			while (true) {
 				try {
@@ -114,11 +109,11 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 				}
 			}
 		}
-		
+
 	};
 	/** 发送者线程 */
 	private Runnable sender = new Runnable() {
-		
+
 		@Override
 		public void run() {
 			while (true) {
@@ -161,7 +156,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 				}
 			}
 		}
-		
+
 	};
 
 	private Thread cleanThread;
@@ -173,11 +168,11 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 			throw new IllegalArgumentException();
 		}
 
-		int colonIndex = address.lastIndexOf(COLON);
+		int colonIndex = address.lastIndexOf(StringUtility.COLON);
 		if (colonIndex > 0) {
 			String host = address.substring(0, colonIndex);
 			int port = Integer.parseInt(address.substring(colonIndex + 1));
-			if (!ASTERISK.equals(host)) {
+			if (!StringUtility.ASTERISK.equals(host)) {
 				this.address = new InetSocketAddress(host, port);
 			} else {
 				this.address = new InetSocketAddress(port);

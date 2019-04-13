@@ -46,7 +46,7 @@ public class AwkCommand {
 	private static final String BEGIN = "\"BEGIN{FPAT=\\\"{}\\\";{}{}}";
 
 	/** 正则模板(([^{}{}]*)|({}([^{}]|{}{2}|[u4E00-u9FA5]+{})+[u4E00-u9FA5;]{})) */
-	private static final String REGULAR = "([^{}{}]*)|({}([^{}]|{}{2}|[u4E00-u9FA5]+{})+[u4E00-u9FA5" + CsvUtility.SEMICOLON + "]{})";
+	private static final String REGULAR = "([^{}{}]*)|({}([^{}]|{}{2}|[u4E00-u9FA5]+{})+[u4E00-u9FA5" + StringUtility.SEMICOLON + "]{})";
 
 	/** 指令模板 */
 	private static final String COMMAND = "{}{{}}";

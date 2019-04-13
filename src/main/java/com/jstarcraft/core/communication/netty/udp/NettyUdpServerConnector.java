@@ -59,11 +59,6 @@ public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPac
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NettyUdpServerConnector.class);
 
-	/** 冒号 */
-	private static final String COLON = ":";
-	/** 星号 */
-	private static final String ASTERISK = "*";
-
 	/** 修复时间间隔 */
 	private static final long FIX_TIME = 1000;
 
@@ -188,11 +183,11 @@ public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPac
 			throw new IllegalArgumentException();
 		}
 
-		int colonIndex = address.lastIndexOf(COLON);
+		int colonIndex = address.lastIndexOf(StringUtility.COLON);
 		if (colonIndex > 0) {
 			String host = address.substring(0, colonIndex);
 			int port = Integer.parseInt(address.substring(colonIndex + 1));
-			if (!ASTERISK.equals(host)) {
+			if (!StringUtility.ASTERISK.equals(host)) {
 				this.address = new InetSocketAddress(host, port);
 			} else {
 				this.address = new InetSocketAddress(port);

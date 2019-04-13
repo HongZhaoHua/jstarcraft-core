@@ -61,11 +61,6 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NettyUdpClientConnector.class);
 
-	/** 冒号 */
-	private static final String COLON = ":";
-	/** 星号 */
-	private static final String ASTERISK = "*";
-
 	/** 到期时间间隔 */
 	private static final int EXPIRE_TIME = 10000;
 	/** 修复时间间隔 */
@@ -306,11 +301,11 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
 			throw new CommunicationException();
 		}
 		InetSocketAddress address;
-		int colonIndex = key.lastIndexOf(COLON);
+		int colonIndex = key.lastIndexOf(StringUtility.COLON);
 		if (colonIndex > 0) {
 			String host = key.substring(0, colonIndex);
 			int port = Integer.parseInt(key.substring(colonIndex + 1));
-			if (!ASTERISK.equals(host)) {
+			if (!StringUtility.ASTERISK.equals(host)) {
 				address = new InetSocketAddress(host, port);
 			} else {
 				address = new InetSocketAddress(port);
