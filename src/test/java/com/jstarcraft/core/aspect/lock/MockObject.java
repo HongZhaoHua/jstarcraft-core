@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.jstarcraft.core.utility.IdentityObject;
 
 /**
- * 模仿缓存对象
+ * 模仿对象
  * 
  * @author Birdy
  *
