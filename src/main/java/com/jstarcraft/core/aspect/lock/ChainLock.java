@@ -1,6 +1,5 @@
 package com.jstarcraft.core.aspect.lock;
 
-import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,7 +12,7 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Birdy
  */
-public class ChainLock implements Closeable {
+public class ChainLock implements Lockable {
 
 	private static final Comparator CLASS_COMPARATOR = new Comparator<Class>() {
 
@@ -34,6 +33,7 @@ public class ChainLock implements Closeable {
 	/**
 	 * 开启排序锁
 	 */
+	@Override
 	public void open() {
 		for (Lock lock : locks) {
 			lock.lock();
@@ -43,6 +43,7 @@ public class ChainLock implements Closeable {
 	/**
 	 * 关闭排序锁
 	 */
+	@Override
 	public void close() {
 		for (Lock lock : locks) {
 			lock.unlock();
