@@ -17,7 +17,7 @@ import com.jstarcraft.core.aspect.lock.ChainLockable;
 import com.jstarcraft.core.aspect.lock.CompareLockManager;
 import com.jstarcraft.core.utility.RandomUtility;
 
-public class ChainLockTestCase {
+public class CompareLockTestCase {
 
 	private CompareLockManager objectLockManager = CompareLockManager.getManager(MockObject.class);
 	private CompareLockManager integerLockManager = CompareLockManager.getManager(Integer.class);
