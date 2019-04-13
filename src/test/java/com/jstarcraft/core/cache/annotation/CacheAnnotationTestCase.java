@@ -28,7 +28,7 @@ public class CacheAnnotationTestCase {
 	@Autowired
 	private AbstractApplicationContext applicationContext;
 	@Autowired
-	private MockSpringService springService;
+	private MockService springService;
 
 	@Test
 	public void test() {
@@ -37,7 +37,7 @@ public class CacheAnnotationTestCase {
 		Assert.assertThat(regionManager, CoreMatchers.notNullValue());
 
 		// 保证@AfterCacheServiceStarted与@BeforeCacheServiceStoped的执行顺序
-		Assert.assertThat(springService.getState(), CoreMatchers.equalTo(MockSpringService.State.SERVICE_RUN));
+		Assert.assertThat(springService.getState(), CoreMatchers.equalTo(MockService.State.SERVICE_RUN));
 		applicationContext.close();
 		Assert.assertNull(springService.getState());
 	}

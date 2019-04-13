@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationContextAware;
 import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.CacheState;
 
-public class MockSpringService implements ApplicationContextAware, InitializingBean, DisposableBean {
+public class MockService implements ApplicationContextAware, InitializingBean, DisposableBean {
 
 	enum State {
 		/** 服务启动 */
