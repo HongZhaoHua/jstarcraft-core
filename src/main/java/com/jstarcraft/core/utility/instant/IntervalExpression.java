@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+import com.jstarcraft.core.utility.StringUtility;
+
 /**
  * 间隔表达式
  * 
@@ -21,7 +23,7 @@ public class IntervalExpression extends DateTimeExpression {
 	public IntervalExpression(String expression) {
 		super(expression);
 
-		String[] fields = expression.split(" ");
+		String[] fields = expression.split(StringUtility.SPACE);
 		if (fields.length != 7) {
 			throw new IllegalArgumentException();
 		} else {

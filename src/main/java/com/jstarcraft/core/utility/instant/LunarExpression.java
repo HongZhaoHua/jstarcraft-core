@@ -4,6 +4,8 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.BitSet;
 
+import com.jstarcraft.core.utility.StringUtility;
+
 /**
  * 阴历表达式
  * 
@@ -41,7 +43,7 @@ public class LunarExpression extends DateTimeExpression {
 		this.months = new BitSet(13);
 		this.years = new BitSet(200);
 
-		String[] fields = expression.split(" ");
+		String[] fields = expression.split(StringUtility.SPACE);
 		if (fields.length != 5 && fields.length != 6) {
 			throw new IllegalArgumentException();
 		} else {
@@ -53,28 +55,28 @@ public class LunarExpression extends DateTimeExpression {
 			if (fields.length == 6) {
 				this.setBits(this.years, fields[5], 1900, 2100, 1900);
 			} else {
-				this.setBits(this.years, "*", 1900, 2100, 1900);
+				this.setBits(this.years, StringUtility.ASTERISK, 1900, 2100, 1900);
 			}
 		}
 	}
 
 	private void setBits(BitSet bits, String value, int from, int to, int shift) {
-		if (value.contains("?")) {
-			value = "*";
+		if (value.contains(StringUtility.QUESTION)) {
+			value = StringUtility.ASTERISK;
 		}
-		String[] fields = value.split(",");
+		String[] fields = value.split(StringUtility.COMMA);
 		for (String field : fields) {
-			if (!field.contains("/")) {
+			if (!field.contains(StringUtility.FORWARD_SLASH)) {
 				// Not an incrementer so it must be a range (possibly empty)
 				int[] range = getRange(field, from, to, shift);
 				bits.set(range[0], range[1] + 1);
 			} else {
-				String[] split = field.split("/");
+				String[] split = field.split(StringUtility.FORWARD_SLASH);
 				if (split.length > 2) {
 					throw new IllegalArgumentException("Incrementer has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
 				}
 				int[] range = getRange(split[0], from, to, shift);
-				if (!split[0].contains("-")) {
+				if (!split[0].contains(StringUtility.DASH)) {
 					range[1] = to - 1;
 				}
 				int skip = Integer.parseInt(split[1]);
@@ -90,14 +92,14 @@ public class LunarExpression extends DateTimeExpression {
 
 	private int[] getRange(String field, int from, int to, int shift) {
 		int[] range = new int[2];
-		if (field.contains("*")) {
+		if (field.contains(StringUtility.ASTERISK)) {
 			range[0] = from;
 			range[1] = to - 1;
 		} else {
-			if (!field.contains("-")) {
+			if (!field.contains(StringUtility.DASH)) {
 				range[0] = range[1] = Integer.valueOf(field);
 			} else {
-				String[] split = field.split("-");
+				String[] split = field.split(StringUtility.DASH);
 				if (split.length > 2) {
 					throw new IllegalArgumentException("Range has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
 				}
