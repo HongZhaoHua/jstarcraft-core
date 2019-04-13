@@ -6,21 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 锁参数
+ * 可锁定元素
+ * 
+ * <pre>
+ * 支持Array, Collection, Map(不锁键,锁值)
+ * </pre>
  * 
  * @author Birdy
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface Lock4Parameter {
-
-	// TODO 考虑取消此方法, 直接使用Lock4Element
-	/**
-	 * 是否锁定对象中的元素<br/>
-	 * 支持<code>Collection</code>,<code>Array</code>,<code>Map</code>(只锁定value)
-	 * 
-	 * @return
-	 */
-	boolean element() default false;
+public @interface LockableElement {
 
 }

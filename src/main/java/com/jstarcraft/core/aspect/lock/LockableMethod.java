@@ -6,13 +6,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 锁方法
+ * 可锁定方法
  * 
  * @author Birdy
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Lock4Method {
+public @interface LockableMethod {
+
+	/**
+	 * 锁策略
+	 * 
+	 * @return
+	 */
+	Class<? extends LockableStrategy> strategy();
 
 	/**
 	 * 是否强制使用锁

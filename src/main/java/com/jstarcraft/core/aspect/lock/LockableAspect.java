@@ -21,30 +21,24 @@ public class LockableAspect {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockableAspect.class);
 
-	private Class<? extends LockableStrategy> strategyClazz;
-
 	/** 方法映射 */
-	private ConcurrentHashMap<Method, LockableStrategy> factories = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Method, LockableStrategy> strategies = new ConcurrentHashMap<>();
 	/** 标记映射(用于非强制锁) */
 	private ThreadLocal<Object> marks = new ThreadLocal<>();
 
-	public LockableAspect(Class<? extends LockableStrategy> strategyClazz) {
-		this.strategyClazz = strategyClazz;
-	}
-
 	/** 锁方法拦截处理 */
 	@Around("@annotation(lock4Method)")
-	public Object execute(ProceedingJoinPoint point, Lock4Method lock4Method) throws Throwable {
+	public Object execute(ProceedingJoinPoint point, LockableMethod lock4Method) throws Throwable {
 		Signature signature = point.getSignature();
 		if (lock4Method.value()) {
 			// 强制锁处理
-			return execute(point, signature);
+			return execute(lock4Method.strategy(), point, signature);
 		} else {
 			// 非强制锁处理
 			if (marks.get() == null) {
 				marks.set(LockableAspect.class);
 				try {
-					Object result = execute(point, signature);
+					Object result = execute(lock4Method.strategy(), point, signature);
 					return result;
 				} finally {
 					marks.remove();
@@ -55,20 +49,20 @@ public class LockableAspect {
 		}
 	}
 
-	private Object execute(ProceedingJoinPoint point, Signature signature) throws Throwable {
+	private Object execute(Class<? extends LockableStrategy> clazz, ProceedingJoinPoint point, Signature signature) throws Throwable {
 		Method method = ((MethodSignature) signature).getMethod();
-		// 获取自动链
-		LockableStrategy factory = factories.get(method);
-		if (factory == null) {
+		// 获取锁策略
+		LockableStrategy strategy = strategies.get(method);
+		if (strategy == null) {
 			synchronized (method) {
-				if (factory == null) {
-					factory = ReflectionUtility.getInstance(strategyClazz, method);
-					factories.put(method, factory);
+				if (strategy == null) {
+					strategy = ReflectionUtility.getInstance(clazz, method);
+					strategies.put(method, strategy);
 				}
 			}
 		}
 		Object[] arguments = point.getArgs();
-		try (Lockable lock = factory.getLock(arguments)) {
+		try (Lockable lock = strategy.getLock(arguments)) {
 			lock.open();
 			return point.proceed(arguments);
 		}

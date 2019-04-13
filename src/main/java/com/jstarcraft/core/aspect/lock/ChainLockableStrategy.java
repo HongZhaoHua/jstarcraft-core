@@ -30,11 +30,11 @@ public class ChainLockableStrategy implements LockableStrategy {
 		Annotation[][] annotations = method.getParameterAnnotations();
 		for (int index = 0; index < annotations.length; index++) {
 			for (Annotation annotation : annotations[index]) {
-				if (annotation instanceof Lock4Parameter) {
+				if (annotation instanceof LockableParameter) {
 					this.configurations.put(index, true);
 					break;
 				}
-				if (annotation instanceof Lock4Element) {
+				if (annotation instanceof LockableElement) {
 					// TODO 是否要检查参数的类型为数组/集合/映射
 					this.configurations.put(index, false);
 					break;
