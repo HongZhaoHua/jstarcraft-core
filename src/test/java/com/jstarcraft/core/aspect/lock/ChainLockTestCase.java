@@ -13,7 +13,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.aspect.lock.ChainLock;
+import com.jstarcraft.core.aspect.lock.ChainLockable;
 import com.jstarcraft.core.aspect.lock.CompareLockManager;
 import com.jstarcraft.core.utility.RandomUtility;
 
@@ -30,25 +30,25 @@ public class ChainLockTestCase {
 		List<Lock> locks = null;
 
 		objects = new Comparable[] { left };
-		locks = ChainLock.sortLocks(objects);
+		locks = ChainLockable.sortLocks(objects);
 		Assert.assertThat(locks.size(), CoreMatchers.is(1));
 		Assert.assertThat(locks.get(0), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(left)));
 
 		objects = new Comparable[] { left, right };
-		locks = ChainLock.sortLocks(objects);
+		locks = ChainLockable.sortLocks(objects);
 		Assert.assertThat(locks.size(), CoreMatchers.is(2));
 		Assert.assertThat(locks.get(0), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(left)));
 		Assert.assertThat(locks.get(1), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(right)));
 
 		objects = new Comparable[] { left, left };
-		locks = ChainLock.sortLocks(objects);
+		locks = ChainLockable.sortLocks(objects);
 		Assert.assertThat(locks.size(), CoreMatchers.is(3));
 		Assert.assertThat(locks.get(0), CoreMatchers.sameInstance(objectLockManager.getClassLock()));
 		Assert.assertThat(locks.get(1), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(left)));
 		Assert.assertThat(locks.get(2), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(left)));
 
 		objects = new Comparable[] { left, right, 1 };
-		locks = ChainLock.sortLocks(objects);
+		locks = ChainLockable.sortLocks(objects);
 		Assert.assertThat(locks.size(), CoreMatchers.is(3));
 		Assert.assertThat(locks.get(0), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(left)));
 		Assert.assertThat(locks.get(1), CoreMatchers.sameInstance(objectLockManager.getInstanceLock(right)));
@@ -78,7 +78,7 @@ public class ChainLockTestCase {
 			});
 		}
 
-		try (ChainLock lock = ChainLock.instanceOf(objects)) {
+		try (ChainLockable lock = ChainLockable.instanceOf(objects)) {
 			lock.open();
 			Assert.assertThat(count.get(), CoreMatchers.is(0));
 			Thread.sleep(500);
@@ -116,7 +116,7 @@ public class ChainLockTestCase {
 						int random = RandomUtility.randomInteger(0, objects.size());
 						locks[index] = objects.get(random);
 					}
-					ChainLock lock = ChainLock.instanceOf(locks);
+					ChainLockable lock = ChainLockable.instanceOf(locks);
 					try {
 						lock.open();
 						// 转让CPU

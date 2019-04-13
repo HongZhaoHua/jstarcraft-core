@@ -12,7 +12,7 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Birdy
  */
-public class ChainLock implements Lockable {
+public class ChainLockable implements Lockable {
 
 	private static final Comparator CLASS_COMPARATOR = new Comparator<Class>() {
 
@@ -26,7 +26,7 @@ public class ChainLock implements Lockable {
 	/** 锁 */
 	private final ArrayList<? extends Lock> locks;
 
-	private ChainLock(ArrayList<? extends Lock> locks) {
+	private ChainLockable(ArrayList<? extends Lock> locks) {
 		this.locks = locks;
 	}
 
@@ -94,9 +94,9 @@ public class ChainLock implements Lockable {
 	 * @param objects
 	 * @return
 	 */
-	public static ChainLock instanceOf(Comparable... objects) {
+	public static ChainLockable instanceOf(Comparable... objects) {
 		ArrayList<? extends Lock> locks = sortLocks(objects);
-		return new ChainLock(locks);
+		return new ChainLockable(locks);
 	}
 
 }

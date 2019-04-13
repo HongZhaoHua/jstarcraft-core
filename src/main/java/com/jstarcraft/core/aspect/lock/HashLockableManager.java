@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -14,18 +13,22 @@ import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 
 /**
- * 链锁管理器
+ * 哈希锁管理器
  * 
  * @author Birdy
  */
-public class ChainLockManager implements LockableManager {
+public class HashLockableManager implements LockableManager {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ChainLockManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(HashLockableManager.class);
+
+	private static final int size = 1000;
+
+	private HashLockable[] lockables;
 
 	/** 参数位置与锁形式(true为锁参数;false为锁元素;) */
 	private Int2BooleanMap configurations;
 
-	public ChainLockManager(Method method) {
+	public HashLockableManager(Method method) {
 		this.configurations = new Int2BooleanOpenHashMap();
 		Annotation[][] annotations = method.getParameterAnnotations();
 		for (int index = 0; index < annotations.length; index++) {
@@ -41,6 +44,10 @@ public class ChainLockManager implements LockableManager {
 				}
 			}
 		}
+		this.lockables = new HashLockable[size];
+		for (int index = 0; index < size; index++) {
+			this.lockables[index] = new HashLockable();
+		}
 	}
 
 	/**
@@ -50,15 +57,15 @@ public class ChainLockManager implements LockableManager {
 	 * @return
 	 */
 	@Override
-	public ChainLock getLock(Object... arguments) {
-		LinkedList<Comparable> chain = new LinkedList<>();
+	public HashLockable getLock(Object... arguments) {
+		int hash = 0;
 		for (Int2BooleanMap.Entry keyValue : configurations.int2BooleanEntrySet()) {
 			Object argument = arguments[keyValue.getIntKey()];
 			if (argument == null) {
 				continue;
 			}
 			if (keyValue.getBooleanValue()) {
-				chain.add((Comparable) argument);
+				hash += argument.hashCode();
 				continue;
 			}
 			if (argument.getClass().isArray()) {
@@ -67,7 +74,7 @@ public class ChainLockManager implements LockableManager {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
@@ -76,7 +83,7 @@ public class ChainLockManager implements LockableManager {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
@@ -85,13 +92,14 @@ public class ChainLockManager implements LockableManager {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
-			LOGGER.error("不支持的类型[{}]", argument.getClass().getName());
+			logger.error("不支持的类型[{}]", argument.getClass().getName());
 		}
-		return ChainLock.instanceOf(chain.toArray(new Comparable[chain.size()]));
+		hash = Math.abs(hash % size);
+		return lockables[hash];
 	}
 
 }
