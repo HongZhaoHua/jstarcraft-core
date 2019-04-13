@@ -6,7 +6,7 @@ package com.jstarcraft.core.aspect.lock;
  * @author Birdy
  *
  */
-public interface LockableManager {
+public interface LockableStrategy {
 
 	/**
 	 * 获取指定的参数对应的锁

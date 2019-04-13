@@ -17,9 +17,9 @@ import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
  * 
  * @author Birdy
  */
-public class HashLockableManager implements LockableManager {
+public class HashLockableStrategy implements LockableStrategy {
 
-	private static final Logger logger = LoggerFactory.getLogger(HashLockableManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(HashLockableStrategy.class);
 
 	private static final int size = 1000;
 
@@ -28,7 +28,7 @@ public class HashLockableManager implements LockableManager {
 	/** 参数位置与锁形式(true为锁参数;false为锁元素;) */
 	private Int2BooleanMap configurations;
 
-	public HashLockableManager(Method method) {
+	public HashLockableStrategy(Method method) {
 		this.configurations = new Int2BooleanOpenHashMap();
 		Annotation[][] annotations = method.getParameterAnnotations();
 		for (int index = 0; index < annotations.length; index++) {

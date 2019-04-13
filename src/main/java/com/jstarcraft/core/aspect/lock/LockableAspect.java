@@ -21,15 +21,15 @@ public class LockableAspect {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockableAspect.class);
 
-	private Class<? extends LockableManager> managerClazz;
+	private Class<? extends LockableStrategy> strategyClazz;
 
 	/** 方法映射 */
-	private ConcurrentHashMap<Method, LockableManager> factories = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Method, LockableStrategy> factories = new ConcurrentHashMap<>();
 	/** 标记映射(用于非强制锁) */
 	private ThreadLocal<Object> marks = new ThreadLocal<>();
 
-	public LockableAspect(Class<? extends LockableManager> managerClazz) {
-		this.managerClazz = managerClazz;
+	public LockableAspect(Class<? extends LockableStrategy> strategyClazz) {
+		this.strategyClazz = strategyClazz;
 	}
 
 	/** 锁方法拦截处理 */
@@ -58,11 +58,11 @@ public class LockableAspect {
 	private Object execute(ProceedingJoinPoint point, Signature signature) throws Throwable {
 		Method method = ((MethodSignature) signature).getMethod();
 		// 获取自动链
-		LockableManager factory = factories.get(method);
+		LockableStrategy factory = factories.get(method);
 		if (factory == null) {
 			synchronized (method) {
 				if (factory == null) {
-					factory = ReflectionUtility.getInstance(managerClazz, method);
+					factory = ReflectionUtility.getInstance(strategyClazz, method);
 					factories.put(method, factory);
 				}
 			}

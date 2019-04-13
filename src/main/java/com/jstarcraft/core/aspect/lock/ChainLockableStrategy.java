@@ -18,14 +18,14 @@ import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
  * 
  * @author Birdy
  */
-public class ChainLockableManager implements LockableManager {
+public class ChainLockableStrategy implements LockableStrategy {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChainLockableManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChainLockableStrategy.class);
 
 	/** 参数位置与锁形式(true为锁参数;false为锁元素;) */
 	private Int2BooleanMap configurations;
 
-	public ChainLockableManager(Method method) {
+	public ChainLockableStrategy(Method method) {
 		this.configurations = new Int2BooleanOpenHashMap();
 		Annotation[][] annotations = method.getParameterAnnotations();
 		for (int index = 0; index < annotations.length; index++) {
