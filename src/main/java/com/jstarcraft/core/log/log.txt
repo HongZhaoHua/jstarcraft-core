@@ -12,3 +12,6 @@ http://www.cnblogs.com/leo-lsw/p/log4j2tutorial.html
 
 logback log4j log4j2 性能实测:
 https://blog.souche.com/logback-log4j-log4j2shi-ce/
+
+如何获取请求与响应并记录到日志?
+https://stackoverflow.com/questions/33744875/spring-boot-how-to-log-all-requests-and-responses-with-exceptions-in-single-pl/43155103
