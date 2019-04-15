@@ -87,6 +87,9 @@ public class HashUtility {
 
 	/**
 	 * Thomas Wang' 32 bit integer hash function
+	 * 
+	 * @param data
+	 * @return
 	 */
 	public static int twNumberHash32(int data) {
 		data += ~(data << 15);
