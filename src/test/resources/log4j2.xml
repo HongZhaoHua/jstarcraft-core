@@ -27,6 +27,7 @@
 		<Logger name="log4j.logger.com.jstarcraft.core.log" level="DEBUG" />
 		<Logger name="Storage" level="INFO" additivity="false">
 			<AppenderRef ref="Storage" />
+			<AppenderRef ref="Console" />
 		</Logger>
 	</Loggers>
 </Configuration>
