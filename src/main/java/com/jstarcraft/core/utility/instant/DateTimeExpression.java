@@ -46,7 +46,8 @@ abstract public class DateTimeExpression {
 	 * @return
 	 */
 	public LocalDateTime getPreviousDateTime(LocalDateTime dateTime) {
-		return getPreviousDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC)).toLocalDateTime();
+		ZonedDateTime instant = getPreviousDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC));
+		return instant == null ? null : instant.toLocalDateTime();
 	}
 
 	/**
@@ -56,7 +57,8 @@ abstract public class DateTimeExpression {
 	 * @return
 	 */
 	public LocalDateTime getNextDateTime(LocalDateTime dateTime) {
-		return getNextDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC)).toLocalDateTime();
+		ZonedDateTime instant = getNextDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC));
+		return instant == null ? null : instant.toLocalDateTime();
 	}
 
 	@Override

@@ -44,5 +44,18 @@ public class TermExpressionTestCase {
 			Assert.assertEquals(dateTimes.get(index), dateTime);
 		}
 	}
+	
+	@Test
+	public void testYear() {
+		TermExpression expression = new TermExpression("0 0 0 LiChun,LiXia,LiQiu,LiDong 2020");
+		{
+			LocalDateTime dateTime = expression.getPreviousDateTime(dateTimes.get(0));
+			Assert.assertNull(dateTime);
+		}
+		{
+			LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
+			Assert.assertNull(dateTime);
+		}
+	}
 
 }

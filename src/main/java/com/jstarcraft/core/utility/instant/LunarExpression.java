@@ -208,7 +208,7 @@ public class LunarExpression extends DateTimeExpression {
 					year--;
 					year = years.previousSetBit(year - LunarDate.MINIMUM_YEAR);
 					if (year == -1) {
-						throw new IllegalArgumentException();
+						return null;
 					}
 					year += LunarDate.MINIMUM_YEAR;
 				}
@@ -217,6 +217,9 @@ public class LunarExpression extends DateTimeExpression {
 			}
 			size = LunarDate.getDaySize(year, leap, month);
 		} while (day > size);
+		if (!years.get(year - LunarDate.MINIMUM_YEAR)) {
+			return null;
+		}
 		lunar = new LunarDate(year, leap, month, day);
 		SolarDate solar = lunar.getSolar();
 		return ZonedDateTime.of(solar.getDate(), LocalTime.of(hour, minute, second), nowDateTime.getZone());
@@ -282,7 +285,7 @@ public class LunarExpression extends DateTimeExpression {
 				}
 				year = years.nextSetBit(year - LunarDate.MINIMUM_YEAR);
 				if (year == -1) {
-					throw new IllegalArgumentException();
+					return null;
 				}
 				year += LunarDate.MINIMUM_YEAR;
 				// 一定非闰月
@@ -290,6 +293,9 @@ public class LunarExpression extends DateTimeExpression {
 			}
 			size = LunarDate.getDaySize(year, leap, month);
 		} while (day > size);
+		if (!years.get(year - LunarDate.MINIMUM_YEAR)) {
+			return null;
+		}
 		lunar = new LunarDate(year, leap, month, day);
 		SolarDate solar = lunar.getSolar();
 		return ZonedDateTime.of(solar.getDate(), LocalTime.of(hour, minute, second), nowDateTime.getZone());

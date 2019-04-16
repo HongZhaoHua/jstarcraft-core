@@ -57,5 +57,18 @@ public class SolarExpressionTestCase {
 			Assert.assertEquals(dateTimes.get(index), dateTime);
 		}
 	}
+	
+	@Test
+	public void testYear() {
+		SolarExpression expression = new SolarExpression("0 0 12 1,30 * ? 2020");
+		{
+			LocalDateTime dateTime = expression.getPreviousDateTime(dateTimes.get(0));
+			Assert.assertNull(dateTime);
+		}
+		{
+			LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
+			Assert.assertNull(dateTime);
+		}
+	}
 
 }

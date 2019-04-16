@@ -191,7 +191,7 @@ public class TermExpression extends DateTimeExpression {
 		}
 		year = years.previousSetBit(year - TermType.MINIMUM_YEAR);
 		if (year == -1) {
-			throw new IllegalArgumentException();
+			return null;
 		}
 		year += TermType.MINIMUM_YEAR;
 		return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), nowDateTime.getZone());
@@ -246,7 +246,7 @@ public class TermExpression extends DateTimeExpression {
 		}
 		year = years.nextSetBit(year - TermType.MINIMUM_YEAR);
 		if (year == -1) {
-			throw new IllegalArgumentException();
+			return null;
 		}
 		year += TermType.MINIMUM_YEAR;
 		return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), nowDateTime.getZone());
