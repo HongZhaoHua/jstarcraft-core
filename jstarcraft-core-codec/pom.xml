@@ -20,6 +20,14 @@
 			<artifactId>jstarcraft-core-common</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- 编解码框架依赖 -->
+		<!-- Kryo -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>4.0.2</version>
+		</dependency>
 
 		<!-- 测试框架依赖 -->
 		<dependency>

@@ -2,8 +2,8 @@ package com.jstarcraft.core.utility.instant;
 
 import java.time.LocalDate;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
  * 节气类型
@@ -46,7 +46,7 @@ public enum TermType {
 	XiaoXue(23.08F, 22.36F), // 小雪
 	DaXue(7.9F, 7.18F), // 大雪
 	DongZhi(22.6F, 21.94F); // 冬至
-	
+
 	/**
 	 * 支持的最小年份
 	 */
@@ -59,29 +59,29 @@ public enum TermType {
 
 	private final static double d = 0.2422D;
 
-	private final static Table<Integer, Integer, Integer> table = HashBasedTable.create();
+	private final static Int2IntMap table = new Int2IntOpenHashMap();
 
 	static {
-		table.put(2026, TermType.YuShui.ordinal(), -1);
-		table.put(2084, TermType.ChunFen.ordinal(), 1);
-		table.put(2008, TermType.XiaoMan.ordinal(), 1);
-		table.put(1902, TermType.MangZhong.ordinal(), 1);
-		table.put(1928, TermType.XiaZhi.ordinal(), 1);
-		table.put(1925, TermType.XiaoShu.ordinal(), 1);
-		table.put(2016, TermType.XiaoShu.ordinal(), 1);
-		table.put(1922, TermType.DaShu.ordinal(), 1);
-		table.put(2002, TermType.LiQiu.ordinal(), 1);
-		table.put(1927, TermType.BaiLu.ordinal(), 1);
-		table.put(1942, TermType.QiuFen.ordinal(), 1);
-		table.put(2089, TermType.ShuangJiang.ordinal(), 1);
-		table.put(2089, TermType.LiDong.ordinal(), 1);
-		table.put(1978, TermType.XiaoXue.ordinal(), 1);
-		table.put(1954, TermType.DaXue.ordinal(), 1);
-		table.put(1918, TermType.DongZhi.ordinal(), -1);
-		table.put(2021, TermType.DongZhi.ordinal(), -1);
-		table.put(1982, TermType.XiaoHan.ordinal(), 1);
-		table.put(2019, TermType.XiaoHan.ordinal(), -1);
-		table.put(2082, TermType.DaHan.ordinal(), 1);
+		table.put(2026 * 100 + TermType.YuShui.ordinal(), -1);
+		table.put(2084 * 100 + TermType.ChunFen.ordinal(), 1);
+		table.put(2008 * 100 + TermType.XiaoMan.ordinal(), 1);
+		table.put(1902 * 100 + TermType.MangZhong.ordinal(), 1);
+		table.put(1928 * 100 + TermType.XiaZhi.ordinal(), 1);
+		table.put(1925 * 100 + TermType.XiaoShu.ordinal(), 1);
+		table.put(2016 * 100 + TermType.XiaoShu.ordinal(), 1);
+		table.put(1922 * 100 + TermType.DaShu.ordinal(), 1);
+		table.put(2002 * 100 + TermType.LiQiu.ordinal(), 1);
+		table.put(1927 * 100 + TermType.BaiLu.ordinal(), 1);
+		table.put(1942 * 100 + TermType.QiuFen.ordinal(), 1);
+		table.put(2089 * 100 + TermType.ShuangJiang.ordinal(), 1);
+		table.put(2089 * 100 + TermType.LiDong.ordinal(), 1);
+		table.put(1978 * 100 + TermType.XiaoXue.ordinal(), 1);
+		table.put(1954 * 100 + TermType.DaXue.ordinal(), 1);
+		table.put(1918 * 100 + TermType.DongZhi.ordinal(), -1);
+		table.put(2021 * 100 + TermType.DongZhi.ordinal(), -1);
+		table.put(1982 * 100 + TermType.XiaoHan.ordinal(), 1);
+		table.put(2019 * 100 + TermType.XiaoHan.ordinal(), -1);
+		table.put(2082 * 100 + TermType.DaHan.ordinal(), 1);
 	}
 
 	/** 世纪值 */
@@ -122,10 +122,8 @@ public enum TermType {
 		// 步骤3:使用公式[Y*D+C]-L计算
 		int day = (int) (y * d + c) - l;
 		// 步骤4:加上特殊的年分的节气偏移量
-		Integer shift = table.get(year, ordinal());
-		if (shift != null) {
-			day += shift;
-		}
+		int shift = table.get(year * 100+ ordinal());
+		day += shift;
 		return LocalDate.of(year, month, day);
 	}
 

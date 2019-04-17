@@ -17,14 +17,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.jstarcraft</groupId>
-			<artifactId>jstarcraft-core-common</artifactId>
+			<artifactId>jstarcraft-core-codec</artifactId>
 			<version>1.0</version>
 		</dependency>
 		
+		<!-- 通讯框架依赖 -->
 		<dependency>
-			<groupId>com.jstarcraft</groupId>
-			<artifactId>jstarcraft-core-codec</artifactId>
-			<version>1.0</version>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.34.Final</version>
 		</dependency>
 
 		<!-- 测试框架依赖 -->

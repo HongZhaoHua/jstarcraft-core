@@ -17,12 +17,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.jstarcraft</groupId>
-			<artifactId>jstarcraft-core-common</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.jstarcraft</groupId>
 			<artifactId>jstarcraft-core-orm</artifactId>
 			<version>1.0</version>
 		</dependency>

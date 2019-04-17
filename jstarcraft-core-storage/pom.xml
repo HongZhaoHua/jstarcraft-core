@@ -11,20 +11,33 @@
 	</parent>
 	<artifactId>jstarcraft-core-storage</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>jstarcraft-core-storage</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.jstarcraft</groupId>
-			<artifactId>jstarcraft-core-common</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.jstarcraft</groupId>
 			<artifactId>jstarcraft-core-script</artifactId>
 			<version>1.0</version>
+		</dependency>
+
+		<!-- 仓储框架依赖 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.9.8</version>
 		</dependency>
 
 		<!-- 测试框架依赖 -->
