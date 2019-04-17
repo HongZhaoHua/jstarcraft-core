@@ -1,0 +1,14 @@
+package com.jstarcraft.core.utility.clazz;
+
+import java.util.concurrent.Callable;
+
+public class MockTask<V> implements Callable<V> {
+
+	private V value;
+
+	@Override
+	public V call() throws Exception {
+		return value;
+	}
+
+}

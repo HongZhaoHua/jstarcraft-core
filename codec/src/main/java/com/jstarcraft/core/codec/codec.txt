@@ -1,0 +1,16 @@
+编解码框架,支持的编解码类型(CSV, Json, Kryo, ProtocolBufferX)
+
+1.支持所有具有无参数构造器的类型,没有无参数构造器的类型无法注册到框架.
+2.对象,枚举,数组,集合,映射都必须为具体类型,不能有通配符.
+
+Java Type详解:
+http://loveshisong.cn/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/2016-02-16-Type%E8%AF%A6%E8%A7%A3.html
+
+Kryo序列化及反序列化对象:
+http://nettm.blog.51cto.com/4841905/1702453
+
+Java序列化框架性能比较:
+http://colobu.com/2014/08/26/java-serializer-comparison/
+
+透过byte数组简单分析Java序列化、Kryo、ProtoBuf序列化:
+http://www.solinx.co/archives/377

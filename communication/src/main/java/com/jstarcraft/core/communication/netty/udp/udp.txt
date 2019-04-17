@@ -1,0 +1,11 @@
+netty的Udp单播、组播、广播实例+Java的Udp单播、组播、广播实例
+https://www.cnblogs.com/jetHu/p/7010844.html
+
+单播，组播(多播)，广播以及任播:
+http://colobu.com/2014/10/21/udp-and-unicast-multicast-broadcast-anycast/
+
+Netty之UDP协议开发:
+https://blog.csdn.net/mffandxx/article/details/53264172
+
+netty4 UDP的使用:
+https://blog.csdn.net/KokJuis/article/details/72846388

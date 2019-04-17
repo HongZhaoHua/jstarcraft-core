@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.jstarcraft.com/core/communication" xmlns="http://www.jstarcraft.com/core/communication" elementFormDefault="qualified">
+	<!-- communication -->
+	<xsd:element name="configuration">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="receiver" type="receiver" />
+				<xsd:element name="sender" type="sender" />
+				<xsd:choice minOccurs="1" maxOccurs="unbounded">
+					<xsd:element name="strategy" type="strategy" />
+				</xsd:choice>
+				<xsd:element name="scan" type="scan" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+			<xsd:attribute name="reference" type="xsd:string" use="required" />
+			<xsd:attribute name="side" type="xsd:string" use="required" />
+			<xsd:attribute name="wait" type="xsd:integer" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- receiver -->
+	<xsd:complexType name="receiver">
+		<xsd:attribute name="reference" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<!-- sender -->
+	<xsd:complexType name="sender">
+		<xsd:attribute name="reference" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<!-- scan -->
+	<xsd:complexType name="scan">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="package" type="package" />
+			</xsd:choice>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="class" type="class" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- package -->
+	<xsd:complexType name="package">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<!-- class -->
+	<xsd:complexType name="class">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<!-- strategy -->
+	<xsd:complexType name="strategy">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="reference" type="xsd:string" use="required" />
+	</xsd:complexType>
+</xsd:schema>

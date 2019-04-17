@@ -1,0 +1,67 @@
+prototype:
+基于扫描构建通讯格式文件.
+支持通讯格式校验.
+支持忽略扫描,使用指定通讯格式通讯.
+
+框架核心流程
+
+Netty		<-->		SessionManager		<-->		CommandManager		<-->		Application
+
+command:
+ServerCommand注解的方法必须在服务端实现,支持同步和异步两种模式.
+ClientCommand注解的方法必须在客户端实现,支持异步模式.
+异步模式的方法支持ExecuteCommand注解.(参数与返回值).
+注意:如果异步模式的方法存在返回值,那么必须使用ExecuteCommand注解.
+	一次调用链中最多只能有一个ExecuteCommand.
+	
+
+
+内置机制:
+存在隐式同步方法(heartbeat signal),用于保持会话与连接.
+注意:短会话中异步模式的方法,依赖于心跳推拉消息.
+	同步模式的方法兼容HTTP状态码的异常机制.(4xx与5xx)
+	异步模式的方法执行可能会延迟且不会等待.
+
+争议:ExecuteCommand是否可以指定模块以外的指令.
+注意:ExecuteCommand实际是基于会话的反向调用,客户端支持多会话是必须的.
+	为了支持多会话,客户端与服务端需要有会话机制保证会话是一致的.(具体职责交给Sender与Receiver实现)
+
+Netty会话协调机制:
+利用心跳机制.
+由于客户端在两种条件(ClientFactory/ClientSender)下会触发连接,服务端在两种条件下(ChannelInboundHandler/ServerReceiver)会触发心跳消息.
+会话标识(小于0时,代表客户端可以根据需要设置会话标识;大于0时,代表客户端必须按照服务端设置会话标识;)
+设置会话标识必须大于0;
+
+
+ClientReceiver永远以SocketMessage的sessionId为基础构建或者修改SocketSession.
+ClientSender检测到SocketSession的Channel没有连接的时候,会根据RemoteAddress构建Channel再发送SocketMessage.(短连接机制/长连接机制)
+ServerReceiver根据SocketMessage与Channel的信息决定是否构建或者修改SocketSession.(尽量以旧会话替代新会话),替代如何通知客户端?
+
+session:
+SocketSession相当于消息队列管理器与上下文.
+SocketSessionManager相当于会话管理器,管理SocketSession的生命周期.
+SocketSessionManager管理着4种类型线程.
+
+被动:receiverThread负责对消息验证与过滤,并pushReceiveMessage到指定会话中.
+主动:dispatcherThread负责从会话中pullReceiveMessage并根据策略分配给适当的workerThread(各种具体的线程策略由此处切入)
+被动:workerThread负责具体的消息处理,并根据需要将处理结果pushSendMessage到适当的会话中.
+被动:senderThread负责在会话连接时,从指定会话中pullSendMessage.
+
+注意,考虑receiverThread和senderThread负责处理心跳还是交给proberThread?
+
+SocketSession的生命周期与Channel没有关系.
+生命周期内可以与N个Channel执行attach或者detach.
+Channel与SessionManager均使用弱引用持有SocketSession.
+由一个DelayedHashMap持有SocketSession的强引用并分桶,只有特定操作才会更新分桶,指定时间段内没有使用的SocketSession会按照整分桶丢弃.
+InboundHandler或者OutboundHandler,如果检测到Channel的SocketSession消失,则关闭Channel.
+
+备注:
+不会出现需要延迟关闭会话的设计,把它当作Session生命周期.
+也不会出现已经关闭Session忽然被Channel打开.
+
+pipeline:
+概念:以上一个指令的输出作为下一个指令的输入.
+
+考虑:支持多个SocketSession共享一个Channel,多个SocketSession共享一个SocketMessage,实现复用.
+
+SocketModule和SocketCommand支持命名模式,以准备RESTful架构.

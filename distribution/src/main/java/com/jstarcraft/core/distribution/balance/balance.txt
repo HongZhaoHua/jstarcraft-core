@@ -1,0 +1,5 @@
+对一致性Hash算法，Java代码实现的深入研究:
+http://www.cnblogs.com/xrq730/p/5186728.html
+
+一致性Hash(Consistent Hashing)原理剖析:
+https://blog.csdn.net/lihao21/article/details/54193868

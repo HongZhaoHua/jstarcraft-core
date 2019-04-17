@@ -1,0 +1,17 @@
+Spring Bean的生命周期:
+http://www.cnblogs.com/zrtqsk/p/3735273.html
+
+AspectJ切入点语法详解:
+http://sishuok.com/forum/posts/list/281.html
+
+关于 Spring AOP (AspectJ) 你该知晓的一切:
+https://blog.csdn.net/javazejian/article/details/56267036
+
+Spring4揭秘:
+https://blog.csdn.net/u011179993/column/info/spring4-secret
+
+Bean Definition从加载,解析,处理,注册到BeanFactory的过程:
+http://www.cnblogs.com/GooPolaris/p/8169611.html
+
+BeanDefinition的创建(BeanDefinitionHolder的创建):
+https://www.cnblogs.com/GooPolaris/p/8177989.html

@@ -1,0 +1,11 @@
+关于如何让线程主动让出CPU和如何让线程主动放弃锁:
+https://my.oschina.net/hosee/blog/673944
+
+Java并发包源码学习之AQS框架:
+http://www.cnblogs.com/zhanjindong/p/java-concurrent-package-aqs-overview.html
+
+并发框架Disruptor译文:
+http://ifeve.com/disruptor/
+
+高性能队列——Disruptor:
+https://tech.meituan.com/disruptor.html
