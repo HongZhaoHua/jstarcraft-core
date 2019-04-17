@@ -73,19 +73,6 @@
 			</dependency>
 
 			<!-- 编解码框架依赖 -->
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.9.3</version>
-			</dependency>
-
-			<!-- CSV -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-csv</artifactId>
-				<version>1.6</version>
-			</dependency>
-
 			<!-- JSON -->
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -170,12 +157,6 @@
 				<version>2.11.2</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-text</artifactId>
-				<version>1.6</version>
-			</dependency>
-
 			<!-- 对象关系映射框架依赖 -->
 			<dependency>
 				<groupId>com.sleepycat</groupId>
@@ -211,12 +192,6 @@
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus</artifactId>
 				<version>3.1.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>2.6</version>
 			</dependency>
 
 			<!-- 脚本框架依赖 -->
@@ -258,6 +233,31 @@
 				<version>8.2.2</version>
 			</dependency>
 
+			<!-- CSV -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-csv</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.8.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-text</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.9.3</version>
+			</dependency>
+
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
@@ -265,9 +265,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>3.8.1</version>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
 			</dependency>
 
 			<!-- CRON -->
@@ -282,49 +282,42 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>5.1.6.RELEASE</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-dbcp2</artifactId>
 				<version>2.6.0</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>1.4.199</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>8.0.15</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>de.flapdoodle.embed</groupId>
 				<artifactId>de.flapdoodle.embed.mongo</artifactId>
 				<version>2.2.0</version>
-				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.curator</groupId>
 				<artifactId>curator-test</artifactId>
 				<version>4.2.0</version>
-				<scope>test</scope>
 			</dependency>
 
 			<!-- 桥接器:Slf4j使用Log4j2 -->
@@ -332,7 +325,6 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-slf4j-impl</artifactId>
 				<version>2.11.2</version>
-				<scope>test</scope>
 			</dependency>
 
 			<!-- 桥接器:Commons Logging使用Log4j2 -->
@@ -340,7 +332,6 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-jcl</artifactId>
 				<version>2.11.2</version>
-				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

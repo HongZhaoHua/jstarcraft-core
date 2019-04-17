@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>jstarcraft-core-cache</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<name>jstarcraft-core-cache</name>
 
 	<dependencies>
