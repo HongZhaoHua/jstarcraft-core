@@ -12,15 +12,15 @@
 	<name>core</name>
 	
 	<modules>
-		<module>cache</module>
-		<module>codec</module>
-		<module>common</module>
-		<module>communication</module>
-		<module>distribution</module>
-		<module>log</module>
-		<module>orm</module>
-		<module>script</module>
-		<module>storage</module>
+		<module>jstarcraft-core-cache</module>
+		<module>jstarcraft-core-codec</module>
+		<module>jstarcraft-core-common</module>
+		<module>jstarcraft-core-communication</module>
+		<module>jstarcraft-core-distribution</module>
+		<module>jstarcraft-core-log</module>
+		<module>jstarcraft-core-orm</module>
+		<module>jstarcraft-core-script</module>
+		<module>jstarcraft-core-storage</module>
 	</modules>
 
 	<properties>
