@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.codec;
+package com.jstarcraft.core.utility.conversion.csv;
 
 import java.lang.reflect.Type;
 import java.time.Instant;

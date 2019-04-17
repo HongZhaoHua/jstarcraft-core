@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.codec;
+package com.jstarcraft.core.utility.conversion.json;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
