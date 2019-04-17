@@ -27,8 +27,8 @@ import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.utility.IdentityObject;
-import com.jstarcraft.core.utility.InstantUtility;
 import com.jstarcraft.core.utility.StringUtility;
+import com.jstarcraft.core.utility.instant.SolarExpression;
 
 /**
  * 定时持久策略
@@ -58,7 +58,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 	/** 状态 */
 	private AtomicReference<CacheState> state = new AtomicReference<>(null);
 	/** CRON表达式 */
-	private String cron;
+	private SolarExpression expression;
 	/** 持久时间点 */
 	private Instant persistTime;
 	/** 监听器 */
@@ -81,8 +81,8 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 		this.accessor = accessor;
 		this.information = information;
 		this.state = state;
-		this.cron = cron;
-		this.persistTime = InstantUtility.getInstantAfter(cron, Instant.now());
+		this.expression = new SolarExpression(cron);
+		this.persistTime = expression.getNextDateTime(Instant.now());
 	}
 
 	@Override
@@ -375,7 +375,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 					break;
 				}
 			} else {
-				persistTime = InstantUtility.getInstantAfter(cron, Instant.now());
+				persistTime = expression.getNextDateTime(Instant.now());
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("定时策略[{}]的执行时间点为[{}]", name, LocalDateTime.ofInstant(persistTime, ZoneId.systemDefault()));
 				}

@@ -35,8 +35,8 @@ public class Log4Java1StorageTestCase {
 	public void testLogFile() throws Exception {
 		String type = "type";
 		String file = "test";
-		File oldLog = new File("logs/" + type + "/2017-01-01/" + file + ".00-00-00.log");
-		File newLog = new File("logs/" + type + "/2017-01-01/" + file + ".00-05-00.log");
+		File oldLog = new File("logs1/" + type + "/2017-01-01/" + file + ".00-00-00.log");
+		File newLog = new File("logs1/" + type + "/2017-01-01/" + file + ".00-05-00.log");
 		FileUtils.deleteQuietly(oldLog);
 		FileUtils.deleteQuietly(newLog);
 

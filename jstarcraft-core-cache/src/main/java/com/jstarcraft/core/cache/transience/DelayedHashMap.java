@@ -2,7 +2,6 @@ package com.jstarcraft.core.cache.transience;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,7 +12,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.jstarcraft.core.utility.InstantUtility;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 
@@ -36,7 +34,8 @@ public class DelayedHashMap<K, V> implements Map<K, V> {
 	/** 定时队列 */
 	private static final SensitivityQueue<DelayElement<DelayedHashMap<?, ?>>> QUEUE = new SensitivityQueue<>(FIX_TIME);
 	/** 任务线程 */
-	private static final ExecutorService EXECUTORS = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	private static final ExecutorService EXECUTORS = Executors
+			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	/** 清理线程 */
 	private static final Thread CLEANER = new Thread(new Runnable() {
 
@@ -221,9 +220,10 @@ public class DelayedHashMap<K, V> implements Map<K, V> {
 
 	public static DelayedHashMap instanceOf(int expire, int segment, TransienceMonitor listener) {
 		DelayedHashMap<?, ?> instance = new DelayedHashMap<>(expire, segment, listener);
-		Date date = InstantUtility.addMilliseconds(new Date(), instance.waitTime);
-		DelayElement<DelayedHashMap<?, ?>> element = new DelayElement(instance, date);
+		Instant instant = Instant.now().plusMillis(instance.waitTime);
+		DelayElement<DelayedHashMap<?, ?>> element = new DelayElement(instance, instant);
 		QUEUE.put(element);
 		return instance;
 	}
+
 }

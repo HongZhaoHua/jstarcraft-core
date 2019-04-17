@@ -29,11 +29,11 @@ import org.apache.logging.log4j.core.config.plugins.PluginBuilderFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 
 import com.jstarcraft.core.log.exception.LogException;
-import com.jstarcraft.core.utility.InstantUtility;
 import com.jstarcraft.core.utility.JsonUtility;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.csv.CsvUtility;
+import com.jstarcraft.core.utility.instant.SolarExpression;
 
 /**
  * Log4J2日志器
@@ -97,7 +97,7 @@ public class Log4Java2Storage extends AbstractAppender {
 	private static final String suffix = "}";
 
 	/** CRON表达式 */
-	private final String cron;
+	private SolarExpression expression;
 
 	/** 格式 */
 	private final Format format;
@@ -156,7 +156,7 @@ public class Log4Java2Storage extends AbstractAppender {
 	});
 
 	private String getPath(Instant instant, Object... parameters) {
-		instant = InstantUtility.getInstantBefore(cron, instant);
+		instant = expression.getPreviousDateTime(instant);
 		Map<String, Object> context = new HashMap<>();
 		context.put(String.valueOf($), instant);
 		for (int index = 0; index < parameters.length; index++) {
@@ -218,7 +218,7 @@ public class Log4Java2Storage extends AbstractAppender {
 
 	Log4Java2Storage(final String name, final Filter filter, final Layout<? extends Serializable> layout, boolean ignores, String cron, String format, String names, String path, String zone, String period) {
 		super(name, filter, layout, ignores, Property.EMPTY_ARRAY);
-		this.cron = cron;
+		this.expression = new SolarExpression(cron);
 		this.format = Format.valueOf(format);
 		if (names.indexOf($) != -1) {
 			throw new LogException(names);

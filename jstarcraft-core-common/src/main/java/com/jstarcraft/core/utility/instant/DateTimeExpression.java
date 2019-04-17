@@ -1,5 +1,6 @@
 package com.jstarcraft.core.utility.instant;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -59,6 +60,28 @@ abstract public class DateTimeExpression {
 	public LocalDateTime getNextDateTime(LocalDateTime dateTime) {
 		ZonedDateTime instant = getNextDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC));
 		return instant == null ? null : instant.toLocalDateTime();
+	}
+	
+	/**
+	 * 根据指定日期时间获取上一次日期时间
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
+	public Instant getPreviousDateTime(Instant dateTime) {
+		ZonedDateTime instant = getPreviousDateTime(ZonedDateTime.ofInstant(dateTime, ZoneOffset.UTC));
+		return instant == null ? null : instant.toInstant();
+	}
+
+	/**
+	 * 根据指定日期时间获取下一次日期时间
+	 * 
+	 * @param dateTime
+	 * @return
+	 */
+	public Instant getNextDateTime(Instant dateTime) {
+		ZonedDateTime instant = getNextDateTime(ZonedDateTime.ofInstant(dateTime, ZoneOffset.UTC));
+		return instant == null ? null : instant.toInstant();
 	}
 
 	@Override
