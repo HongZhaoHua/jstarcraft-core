@@ -1,5 +1,0 @@
-Hibernate HQL[DEPRECATION] Encountered positional parameter 占位符问题:
-https://blog.csdn.net/bin594505536/article/details/45622673
-
-How to map camelCase properties to snake_case column names with Hibernate
-https://vladmihalcea.com/map-camel-case-properties-snake-case-column-names-hibernate/
