@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
+import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.communication.annotation.CommandVariable;
 import com.jstarcraft.core.communication.exception.CommunicationDefinitionException;
 import com.jstarcraft.core.communication.message.CommunicationMessage;
@@ -12,7 +13,6 @@ import com.jstarcraft.core.communication.message.MessageBody;
 import com.jstarcraft.core.communication.message.MessageHead;
 import com.jstarcraft.core.communication.message.MessageTail;
 import com.jstarcraft.core.communication.session.CommunicationSession;
-import com.jstarcraft.core.utility.ConversionUtility;
 import com.jstarcraft.core.utility.PropertyUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.TypeUtility;

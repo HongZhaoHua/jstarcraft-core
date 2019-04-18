@@ -3,6 +3,7 @@ package com.jstarcraft.core.storage.csv;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
 import com.jstarcraft.core.storage.Storage;
 import com.jstarcraft.core.storage.annotation.StorageConfiguration;
 import com.jstarcraft.core.storage.annotation.StorageId;
@@ -10,7 +11,6 @@ import com.jstarcraft.core.storage.annotation.StorageIndex;
 import com.jstarcraft.core.storage.annotation.StorageReference;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
 
 @StorageConfiguration
 @CsvConfiguration({ "id", "name", "age", "sex", "object", "array", "map", "list", "childId" })

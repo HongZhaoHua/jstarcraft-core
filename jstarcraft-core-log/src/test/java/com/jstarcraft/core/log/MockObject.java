@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
+import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
 
 @CsvConfiguration({ "id", "name", "map" })
 public class MockObject {

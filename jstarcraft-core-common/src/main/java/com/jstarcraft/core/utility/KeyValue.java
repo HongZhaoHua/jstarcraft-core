@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.utility.csv.annotation.CsvConfiguration;
+import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
 
 /**
  * 键值对

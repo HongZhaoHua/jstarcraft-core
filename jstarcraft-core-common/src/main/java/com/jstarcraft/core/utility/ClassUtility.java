@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
 
+import com.jstarcraft.core.common.compilation.MemoryClassLoader;
+
 /**
  * 类型工具
  * 
