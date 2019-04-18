@@ -63,9 +63,9 @@
 
 			<!-- 缓存框架依赖 -->
 			<dependency>
-				<groupId>com.googlecode.concurrentlinkedhashmap</groupId>
-				<artifactId>concurrentlinkedhashmap-lru</artifactId>
-				<version>1.4.2</version>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.24.1-GA</version>
 			</dependency>
 
 			<!-- 编解码框架依赖 -->
@@ -223,6 +223,12 @@
 			</dependency>
 
 			<!-- 工具框架依赖 -->
+			<dependency>
+				<groupId>com.googlecode.concurrentlinkedhashmap</groupId>
+				<artifactId>concurrentlinkedhashmap-lru</artifactId>
+				<version>1.4.2</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>it.unimi.dsi</groupId>
 				<artifactId>fastutil</artifactId>

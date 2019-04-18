@@ -18,6 +18,22 @@
 			<version>1.0</version>
 		</dependency>
 
+		<!-- 日志框架依赖 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+
 		<!-- 测试框架依赖 -->
 		<dependency>
 			<groupId>junit</groupId>
