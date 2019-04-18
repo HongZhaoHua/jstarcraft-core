@@ -9,10 +9,9 @@
 		<artifactId>jstarcraft-core</artifactId>
 		<version>1.0</version>
 	</parent>
+
 	<artifactId>jstarcraft-core-storage</artifactId>
 	<packaging>jar</packaging>
-
-	<name>jstarcraft-core-storage</name>
 
 	<dependencies>
 		<dependency>

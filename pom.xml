@@ -9,8 +9,6 @@
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
-	<name>core</name>
-
 	<modules>
 		<module>jstarcraft-core-cache</module>
 		<module>jstarcraft-core-codec</module>

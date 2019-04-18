@@ -9,10 +9,9 @@
 		<artifactId>jstarcraft-core</artifactId>
 		<version>1.0</version>
 	</parent>
+
 	<artifactId>jstarcraft-core-codec</artifactId>
 	<packaging>jar</packaging>
-	
-	<name>jstarcraft-core-codec</name>
 
 	<dependencies>
 		<dependency>
@@ -20,7 +19,7 @@
 			<artifactId>jstarcraft-core-common</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<!-- 编解码框架依赖 -->
 		<!-- Kryo -->
 		<dependency>

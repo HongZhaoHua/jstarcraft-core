@@ -9,10 +9,9 @@
 		<artifactId>jstarcraft-core</artifactId>
 		<version>1.0</version>
 	</parent>
+
 	<artifactId>jstarcraft-core-distribution</artifactId>
 	<packaging>jar</packaging>
-	
-	<name>jstarcraft-core-distribution</name>
 
 	<dependencies>
 		<dependency>
@@ -20,7 +19,7 @@
 			<artifactId>jstarcraft-core-orm</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<!-- 分布式框架依赖 -->
 		<dependency>
 			<groupId>com.hazelcast</groupId>

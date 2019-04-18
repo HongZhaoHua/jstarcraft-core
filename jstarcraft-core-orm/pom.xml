@@ -9,10 +9,9 @@
 		<artifactId>jstarcraft-core</artifactId>
 		<version>1.0</version>
 	</parent>
+
 	<artifactId>jstarcraft-core-orm</artifactId>
 	<packaging>jar</packaging>
-	
-	<name>jstarcraft-core-orm</name>
 
 	<dependencies>
 		<dependency>
@@ -20,7 +19,7 @@
 			<artifactId>jstarcraft-core-common</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<!-- 对象关系映射框架依赖 -->
 		<dependency>
 			<groupId>com.sleepycat</groupId>

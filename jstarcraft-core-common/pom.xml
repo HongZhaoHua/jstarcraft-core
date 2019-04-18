@@ -9,10 +9,9 @@
 		<artifactId>jstarcraft-core</artifactId>
 		<version>1.0</version>
 	</parent>
+
 	<artifactId>jstarcraft-core-common</artifactId>
 	<packaging>jar</packaging>
-
-	<name>jstarcraft-core-common</name>
 
 	<dependencies>
 		<!-- 切面框架依赖 -->
@@ -100,7 +99,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
