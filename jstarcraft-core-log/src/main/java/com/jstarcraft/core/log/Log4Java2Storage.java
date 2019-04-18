@@ -44,7 +44,8 @@ import com.jstarcraft.core.utility.instant.SolarExpression;
 @Plugin(name = "Storage", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
 public class Log4Java2Storage extends AbstractAppender {
 
-	public static class Builder<B extends Builder<B>> extends AbstractOutputStreamAppender.Builder<B> implements org.apache.logging.log4j.core.util.Builder<Log4Java2Storage> {
+	public static class Builder<B extends Builder<B>> extends AbstractOutputStreamAppender.Builder<B>
+			implements org.apache.logging.log4j.core.util.Builder<Log4Java2Storage> {
 
 		/** CRON表达式 */
 		@PluginBuilderAttribute
@@ -77,7 +78,8 @@ public class Log4Java2Storage extends AbstractAppender {
 
 		@Override
 		public Log4Java2Storage build() {
-			return new Log4Java2Storage(getName(), getFilter(), getOrCreateLayout(), isIgnoreExceptions(), cron, format, names, path, zone, period);
+			return new Log4Java2Storage(getName(), getFilter(), getOrCreateLayout(), isIgnoreExceptions(), cron, format,
+					names, path, zone, period);
 		}
 
 	}
@@ -141,6 +143,7 @@ public class Log4Java2Storage extends AbstractAppender {
 			}
 		}
 
+		@Override
 		public void run() {
 			while (true) {
 				try {
@@ -216,7 +219,8 @@ public class Log4Java2Storage extends AbstractAppender {
 		}
 	}
 
-	Log4Java2Storage(final String name, final Filter filter, final Layout<? extends Serializable> layout, boolean ignores, String cron, String format, String names, String path, String zone, String period) {
+	Log4Java2Storage(final String name, final Filter filter, final Layout<? extends Serializable> layout,
+			boolean ignores, String cron, String format, String names, String path, String zone, String period) {
 		super(name, filter, layout, ignores, Property.EMPTY_ARRAY);
 		this.expression = new SolarExpression(cron);
 		this.format = Format.valueOf(format);
@@ -234,11 +238,13 @@ public class Log4Java2Storage extends AbstractAppender {
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
+			@Override
 			public void run() {
 				try {
 					synchronized (cache) {
 						// TODO 需要想办法等待Spring,防止日志丢失.
-						Iterator<Entry<String, KeyValue<FileOutputStream, Long>>> iterator = cache.entrySet().iterator();
+						Iterator<Entry<String, KeyValue<FileOutputStream, Long>>> iterator = cache.entrySet()
+								.iterator();
 						while (iterator.hasNext()) {
 							Entry<String, KeyValue<FileOutputStream, Long>> term = iterator.next();
 							KeyValue<FileOutputStream, Long> keyValue = term.getValue();

@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.commons.lang3.text.StrLookup;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.lookup.StringLookup;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.spi.LoggingEvent;
 
@@ -110,7 +110,8 @@ public class Log4Java1Storage extends FileAppender {
 			context.put(names[index], parameters[index]);
 		}
 
-		StrSubstitutor substitutor = new StrSubstitutor(new StrLookup() {
+		StringSubstitutor substitutor = new StringSubstitutor(new StringLookup() {
+
 			@Override
 			public String lookup(String key) {
 				try {
@@ -130,6 +131,7 @@ public class Log4Java1Storage extends FileAppender {
 					throw new LogException(exception);
 				}
 			}
+
 		}, prefix, suffix, $);
 
 		return substitutor.replace(path);
