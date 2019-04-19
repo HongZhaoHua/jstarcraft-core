@@ -13,7 +13,13 @@ JStarCraft Core
 
 *****
 
-## JStarCraft Core主要特性如下:
+## JStarCraft Core架构
+
+![core](https://github.com/HongZhaoHua/reference-document/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
+
+*****
+
+## JStarCraft Core特性
 * 1.切面(aspect)
     * 链锁
     * 哈希锁
