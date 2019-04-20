@@ -23,7 +23,7 @@ JStarCraft Core
 * 1.切面(aspect)
     * 链锁
     * 哈希锁
-* 2.缓存(cache)
+* 2.[缓存(cache)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E7%BC%93%E5%AD%98)
     * Cache Aside Pattern
     * Cache as Record Pattern
 * 3.编解码(codec)
@@ -34,7 +34,7 @@ JStarCraft Core
 * 4.通讯(communication)
     * TCP
     * UDP
-* 5.分布式(distribution)
+* 5.[分布式(distribution)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E5%88%86%E5%B8%83%E5%BC%8F)
     * 数据路由
     * 一致性哈希
     * 标识生成策略
@@ -42,7 +42,7 @@ JStarCraft Core
 * 6.日志(log)
     * Log4j 1
     * Log4j 2
-* 7.对象关系映射(orm)
+* 7.[对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
     * 键值数据库(Berkeley DB)
     * 关系型数据库(Hibernate/MyBatis)
     * 文档型数据库(Mongo DB)
