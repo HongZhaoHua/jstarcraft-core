@@ -16,7 +16,7 @@ JStarCraft Core
 ## JStarCraft Core架构
 
 JStarCraft Core框架各个模块之间的关系:
-![core](https://github.com/HongZhaoHua/reference-document/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
+![core](https://github.com/HongZhaoHua/jstarcraft-reference/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
 
 *****
 
