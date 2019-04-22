@@ -34,6 +34,10 @@ JStarCraft Core框架各个模块之间的关系:
     * 转换(conversion)
     * 识别(identification)
     * 日期与时间(instant)
+        * 间隔
+        * 阳历
+        * 阴历
+        * 节气
     * 锁(lockable)
         * 链锁
         * 哈希锁
