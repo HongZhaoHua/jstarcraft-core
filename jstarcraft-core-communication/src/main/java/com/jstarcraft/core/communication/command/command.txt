@@ -6,3 +6,6 @@
 
 Java 8：CompletableFuture终极指南:
 http://www.importnew.com/10815.html
+
+Armeria RPC框架:
+https://line.github.io/armeria/
