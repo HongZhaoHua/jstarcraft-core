@@ -16,7 +16,7 @@ import com.jstarcraft.core.distribution.identity.IdentityFactory;
 import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class IdentityFactoryTestCase {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	protected abstract IdentityFactory getIdentityFactory();
@@ -24,8 +24,10 @@ public abstract class IdentityFactoryTestCase {
 	@Test
 	public void testSequence() {
 		IdentityFactory identityFactory = getIdentityFactory();
-		long sequence = identityFactory.getSequence();
-		Assert.assertThat(identityFactory.getSequence(), CoreMatchers.equalTo(sequence + 1));
+		for (int index = 0; index < 1000; index++) {
+			long sequence = identityFactory.getSequence();
+			Assert.assertThat(identityFactory.getSequence(), CoreMatchers.equalTo(sequence + 1));
+		}
 	}
 
 	@Test
