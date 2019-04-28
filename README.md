@@ -22,8 +22,8 @@ JStarCraft Core框架各个模块之间的关系:
 
 ## JStarCraft Core特性
 * [1.缓存(cache)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E7%BC%93%E5%AD%98)
-    * Cache Aside Pattern
-    * Cache as Record Pattern
+    * Cache Aside
+    * Cache as Record
 * 2.编解码(codec)
     * CSV
     * JSON
