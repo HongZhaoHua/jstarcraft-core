@@ -14,35 +14,30 @@ public class IntervalExpressionTestCase {
 		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 0, 15));
 		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 0, 30));
 		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 0, 45));
+		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 1, 0));
+		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 1, 15));
+		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 1, 30));
+		dateTimes.add(LocalDateTime.of(2020, 1, 1, 0, 1, 45));
 	}
 
 	@Test
 	public void testGetPreviousDateTime() {
 		{
-			IntervalExpression expression = new IntervalExpression("0 0 0 1 1 2020 15");
+			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 15");
 
-			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 0);
+			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 2, 0);
 			for (int index = dateTimes.size() - 1; index > 0; index--) {
 				dateTime = expression.getPreviousDateTime(dateTime);
 				Assert.assertEquals(dateTimes.get(index), dateTime);
 			}
 			
-			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 55);
-			for (int index = dateTimes.size() - 1; index > 0; index--) {
-				dateTime = expression.getPreviousDateTime(dateTime);
-				Assert.assertEquals(dateTimes.get(index), dateTime);
-			}
-		}
-		{
-			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 -15");
-
-			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 0);
+			dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 59);
 			for (int index = dateTimes.size() - 1; index > 0; index--) {
 				dateTime = expression.getPreviousDateTime(dateTime);
 				Assert.assertEquals(dateTimes.get(index), dateTime);
 			}
 			
-			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 55);
+			dateTime = LocalDateTime.of(2020, 1, 1, 0, 1, 46);
 			for (int index = dateTimes.size() - 1; index > 0; index--) {
 				dateTime = expression.getPreviousDateTime(dateTime);
 				Assert.assertEquals(dateTimes.get(index), dateTime);
@@ -53,7 +48,7 @@ public class IntervalExpressionTestCase {
 	@Test
 	public void testGetNextDateTime() {
 		{
-			IntervalExpression expression = new IntervalExpression("0 0 0 1 1 2020 15");
+			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 15");
 
 			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
 			for (int index = 0, size = dateTimes.size(); index < size; index++) {
@@ -61,22 +56,13 @@ public class IntervalExpressionTestCase {
 				Assert.assertEquals(dateTimes.get(index), dateTime);
 			}
 			
-			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 5);
-			for (int index = 0, size = dateTimes.size(); index < size; index++) {
-				dateTime = expression.getNextDateTime(dateTime);
-				Assert.assertEquals(dateTimes.get(index), dateTime);
-			}
-		}
-		{
-			IntervalExpression expression = new IntervalExpression("0 1 0 1 1 2020 -15");
-
-			LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 1);
 			for (int index = 0, size = dateTimes.size(); index < size; index++) {
 				dateTime = expression.getNextDateTime(dateTime);
 				Assert.assertEquals(dateTimes.get(index), dateTime);
 			}
 			
-			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 5);
+			dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 14);
 			for (int index = 0, size = dateTimes.size(); index < size; index++) {
 				dateTime = expression.getNextDateTime(dateTime);
 				Assert.assertEquals(dateTimes.get(index), dateTime);

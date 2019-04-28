@@ -35,42 +35,31 @@ public class IntervalExpression extends DateTimeExpression {
 			int year = Integer.parseInt(fields[5]);
 			this.reference = LocalDateTime.of(year, month, day, hour, minute, second);
 			this.iterval = Integer.parseInt(fields[6]);
+			assert iterval > 0;
 		}
 	}
 
 	@Override
 	public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
-		int step = Math.abs(iterval);
-		if (iterval > 0) {
-			// 日期时间必须晚于参考点
-			assert !dateTime.isBefore(reference.atZone(dateTime.getZone()));
-			long duration = ChronoUnit.SECONDS.between(reference, dateTime.toLocalDateTime());
-			long shift = (duration - 1) / step * step;
+		long duration = ChronoUnit.SECONDS.between(reference, dateTime.toLocalDateTime());
+		if (duration > 0) {
+			long shift = (duration - 1) / iterval * iterval;
 			return reference.plusSeconds(shift).atZone(dateTime.getZone());
 		} else {
-			// 日期时间必须早于参考点
-			assert !dateTime.isAfter(reference.atZone(dateTime.getZone()));
-			long duration = ChronoUnit.SECONDS.between(dateTime.toLocalDateTime(), reference);
-			long shift = (duration / step + 1) * step;
-			return reference.minusSeconds(shift).atZone(dateTime.getZone());
+			long shift = (duration / iterval - 1) * iterval;
+			return reference.plusSeconds(shift).atZone(dateTime.getZone());
 		}
 	}
 
 	@Override
 	public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
-		int step = Math.abs(iterval);
-		if (iterval > 0) {
-			// 日期时间必须晚于参考点
-			assert !dateTime.isBefore(reference.atZone(dateTime.getZone()));
-			long duration = ChronoUnit.SECONDS.between(reference, dateTime.toLocalDateTime());
-			long shift = (duration / step + 1) * step;
+		long duration = ChronoUnit.SECONDS.between(reference, dateTime.toLocalDateTime());
+		if (duration < 0) {
+			long shift = (duration + 1) / iterval * iterval;
 			return reference.plusSeconds(shift).atZone(dateTime.getZone());
 		} else {
-			// 日期时间必须早于参考点
-			assert !dateTime.isAfter(reference.atZone(dateTime.getZone()));
-			long duration = ChronoUnit.SECONDS.between(dateTime.toLocalDateTime(), reference);
-			long shift = (duration - 1) / step * step;
-			return reference.minusSeconds(shift).atZone(dateTime.getZone());
+			long shift = (duration / iterval + 1) * iterval;
+			return reference.plusSeconds(shift).atZone(dateTime.getZone());
 		}
 	}
 
