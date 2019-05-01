@@ -76,6 +76,5 @@ JStarCraft Core框架各个模块之间的关系:
         * Git
         * HDFS
         * HTTP
-        * Memory
         * SVN
         * ZooKeeper
