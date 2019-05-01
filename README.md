@@ -71,10 +71,11 @@ JStarCraft Core框架各个模块之间的关系:
         * XLSX
         * YAML
     * 路径与流
-        * 文件(File)
+        * Disk
         * FTP
         * Git
         * HDFS
         * HTTP
+        * Memory
         * SVN
         * ZooKeeper
