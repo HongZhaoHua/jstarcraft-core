@@ -18,43 +18,43 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class CacheIdentityFactory implements IdentityFactory {
 
-	public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
+    public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
 
-	/** 标识定义 */
-	private final IdentityDefinition definition;
+    /** 标识定义 */
+    private final IdentityDefinition definition;
 
-	/** 分区 */
-	private final int partition;
+    /** 分区 */
+    private final int partition;
 
-	/** 序列 */
-	private AtomicLong sequence;
+    /** 序列 */
+    private AtomicLong sequence;
 
-	public CacheIdentityFactory(IdentityDefinition definition, int partition, Long current) {
-		List<IdentitySection> sections = definition.getSections();
-		assert sections.size() == 2;
-		this.definition = definition;
-		this.partition = partition;
-		Long maximum = definition.make(partition, -1L);
-		Long minimum = definition.make(partition, 0L);
-		if (current != null) {
-			assert current >= minimum && current < maximum;
-		}
-		this.sequence = new AtomicLong(current == null ? minimum : current);
-	}
+    public CacheIdentityFactory(IdentityDefinition definition, int partition, Long current) {
+        List<IdentitySection> sections = definition.getSections();
+        assert sections.size() == 2;
+        this.definition = definition;
+        this.partition = partition;
+        long maximum = definition.make(partition, -1L);
+        long minimum = definition.make(partition, 0L);
+        if (current != null) {
+            assert current >= minimum && current < maximum;
+        }
+        this.sequence = new AtomicLong(current == null ? minimum : current);
+    }
 
-	@Override
-	public IdentityDefinition getDefinition() {
-		return definition;
-	}
+    @Override
+    public IdentityDefinition getDefinition() {
+        return definition;
+    }
 
-	@Override
-	public int getPartition() {
-		return partition;
-	}
+    @Override
+    public int getPartition() {
+        return partition;
+    }
 
-	@Override
-	public long getSequence() {
-		return sequence.getAndIncrement();
-	}
+    @Override
+    public long getSequence() {
+        return sequence.getAndIncrement();
+    }
 
 }

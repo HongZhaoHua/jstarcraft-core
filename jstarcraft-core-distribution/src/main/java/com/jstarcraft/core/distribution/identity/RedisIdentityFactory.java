@@ -13,62 +13,66 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class RedisIdentityFactory implements IdentityFactory {
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(RedisIdentityFactory.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(RedisIdentityFactory.class);
 
-	public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
+    public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
 
-	/** 步伐 */
-	protected final long step;
+    /** 步伐 */
+    protected final long step;
 
-	/** 序列 */
-	protected long sequence;
+    /** 序列 */
+    protected long sequence;
 
-	/** 限制 */
-	protected long limit;
+    /** 限制 */
+    protected long limit;
 
-	/** 标识定义 */
-	protected final IdentityDefinition definition;
+    /** 标识定义 */
+    protected final IdentityDefinition definition;
 
-	/** 分区 */
-	protected final int partition;
+    /** 分区 */
+    protected final int partition;
 
-	abstract protected long getLimit(long step);
+    protected final long maximum;
 
-	protected RedisIdentityFactory(IdentityDefinition definition, int partition, long step) {
-		List<IdentitySection> sections = definition.getSections();
-		assert sections.size() == 2;
-		this.definition = definition;
-		this.partition = partition;
-		this.step = step;
-	}
+    protected final long minimum;
 
-	@Override
-	public IdentityDefinition getDefinition() {
-		return definition;
-	}
+    abstract protected long getLimit(long step);
 
-	@Override
-	public int getPartition() {
-		return partition;
-	}
+    protected RedisIdentityFactory(IdentityDefinition definition, int partition, long step) {
+        List<IdentitySection> sections = definition.getSections();
+        assert sections.size() == 2;
+        this.definition = definition;
+        this.partition = partition;
+        this.step = step;
+        this.maximum = definition.make(partition, -1L);
+        this.minimum = definition.make(partition, 0L);
+    }
 
-	@Override
-	public synchronized long getSequence() {
-		if (sequence == limit) {
-			limit = getLimit(step);
-			sequence = limit - step;
+    @Override
+    public IdentityDefinition getDefinition() {
+        return definition;
+    }
 
-			Long maximum = definition.make(partition, -1L);
-			Long minimum = definition.make(partition, 0L);
-			Long current = definition.make(partition, sequence);
-			if (current < minimum || current > maximum) {
-				String message = String.format("序列异常,边界范围[{}, {}],当前值{}", minimum, maximum, current);
-				LOGGER.error(message);
-				new RuntimeException(message);
-			}
-		}
-		Long current = definition.make(partition, sequence++);
-		return current;
-	}
+    @Override
+    public int getPartition() {
+        return partition;
+    }
+
+    @Override
+    public synchronized long getSequence() {
+        if (sequence == limit) {
+            limit = getLimit(step);
+            sequence = limit - step;
+
+            long current = definition.make(partition, sequence);
+            if (current < minimum || current > maximum) {
+                String message = String.format("序列异常,边界范围[{}, {}],当前值{}", minimum, maximum, current);
+                LOGGER.error(message);
+                new RuntimeException(message);
+            }
+        }
+        Long current = definition.make(partition, sequence++);
+        return current;
+    }
 
 }
