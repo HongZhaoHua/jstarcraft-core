@@ -8,7 +8,7 @@
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>jstarcraft-core-log</artifactId>
+	<artifactId>jstarcraft-core-trace</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
