@@ -1,4 +1,4 @@
-package com.jstarcraft.core.log.exception;
+package com.jstarcraft.core.trace.log.exception;
 
 import org.apache.logging.log4j.LoggingException;
 

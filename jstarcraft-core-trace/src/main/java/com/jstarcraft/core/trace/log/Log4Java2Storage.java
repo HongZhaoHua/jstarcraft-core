@@ -1,4 +1,4 @@
-package com.jstarcraft.core.log;
+package com.jstarcraft.core.trace.log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +29,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginBuilderFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
-import com.jstarcraft.core.log.exception.LogException;
+import com.jstarcraft.core.trace.log.exception.LogException;
 import com.jstarcraft.core.utility.JsonUtility;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;

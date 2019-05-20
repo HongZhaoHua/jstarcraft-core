@@ -1,4 +1,4 @@
-package com.jstarcraft.core.log;
+package com.jstarcraft.core.trace.log;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -14,7 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
-import com.jstarcraft.core.log.exception.LogException;
+import com.jstarcraft.core.trace.log.exception.LogException;
 
 /**
  * 日志文件测试

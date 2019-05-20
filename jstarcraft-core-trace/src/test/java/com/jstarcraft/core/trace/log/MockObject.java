@@ -1,4 +1,4 @@
-package com.jstarcraft.core.log;
+package com.jstarcraft.core.trace.log;
 
 import java.util.HashMap;
 
