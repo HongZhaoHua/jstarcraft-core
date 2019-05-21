@@ -17,7 +17,7 @@ public class IntervalExpression extends DateTimeExpression {
 	/** 参考日期时间 */
 	private LocalDateTime reference;
 
-	/** 间隔 */
+	/** 间隔(单位:秒) */
 	private int iterval;
 
 	public IntervalExpression(String expression) {
