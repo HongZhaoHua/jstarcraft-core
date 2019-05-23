@@ -1,8 +1,9 @@
-package com.jstarcraft.core.cache.crud;
+package com.jstarcraft.core.cache.crud.hibernate;
 
 import java.util.Collection;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +21,13 @@ import com.jstarcraft.core.cache.MockRegionObject;
 import com.jstarcraft.core.cache.RegionManager;
 import com.jstarcraft.core.cache.annotation.CacheAccessor;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
+import com.jstarcraft.core.cache.crud.berkeley.BerkeleyEntityObject;
+import com.jstarcraft.core.cache.crud.berkeley.BerkeleyRegionObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class CacheCrudTestCase {
+public class HibernateCrudTestCase {
 
 	@Autowired
 	private OrmAccessor accessor;
@@ -34,11 +37,11 @@ public class CacheCrudTestCase {
 
 	/** 用于测试{@link CacheConfiguration} */
 	@CacheAccessor
-	private EntityManager<Integer, MockEntityObject> entityManager;
+	private EntityManager<Integer, HibernateEntityObject> entityManager;
 
 	/** 用于测试{@link CacheConfiguration} */
 	@CacheAccessor
-	private RegionManager<Integer, MockRegionObject> regionManager;
+	private RegionManager<Integer, HibernateRegionObject> regionManager;
 
 	private static int SIZE = 5;
 
@@ -46,24 +49,37 @@ public class CacheCrudTestCase {
 	public void beforeTest() throws Exception {
 		// 此部分数据最初不加载到缓存
 		for (int index = 1; index <= SIZE; index++) {
-			MockEntityObject entity = MockEntityObject.instanceOf(-index, "birdy:" + index, "hong", index, index);
-			accessor.create(MockEntityObject.class, entity);
+		    HibernateEntityObject entity = HibernateEntityObject.instanceOf(-index, "birdy:" + index, "hong", index, index);
+			accessor.create(HibernateEntityObject.class, entity);
 
 			for (int position = 1; position <= SIZE; position++) {
-				MockRegionObject region = MockRegionObject.instanceOf(-(index * SIZE + position), entity.getId());
-				accessor.create(MockRegionObject.class, region);
+			    HibernateRegionObject region = HibernateRegionObject.instanceOf(-(index * SIZE + position), entity.getId());
+				accessor.create(HibernateRegionObject.class, region);
 			}
 		}
 	}
+	
+	@After
+    public void afterTest() throws Exception {
+        for (int index = 1; index <= SIZE; index++) {
+            accessor.delete(HibernateEntityObject.class, -index);
+            accessor.delete(HibernateEntityObject.class, index);
+
+            for (int position = 1; position <= SIZE; position++) {
+                accessor.delete(HibernateRegionObject.class, -(index * SIZE + position));
+                accessor.delete(HibernateRegionObject.class, (index * SIZE + position));
+            }
+        }
+    }
 
 	@Test
 	public void testCRUD() {
 		for (int index = 1; index <= SIZE; index++) {
 			// 测试创建
-			MockEntityObject entity = entityManager.loadInstance(index, new CacheObjectFactory<Integer, MockEntityObject>() {
+		    HibernateEntityObject entity = entityManager.loadInstance(index, new CacheObjectFactory<Integer, HibernateEntityObject>() {
 				@Override
-				public MockEntityObject instanceOf(Integer id) {
-					return MockEntityObject.instanceOf(id, "birdy:" + id, "hong", id, id);
+				public HibernateEntityObject instanceOf(Integer id) {
+					return HibernateEntityObject.instanceOf(id, "birdy:" + id, "hong", id, id);
 				}
 			});
 			if (entity != entityManager.getInstance(entity.getId())) {
@@ -80,16 +96,16 @@ public class CacheCrudTestCase {
 			if (entityManager.getInstance(entity.getId()) != null) {
 				Assert.fail();
 			}
-			entity = entityManager.loadInstance(index, new CacheObjectFactory<Integer, MockEntityObject>() {
+			entity = entityManager.loadInstance(index, new CacheObjectFactory<Integer, HibernateEntityObject>() {
 				@Override
-				public MockEntityObject instanceOf(Integer id) {
-					return MockEntityObject.instanceOf(id, "birdy:" + id, "hong", id, id);
+				public HibernateEntityObject instanceOf(Integer id) {
+					return HibernateEntityObject.instanceOf(id, "birdy:" + id, "hong", id, id);
 				}
 			});
 
 			for (int position = 1; position <= SIZE; position++) {
 				// 测试创建
-				MockRegionObject region = MockRegionObject.instanceOf(index * SIZE + position, entity.getId());
+			    HibernateRegionObject region = HibernateRegionObject.instanceOf(index * SIZE + position, entity.getId());
 				region = regionManager.createInstance(region);
 				cacheIndex = new CacheIndex("owner", entity.getId());
 				if (region != regionManager.getInstance(cacheIndex, region.getId())) {
@@ -101,12 +117,12 @@ public class CacheCrudTestCase {
 				if (regionManager.getInstance(cacheIndex, region.getId()) != null) {
 					Assert.fail();
 				}
-				region = MockRegionObject.instanceOf(index * SIZE + position, entity.getId());
+				region = HibernateRegionObject.instanceOf(index * SIZE + position, entity.getId());
 				region = regionManager.createInstance(region);
 			}
 			// 测试索引
 			cacheIndex = new CacheIndex("owner", index);
-			Collection<MockRegionObject> regions = regionManager.getInstances(cacheIndex);
+			Collection<HibernateRegionObject> regions = regionManager.getInstances(cacheIndex);
 			Assert.assertThat(regions.size(), CoreMatchers.equalTo(SIZE));
 		}
 

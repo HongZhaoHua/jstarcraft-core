@@ -107,9 +107,9 @@ public class JavassistRegionProxy extends JavassistProxy {
 		// _information.getIndexValues(_instance, indexNames);", Map.class.getName()));
 		// }
 		if (returnType != void.class) {
-			methodBuilder.append(StringUtility.format("	value = _instance.{}($$);", method.getName()));
+			methodBuilder.append(StringUtility.format("	value = super.{}($$);", method.getName()));
 		} else {
-			methodBuilder.append(StringUtility.format("	_instance.{}($$);", method.getName()));
+			methodBuilder.append(StringUtility.format("	super.{}($$);", method.getName()));
 		}
 		// TODO 数据变更部分
 		if (cacheChange != null) {
@@ -118,7 +118,7 @@ public class JavassistRegionProxy extends JavassistProxy {
 				// methodBuilder.append(StringUtility.format(" _manager.modifyIndexes(_instance,
 				// newIndexValues, oldIndexValues);"));
 				// }
-				methodBuilder.append(StringUtility.format(" _manager.modifyInstance(_instance);"));
+				methodBuilder.append(StringUtility.format(" _manager.modifyInstance(this);"));
 			} else {
 				if (cacheChange.values().length > 0) {
 					methodBuilder.append(StringUtility.format(" if (changeValues.contains({}.primitiveToWrap(value))) {", ConversionUtility.class.getName()));
@@ -127,7 +127,7 @@ public class JavassistRegionProxy extends JavassistProxy {
 				// methodBuilder.append(StringUtility.format(" _manager.modifyIndexes(_instance,
 				// newIndexValues, oldIndexValues);"));
 				// }
-				methodBuilder.append(StringUtility.format("		_manager.modifyInstance(_instance);"));
+				methodBuilder.append(StringUtility.format("		_manager.modifyInstance(this);"));
 				if (cacheChange.values().length > 0) {
 					methodBuilder.append(StringUtility.format(" }"));
 				}

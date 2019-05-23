@@ -18,7 +18,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>/com/jstarcraft/core/cache/annotation/jdbc.properties</value>
+				<value>/com/jstarcraft/core/cache/crud/hibernate/jdbc.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -27,7 +27,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	<context:annotation-config />
 
 	<!-- 自动包扫描配置 -->
-	<context:component-scan base-package="com.jstarcraft.core.cache" />
+	<context:component-scan base-package="com.jstarcraft.core.cache.crud.hibernate" />
 
 	<!-- 数据源配置 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -40,7 +40,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	<!-- Hibernate配置 -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.jstarcraft.core.cache" />
+		<property name="packagesToScan" value="com.jstarcraft.core.cache.crud.hibernate" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="current_session_context_class">thread</prop>
@@ -71,7 +71,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 		<cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_USED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
 		<cache:persistenceStrategy name="queuePersistenceStrategy" type="QUEUE" parameters="{&quot;size&quot;:&quot;100&quot;}" />
 		<cache:scan>
-			<cache:package name="com.jstarcraft.core.cache" />
+			<cache:package name="com.jstarcraft.core.cache.crud.hibernate" />
 		</cache:scan>
 	</cache:configuration>
 

@@ -99,9 +99,9 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
 
 	@Override
 	public PersistenceElement createInstance(IdentityObject<?> cacheObject) {
-		if (cacheObject instanceof ProxyObject) {
-			cacheObject = ((ProxyObject) cacheObject).getInstance();
-		}
+//		if (cacheObject instanceof ProxyObject) {
+//			cacheObject = ((ProxyObject) cacheObject).getInstance();
+//		}
 		PersistenceElement element = new PersistenceElement(PersistenceOperation.CREATE, cacheObject.getId(), cacheObject);
 		Exception exception = null;
 		synchronized (cacheObject) {
@@ -150,9 +150,9 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
 
 	@Override
 	public PersistenceElement updateInstance(IdentityObject<?> cacheObject) {
-		if (cacheObject instanceof ProxyObject) {
-			cacheObject = ((ProxyObject) cacheObject).getInstance();
-		}
+//		if (cacheObject instanceof ProxyObject) {
+//			cacheObject = ((ProxyObject) cacheObject).getInstance();
+//		}
 		PersistenceElement element = new PersistenceElement(PersistenceOperation.UPDATE, cacheObject.getId(), cacheObject);
 		Exception exception = null;
 		synchronized (cacheObject) {

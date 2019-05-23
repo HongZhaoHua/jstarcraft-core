@@ -13,11 +13,11 @@ import com.jstarcraft.core.utility.IdentityObject;
  */
 public interface ProxyObject {
 
-	/**
-	 * 获取缓存对象
-	 * 
-	 * @return
-	 */
-	IdentityObject getInstance();
+    /**
+     * 获取缓存对象
+     * 
+     * @return
+     */
+//	IdentityObject getInstance();
 
 }
