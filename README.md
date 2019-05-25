@@ -78,3 +78,8 @@ JStarCraft Core框架各个模块之间的关系:
         * HTTP
         * SVN
         * ZooKeeper
+* 9.监控(monitor)
+    * 追踪(trace)
+    * 统计(statistics)
+    * 节流(throttle)
+    * 路由(route)
