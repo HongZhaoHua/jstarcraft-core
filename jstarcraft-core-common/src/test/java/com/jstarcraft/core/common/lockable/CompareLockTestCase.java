@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.lock;
+package com.jstarcraft.core.common.lockable;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.lock.ChainLockable;
-import com.jstarcraft.core.common.lock.CompareLockManager;
+import com.jstarcraft.core.common.lockable.ChainLockable;
+import com.jstarcraft.core.common.lockable.CompareLockManager;
 import com.jstarcraft.core.utility.RandomUtility;
 
 public class CompareLockTestCase {

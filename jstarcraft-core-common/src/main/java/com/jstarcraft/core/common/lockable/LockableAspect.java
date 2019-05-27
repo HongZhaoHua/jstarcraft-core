@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.lock;
+package com.jstarcraft.core.common.lockable;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;

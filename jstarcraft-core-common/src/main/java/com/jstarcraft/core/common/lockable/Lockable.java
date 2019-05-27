@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.lock;
+package com.jstarcraft.core.common.lockable;
 
 /**
  * 可锁定

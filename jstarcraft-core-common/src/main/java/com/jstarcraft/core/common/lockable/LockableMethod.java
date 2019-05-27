@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.lock;
+package com.jstarcraft.core.common.lockable;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

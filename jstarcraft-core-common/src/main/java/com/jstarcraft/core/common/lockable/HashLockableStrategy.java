@@ -1,10 +1,9 @@
-package com.jstarcraft.core.common.lock;
+package com.jstarcraft.core.common.lockable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -14,18 +13,22 @@ import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 
 /**
- * 链锁管理器
+ * 哈希锁管理器
  * 
  * @author Birdy
  */
-public class ChainLockableStrategy implements LockableStrategy {
+public class HashLockableStrategy implements LockableStrategy {
 
-	private static final Logger logger = LoggerFactory.getLogger(ChainLockableStrategy.class);
+	private static final Logger logger = LoggerFactory.getLogger(HashLockableStrategy.class);
+
+	private static final int size = 1000;
+
+	private HashLockable[] lockables;
 
 	/** 参数位置与锁形式(true为锁参数;false为锁元素;) */
 	private Int2BooleanMap configurations;
 
-	public ChainLockableStrategy(Method method) {
+	public HashLockableStrategy(Method method) {
 		this.configurations = new Int2BooleanOpenHashMap();
 		Annotation[][] annotations = method.getParameterAnnotations();
 		for (int index = 0; index < annotations.length; index++) {
@@ -41,6 +44,10 @@ public class ChainLockableStrategy implements LockableStrategy {
 				}
 			}
 		}
+		this.lockables = new HashLockable[size];
+		for (int index = 0; index < size; index++) {
+			this.lockables[index] = new HashLockable();
+		}
 	}
 
 	/**
@@ -50,15 +57,15 @@ public class ChainLockableStrategy implements LockableStrategy {
 	 * @return
 	 */
 	@Override
-	public ChainLockable getLock(Object... arguments) {
-		LinkedList<Comparable> chain = new LinkedList<>();
+	public HashLockable getLock(Object... arguments) {
+		int hash = 0;
 		for (Int2BooleanMap.Entry keyValue : configurations.int2BooleanEntrySet()) {
 			Object argument = arguments[keyValue.getIntKey()];
 			if (argument == null) {
 				continue;
 			}
 			if (keyValue.getBooleanValue()) {
-				chain.add((Comparable) argument);
+				hash += argument.hashCode();
 				continue;
 			}
 			if (argument.getClass().isArray()) {
@@ -67,7 +74,7 @@ public class ChainLockableStrategy implements LockableStrategy {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
@@ -76,7 +83,7 @@ public class ChainLockableStrategy implements LockableStrategy {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
@@ -85,13 +92,14 @@ public class ChainLockableStrategy implements LockableStrategy {
 					if (element == null) {
 						continue;
 					}
-					chain.add((Comparable) element);
+					hash += element.hashCode();
 				}
 				continue;
 			}
 			logger.error("不支持的类型[{}]", argument.getClass().getName());
 		}
-		return ChainLockable.instanceOf(chain.toArray(new Comparable[chain.size()]));
+		hash = Math.abs(hash % size);
+		return lockables[hash];
 	}
 
 }
