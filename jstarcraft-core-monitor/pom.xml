@@ -8,7 +8,7 @@
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>jstarcraft-core-trace</artifactId>
+	<artifactId>jstarcraft-core-monitor</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>

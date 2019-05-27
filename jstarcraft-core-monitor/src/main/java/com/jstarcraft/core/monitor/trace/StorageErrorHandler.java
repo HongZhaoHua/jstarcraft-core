@@ -1,4 +1,4 @@
-package com.jstarcraft.core.trace.log;
+package com.jstarcraft.core.monitor.trace;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.ErrorHandler;
