@@ -13,10 +13,10 @@
         <module>jstarcraft-core-common</module>
         <module>jstarcraft-core-communication</module>
         <module>jstarcraft-core-distribution</module>
+        <module>jstarcraft-core-monitor</module>
         <module>jstarcraft-core-orm</module>
         <module>jstarcraft-core-script</module>
         <module>jstarcraft-core-storage</module>
-        <module>jstarcraft-core-trace</module>
     </modules>
 
     <properties>
