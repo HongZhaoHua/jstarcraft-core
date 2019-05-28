@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.instant;
+package com.jstarcraft.core.common.instant;
 
 import java.time.LocalTime;
 import java.time.ZonedDateTime;

@@ -8,6 +8,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.instant.TermExpression;
+import com.jstarcraft.core.common.instant.TermType;
+
 public class TermExpressionTestCase {
 
 	private List<LocalDateTime> dateTimes = new ArrayList<>();

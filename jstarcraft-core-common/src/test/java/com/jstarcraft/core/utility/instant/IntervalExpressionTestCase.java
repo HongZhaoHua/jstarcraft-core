@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.instant.IntervalExpression;
+
 public class IntervalExpressionTestCase {
 
 	private List<LocalDateTime> dateTimes = new ArrayList<>();

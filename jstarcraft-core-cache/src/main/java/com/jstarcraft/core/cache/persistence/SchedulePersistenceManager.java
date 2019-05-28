@@ -24,11 +24,11 @@ import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
+import com.jstarcraft.core.common.instant.SolarExpression;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.instant.SolarExpression;
 
 /**
  * 定时持久策略
