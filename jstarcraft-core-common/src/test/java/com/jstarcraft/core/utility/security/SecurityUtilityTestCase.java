@@ -4,8 +4,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.security.SecurityUtility;
 import com.jstarcraft.core.utility.KeyValue;
-import com.jstarcraft.core.utility.SecurityUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class SecurityUtilityTestCase {

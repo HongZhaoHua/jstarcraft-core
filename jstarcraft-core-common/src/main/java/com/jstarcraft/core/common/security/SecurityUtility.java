@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.security;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -20,6 +20,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+
+import com.jstarcraft.core.utility.KeyValue;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 安全工具(主要涉及加密/解密)

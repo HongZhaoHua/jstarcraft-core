@@ -7,11 +7,11 @@ import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
 
+import com.jstarcraft.core.common.security.SecurityUtility;
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
 import com.jstarcraft.core.distribution.lock.DistributionDefinition;
 import com.jstarcraft.core.distribution.lock.DistributionManager;
-import com.jstarcraft.core.utility.SecurityUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
