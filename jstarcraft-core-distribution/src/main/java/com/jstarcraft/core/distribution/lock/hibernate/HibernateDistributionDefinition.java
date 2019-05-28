@@ -19,45 +19,45 @@ import com.jstarcraft.core.utility.IdentityObject;
 @Entity
 @NamedQueries({
 
-		@NamedQuery(name = HibernateDistributionDefinition.LOCK_HQL, query = "update HibernateDistributionDefinition clazz set clazz.most=:most where clazz.name=:name and clazz.most<=:now"),
+        @NamedQuery(name = HibernateDistributionDefinition.LOCK_HQL, query = "UPDATE HibernateDistributionDefinition clazz SET clazz.most=:most WHERE clazz.name=:name AND clazz.most<=:now"),
 
-		@NamedQuery(name = HibernateDistributionDefinition.UNLOCK_HQL, query = "update HibernateDistributionDefinition clazz set clazz.most=:now where clazz.name=:name and clazz.most=:most and clazz.most>:now"), })
+        @NamedQuery(name = HibernateDistributionDefinition.UNLOCK_HQL, query = "UPDATE HibernateDistributionDefinition clazz SET clazz.most=:now WHERE clazz.name=:name AND clazz.most=:most AND clazz.most>:now"), })
 public class HibernateDistributionDefinition implements IdentityObject<String> {
 
-	public static final String LOCK_HQL = "HibernateDistributionDefinition.lock";
+    public static final String LOCK_HQL = "HibernateDistributionDefinition.lock";
 
-	public static final String UNLOCK_HQL = "HibernateDistributionDefinition.unlock";
+    public static final String UNLOCK_HQL = "HibernateDistributionDefinition.unlock";
 
-	/** 锁名称 */
-	@Id
-	private String name;
+    /** 锁名称 */
+    @Id
+    private String name;
 
-	/** 最多锁定到指定的时间(必选) */
-	private Instant most;
+    /** 最多锁定到指定的时间(必选) */
+    private Instant most;
 
-	HibernateDistributionDefinition() {
-	}
+    HibernateDistributionDefinition() {
+    }
 
-	public HibernateDistributionDefinition(DistributionDefinition definition) {
-		this(definition.getName(), definition.getMost());
-	}
+    public HibernateDistributionDefinition(DistributionDefinition definition) {
+        this(definition.getName(), definition.getMost());
+    }
 
-	public HibernateDistributionDefinition(String name, Instant most) {
-		this.name = name;
-		this.most = most;
-	}
+    public HibernateDistributionDefinition(String name, Instant most) {
+        this.name = name;
+        this.most = most;
+    }
 
-	@Override
-	public String getId() {
-		return name;
-	}
+    @Override
+    public String getId() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Instant getMost() {
-		return most;
-	}
+    public Instant getMost() {
+        return most;
+    }
 
 }
