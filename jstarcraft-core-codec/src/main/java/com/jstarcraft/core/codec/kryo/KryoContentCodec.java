@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec;
+package com.jstarcraft.core.codec.kryo;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.DecodeException;
 import com.jstarcraft.core.codec.exception.EncodeException;
 import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;

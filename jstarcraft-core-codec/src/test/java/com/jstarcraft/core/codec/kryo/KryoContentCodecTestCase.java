@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
-import com.jstarcraft.core.codec.KryoContentCodec;
 import com.jstarcraft.core.codec.MockEnumeration;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 

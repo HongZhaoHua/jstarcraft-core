@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec;
+package com.jstarcraft.core.codec.csv;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,8 +11,7 @@ import java.lang.reflect.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.codec.csv.CsvReader;
-import com.jstarcraft.core.codec.csv.CsvWriter;
+import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.csv.converter.CsvConverter;
 import com.jstarcraft.core.codec.exception.DecodeException;
 import com.jstarcraft.core.codec.exception.EncodeException;

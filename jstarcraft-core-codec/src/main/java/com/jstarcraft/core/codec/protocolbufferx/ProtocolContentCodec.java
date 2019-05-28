@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec;
+package com.jstarcraft.core.codec.protocolbufferx;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,10 +11,9 @@ import java.lang.reflect.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.DecodeException;
 import com.jstarcraft.core.codec.exception.EncodeException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolConverter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
