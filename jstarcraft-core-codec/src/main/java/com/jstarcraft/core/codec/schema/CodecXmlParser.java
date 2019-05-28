@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.jstarcraft.core.codec.protocolbufferx.annotation.ProtocolConfiguration;
+import com.jstarcraft.core.codec.annotation.ProtocolConfiguration;
 
 /**
  * 编解码XML解析器
