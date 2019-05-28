@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.jstarcraft.core.cache.MockEntityObject;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 public class PersistenceElementTestCase {
 

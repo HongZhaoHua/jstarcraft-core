@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Version;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
-import com.jstarcraft.core.utility.IdentityObject;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 import com.sleepycat.persist.model.Relationship;

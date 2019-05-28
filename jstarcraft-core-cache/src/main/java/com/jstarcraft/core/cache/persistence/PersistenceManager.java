@@ -3,7 +3,7 @@ package com.jstarcraft.core.cache.persistence;
 import java.util.List;
 import java.util.Map;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 持久管理器

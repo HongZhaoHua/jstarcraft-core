@@ -1,7 +1,7 @@
 package com.jstarcraft.core.cache.persistence;
 
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 持久监听器

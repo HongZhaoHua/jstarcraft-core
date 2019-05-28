@@ -15,11 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyOperationException;
 import com.jstarcraft.core.utility.ClassUtility;
-import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.sleepycat.persist.model.Entity;

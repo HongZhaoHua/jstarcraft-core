@@ -19,8 +19,8 @@ import com.jstarcraft.core.cache.annotation.AfterCacheStarted;
 import com.jstarcraft.core.cache.annotation.BeforeCacheStoped;
 import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.OrmAccessor;
-import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**

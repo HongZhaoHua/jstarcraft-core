@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 @Entity
 //@TableName("MyBatisEntityObject")

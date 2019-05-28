@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 模仿对象

@@ -25,7 +25,7 @@ import com.jstarcraft.core.cache.transience.TransienceElement;
 import com.jstarcraft.core.cache.transience.TransienceManager;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.WeakElementManager;
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 区域缓存管理器

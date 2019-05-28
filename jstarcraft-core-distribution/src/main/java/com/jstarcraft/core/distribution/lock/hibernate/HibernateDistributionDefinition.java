@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * Hibernate分布式定义

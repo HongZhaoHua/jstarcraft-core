@@ -5,8 +5,8 @@ import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * Mongo分布式定义

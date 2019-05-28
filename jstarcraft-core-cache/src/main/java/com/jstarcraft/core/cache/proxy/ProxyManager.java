@@ -1,6 +1,6 @@
 package com.jstarcraft.core.cache.proxy;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 代理管理器

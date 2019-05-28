@@ -9,8 +9,8 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.hibernate.NestObject;
-import com.jstarcraft.core.utility.IdentityObject;
 
 @Document
 public class MockObject implements IdentityObject<Integer> {

@@ -16,9 +16,9 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.utility.ClassUtility;
-import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**

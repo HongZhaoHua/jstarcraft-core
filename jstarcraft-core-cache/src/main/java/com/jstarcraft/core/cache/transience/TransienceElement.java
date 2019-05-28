@@ -2,7 +2,7 @@ package com.jstarcraft.core.cache.transience;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 内存元素

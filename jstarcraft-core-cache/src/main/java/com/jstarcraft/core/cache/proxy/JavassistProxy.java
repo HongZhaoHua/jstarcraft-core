@@ -13,7 +13,7 @@ import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheIndexException;
 import com.jstarcraft.core.cache.exception.CacheProxyException;
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 

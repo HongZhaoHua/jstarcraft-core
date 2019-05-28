@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.identification;
 
 /**
  * 标识对象

@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
@@ -28,7 +29,6 @@ import com.jstarcraft.core.orm.berkeley.exception.BerkeleyStateException;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyVersionException;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
 import com.jstarcraft.core.utility.DelayElement;
-import com.jstarcraft.core.utility.IdentityObject;
 import com.jstarcraft.core.utility.SensitivityQueue;
 import com.jstarcraft.core.utility.StringUtility;
 import com.sleepycat.je.Environment;

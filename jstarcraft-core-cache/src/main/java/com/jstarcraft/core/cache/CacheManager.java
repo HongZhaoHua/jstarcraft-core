@@ -2,7 +2,7 @@ package com.jstarcraft.core.cache;
 
 import java.util.Map;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 缓存管理器

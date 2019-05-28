@@ -23,8 +23,8 @@ import com.jstarcraft.core.cache.transience.LeastRecentlyUsedTransienceStrategy;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.UserDefinedTransienceStrategy;
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.OrmAccessor;
-import com.jstarcraft.core.utility.IdentityObject;
 
 /**
  * 缓存服务

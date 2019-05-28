@@ -1,6 +1,6 @@
 package com.jstarcraft.core.cache;
 
-import com.jstarcraft.core.utility.IdentityObject;
+import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
  * 缓存对象工厂
