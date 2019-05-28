@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.instant;
+package com.jstarcraft.core.common.instant;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

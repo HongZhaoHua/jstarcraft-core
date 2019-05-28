@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.security;
+package com.jstarcraft.core.common.security;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

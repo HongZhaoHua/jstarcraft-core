@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.reflection;
+package com.jstarcraft.core.common.reflection;
 
 import org.junit.Assert;
 import org.junit.Test;

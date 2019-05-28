@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility.reflection;
+package com.jstarcraft.core.common.reflection;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
