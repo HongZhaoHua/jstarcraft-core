@@ -16,10 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.codec.CsvContentCodec;
-import com.jstarcraft.core.codec.JsonContentCodec;
-import com.jstarcraft.core.codec.KryoContentCodec;
-import com.jstarcraft.core.codec.ProtocolContentCodec;
+import com.jstarcraft.core.codec.csv.CsvContentCodec;
+import com.jstarcraft.core.codec.json.JsonContentCodec;
+import com.jstarcraft.core.codec.kryo.KryoContentCodec;
+import com.jstarcraft.core.codec.protocolbufferx.ProtocolContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.communication.CommunicationState;
 import com.jstarcraft.core.communication.annotation.CommunicationCommand;
