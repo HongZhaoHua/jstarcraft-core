@@ -6,7 +6,7 @@ import java.lang.reflect.TypeVariable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
 
-import com.jstarcraft.core.utility.JsonUtility;
+import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.utility.NumberUtility;
 import com.jstarcraft.core.utility.TypeUtility;
 

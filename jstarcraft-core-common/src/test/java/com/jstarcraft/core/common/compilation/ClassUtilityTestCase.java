@@ -10,8 +10,8 @@ import java.util.concurrent.Callable;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.utility.ClassUtility;
-import com.jstarcraft.core.utility.JsonUtility;
 import com.jstarcraft.core.utility.TypeUtility;
 
 public class ClassUtilityTestCase {
