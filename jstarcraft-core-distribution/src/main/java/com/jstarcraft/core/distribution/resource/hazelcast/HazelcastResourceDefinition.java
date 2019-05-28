@@ -1,9 +1,9 @@
-package com.jstarcraft.core.distribution.lock.hazelcast;
+package com.jstarcraft.core.distribution.resource.hazelcast;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
 
 /**
  * Hazelcast分布式定义
@@ -11,7 +11,7 @@ import com.jstarcraft.core.distribution.lock.DistributionDefinition;
  * @author Birdy
  *
  */
-public class HazelcastDistributionDefinition implements Serializable {
+public class HazelcastResourceDefinition implements Serializable {
 
 	private static final long serialVersionUID = -2615267956144491936L;
 
@@ -21,14 +21,14 @@ public class HazelcastDistributionDefinition implements Serializable {
 	/** 最多锁定到指定的时间(必选) */
 	private Instant most;
 
-	HazelcastDistributionDefinition() {
+	HazelcastResourceDefinition() {
 	}
 
-	public HazelcastDistributionDefinition(DistributionDefinition definition) {
+	public HazelcastResourceDefinition(ResourceDefinition definition) {
 		this(definition.getName(), definition.getMost());
 	}
 
-	public HazelcastDistributionDefinition(String name, Instant most) {
+	public HazelcastResourceDefinition(String name, Instant most) {
 		this.name = name;
 		this.most = most;
 	}

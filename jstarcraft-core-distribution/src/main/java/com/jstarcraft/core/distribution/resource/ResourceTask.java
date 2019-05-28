@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock;
+package com.jstarcraft.core.distribution.resource;
 
 /**
  * 分布式任务
@@ -6,7 +6,7 @@ package com.jstarcraft.core.distribution.lock;
  * @author Birdy
  *
  */
-public interface DistributionTask {
+public interface ResourceTask {
 
 	/**
 	 * 向前操作(相当于正常逻辑)

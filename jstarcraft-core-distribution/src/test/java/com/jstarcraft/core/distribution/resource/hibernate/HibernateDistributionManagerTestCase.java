@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.hibernate;
+package com.jstarcraft.core.distribution.resource.hibernate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,22 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.distribution.lock.DistributionManager;
-import com.jstarcraft.core.distribution.lock.DistributionManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
+import com.jstarcraft.core.distribution.resource.hibernate.HibernateResourceManager;
 import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HibernateDistributionManagerTestCase extends DistributionManagerTestCase {
+public class HibernateDistributionManagerTestCase extends ResourceManagerTestCase {
 
 	@Autowired
 	private HibernateAccessor accessor;
 
-	private HibernateDistributionManager manager;
+	private HibernateResourceManager manager;
 
 	@Before
 	public void testBefore() {
-		manager = new HibernateDistributionManager(accessor);
+		manager = new HibernateResourceManager(accessor);
 		manager.create(name);
 	}
 
@@ -32,7 +33,7 @@ public class HibernateDistributionManagerTestCase extends DistributionManagerTes
 	}
 
 	@Override
-	protected DistributionManager getDistributionManager() {
+	protected ResourceManager getDistributionManager() {
 		return manager;
 	}
 

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.zookeeper;
+package com.jstarcraft.core.distribution.resource.zookeeper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -13,11 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
-import com.jstarcraft.core.distribution.lock.DistributionManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
+import com.jstarcraft.core.distribution.resource.zookeeper.ZooKeeperResourceManager;
 
-public class ZooKeeperDistributionManagerTestCase extends DistributionManagerTestCase {
+public class ZooKeeperDistributionManagerTestCase extends ResourceManagerTestCase {
 
 	private TestingServer testZooKeeper;
 
@@ -37,16 +38,16 @@ public class ZooKeeperDistributionManagerTestCase extends DistributionManagerTes
 	}
 
 	@Override
-	protected DistributionManager getDistributionManager() {
-		return new ZooKeeperDistributionManager(curator);
+	protected ResourceManager getDistributionManager() {
+		return new ZooKeeperResourceManager(curator);
 	}
 
 	@Test
 	public void testCuratorStop() throws Exception {
 		{
-			ZooKeeperDistributionManager manager = new ZooKeeperDistributionManager(curator);
+			ZooKeeperResourceManager manager = new ZooKeeperResourceManager(curator);
 			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			DistributionDefinition definition = new DistributionDefinition(name, most);
+			ResourceDefinition definition = new ResourceDefinition(name, most);
 			manager.lock(definition);
 			Assert.assertNotNull(curator.checkExists().forPath(manager.getNodePath(definition)));
 			curator.close();
@@ -60,9 +61,9 @@ public class ZooKeeperDistributionManagerTestCase extends DistributionManagerTes
 		{
 			curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
 			curator.start();
-			ZooKeeperDistributionManager manager = new ZooKeeperDistributionManager(curator);
+			ZooKeeperResourceManager manager = new ZooKeeperResourceManager(curator);
 			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			DistributionDefinition definition = new DistributionDefinition(name, most);
+			ResourceDefinition definition = new ResourceDefinition(name, most);
 			Assert.assertNull(curator.checkExists().forPath(manager.getNodePath(definition)));
 			manager.lock(definition);
 		}

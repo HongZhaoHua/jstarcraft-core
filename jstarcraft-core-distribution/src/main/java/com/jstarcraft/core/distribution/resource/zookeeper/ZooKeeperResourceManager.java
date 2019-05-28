@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.zookeeper;
+package com.jstarcraft.core.distribution.resource.zookeeper;
 
 import static java.util.Objects.requireNonNull;
 
@@ -10,8 +10,8 @@ import org.apache.zookeeper.CreateMode;
 
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 
@@ -21,7 +21,7 @@ import com.jstarcraft.core.utility.SensitivityQueue;
  * @author Birdy
  *
  */
-public class ZooKeeperDistributionManager extends DistributionManager {
+public class ZooKeeperResourceManager extends ResourceManager {
 
 	/** 修复时间间隔 */
 	private static final long FIX_TIME = 1000;
@@ -84,21 +84,21 @@ public class ZooKeeperDistributionManager extends DistributionManager {
 
 	private final String path;
 
-	public ZooKeeperDistributionManager(CuratorFramework curator) {
+	public ZooKeeperResourceManager(CuratorFramework curator) {
 		this(curator, DEFAULT_PATH);
 	}
 
-	public ZooKeeperDistributionManager(CuratorFramework curator, String path) {
+	public ZooKeeperResourceManager(CuratorFramework curator, String path) {
 		this.curator = requireNonNull(curator);
 		this.path = PathUtils.validatePath(path);
 	}
 
-	String getNodePath(DistributionDefinition definition) {
+	String getNodePath(ResourceDefinition definition) {
 		return path + "/" + definition.getName();
 	}
 
 	@Override
-	protected void lock(DistributionDefinition definition) {
+	protected void lock(ResourceDefinition definition) {
 		try {
 			String path = getNodePath(definition);
 			curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
@@ -113,7 +113,7 @@ public class ZooKeeperDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void unlock(DistributionDefinition definition) {
+	protected void unlock(ResourceDefinition definition) {
 		try {
 			AtomicBoolean state = states.get();
 			state.compareAndSet(true, false);

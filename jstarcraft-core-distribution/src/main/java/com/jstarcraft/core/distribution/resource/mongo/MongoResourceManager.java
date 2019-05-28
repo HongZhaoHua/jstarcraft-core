@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.mongo;
+package com.jstarcraft.core.distribution.resource.mongo;
 
 import java.time.Instant;
 
@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 import com.jstarcraft.core.orm.mongo.MongoAccessor;
 import com.jstarcraft.core.orm.mongo.MongoMetadata;
 
@@ -19,11 +19,11 @@ import com.jstarcraft.core.orm.mongo.MongoMetadata;
  * @author Birdy
  *
  */
-public class MongoDistributionManager extends DistributionManager {
+public class MongoResourceManager extends ResourceManager {
 
 	private MongoAccessor accessor;
 
-	public MongoDistributionManager(MongoAccessor accessor) {
+	public MongoResourceManager(MongoAccessor accessor) {
 		this.accessor = accessor;
 	}
 
@@ -38,8 +38,8 @@ public class MongoDistributionManager extends DistributionManager {
 		Instant now = Instant.now();
 		for (String name : names) {
 			try {
-				MongoDistributionDefinition definition = new MongoDistributionDefinition(name, now);
-				accessor.create(MongoDistributionDefinition.class, definition);
+				MongoResourceDefinition definition = new MongoResourceDefinition(name, now);
+				accessor.create(MongoResourceDefinition.class, definition);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -57,7 +57,7 @@ public class MongoDistributionManager extends DistributionManager {
 		int count = 0;
 		for (String name : names) {
 			try {
-				accessor.delete(MongoDistributionDefinition.class, name);
+				accessor.delete(MongoResourceDefinition.class, name);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -66,7 +66,7 @@ public class MongoDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void lock(DistributionDefinition definition) {
+	protected void lock(ResourceDefinition definition) {
 		Instant now = Instant.now();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
 		Criteria[] andCriterias = new Criteria[1];
@@ -74,14 +74,14 @@ public class MongoDistributionManager extends DistributionManager {
 		Query query = Query.query(criteria.andOperator(andCriterias));
 		Update update = new Update();
 		update.set("most", definition.getMost().toEpochMilli());
-		long count = accessor.update(MongoDistributionDefinition.class, query, update);
+		long count = accessor.update(MongoResourceDefinition.class, query, update);
 		if (count != 1) {
 			throw new DistributionLockException();
 		}
 	}
 
 	@Override
-	protected void unlock(DistributionDefinition definition) {
+	protected void unlock(ResourceDefinition definition) {
 		Instant now = Instant.now();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
 		Criteria[] andCriterias = new Criteria[2];
@@ -90,7 +90,7 @@ public class MongoDistributionManager extends DistributionManager {
 		Query query = Query.query(criteria.andOperator(andCriterias));
 		Update update = new Update();
 		update.set("most", now.toEpochMilli());
-		long count = accessor.update(MongoDistributionDefinition.class, query, update);
+		long count = accessor.update(MongoResourceDefinition.class, query, update);
 		if (count != 1) {
 			throw new DistributionUnlockException();
 		}

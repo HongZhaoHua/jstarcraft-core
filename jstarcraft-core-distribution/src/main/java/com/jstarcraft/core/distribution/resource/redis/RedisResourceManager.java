@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.redis;
+package com.jstarcraft.core.distribution.resource.redis;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.redisson.api.RScript.ReturnType;
 import com.jstarcraft.core.common.security.SecurityUtility;
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -22,7 +22,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class RedisDistributionManager extends DistributionManager {
+public class RedisResourceManager extends ResourceManager {
 
 	public final static String lockScript = "local lock = redis.call('set', KEYS[1], ARGV[1], 'PX', ARGV[2], 'NX'); if (lock) then return 1; else return 0; end;";
 
@@ -34,7 +34,7 @@ public class RedisDistributionManager extends DistributionManager {
 
 	private RScript script;
 
-	public RedisDistributionManager(RScript script) {
+	public RedisResourceManager(RScript script) {
 		this.script = script;
 		List<Boolean> hasScripts = this.script.scriptExists(lockSignature, unlockSignature);
 		if (!hasScripts.get(0)) {
@@ -46,7 +46,7 @@ public class RedisDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void lock(DistributionDefinition definition) {
+	protected void lock(ResourceDefinition definition) {
 		// 尝试加锁
 		String key = definition.getName();
 		Long value = definition.getMost().toEpochMilli();
@@ -58,7 +58,7 @@ public class RedisDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void unlock(DistributionDefinition definition) {
+	protected void unlock(ResourceDefinition definition) {
 		// 尝试解锁
 		String key = definition.getName();
 		Long value = definition.getMost().toEpochMilli();

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock;
+package com.jstarcraft.core.distribution.resource;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -10,24 +10,26 @@ import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 import com.jstarcraft.core.utility.StringUtility;
 
-public abstract class DistributionManagerTestCase {
+public abstract class ResourceManagerTestCase {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	protected final String name = "jstarcraft";
 
-	protected abstract DistributionManager getDistributionManager();
+	protected abstract ResourceManager getDistributionManager();
 
 	@Test
 	public void test() {
 		try {
-			DistributionManager manager = getDistributionManager();
+			ResourceManager manager = getDistributionManager();
 
 			{
 				Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-				DistributionDefinition definition = new DistributionDefinition(name, most);
+				ResourceDefinition definition = new ResourceDefinition(name, most);
 				manager.lock(definition);
 				try {
 					manager.lock(definition);
@@ -39,7 +41,7 @@ public abstract class DistributionManagerTestCase {
 
 			{
 				Instant most = Instant.now().plus(1, ChronoUnit.SECONDS);
-				DistributionDefinition definition = new DistributionDefinition(name, most);
+				ResourceDefinition definition = new ResourceDefinition(name, most);
 				manager.lock(definition);
 				Thread.sleep(1500);
 				try {

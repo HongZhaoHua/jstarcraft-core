@@ -1,12 +1,12 @@
-package com.jstarcraft.core.distribution.lock.hibernate;
+package com.jstarcraft.core.distribution.resource.hibernate;
 
 import java.time.Instant;
 import java.util.HashMap;
 
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
 
 /**
@@ -15,11 +15,11 @@ import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
  * @author Birdy
  *
  */
-public class HibernateDistributionManager extends DistributionManager {
+public class HibernateResourceManager extends ResourceManager {
 
 	private HibernateAccessor accessor;
 
-	public HibernateDistributionManager(HibernateAccessor accessor) {
+	public HibernateResourceManager(HibernateAccessor accessor) {
 		this.accessor = accessor;
 	}
 
@@ -34,8 +34,8 @@ public class HibernateDistributionManager extends DistributionManager {
 		Instant now = Instant.now();
 		for (String name : names) {
 			try {
-				HibernateDistributionDefinition definition = new HibernateDistributionDefinition(name, now);
-				accessor.create(HibernateDistributionDefinition.class, definition);
+				HibernateResourceDefinition definition = new HibernateResourceDefinition(name, now);
+				accessor.create(HibernateResourceDefinition.class, definition);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -53,7 +53,7 @@ public class HibernateDistributionManager extends DistributionManager {
 		int count = 0;
 		for (String name : names) {
 			try {
-				accessor.delete(HibernateDistributionDefinition.class, name);
+				accessor.delete(HibernateResourceDefinition.class, name);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -62,7 +62,7 @@ public class HibernateDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void lock(DistributionDefinition definition) {
+	protected void lock(ResourceDefinition definition) {
 		String name = definition.getName();
 		Instant most = definition.getMost();
 		Instant now = Instant.now();
@@ -70,14 +70,14 @@ public class HibernateDistributionManager extends DistributionManager {
 		parameters.put("name", name);
 		parameters.put("most", most);
 		parameters.put("now", now);
-		Integer count = Integer.class.cast(accessor.query(HibernateDistributionDefinition.LOCK_HQL, null, null, parameters).get(0));
+		Integer count = Integer.class.cast(accessor.query(HibernateResourceDefinition.LOCK_HQL, null, null, parameters).get(0));
 		if (count != 1) {
 			throw new DistributionLockException();
 		}
 	}
 
 	@Override
-	protected void unlock(DistributionDefinition definition) {
+	protected void unlock(ResourceDefinition definition) {
 		String name = definition.getName();
 		Instant most = definition.getMost();
 		Instant now = Instant.now();
@@ -85,7 +85,7 @@ public class HibernateDistributionManager extends DistributionManager {
 		parameters.put("name", name);
 		parameters.put("most", most);
 		parameters.put("now", now);
-		Integer count = Integer.class.cast(accessor.query(HibernateDistributionDefinition.UNLOCK_HQL, null, null, parameters).get(0));
+		Integer count = Integer.class.cast(accessor.query(HibernateResourceDefinition.UNLOCK_HQL, null, null, parameters).get(0));
 		if (count != 1) {
 			throw new DistributionUnlockException();
 		}

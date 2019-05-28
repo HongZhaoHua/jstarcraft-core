@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock;
+package com.jstarcraft.core.distribution.resource;
 
 import java.time.Instant;
 
@@ -15,7 +15,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public abstract class DistributionManager {
+public abstract class ResourceManager {
 
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,7 +25,7 @@ public abstract class DistributionManager {
 	 * @param definition
 	 * @param task
 	 */
-	public void execute(DistributionDefinition definition, DistributionTask task) {
+	public void execute(ResourceDefinition definition, ResourceTask task) {
 		lock(definition);
 		try {
 			task.onForward();
@@ -66,7 +66,7 @@ public abstract class DistributionManager {
 	 * 
 	 * @param definition
 	 */
-	protected abstract void lock(DistributionDefinition definition);
+	protected abstract void lock(ResourceDefinition definition);
 
 	/**
 	 * 根据指定的定义解锁
@@ -77,6 +77,6 @@ public abstract class DistributionManager {
 	 * 
 	 * @param definition
 	 */
-	protected abstract void unlock(DistributionDefinition definition);
+	protected abstract void unlock(ResourceDefinition definition);
 
 }

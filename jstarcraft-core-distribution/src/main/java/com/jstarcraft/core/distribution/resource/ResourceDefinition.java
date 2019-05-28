@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock;
+package com.jstarcraft.core.distribution.resource;
 
 import java.time.Instant;
 
@@ -8,7 +8,7 @@ import java.time.Instant;
  * @author Birdy
  *
  */
-public class DistributionDefinition {
+public class ResourceDefinition {
 
 	/** 锁名称 */
 	private String name;
@@ -19,14 +19,14 @@ public class DistributionDefinition {
 	/** 至少锁定到指定的时间(可选) */
 	private Instant least;
 
-	DistributionDefinition() {
+	ResourceDefinition() {
 	}
 
-	public DistributionDefinition(String name, Instant most) {
+	public ResourceDefinition(String name, Instant most) {
 		this(name, most, Instant.now());
 	}
 
-	public DistributionDefinition(String name, Instant most, Instant least) {
+	public ResourceDefinition(String name, Instant most, Instant least) {
 		this.name = name;
 		this.most = most;
 		this.least = least;

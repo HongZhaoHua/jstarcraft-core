@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.hazelcast;
+package com.jstarcraft.core.distribution.resource.hazelcast;
 
 import java.time.Instant;
 
@@ -6,8 +6,8 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
 import com.jstarcraft.core.distribution.exception.DistributionUnlockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 
 /**
  * Hazelcast分布式管理器
@@ -15,7 +15,7 @@ import com.jstarcraft.core.distribution.lock.DistributionManager;
  * @author Birdy
  *
  */
-public class HazelcastDistributionManager extends DistributionManager {
+public class HazelcastResourceManager extends ResourceManager {
 
 	private static final String DEFAULT_STORE = "jstarcraft";
 
@@ -23,31 +23,31 @@ public class HazelcastDistributionManager extends DistributionManager {
 
 	private final HazelcastInstance hazelcastInstance;
 
-	public HazelcastDistributionManager(HazelcastInstance hazelcastInstance) {
+	public HazelcastResourceManager(HazelcastInstance hazelcastInstance) {
 		this(hazelcastInstance, DEFAULT_STORE);
 	}
 
-	public HazelcastDistributionManager(HazelcastInstance hazelcastInstance, String store) {
+	public HazelcastResourceManager(HazelcastInstance hazelcastInstance, String store) {
 		this.hazelcastInstance = hazelcastInstance;
 		this.store = store;
 	}
 
-	private IMap<String, HazelcastDistributionDefinition> getStore() {
+	private IMap<String, HazelcastResourceDefinition> getStore() {
 		return hazelcastInstance.getMap(store);
 	}
 
 	@Override
-	protected void lock(DistributionDefinition definition) {
+	protected void lock(ResourceDefinition definition) {
 		Instant now = Instant.now();
 		String name = definition.getName();
-		final IMap<String, HazelcastDistributionDefinition> store = getStore();
+		final IMap<String, HazelcastResourceDefinition> store = getStore();
 		try {
 			store.lock(name);
-			HazelcastDistributionDefinition current = store.get(name);
+			HazelcastResourceDefinition current = store.get(name);
 			if (current == null) {
-				store.put(name, new HazelcastDistributionDefinition(definition));
+				store.put(name, new HazelcastResourceDefinition(definition));
 			} else if (now.isAfter(current.getMost())) {
-				store.put(name, new HazelcastDistributionDefinition(definition));
+				store.put(name, new HazelcastResourceDefinition(definition));
 			} else {
 				throw new DistributionLockException();
 			}
@@ -57,13 +57,13 @@ public class HazelcastDistributionManager extends DistributionManager {
 	}
 
 	@Override
-	protected void unlock(DistributionDefinition definition) {
+	protected void unlock(ResourceDefinition definition) {
 		Instant now = Instant.now();
 		String name = definition.getName();
-		final IMap<String, HazelcastDistributionDefinition> store = getStore();
+		final IMap<String, HazelcastResourceDefinition> store = getStore();
 		try {
 			store.lock(name);
-			HazelcastDistributionDefinition current = store.get(name);
+			HazelcastResourceDefinition current = store.get(name);
 			if (current == null) {
 				throw new DistributionUnlockException();
 			} else if (now.isAfter(current.getMost())) {

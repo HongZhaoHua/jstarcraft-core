@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.lock.hazelcast;
+package com.jstarcraft.core.distribution.resource.hazelcast;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -11,11 +11,12 @@ import org.junit.Test;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.jstarcraft.core.distribution.exception.DistributionLockException;
-import com.jstarcraft.core.distribution.lock.DistributionDefinition;
-import com.jstarcraft.core.distribution.lock.DistributionManager;
-import com.jstarcraft.core.distribution.lock.DistributionManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceManagerTestCase;
+import com.jstarcraft.core.distribution.resource.ResourceDefinition;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
+import com.jstarcraft.core.distribution.resource.hazelcast.HazelcastResourceManager;
 
-public class HazelcastDistributionManagerTestCase extends DistributionManagerTestCase {
+public class HazelcastDistributionManagerTestCase extends ResourceManagerTestCase {
 
 	private HazelcastInstance hazelcastInstance;
 
@@ -30,17 +31,17 @@ public class HazelcastDistributionManagerTestCase extends DistributionManagerTes
 	}
 
 	@Override
-	protected DistributionManager getDistributionManager() {
-		return new HazelcastDistributionManager(hazelcastInstance);
+	protected ResourceManager getDistributionManager() {
+		return new HazelcastResourceManager(hazelcastInstance);
 	}
 
 	@Test
 	public void testCluster() throws Exception {
 		// 测试Hazelcast集群的分布式锁
-		HazelcastDistributionManager thisManager = new HazelcastDistributionManager(Hazelcast.newHazelcastInstance());
-		HazelcastDistributionManager thatManager = new HazelcastDistributionManager(Hazelcast.newHazelcastInstance());
+		HazelcastResourceManager thisManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
+		HazelcastResourceManager thatManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
 		Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-		DistributionDefinition definition = new DistributionDefinition(name, most);
+		ResourceDefinition definition = new ResourceDefinition(name, most);
 
 		thisManager.lock(definition);
 		try {
@@ -55,7 +56,7 @@ public class HazelcastDistributionManagerTestCase extends DistributionManagerTes
 			Assert.fail();
 		} catch (DistributionLockException exception) {
 		}
-		thisManager = new HazelcastDistributionManager(Hazelcast.newHazelcastInstance());
+		thisManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
 		try {
 			thisManager.lock(definition);
 			Assert.fail();

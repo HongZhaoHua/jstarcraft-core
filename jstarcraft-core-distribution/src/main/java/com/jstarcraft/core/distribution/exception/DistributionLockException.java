@@ -1,9 +1,9 @@
 package com.jstarcraft.core.distribution.exception;
 
-import com.jstarcraft.core.distribution.lock.DistributionManager;
+import com.jstarcraft.core.distribution.resource.ResourceManager;
 
 /**
- * 分布式加锁异常(必须由{@link DistributionManager}具体实现的lock方法使用)
+ * 分布式加锁异常(必须由{@link ResourceManager}具体实现的lock方法使用)
  * 
  * @author Birdy
  */
