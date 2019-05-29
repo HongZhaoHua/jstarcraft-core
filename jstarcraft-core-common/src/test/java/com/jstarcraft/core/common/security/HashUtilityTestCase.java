@@ -15,9 +15,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.HashUtility;
 import com.jstarcraft.core.utility.RandomUtility;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class HashUtilityTestCase {

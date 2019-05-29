@@ -3,8 +3,6 @@ package com.jstarcraft.core.common.reflection;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.utility.ReflectionUtility;
-
 public class ReflectionUtilityTestCase {
 
     @Test

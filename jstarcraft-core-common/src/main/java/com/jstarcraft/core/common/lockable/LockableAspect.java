@@ -10,7 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.utility.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 /**
  * 锁切面

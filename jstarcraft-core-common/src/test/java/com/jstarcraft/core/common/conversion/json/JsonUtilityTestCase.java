@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.jstarcraft.core.utility.TypeUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 public class JsonUtilityTestCase {
 

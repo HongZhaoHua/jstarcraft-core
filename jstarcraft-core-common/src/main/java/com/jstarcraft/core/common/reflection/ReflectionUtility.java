@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.reflection;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -19,6 +19,9 @@ import java.util.WeakHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
+
+import com.jstarcraft.core.utility.ClassUtility;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 反射工具

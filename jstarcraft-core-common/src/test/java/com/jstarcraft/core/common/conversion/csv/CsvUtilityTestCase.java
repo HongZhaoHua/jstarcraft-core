@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 public class CsvUtilityTestCase {
 

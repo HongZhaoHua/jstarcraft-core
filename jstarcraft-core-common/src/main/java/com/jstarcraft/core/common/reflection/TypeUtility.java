@@ -1,4 +1,4 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.reflection;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

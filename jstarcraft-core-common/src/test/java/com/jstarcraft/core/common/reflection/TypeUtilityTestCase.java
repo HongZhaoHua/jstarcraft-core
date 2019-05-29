@@ -9,8 +9,6 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.utility.TypeUtility;
-
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
