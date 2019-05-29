@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
 
 /**
  * 标识分段

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

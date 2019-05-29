@@ -1,4 +1,8 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
+
+import com.jstarcraft.core.orm.identification.CacheIdentityFactory;
+import com.jstarcraft.core.orm.identification.IdentityDefinition;
+import com.jstarcraft.core.orm.identification.IdentityFactory;
 
 public class CacheIdentityFactoryTestCase extends IdentityFactoryTestCase {
 

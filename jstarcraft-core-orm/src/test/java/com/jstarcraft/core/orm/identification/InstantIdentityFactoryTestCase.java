@@ -1,11 +1,12 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import com.jstarcraft.core.distribution.identity.IdentityFactory;
-import com.jstarcraft.core.distribution.identity.InstantIdentityFactory;
+import com.jstarcraft.core.orm.identification.IdentityDefinition;
+import com.jstarcraft.core.orm.identification.IdentityFactory;
+import com.jstarcraft.core.orm.identification.InstantIdentityFactory;
 
 public class InstantIdentityFactoryTestCase extends IdentityFactoryTestCase {
 

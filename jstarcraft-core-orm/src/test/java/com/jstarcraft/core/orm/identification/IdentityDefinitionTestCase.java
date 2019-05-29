@@ -1,4 +1,4 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.orm.identification.IdentityDefinition;
+import com.jstarcraft.core.orm.identification.IdentitySection;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class IdentityDefinitionTestCase {

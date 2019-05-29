@@ -1,4 +1,9 @@
-package com.jstarcraft.core.distribution.identity;
+package com.jstarcraft.core.orm.identification;
+
+import com.jstarcraft.core.orm.identification.IdentityDefinition;
+import com.jstarcraft.core.orm.identification.IdentityFactory;
+import com.jstarcraft.core.orm.identification.RedisAtomicIdentityFactory;
+import com.jstarcraft.core.orm.identification.RedisIdentityFactory;
 
 public class RedisAtomicIdentityFactoryTestCase extends RedisIdentityFactoryTestCase {
 
