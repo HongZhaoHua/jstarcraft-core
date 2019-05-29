@@ -22,7 +22,7 @@ import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterExce
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
-import com.jstarcraft.core.utility.TypeUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * Kryo格式编解码器

@@ -13,7 +13,7 @@ import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
-import com.jstarcraft.core.utility.TypeUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * 类型转换器

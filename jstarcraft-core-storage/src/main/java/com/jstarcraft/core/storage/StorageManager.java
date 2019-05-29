@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.adapter.FormatAdapter;
 import com.jstarcraft.core.storage.annotation.StorageConfiguration;
 import com.jstarcraft.core.storage.annotation.StorageReference;
@@ -25,7 +26,6 @@ import com.jstarcraft.core.storage.definition.StorageDefinition;
 import com.jstarcraft.core.storage.definition.StorageReferenceDefinition;
 import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.utility.KeyValue;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**

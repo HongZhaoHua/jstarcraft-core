@@ -22,9 +22,9 @@ import org.hibernate.type.BlobType;
 import org.hibernate.usertype.UserType;
 
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.exception.OrmAccessException;
 import com.jstarcraft.core.utility.PressUtility;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**

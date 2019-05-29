@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.NumberUtility;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;

@@ -10,7 +10,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.utility.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptExpressionTestCase {
 

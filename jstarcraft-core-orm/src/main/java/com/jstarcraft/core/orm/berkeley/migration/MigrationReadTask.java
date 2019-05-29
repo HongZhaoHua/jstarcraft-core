@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyMigrationException;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.sleepycat.bind.tuple.StringBinding;
 import com.sleepycat.je.Database;

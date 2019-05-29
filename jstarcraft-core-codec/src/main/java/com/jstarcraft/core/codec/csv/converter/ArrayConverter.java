@@ -10,8 +10,8 @@ import org.apache.commons.csv.CSVPrinter;
 import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 /**
  * 数组转换器

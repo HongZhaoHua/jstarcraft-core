@@ -23,8 +23,8 @@ import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.ClassUtility;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**

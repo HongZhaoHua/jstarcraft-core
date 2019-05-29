@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.storage.exception.StorageException;
-import com.jstarcraft.core.utility.TypeUtility;
 
 /**
  * JSON适配器

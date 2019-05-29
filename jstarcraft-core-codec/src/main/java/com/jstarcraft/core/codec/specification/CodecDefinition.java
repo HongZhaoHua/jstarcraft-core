@@ -24,8 +24,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolDefinitionException;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.PressUtility;
-import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**
  * 编解码定义(核心类)

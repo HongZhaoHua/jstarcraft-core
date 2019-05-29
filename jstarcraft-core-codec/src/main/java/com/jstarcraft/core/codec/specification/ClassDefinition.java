@@ -23,10 +23,10 @@ import com.jstarcraft.core.codec.annotation.ExcludeProperty;
 import com.jstarcraft.core.codec.annotation.IncludeProperty;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration.Mode;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.ClassUtility;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 /**
  * 类型定义

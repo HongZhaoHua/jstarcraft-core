@@ -16,7 +16,7 @@ import com.jstarcraft.core.cache.RegionManager;
 import com.jstarcraft.core.cache.annotation.CacheAccessor;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.common.identification.IdentityObject;
-import com.jstarcraft.core.utility.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**

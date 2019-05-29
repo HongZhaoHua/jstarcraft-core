@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.Storage;
 import com.jstarcraft.core.storage.StorageManager;
 import com.jstarcraft.core.storage.StorageMonitor;
@@ -18,7 +19,6 @@ import com.jstarcraft.core.storage.annotation.StorageAccessor;
 import com.jstarcraft.core.storage.annotation.StorageConfiguration;
 import com.jstarcraft.core.storage.annotation.StorageId;
 import com.jstarcraft.core.storage.exception.StorageException;
-import com.jstarcraft.core.utility.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**

@@ -18,7 +18,7 @@ import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolConverter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
-import com.jstarcraft.core.utility.TypeUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * Prorocol格式编解码器

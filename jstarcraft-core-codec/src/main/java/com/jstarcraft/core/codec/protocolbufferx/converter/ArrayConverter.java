@@ -10,8 +10,8 @@ import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 /**
  * 数组转换器

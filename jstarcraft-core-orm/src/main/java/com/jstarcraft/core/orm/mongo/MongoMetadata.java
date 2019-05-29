@@ -20,8 +20,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.OrmMetadata;
-import com.jstarcraft.core.utility.ReflectionUtility;
 
 /**
  * Mongo元信息

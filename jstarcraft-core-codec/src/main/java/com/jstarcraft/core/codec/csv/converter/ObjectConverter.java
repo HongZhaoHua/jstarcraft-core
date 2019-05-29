@@ -9,8 +9,8 @@ import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.TypeUtility;
 
 /**
  * 对象转换器

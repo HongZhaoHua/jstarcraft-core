@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.jstarcraft.core.utility.TypeUtility;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * 编解码规范
