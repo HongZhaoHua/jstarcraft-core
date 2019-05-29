@@ -1,6 +1,3 @@
-http\://www.jstarcraft.com/core/cache=com.jstarcraft.core.cache.schema.CacheXmlHandler
-http\://www.jstarcraft.com/core/communication=com.jstarcraft.core.communication.schema.CommunicationXmlHandler
 http\://www.jstarcraft.com/core/orm/berkeley=com.jstarcraft.core.orm.berkeley.schema.BerkeleyXmlHandler
 http\://www.jstarcraft.com/core/orm/mongo=com.jstarcraft.core.orm.mongo.schema.MongoXmlHandler
 http\://www.jstarcraft.com/core/orm/mybatis=com.jstarcraft.core.orm.mybatis.schema.MyBatisXmlHandler
-http\://www.jstarcraft.com/core/storage=com.jstarcraft.core.storage.schema.StorageXmlHandler

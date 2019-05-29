@@ -1,6 +1,1 @@
 http\://www.jstarcraft.com/core/cache/cache.xsd=com/jstarcraft/core/cache/schema/cache.xsd
-http\://www.jstarcraft.com/core/communication/communication.xsd=com/jstarcraft/core/communication/schema/communication.xsd
-http\://www.jstarcraft.com/core/orm/berkeley/berkeley.xsd=com/jstarcraft/core/orm/berkeley/schema/berkeley.xsd
-http\://www.jstarcraft.com/core/orm/mongo/mongo.xsd=com/jstarcraft/core/orm/mongo/schema/mongo.xsd
-http\://www.jstarcraft.com/core/orm/mybatis/mybatis.xsd=com/jstarcraft/core/orm/mybatis/schema/mybatis.xsd
-http\://www.jstarcraft.com/core/storage/storage.xsd=com/jstarcraft/core/storage/schema/storage.xsd
