@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.csv.converter.CsvConverter;
-import com.jstarcraft.core.codec.exception.DecodeException;
-import com.jstarcraft.core.codec.exception.EncodeException;
+import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 
@@ -43,7 +42,7 @@ public class CsvContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "CSV解码失败:" + exception.getMessage();
 			LOGGER.error(message, exception);
-			throw new DecodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -56,7 +55,7 @@ public class CsvContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "CSV解码失败:" + exception.getMessage();
 			LOGGER.error(message, exception);
-			throw new DecodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -71,7 +70,7 @@ public class CsvContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "CSV编码失败:" + exception.getMessage();
 			LOGGER.error(message, exception);
-			throw new EncodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -85,7 +84,7 @@ public class CsvContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "CSV编码失败:" + exception.getMessage();
 			LOGGER.error(message, exception);
-			throw new EncodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 

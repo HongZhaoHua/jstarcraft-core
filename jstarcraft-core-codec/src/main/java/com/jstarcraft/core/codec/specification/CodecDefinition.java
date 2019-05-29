@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.jstarcraft.core.codec.exception.CodecException;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolDefinitionException;
+import com.jstarcraft.core.codec.exception.CodecDefinitionException;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.PressUtility;
 
@@ -91,7 +91,7 @@ public class CodecDefinition {
 			while (type != Object.class) {
 				type = type.getSuperclass();
 				if (type == Object.class) {
-					throw new ProtocolDefinitionException(clazz.getName());
+					throw new CodecDefinitionException(clazz.getName());
 				}
 				definition = type2Definitions.get(type);
 				if (definition != null) {

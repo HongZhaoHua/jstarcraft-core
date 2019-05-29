@@ -10,7 +10,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -55,7 +55,7 @@ public class TypeConverter implements CsvConverter<Type> {
 			}
 			return TypeUtility.parameterize(definition.getType(), types);
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class TypeConverter implements CsvConverter<Type> {
 				writeValueTo(context, types[index].getClass(), types[index]);
 			}
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 }

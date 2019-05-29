@@ -7,9 +7,9 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.Date;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 
@@ -46,7 +46,7 @@ public class InstantConverter extends BinaryConverter<Object> {
 			Instant value = Instant.ofEpochMilli(time);
 			return value;
 		}
-		throw new ProtocolConverterException();
+		throw new CodecConvertionException();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class InstantConverter extends BinaryConverter<Object> {
 			Instant instant = (Instant) value;
 			time = instant.toEpochMilli();
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 		out.write(information);
 		NumberConverter.writeNumber(out, time);

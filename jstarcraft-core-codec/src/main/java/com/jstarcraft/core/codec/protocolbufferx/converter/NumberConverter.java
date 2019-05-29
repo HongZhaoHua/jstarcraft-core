@@ -14,9 +14,9 @@ import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.utility.StringUtility;
@@ -127,11 +127,11 @@ public class NumberConverter extends BinaryConverter<Number> {
 				BigDecimal value = new BigDecimal(decimal);
 				return switchMark ? value.negate() : value;
 			} else {
-				throw new ProtocolConverterException();
+				throw new CodecConvertionException();
 			}
 		}
 		String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
-		throw new ProtocolConverterException(message);
+		throw new CodecConvertionException(message);
 	}
 
 	@Override
@@ -230,12 +230,12 @@ public class NumberConverter extends BinaryConverter<Number> {
 			String decimal = number.toString();
 			byte[] data = decimal.getBytes(StringUtility.CHARSET);
 			if (data.length > LENGTH_MASK) {
-				throw new ProtocolConverterException();
+				throw new CodecConvertionException();
 			}
 			out.write(data.length);
 			out.write(data);
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 
@@ -284,7 +284,7 @@ public class NumberConverter extends BinaryConverter<Number> {
 				byte[] data = number.toByteArray();
 				if (data.length > LENGTH_MASK) {
 					String message = StringUtility.format("Number数值的长度为{},不符合协议格式.", data.length);
-					throw new ProtocolConverterException(message);
+					throw new CodecConvertionException(message);
 				}
 				out.write(data.length | ~LENGTH_MASK);
 				out.write(data);
@@ -308,7 +308,7 @@ public class NumberConverter extends BinaryConverter<Number> {
 						}
 					}
 					String message = StringUtility.format("Number数值的大小为{},不符合协议格式.", value);
-					throw new ProtocolConverterException(message);
+					throw new CodecConvertionException(message);
 				}
 			}
 		}

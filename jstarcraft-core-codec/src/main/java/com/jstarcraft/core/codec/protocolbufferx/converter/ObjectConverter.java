@@ -4,9 +4,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
@@ -45,7 +45,7 @@ public class ObjectConverter extends BinaryConverter<Object> {
 				object = definition.getInstance();
 			} catch (Exception exception) {
 				String message = StringUtility.format("获取类型[{}]实例异常", definition.getName());
-				throw new ProtocolConverterException(message, exception);
+				throw new CodecConvertionException(message, exception);
 			}
 			context.putObjectValue(object);
 			// int length = PROPERTY_LIMIT & (byte) in.read();
@@ -61,7 +61,7 @@ public class ObjectConverter extends BinaryConverter<Object> {
 					property.setValue(object, value);
 				} catch (Exception exception) {
 					String message = StringUtility.format("赋值[{}]实例属性[{}]异常", definition.getName(), property.getName());
-					throw new ProtocolConverterException(message, exception);
+					throw new CodecConvertionException(message, exception);
 				}
 			}
 			return object;
@@ -71,7 +71,7 @@ public class ObjectConverter extends BinaryConverter<Object> {
 			return value;
 		}
 		String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
-		throw new ProtocolConverterException(message);
+		throw new CodecConvertionException(message);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class ObjectConverter extends BinaryConverter<Object> {
 					converter.writeValueTo(context, property.getType(), definition, object);
 				} catch (Exception exception) {
 					String message = StringUtility.format("取值[{}]实例属性[{}]异常", definition.getName(), property.getName());
-					throw new ProtocolConverterException(message, exception);
+					throw new CodecConvertionException(message, exception);
 				}
 			}
 		}

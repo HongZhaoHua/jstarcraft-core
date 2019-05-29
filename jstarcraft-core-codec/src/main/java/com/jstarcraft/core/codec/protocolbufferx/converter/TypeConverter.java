@@ -8,9 +8,9 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -66,7 +66,7 @@ public class TypeConverter extends BinaryConverter<Type> {
 			}
 			return TypeUtility.parameterize(definition.getType(), types);
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 
@@ -109,7 +109,7 @@ public class TypeConverter extends BinaryConverter<Type> {
 				writeValueTo(context, types[index].getClass(), definition, types[index]);
 			}
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 

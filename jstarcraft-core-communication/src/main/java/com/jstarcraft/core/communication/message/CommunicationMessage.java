@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.codec.exception.DecodeException;
 import com.jstarcraft.core.communication.exception.CommunicationException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -90,7 +89,7 @@ public class CommunicationMessage {
 		int mark = in.readInt();
 		if (mark != MESSAGE_MARK) {
 			String string = StringUtility.format("非法消息:信息结构[{}]不匹配", mark);
-			throw new DecodeException(string);
+			throw new CommunicationException(string);
 		}
 		// 消息长度
 		int length = in.readInt();

@@ -6,9 +6,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -80,7 +80,7 @@ public class CollectionConverter extends BinaryConverter<Collection<?>> {
 			return collection;
 		}
 		String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
-		throw new ProtocolConverterException(message);
+		throw new CodecConvertionException(message);
 	}
 
 	@Override

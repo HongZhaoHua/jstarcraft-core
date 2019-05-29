@@ -16,9 +16,8 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.codec.exception.DecodeException;
-import com.jstarcraft.core.codec.exception.EncodeException;
-import com.jstarcraft.core.codec.protocolbufferx.exception.ProtocolConverterException;
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
+import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.specification.CodecSpecification;
@@ -100,7 +99,7 @@ public class KryoContentCodec implements ContentCodec {
 			}
 			return TypeUtility.parameterize(definition.getType(), types);
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 
@@ -129,7 +128,7 @@ public class KryoContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "Kryo解码异常";
 			LOGGER.error(message, exception);
-			throw new DecodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -158,7 +157,7 @@ public class KryoContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "Kryo解码异常";
 			LOGGER.error(message, exception);
-			throw new DecodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -194,7 +193,7 @@ public class KryoContentCodec implements ContentCodec {
 				writeValueTo(out, types[index]);
 			}
 		} else {
-			throw new ProtocolConverterException();
+			throw new CodecConvertionException();
 		}
 	}
 
@@ -226,7 +225,7 @@ public class KryoContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "Kryo编码异常";
 			LOGGER.error(message, exception);
-			throw new EncodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
@@ -253,7 +252,7 @@ public class KryoContentCodec implements ContentCodec {
 		} catch (Exception exception) {
 			String message = "Kryo编码异常";
 			LOGGER.error(message, exception);
-			throw new EncodeException(message, exception);
+			throw new CodecException(message, exception);
 		}
 	}
 
