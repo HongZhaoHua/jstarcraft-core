@@ -10,7 +10,7 @@ import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 
 /**
- * Hibernate分布式管理器
+ * Hibernate事务管理器
  * 
  * @author Birdy
  *

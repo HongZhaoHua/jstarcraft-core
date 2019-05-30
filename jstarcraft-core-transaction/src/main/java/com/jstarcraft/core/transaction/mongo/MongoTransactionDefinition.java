@@ -9,7 +9,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.transaction.TransactionDefinition;
 
 /**
- * Mongo分布式定义
+ * Mongo事务定义
  * 
  * @author Birdy
  *

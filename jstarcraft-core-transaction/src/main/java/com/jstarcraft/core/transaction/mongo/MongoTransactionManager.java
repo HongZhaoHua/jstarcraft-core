@@ -14,7 +14,7 @@ import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 
 /**
- * Mongo分布式管理器
+ * Mongo事务管理器
  * 
  * @author Birdy
  *

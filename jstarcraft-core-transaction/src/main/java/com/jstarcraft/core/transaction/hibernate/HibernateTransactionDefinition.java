@@ -11,7 +11,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.transaction.TransactionDefinition;
 
 /**
- * Hibernate分布式定义
+ * Hibernate事务定义
  * 
  * @author Birdy
  *

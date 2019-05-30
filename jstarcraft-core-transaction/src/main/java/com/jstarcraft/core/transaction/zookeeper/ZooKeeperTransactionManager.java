@@ -16,7 +16,7 @@ import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 
 /**
- * ZooKeeper分布式管理器
+ * ZooKeeper事务管理器
  * 
  * @author Birdy
  *

@@ -15,7 +15,7 @@ import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * Redis分布式管理器
+ * Redis事务管理器
  * 
  * <pre>由于Redisson已经提供许多锁方案,所以不再提供封装.</pre>
  * 

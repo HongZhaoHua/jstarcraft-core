@@ -6,7 +6,7 @@ import java.time.Instant;
 import com.jstarcraft.core.transaction.TransactionDefinition;
 
 /**
- * Hazelcast分布式定义
+ * Hazelcast事务定义
  * 
  * @author Birdy
  *

@@ -10,7 +10,7 @@ import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 
 /**
- * Hazelcast分布式管理器
+ * Hazelcast事务管理器
  * 
  * @author Birdy
  *
