@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.balance;
+package com.jstarcraft.core.monitor.route.balance;
 
 /**
  * 哈希函数

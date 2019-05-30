@@ -1,11 +1,10 @@
-package com.jstarcraft.core.transaction.balance;
+package com.jstarcraft.core.monitor.route.balance;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.transaction.balance.HashCycle;
-import com.jstarcraft.core.transaction.exception.TransactionException;
+import com.jstarcraft.core.monitor.route.exception.RouteException;
 import com.jstarcraft.core.utility.HashUtility;
 
 public class HashCycleTestCase {
@@ -24,14 +23,14 @@ public class HashCycleTestCase {
 		try {
 			cycle.createNode("0", "0");
 			Assert.fail();
-		} catch (TransactionException exception) {
+		} catch (RouteException exception) {
 		}
 
 		// 20与11存在哈希冲突
 		try {
 			cycle.createNode("20", "20");
 			Assert.fail();
-		} catch (TransactionException exception) {
+		} catch (RouteException exception) {
 		}
 
 		// 选择节点(按照顺时针)
@@ -42,7 +41,7 @@ public class HashCycleTestCase {
 		try {
 			cycle.deleteNode("20");
 			Assert.fail();
-		} catch (TransactionException exception) {
+		} catch (RouteException exception) {
 		}
 
 		for (int index = 0; index < 20; index++) {

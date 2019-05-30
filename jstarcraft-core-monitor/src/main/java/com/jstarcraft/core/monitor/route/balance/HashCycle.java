@@ -1,11 +1,10 @@
-package com.jstarcraft.core.transaction.balance;
+package com.jstarcraft.core.monitor.route.balance;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-
-import com.jstarcraft.core.transaction.exception.TransactionException;
-
 import java.util.TreeMap;
+
+import com.jstarcraft.core.monitor.route.exception.RouteException;
 
 /**
  * 哈希环
@@ -37,7 +36,7 @@ public class HashCycle<T> {
 		Integer hash = function.hash(key);
 		if (virtual2Actual.containsKey(hash)) {
 			// 节点已存在或者哈希冲突
-			throw new TransactionException("哈希环节点已存在或者哈希冲突");
+			throw new RouteException("哈希环节点已存在或者哈希冲突");
 		}
 		actual2Virtual.put(key, hash);
 		virtual2Actual.put(hash, value);
@@ -52,7 +51,7 @@ public class HashCycle<T> {
 		Integer hash = actual2Virtual.remove(key);
 		if (hash == null) {
 			// 节点不存在
-			throw new TransactionException("哈希环节点不存在");
+			throw new RouteException("哈希环节点不存在");
 		}
 		virtual2Actual.remove(hash);
 	}
