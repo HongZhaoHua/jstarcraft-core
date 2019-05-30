@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource;
+package com.jstarcraft.core.transaction;
 
 /**
  * 分布式任务
@@ -6,7 +6,7 @@ package com.jstarcraft.core.transaction.resource;
  * @author Birdy
  *
  */
-public interface ResourceTask {
+public interface TransactionTask {
 
 	/**
 	 * 向前操作(相当于正常逻辑)

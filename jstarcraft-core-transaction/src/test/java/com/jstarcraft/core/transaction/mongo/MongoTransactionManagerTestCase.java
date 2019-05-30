@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.mongo;
+package com.jstarcraft.core.transaction.mongo;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,16 +10,16 @@ import org.junit.BeforeClass;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.jstarcraft.core.orm.mongo.MongoAccessor;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
-import com.jstarcraft.core.transaction.resource.ResourceManagerTestCase;
-import com.jstarcraft.core.transaction.resource.mongo.MongoResourceDefinition;
-import com.jstarcraft.core.transaction.resource.mongo.MongoResourceManager;
+import com.jstarcraft.core.transaction.TransactionManager;
+import com.jstarcraft.core.transaction.TransactionManagerTestCase;
+import com.jstarcraft.core.transaction.mongo.MongoTransactionDefinition;
+import com.jstarcraft.core.transaction.mongo.MongoTransactionManager;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 
-public class MongoDistributionManagerTestCase extends ResourceManagerTestCase {
+public class MongoTransactionManagerTestCase extends TransactionManagerTestCase {
 
 	private static MongodForTestsFactory factory;
 
@@ -30,7 +30,7 @@ public class MongoDistributionManagerTestCase extends ResourceManagerTestCase {
 		factory = new MongodForTestsFactory(Version.Main.V3_5);
 		MongoClient mongo = factory.newMongo();
 		MongoTemplate template = new MongoTemplate(mongo, "test");
-		accessor = new MongoAccessor(Arrays.asList(MongoResourceDefinition.class), template);
+		accessor = new MongoAccessor(Arrays.asList(MongoTransactionDefinition.class), template);
 	}
 
 	@AfterClass
@@ -38,11 +38,11 @@ public class MongoDistributionManagerTestCase extends ResourceManagerTestCase {
 		factory.shutdown();
 	}
 
-	private MongoResourceManager manager;
+	private MongoTransactionManager manager;
 
 	@Before
 	public void testBefore() {
-		manager = new MongoResourceManager(accessor);
+		manager = new MongoTransactionManager(accessor);
 		manager.create(name);
 	}
 
@@ -52,7 +52,7 @@ public class MongoDistributionManagerTestCase extends ResourceManagerTestCase {
 	}
 
 	@Override
-	protected ResourceManager getDistributionManager() {
+	protected TransactionManager getDistributionManager() {
 		return manager;
 	}
 

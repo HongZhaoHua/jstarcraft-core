@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.redis;
+package com.jstarcraft.core.transaction.redis;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,11 +8,11 @@ import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
-import com.jstarcraft.core.transaction.resource.ResourceManager;
-import com.jstarcraft.core.transaction.resource.ResourceManagerTestCase;
-import com.jstarcraft.core.transaction.resource.redis.RedisResourceManager;
+import com.jstarcraft.core.transaction.TransactionManager;
+import com.jstarcraft.core.transaction.TransactionManagerTestCase;
+import com.jstarcraft.core.transaction.redis.RedisTransactionManager;
 
-public class RedisDistributionManagerTestCase extends ResourceManagerTestCase {
+public class RedisTransactionManagerTestCase extends TransactionManagerTestCase {
 
 	private Redisson redisson;
 	private RKeys keys;
@@ -36,8 +36,8 @@ public class RedisDistributionManagerTestCase extends ResourceManagerTestCase {
 	}
 
 	@Override
-	protected ResourceManager getDistributionManager() {
-		return new RedisResourceManager(redisson.getScript());
+	protected TransactionManager getDistributionManager() {
+		return new RedisTransactionManager(redisson.getScript());
 	}
 
 }

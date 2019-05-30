@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource;
+package com.jstarcraft.core.transaction;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -8,28 +8,28 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
 import com.jstarcraft.core.utility.StringUtility;
 
-public abstract class ResourceManagerTestCase {
+public abstract class TransactionManagerTestCase {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	protected final String name = "jstarcraft";
 
-	protected abstract ResourceManager getDistributionManager();
+	protected abstract TransactionManager getDistributionManager();
 
 	@Test
 	public void test() {
 		try {
-			ResourceManager manager = getDistributionManager();
+			TransactionManager manager = getDistributionManager();
 
 			{
 				Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-				ResourceDefinition definition = new ResourceDefinition(name, most);
+				TransactionDefinition definition = new TransactionDefinition(name, most);
 				manager.lock(definition);
 				try {
 					manager.lock(definition);
@@ -41,7 +41,7 @@ public abstract class ResourceManagerTestCase {
 
 			{
 				Instant most = Instant.now().plus(1, ChronoUnit.SECONDS);
-				ResourceDefinition definition = new ResourceDefinition(name, most);
+				TransactionDefinition definition = new TransactionDefinition(name, most);
 				manager.lock(definition);
 				Thread.sleep(1500);
 				try {

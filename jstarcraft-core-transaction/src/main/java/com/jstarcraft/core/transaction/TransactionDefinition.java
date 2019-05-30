@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource;
+package com.jstarcraft.core.transaction;
 
 import java.time.Instant;
 
@@ -8,7 +8,7 @@ import java.time.Instant;
  * @author Birdy
  *
  */
-public class ResourceDefinition {
+public class TransactionDefinition {
 
 	/** 锁名称 */
 	private String name;
@@ -19,14 +19,14 @@ public class ResourceDefinition {
 	/** 至少锁定到指定的时间(可选) */
 	private Instant least;
 
-	ResourceDefinition() {
+	TransactionDefinition() {
 	}
 
-	public ResourceDefinition(String name, Instant most) {
+	public TransactionDefinition(String name, Instant most) {
 		this(name, most, Instant.now());
 	}
 
-	public ResourceDefinition(String name, Instant most, Instant least) {
+	public TransactionDefinition(String name, Instant most, Instant least) {
 		this.name = name;
 		this.most = most;
 		this.least = least;

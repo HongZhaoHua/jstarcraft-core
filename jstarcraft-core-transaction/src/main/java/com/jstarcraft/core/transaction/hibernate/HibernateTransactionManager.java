@@ -1,13 +1,13 @@
-package com.jstarcraft.core.transaction.resource.hibernate;
+package com.jstarcraft.core.transaction.hibernate;
 
 import java.time.Instant;
 import java.util.HashMap;
 
 import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
 
 /**
  * Hibernate分布式管理器
@@ -15,11 +15,11 @@ import com.jstarcraft.core.transaction.resource.ResourceManager;
  * @author Birdy
  *
  */
-public class HibernateResourceManager extends ResourceManager {
+public class HibernateTransactionManager extends TransactionManager {
 
 	private HibernateAccessor accessor;
 
-	public HibernateResourceManager(HibernateAccessor accessor) {
+	public HibernateTransactionManager(HibernateAccessor accessor) {
 		this.accessor = accessor;
 	}
 
@@ -34,8 +34,8 @@ public class HibernateResourceManager extends ResourceManager {
 		Instant now = Instant.now();
 		for (String name : names) {
 			try {
-				HibernateResourceDefinition definition = new HibernateResourceDefinition(name, now);
-				accessor.create(HibernateResourceDefinition.class, definition);
+				HibernateTransactionDefinition definition = new HibernateTransactionDefinition(name, now);
+				accessor.create(HibernateTransactionDefinition.class, definition);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -53,7 +53,7 @@ public class HibernateResourceManager extends ResourceManager {
 		int count = 0;
 		for (String name : names) {
 			try {
-				accessor.delete(HibernateResourceDefinition.class, name);
+				accessor.delete(HibernateTransactionDefinition.class, name);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -62,7 +62,7 @@ public class HibernateResourceManager extends ResourceManager {
 	}
 
 	@Override
-	protected void lock(ResourceDefinition definition) {
+	protected void lock(TransactionDefinition definition) {
 		String name = definition.getName();
 		Instant most = definition.getMost();
 		Instant now = Instant.now();
@@ -70,14 +70,14 @@ public class HibernateResourceManager extends ResourceManager {
 		parameters.put("name", name);
 		parameters.put("most", most);
 		parameters.put("now", now);
-		Integer count = Integer.class.cast(accessor.query(HibernateResourceDefinition.LOCK_HQL, null, null, parameters).get(0));
+		Integer count = Integer.class.cast(accessor.query(HibernateTransactionDefinition.LOCK_HQL, null, null, parameters).get(0));
 		if (count != 1) {
 			throw new TransactionLockException();
 		}
 	}
 
 	@Override
-	protected void unlock(ResourceDefinition definition) {
+	protected void unlock(TransactionDefinition definition) {
 		String name = definition.getName();
 		Instant most = definition.getMost();
 		Instant now = Instant.now();
@@ -85,7 +85,7 @@ public class HibernateResourceManager extends ResourceManager {
 		parameters.put("name", name);
 		parameters.put("most", most);
 		parameters.put("now", now);
-		Integer count = Integer.class.cast(accessor.query(HibernateResourceDefinition.UNLOCK_HQL, null, null, parameters).get(0));
+		Integer count = Integer.class.cast(accessor.query(HibernateTransactionDefinition.UNLOCK_HQL, null, null, parameters).get(0));
 		if (count != 1) {
 			throw new TransactionUnlockException();
 		}

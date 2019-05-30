@@ -1,7 +1,7 @@
 package com.jstarcraft.core.transaction.exception;
 
 /**
- * 分布式过期异常
+ * 事务过期异常
  * 
  * @author Birdy
  */

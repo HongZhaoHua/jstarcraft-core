@@ -1,13 +1,13 @@
-package com.jstarcraft.core.transaction.resource.hazelcast;
+package com.jstarcraft.core.transaction.hazelcast;
 
 import java.time.Instant;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
 
 /**
  * Hazelcast分布式管理器
@@ -15,7 +15,7 @@ import com.jstarcraft.core.transaction.resource.ResourceManager;
  * @author Birdy
  *
  */
-public class HazelcastResourceManager extends ResourceManager {
+public class HazelcastTransactionManager extends TransactionManager {
 
 	private static final String DEFAULT_STORE = "jstarcraft";
 
@@ -23,31 +23,31 @@ public class HazelcastResourceManager extends ResourceManager {
 
 	private final HazelcastInstance hazelcastInstance;
 
-	public HazelcastResourceManager(HazelcastInstance hazelcastInstance) {
+	public HazelcastTransactionManager(HazelcastInstance hazelcastInstance) {
 		this(hazelcastInstance, DEFAULT_STORE);
 	}
 
-	public HazelcastResourceManager(HazelcastInstance hazelcastInstance, String store) {
+	public HazelcastTransactionManager(HazelcastInstance hazelcastInstance, String store) {
 		this.hazelcastInstance = hazelcastInstance;
 		this.store = store;
 	}
 
-	private IMap<String, HazelcastResourceDefinition> getStore() {
+	private IMap<String, HazelcastTransactionDefinition> getStore() {
 		return hazelcastInstance.getMap(store);
 	}
 
 	@Override
-	protected void lock(ResourceDefinition definition) {
+	protected void lock(TransactionDefinition definition) {
 		Instant now = Instant.now();
 		String name = definition.getName();
-		final IMap<String, HazelcastResourceDefinition> store = getStore();
+		final IMap<String, HazelcastTransactionDefinition> store = getStore();
 		try {
 			store.lock(name);
-			HazelcastResourceDefinition current = store.get(name);
+			HazelcastTransactionDefinition current = store.get(name);
 			if (current == null) {
-				store.put(name, new HazelcastResourceDefinition(definition));
+				store.put(name, new HazelcastTransactionDefinition(definition));
 			} else if (now.isAfter(current.getMost())) {
-				store.put(name, new HazelcastResourceDefinition(definition));
+				store.put(name, new HazelcastTransactionDefinition(definition));
 			} else {
 				throw new TransactionLockException();
 			}
@@ -57,13 +57,13 @@ public class HazelcastResourceManager extends ResourceManager {
 	}
 
 	@Override
-	protected void unlock(ResourceDefinition definition) {
+	protected void unlock(TransactionDefinition definition) {
 		Instant now = Instant.now();
 		String name = definition.getName();
-		final IMap<String, HazelcastResourceDefinition> store = getStore();
+		final IMap<String, HazelcastTransactionDefinition> store = getStore();
 		try {
 			store.lock(name);
-			HazelcastResourceDefinition current = store.get(name);
+			HazelcastTransactionDefinition current = store.get(name);
 			if (current == null) {
 				throw new TransactionUnlockException();
 			} else if (now.isAfter(current.getMost())) {

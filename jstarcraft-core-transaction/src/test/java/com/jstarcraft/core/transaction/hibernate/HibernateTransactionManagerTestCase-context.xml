@@ -16,7 +16,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>/com/jstarcraft/core/transaction/resource/hibernate/jdbc.properties</value>
+				<value>/com/jstarcraft/core/transaction/hibernate/jdbc.properties</value>
 			</list>
 		</property>
 	</bean>

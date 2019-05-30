@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.zookeeper;
+package com.jstarcraft.core.transaction.zookeeper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -12,13 +12,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
+import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
-import com.jstarcraft.core.transaction.resource.ResourceManagerTestCase;
-import com.jstarcraft.core.transaction.resource.zookeeper.ZooKeeperResourceManager;
+import com.jstarcraft.core.transaction.zookeeper.ZooKeeperTransactionManager;
 
-public class ZooKeeperDistributionManagerTestCase extends ResourceManagerTestCase {
+public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestCase {
 
 	private TestingServer testZooKeeper;
 
@@ -38,16 +38,16 @@ public class ZooKeeperDistributionManagerTestCase extends ResourceManagerTestCas
 	}
 
 	@Override
-	protected ResourceManager getDistributionManager() {
-		return new ZooKeeperResourceManager(curator);
+	protected TransactionManager getDistributionManager() {
+		return new ZooKeeperTransactionManager(curator);
 	}
 
 	@Test
 	public void testCuratorStop() throws Exception {
 		{
-			ZooKeeperResourceManager manager = new ZooKeeperResourceManager(curator);
+			ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
 			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			ResourceDefinition definition = new ResourceDefinition(name, most);
+			TransactionDefinition definition = new TransactionDefinition(name, most);
 			manager.lock(definition);
 			Assert.assertNotNull(curator.checkExists().forPath(manager.getNodePath(definition)));
 			curator.close();
@@ -61,9 +61,9 @@ public class ZooKeeperDistributionManagerTestCase extends ResourceManagerTestCas
 		{
 			curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
 			curator.start();
-			ZooKeeperResourceManager manager = new ZooKeeperResourceManager(curator);
+			ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
 			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			ResourceDefinition definition = new ResourceDefinition(name, most);
+			TransactionDefinition definition = new TransactionDefinition(name, most);
 			Assert.assertNull(curator.checkExists().forPath(manager.getNodePath(definition)));
 			manager.lock(definition);
 		}

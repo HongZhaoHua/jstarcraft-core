@@ -1,9 +1,9 @@
 package com.jstarcraft.core.transaction.exception;
 
-import com.jstarcraft.core.transaction.resource.ResourceManager;
+import com.jstarcraft.core.transaction.TransactionManager;
 
 /**
- * 分布式加锁异常(必须由{@link ResourceManager}具体实现的lock方法使用)
+ * 分布式加锁异常(必须由{@link TransactionManager}具体实现的lock方法使用)
  * 
  * @author Birdy
  */

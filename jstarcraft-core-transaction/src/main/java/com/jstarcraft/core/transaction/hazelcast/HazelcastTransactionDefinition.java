@@ -1,9 +1,9 @@
-package com.jstarcraft.core.transaction.resource.hazelcast;
+package com.jstarcraft.core.transaction.hazelcast;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
+import com.jstarcraft.core.transaction.TransactionDefinition;
 
 /**
  * Hazelcast分布式定义
@@ -11,7 +11,7 @@ import com.jstarcraft.core.transaction.resource.ResourceDefinition;
  * @author Birdy
  *
  */
-public class HazelcastResourceDefinition implements Serializable {
+public class HazelcastTransactionDefinition implements Serializable {
 
 	private static final long serialVersionUID = -2615267956144491936L;
 
@@ -21,14 +21,14 @@ public class HazelcastResourceDefinition implements Serializable {
 	/** 最多锁定到指定的时间(必选) */
 	private Instant most;
 
-	HazelcastResourceDefinition() {
+	HazelcastTransactionDefinition() {
 	}
 
-	public HazelcastResourceDefinition(ResourceDefinition definition) {
+	public HazelcastTransactionDefinition(TransactionDefinition definition) {
 		this(definition.getName(), definition.getMost());
 	}
 
-	public HazelcastResourceDefinition(String name, Instant most) {
+	public HazelcastTransactionDefinition(String name, Instant most) {
 		this.name = name;
 		this.most = most;
 	}

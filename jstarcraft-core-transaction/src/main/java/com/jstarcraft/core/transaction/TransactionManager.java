@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource;
+package com.jstarcraft.core.transaction;
 
 import java.time.Instant;
 
@@ -15,7 +15,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public abstract class ResourceManager {
+public abstract class TransactionManager {
 
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,7 +25,7 @@ public abstract class ResourceManager {
 	 * @param definition
 	 * @param task
 	 */
-	public void execute(ResourceDefinition definition, ResourceTask task) {
+	public void execute(TransactionDefinition definition, TransactionTask task) {
 		lock(definition);
 		try {
 			task.onForward();
@@ -66,7 +66,7 @@ public abstract class ResourceManager {
 	 * 
 	 * @param definition
 	 */
-	protected abstract void lock(ResourceDefinition definition);
+	protected abstract void lock(TransactionDefinition definition);
 
 	/**
 	 * 根据指定的定义解锁
@@ -77,6 +77,6 @@ public abstract class ResourceManager {
 	 * 
 	 * @param definition
 	 */
-	protected abstract void unlock(ResourceDefinition definition);
+	protected abstract void unlock(TransactionDefinition definition);
 
 }

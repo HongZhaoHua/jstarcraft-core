@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.hibernate;
+package com.jstarcraft.core.transaction.hibernate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,22 +8,22 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
-import com.jstarcraft.core.transaction.resource.ResourceManagerTestCase;
-import com.jstarcraft.core.transaction.resource.hibernate.HibernateResourceManager;
+import com.jstarcraft.core.transaction.TransactionManager;
+import com.jstarcraft.core.transaction.TransactionManagerTestCase;
+import com.jstarcraft.core.transaction.hibernate.HibernateTransactionManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class HibernateDistributionManagerTestCase extends ResourceManagerTestCase {
+public class HibernateTransactionManagerTestCase extends TransactionManagerTestCase {
 
 	@Autowired
 	private HibernateAccessor accessor;
 
-	private HibernateResourceManager manager;
+	private HibernateTransactionManager manager;
 
 	@Before
 	public void testBefore() {
-		manager = new HibernateResourceManager(accessor);
+		manager = new HibernateTransactionManager(accessor);
 		manager.create(name);
 	}
 
@@ -33,7 +33,7 @@ public class HibernateDistributionManagerTestCase extends ResourceManagerTestCas
 	}
 
 	@Override
-	protected ResourceManager getDistributionManager() {
+	protected TransactionManager getDistributionManager() {
 		return manager;
 	}
 

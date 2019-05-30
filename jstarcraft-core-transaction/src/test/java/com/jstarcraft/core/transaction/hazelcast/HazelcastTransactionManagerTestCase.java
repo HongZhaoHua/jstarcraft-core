@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.hazelcast;
+package com.jstarcraft.core.transaction.hazelcast;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -10,13 +10,13 @@ import org.junit.Test;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
+import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
-import com.jstarcraft.core.transaction.resource.ResourceManagerTestCase;
-import com.jstarcraft.core.transaction.resource.hazelcast.HazelcastResourceManager;
+import com.jstarcraft.core.transaction.hazelcast.HazelcastTransactionManager;
 
-public class HazelcastDistributionManagerTestCase extends ResourceManagerTestCase {
+public class HazelcastTransactionManagerTestCase extends TransactionManagerTestCase {
 
 	private HazelcastInstance hazelcastInstance;
 
@@ -31,17 +31,17 @@ public class HazelcastDistributionManagerTestCase extends ResourceManagerTestCas
 	}
 
 	@Override
-	protected ResourceManager getDistributionManager() {
-		return new HazelcastResourceManager(hazelcastInstance);
+	protected TransactionManager getDistributionManager() {
+		return new HazelcastTransactionManager(hazelcastInstance);
 	}
 
 	@Test
 	public void testCluster() throws Exception {
 		// 测试Hazelcast集群的分布式锁
-		HazelcastResourceManager thisManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
-		HazelcastResourceManager thatManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
+		HazelcastTransactionManager thisManager = new HazelcastTransactionManager(Hazelcast.newHazelcastInstance());
+		HazelcastTransactionManager thatManager = new HazelcastTransactionManager(Hazelcast.newHazelcastInstance());
 		Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-		ResourceDefinition definition = new ResourceDefinition(name, most);
+		TransactionDefinition definition = new TransactionDefinition(name, most);
 
 		thisManager.lock(definition);
 		try {
@@ -56,7 +56,7 @@ public class HazelcastDistributionManagerTestCase extends ResourceManagerTestCas
 			Assert.fail();
 		} catch (TransactionLockException exception) {
 		}
-		thisManager = new HazelcastResourceManager(Hazelcast.newHazelcastInstance());
+		thisManager = new HazelcastTransactionManager(Hazelcast.newHazelcastInstance());
 		try {
 			thisManager.lock(definition);
 			Assert.fail();

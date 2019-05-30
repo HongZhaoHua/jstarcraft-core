@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.mongo;
+package com.jstarcraft.core.transaction.mongo;
 
 import java.time.Instant;
 
@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.jstarcraft.core.orm.mongo.MongoAccessor;
 import com.jstarcraft.core.orm.mongo.MongoMetadata;
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
 
 /**
  * Mongo分布式管理器
@@ -19,11 +19,11 @@ import com.jstarcraft.core.transaction.resource.ResourceManager;
  * @author Birdy
  *
  */
-public class MongoResourceManager extends ResourceManager {
+public class MongoTransactionManager extends TransactionManager {
 
 	private MongoAccessor accessor;
 
-	public MongoResourceManager(MongoAccessor accessor) {
+	public MongoTransactionManager(MongoAccessor accessor) {
 		this.accessor = accessor;
 	}
 
@@ -38,8 +38,8 @@ public class MongoResourceManager extends ResourceManager {
 		Instant now = Instant.now();
 		for (String name : names) {
 			try {
-				MongoResourceDefinition definition = new MongoResourceDefinition(name, now);
-				accessor.create(MongoResourceDefinition.class, definition);
+				MongoTransactionDefinition definition = new MongoTransactionDefinition(name, now);
+				accessor.create(MongoTransactionDefinition.class, definition);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -57,7 +57,7 @@ public class MongoResourceManager extends ResourceManager {
 		int count = 0;
 		for (String name : names) {
 			try {
-				accessor.delete(MongoResourceDefinition.class, name);
+				accessor.delete(MongoTransactionDefinition.class, name);
 				count++;
 			} catch (Exception exception) {
 			}
@@ -66,7 +66,7 @@ public class MongoResourceManager extends ResourceManager {
 	}
 
 	@Override
-	protected void lock(ResourceDefinition definition) {
+	protected void lock(TransactionDefinition definition) {
 		Instant now = Instant.now();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
 		Criteria[] andCriterias = new Criteria[1];
@@ -74,14 +74,14 @@ public class MongoResourceManager extends ResourceManager {
 		Query query = Query.query(criteria.andOperator(andCriterias));
 		Update update = new Update();
 		update.set("most", definition.getMost().toEpochMilli());
-		long count = accessor.update(MongoResourceDefinition.class, query, update);
+		long count = accessor.update(MongoTransactionDefinition.class, query, update);
 		if (count != 1) {
 			throw new TransactionLockException();
 		}
 	}
 
 	@Override
-	protected void unlock(ResourceDefinition definition) {
+	protected void unlock(TransactionDefinition definition) {
 		Instant now = Instant.now();
 		Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
 		Criteria[] andCriterias = new Criteria[2];
@@ -90,7 +90,7 @@ public class MongoResourceManager extends ResourceManager {
 		Query query = Query.query(criteria.andOperator(andCriterias));
 		Update update = new Update();
 		update.set("most", now.toEpochMilli());
-		long count = accessor.update(MongoResourceDefinition.class, query, update);
+		long count = accessor.update(MongoTransactionDefinition.class, query, update);
 		if (count != 1) {
 			throw new TransactionUnlockException();
 		}

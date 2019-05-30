@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.zookeeper;
+package com.jstarcraft.core.transaction.zookeeper;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,10 +8,10 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.utils.PathUtils;
 import org.apache.zookeeper.CreateMode;
 
+import com.jstarcraft.core.transaction.TransactionDefinition;
+import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
-import com.jstarcraft.core.transaction.resource.ResourceManager;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 
@@ -21,7 +21,7 @@ import com.jstarcraft.core.utility.SensitivityQueue;
  * @author Birdy
  *
  */
-public class ZooKeeperResourceManager extends ResourceManager {
+public class ZooKeeperTransactionManager extends TransactionManager {
 
 	/** 修复时间间隔 */
 	private static final long FIX_TIME = 1000;
@@ -84,21 +84,21 @@ public class ZooKeeperResourceManager extends ResourceManager {
 
 	private final String path;
 
-	public ZooKeeperResourceManager(CuratorFramework curator) {
+	public ZooKeeperTransactionManager(CuratorFramework curator) {
 		this(curator, DEFAULT_PATH);
 	}
 
-	public ZooKeeperResourceManager(CuratorFramework curator, String path) {
+	public ZooKeeperTransactionManager(CuratorFramework curator, String path) {
 		this.curator = requireNonNull(curator);
 		this.path = PathUtils.validatePath(path);
 	}
 
-	String getNodePath(ResourceDefinition definition) {
+	String getNodePath(TransactionDefinition definition) {
 		return path + "/" + definition.getName();
 	}
 
 	@Override
-	protected void lock(ResourceDefinition definition) {
+	protected void lock(TransactionDefinition definition) {
 		try {
 			String path = getNodePath(definition);
 			curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
@@ -113,7 +113,7 @@ public class ZooKeeperResourceManager extends ResourceManager {
 	}
 
 	@Override
-	protected void unlock(ResourceDefinition definition) {
+	protected void unlock(TransactionDefinition definition) {
 		try {
 			AtomicBoolean state = states.get();
 			state.compareAndSet(true, false);

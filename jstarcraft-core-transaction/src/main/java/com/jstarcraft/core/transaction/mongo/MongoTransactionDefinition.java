@@ -1,4 +1,4 @@
-package com.jstarcraft.core.transaction.resource.mongo;
+package com.jstarcraft.core.transaction.mongo;
 
 import java.time.Instant;
 
@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
-import com.jstarcraft.core.transaction.resource.ResourceDefinition;
+import com.jstarcraft.core.transaction.TransactionDefinition;
 
 /**
  * Mongo分布式定义
@@ -15,7 +15,7 @@ import com.jstarcraft.core.transaction.resource.ResourceDefinition;
  *
  */
 @Document
-public class MongoResourceDefinition implements IdentityObject<String> {
+public class MongoTransactionDefinition implements IdentityObject<String> {
 
 	/** 锁名称 */
 	@Id
@@ -24,14 +24,14 @@ public class MongoResourceDefinition implements IdentityObject<String> {
 	/** 最多锁定到指定的时间(必选) */
 	private long most;
 
-	MongoResourceDefinition() {
+	MongoTransactionDefinition() {
 	}
 
-	public MongoResourceDefinition(ResourceDefinition definition) {
+	public MongoTransactionDefinition(TransactionDefinition definition) {
 		this(definition.getName(), definition.getMost());
 	}
 
-	public MongoResourceDefinition(String name, Instant most) {
+	public MongoTransactionDefinition(String name, Instant most) {
 		this.name = name;
 		this.most = most.toEpochMilli();
 	}
