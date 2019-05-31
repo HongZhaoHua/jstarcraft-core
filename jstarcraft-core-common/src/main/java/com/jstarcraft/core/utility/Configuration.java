@@ -14,16 +14,16 @@ public class Configuration {
     /** 配置项 */
     private Properties keyValues;
     
-    public Configuration(Map<?, ?>... properties) {
+    public Configuration(Map<?, ?>... keyValues) {
         this.keyValues = new Properties();
-        for (Map<?, ?> property : properties) {
+        for (Map<?, ?> property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
 
-    public Configuration(Properties... properties) {
+    public Configuration(Properties... keyValues) {
         this.keyValues = new Properties();
-        for (Properties property : properties) {
+        for (Properties property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
