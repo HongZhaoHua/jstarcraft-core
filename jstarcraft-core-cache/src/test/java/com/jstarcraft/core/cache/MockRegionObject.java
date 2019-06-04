@@ -48,14 +48,14 @@ public class MockRegionObject implements IdentityObject<Integer> {
 			return false;
 		MockRegionObject that = (MockRegionObject) object;
 		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.getId(), that.getId());
+		equal.append(this.id, that.id);
 		return equal.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(getId());
+		hash.append(id);
 		return hash.toHashCode();
 	}
 

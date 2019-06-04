@@ -75,16 +75,16 @@ public class MockEntityObject implements IdentityObject<Integer> {
 			return false;
 		MockEntityObject that = (MockEntityObject) object;
 		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.getFirstName(), that.getFirstName());
-		equal.append(this.getLastName(), that.getLastName());
+		equal.append(this.firstName, that.firstName);
+		equal.append(this.lastName, that.lastName);
 		return equal.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(getFirstName());
-		hash.append(getLastName());
+		hash.append(firstName);
+		hash.append(lastName);
 		return hash.toHashCode();
 	}
 
