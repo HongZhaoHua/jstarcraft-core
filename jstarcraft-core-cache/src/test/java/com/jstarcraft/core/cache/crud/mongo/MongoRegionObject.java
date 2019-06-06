@@ -12,7 +12,7 @@ import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
 import com.jstarcraft.core.common.identification.IdentityObject;
 
 @Document
-@CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
+@CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "promptPersistenceStrategy")
 public class MongoRegionObject implements IdentityObject<Integer> {
 
     @Id
@@ -34,9 +34,9 @@ public class MongoRegionObject implements IdentityObject<Integer> {
     }
 
     @CacheChange(values = { "true" })
-    public boolean modify(int owner, boolean result) {
+    public boolean modify(int owner, boolean modify) {
         this.owner = owner;
-        return result;
+        return modify;
     }
 
     @Override

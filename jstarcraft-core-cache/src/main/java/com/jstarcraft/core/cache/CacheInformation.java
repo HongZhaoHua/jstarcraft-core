@@ -1,5 +1,6 @@
 package com.jstarcraft.core.cache;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -20,7 +21,6 @@ import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.cache.exception.CacheException;
-import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
@@ -46,6 +46,8 @@ public class CacheInformation {
 
     /** 缓存类型 */
     private Class<? extends IdentityObject> cacheClass;
+    /** 缓存构造器 */
+    private Constructor<? extends IdentityObject> cacheConstructor;
     /** 缓存配置 */
     private CacheConfiguration cacheConfiguration;
     /** 索引信息 */
@@ -148,6 +150,21 @@ public class CacheInformation {
     }
 
     /**
+     * 获取缓存实例
+     * 
+     * @return
+     */
+    public IdentityObject getCacheInstance() {
+        try {
+            return cacheConstructor.newInstance();
+        } catch (Exception exception) {
+            String message = StringUtility.format("获取缓存[{}]的实例异常", cacheClass.getName());
+            LOGGER.error(message, exception);
+            throw new CacheException(message, exception);
+        }
+    }
+
+    /**
      * 获取缓存单位
      * 
      * @return
@@ -204,6 +221,14 @@ public class CacheInformation {
     public static CacheInformation instanceOf(Class<? extends IdentityObject> clazz) {
         CacheInformation instance = new CacheInformation();
         instance.cacheClass = clazz;
+        try {
+            instance.cacheConstructor = clazz.getDeclaredConstructor();
+            ReflectionUtility.makeAccessible(instance.cacheConstructor);
+        } catch (Exception exception) {
+            String message = StringUtility.format("类型[{}]的缓存构造器不存在", clazz.getName());
+            LOGGER.error(message, exception);
+            throw new CacheConfigurationException(message);
+        }
         instance.cacheConfiguration = clazz.getAnnotation(CacheConfiguration.class);
         // 索引信息
         HashMap<String, Field> indexInformations = new HashMap<>();

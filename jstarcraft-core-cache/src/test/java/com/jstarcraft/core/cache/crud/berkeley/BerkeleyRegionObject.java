@@ -15,7 +15,7 @@ import com.sleepycat.persist.model.SecondaryKey;
 
 @BerkeleyConfiguration(store = "berkeley")
 @Entity
-@CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
+@CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "promptPersistenceStrategy")
 public class BerkeleyRegionObject implements IdentityObject<Integer> {
 
     @PrimaryKey
@@ -37,9 +37,9 @@ public class BerkeleyRegionObject implements IdentityObject<Integer> {
     }
 
     @CacheChange(values = { "true" })
-    public boolean modify(int owner, boolean result) {
+    public boolean modify(int owner, boolean modify) {
         this.owner = owner;
-        return result;
+        return modify;
     }
 
     @Override

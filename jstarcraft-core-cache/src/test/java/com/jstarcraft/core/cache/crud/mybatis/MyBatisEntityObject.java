@@ -15,7 +15,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 
 @Entity
 //@TableName("MyBatisEntityObject")
-@CacheConfiguration(unit = Unit.ENTITY, indexes = { "firstName", "token" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
+@CacheConfiguration(unit = Unit.ENTITY, indexes = { "firstName", "token" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "promptPersistenceStrategy")
 public class MyBatisEntityObject implements IdentityObject<Integer> {
 
     @Id
@@ -63,10 +63,10 @@ public class MyBatisEntityObject implements IdentityObject<Integer> {
     }
 
     @CacheChange(values = { "true" })
-    public boolean modify(String lastName, int money, boolean result) {
+    public boolean modify(String lastName, int money, boolean modify) {
         this.lastName = lastName;
         this.money = money;
-        return result;
+        return modify;
     }
 
     @Override

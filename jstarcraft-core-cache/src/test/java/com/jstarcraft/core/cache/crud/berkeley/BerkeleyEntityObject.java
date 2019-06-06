@@ -15,7 +15,7 @@ import com.sleepycat.persist.model.SecondaryKey;
 
 @BerkeleyConfiguration(store = "berkeley")
 @Entity
-@CacheConfiguration(unit = Unit.ENTITY, indexes = { "firstName", "token" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
+@CacheConfiguration(unit = Unit.ENTITY, indexes = { "firstName", "token" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "promptPersistenceStrategy")
 public class BerkeleyEntityObject implements IdentityObject<Integer> {
 
     @PrimaryKey
@@ -64,10 +64,10 @@ public class BerkeleyEntityObject implements IdentityObject<Integer> {
     }
 
     @CacheChange(values = { "true" })
-    public boolean modify(String lastName, int money, boolean result) {
+    public boolean modify(String lastName, int money, boolean modify) {
         this.lastName = lastName;
         this.money = money;
-        return result;
+        return modify;
     }
 
     @Override

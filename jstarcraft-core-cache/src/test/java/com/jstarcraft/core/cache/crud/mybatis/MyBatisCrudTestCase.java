@@ -87,6 +87,8 @@ public class MyBatisCrudTestCase {
                 Assert.fail();
             }
             Assert.assertThat(entityManager.getIdentities(cacheIndex).size(), CoreMatchers.equalTo(2));
+            // 测试更新
+            entity.modify("lastName", 1000, true);
             // 测试删除
             entityManager.deleteInstance(entity.getId());
             if (entityManager.getInstance(entity.getId()) != null) {

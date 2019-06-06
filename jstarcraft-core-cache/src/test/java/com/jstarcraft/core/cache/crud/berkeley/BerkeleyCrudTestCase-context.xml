@@ -30,7 +30,7 @@ http://www.jstarcraft.com/core/orm/berkeley/berkeley.xsd">
     <cache:configuration id="cacheService">
         <cache:accessor reference="accessor" />
         <cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_USED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
-        <cache:persistenceStrategy name="queuePersistenceStrategy" type="QUEUE" parameters="{&quot;size&quot;:&quot;100&quot;}" />
+        <cache:persistenceStrategy name="promptPersistenceStrategy" type="PROMPT" parameters="{}" />
         <cache:scan>
             <cache:package name="com.jstarcraft.core.cache.crud.berkeley" />
         </cache:scan>
