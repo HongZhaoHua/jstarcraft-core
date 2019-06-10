@@ -13,7 +13,7 @@ public class Configuration {
 
     /** 配置项 */
     private Properties keyValues;
-    
+
     public Configuration(Map<?, ?>... keyValues) {
         this.keyValues = new Properties();
         for (Map<?, ?> property : keyValues) {
@@ -26,6 +26,19 @@ public class Configuration {
         for (Properties property : keyValues) {
             this.keyValues.putAll(property);
         }
+    }
+
+    public Class getClass(String name, Class instead) {
+        String value = getString(name);
+        try {
+            return StringUtility.isBlank(value) ? instead : Class.forName(value);
+        } catch (ClassNotFoundException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public Class getClass(String name) {
+        return getClass(name, null);
     }
 
     public Boolean getBoolean(String name, Boolean instead) {
