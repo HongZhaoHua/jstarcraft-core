@@ -1,13 +1,9 @@
 package com.jstarcraft.core.orm.mybatis;
 
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.sql.DataSource;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -23,9 +19,6 @@ import com.jstarcraft.core.orm.OrmPagination;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class MyBatisAccessorTestCase {
-
-    @Autowired
-    private DataSource dataSource;
 
     @Autowired
     private MyBatisAccessor accessor;

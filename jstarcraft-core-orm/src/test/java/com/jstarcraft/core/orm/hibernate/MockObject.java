@@ -1,6 +1,6 @@
 package com.jstarcraft.core.orm.hibernate;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class MockObject implements IdentityObject<Integer> {
     private int money;
 
     @Column(columnDefinition = "datetime")
-    private Instant instant;
+    private LocalDateTime instant;
 
     @Enumerated(EnumType.STRING)
     private MockEnumeration race;
@@ -80,7 +80,7 @@ public class MockObject implements IdentityObject<Integer> {
         return money;
     }
 
-    public Instant getInstant() {
+    public LocalDateTime getInstant() {
         return instant;
     }
 
@@ -120,7 +120,7 @@ public class MockObject implements IdentityObject<Integer> {
         return StringUtility.reflect(this);
     }
 
-    public static MockObject instanceOf(Integer id, String name, String childrenName, int money, Instant instant, MockEnumeration race) {
+    public static MockObject instanceOf(Integer id, String name, String childrenName, int money, LocalDateTime instant, MockEnumeration race) {
         MockObject instance = new MockObject();
         instance.id = id;
         instance.name = name;
