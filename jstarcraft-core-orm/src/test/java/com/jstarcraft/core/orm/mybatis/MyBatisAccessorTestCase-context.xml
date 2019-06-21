@@ -66,7 +66,11 @@ http://www.jstarcraft.com/core/orm/mybatis/mybatis.xsd">
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     <!-- Hibernate配置 -->
+    <bean id="physicalNamingStrategy" class="com.jstarcraft.core.orm.hibernate.Camel2SnakeStrategy">
+    </bean>
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="physicalNamingStrategy" ref="physicalNamingStrategy" />
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="com.jstarcraft.core.orm.mybatis" />
         <property name="hibernateProperties">
