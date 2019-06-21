@@ -1,8 +1,5 @@
 package com.jstarcraft.core.orm.mybatis;
 
-import java.time.Instant;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,9 +23,6 @@ public class MockObject implements IdentityObject<Integer> {
     private String name;
 
     private int money;
-
-    @Column(columnDefinition = "datetime")
-    private Instant instant;
 
     @Enumerated(EnumType.STRING)
     private MockEnumeration race;
@@ -56,10 +50,6 @@ public class MockObject implements IdentityObject<Integer> {
         return money;
     }
 
-    public Instant getInstant() {
-        return instant;
-    }
-
     public MockEnumeration getRace() {
         return race;
     }
@@ -81,17 +71,15 @@ public class MockObject implements IdentityObject<Integer> {
         equal.append(this.getId(), that.getId());
         equal.append(this.getName(), that.getName());
         equal.append(this.getMoney(), that.getMoney());
-        equal.append(this.getInstant(), that.getInstant());
         equal.append(this.getRace(), that.getRace());
         return equal.isEquals();
     }
 
-    public static MockObject instanceOf(Integer id, String name, String childrenName, int money, Instant instant, MockEnumeration race) {
+    public static MockObject instanceOf(Integer id, String name, String childrenName, int money, MockEnumeration race) {
         MockObject instance = new MockObject();
         instance.id = id;
         instance.name = name;
         instance.money = money;
-        instance.instant = instant;
         instance.race = race;
         return instance;
     }

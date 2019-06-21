@@ -17,39 +17,39 @@ import com.jstarcraft.core.orm.mybatis.MyBatisAccessor;
  */
 public class MyBatisAccessorFactory implements FactoryBean<MyBatisAccessor> {
 
-	private static final Logger logger = LoggerFactory.getLogger(MyBatisAccessorFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(MyBatisAccessorFactory.class);
 
-	public static final String CLASSES = "classes";
+    public static final String CLASSES = "classes";
 
-	private MyBatisAccessor accessor;
-	private Collection<Class<?>> classes;
+    private MyBatisAccessor accessor;
+    private Collection<Class<?>> classes;
 
-	private SqlSessionTemplate template;
+    private SqlSessionTemplate template;
 
-	@Override
-	public MyBatisAccessor getObject() {
-		if (accessor == null) {
-			accessor = new MyBatisAccessor(classes, template);
-		}
-		return accessor;
-	}
+    @Override
+    public MyBatisAccessor getObject() {
+        if (accessor == null) {
+            accessor = new MyBatisAccessor(classes, template);
+        }
+        return accessor;
+    }
 
-	@Override
-	public Class<?> getObjectType() {
-		return MyBatisAccessor.class;
-	}
+    @Override
+    public Class<?> getObjectType() {
+        return MyBatisAccessor.class;
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return true;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
-	public void setClasses(Collection<Class<?>> classes) {
-		this.classes = classes;
-	}
+    public void setClasses(Collection<Class<?>> classes) {
+        this.classes = classes;
+    }
 
-	public void setTemplate(SqlSessionTemplate template) {
-		this.template = template;
-	}
+    public void setTemplate(SqlSessionTemplate template) {
+        this.template = template;
+    }
 
 }
