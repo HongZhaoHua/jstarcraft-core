@@ -24,6 +24,7 @@ import com.jstarcraft.core.codec.annotation.IncludeProperty;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration.Mode;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.ClassUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -46,9 +47,46 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
 	/** 名称 */
 	private String name;
 	/** 规范 */
-	private CodecSpecification specification;
+	private Specification specification;
+	
+	private static final byte[] codes = new byte[Specification.values().length];
 
-	private ClassDefinition(int code, Class<?> clazz, TreeSet<PropertyDefinition> properties, CodecSpecification specification) {
+    static {
+        /** 数组 */
+        codes[Specification.ARRAY.ordinal()] = (byte) 0x00;
+        /** 布尔 */
+        codes[Specification.BOOLEAN.ordinal()] = (byte) 0x10;
+        /** 集合 */
+        codes[Specification.COLLECTION.ordinal()] = (byte) 0x20;
+        /** 枚举 */
+        codes[Specification.ENUMERATION.ordinal()] = (byte) 0x30;
+        /** 时间 */
+        codes[Specification.INSTANT.ordinal()] = (byte) 0x40;
+        /** 映射 */
+        codes[Specification.MAP.ordinal()] = (byte) 0x50;
+        /** 数值 */
+        codes[Specification.NUMBER.ordinal()] = (byte) 0x60;
+        /** 对象 */
+        codes[Specification.OBJECT.ordinal()] = (byte) 0x70;
+        /** 字符串 */
+        codes[Specification.STRING.ordinal()] = (byte) 0x80;
+        /** 类型 */
+        codes[Specification.TYPE.ordinal()] = (byte) 0x90;
+        /** 未知 */
+        codes[Specification.VOID.ordinal()] = (byte) 0xA0;
+    }
+
+    /**
+     * 通过指定规范获取代号
+     * 
+     * @param specification
+     * @return
+     */
+    public static byte getCode(Specification specification) {
+        return codes[specification.ordinal()];
+    }
+
+	private ClassDefinition(int code, Class<?> clazz, TreeSet<PropertyDefinition> properties, Specification specification) {
 		this.code = code;
 		this.clazz = clazz;
 		this.name = clazz.getName();
@@ -88,7 +126,7 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
 		return clazz;
 	}
 
-	public CodecSpecification getSpecification() {
+	public Specification getSpecification() {
 		return specification;
 	}
 
@@ -135,8 +173,8 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
 	public static ClassDefinition instanceOf(Class<?> clazz, Map<Class<?>, Integer> codes) {
 		ProtocolConfiguration protocolConfiguration = clazz.getAnnotation(ProtocolConfiguration.class);
 		TreeSet<PropertyDefinition> properties = new TreeSet<PropertyDefinition>();
-		CodecSpecification specification = CodecSpecification.getSpecification(clazz);
-		if (specification == CodecSpecification.OBJECT) {
+		Specification specification = Specification.getSpecification(clazz);
+		if (specification == Specification.OBJECT) {
 			if (protocolConfiguration == null || protocolConfiguration.mode() == Mode.FIELD) {
 				Field[] fields = clazz.getDeclaredFields();
 				for (Field field : fields) {
@@ -273,16 +311,16 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
 				throw new IOException();
 			}
 		}
-		return new ClassDefinition(code, clazz, properties, CodecSpecification.getSpecification(clazz));
+		return new ClassDefinition(code, clazz, properties, Specification.getSpecification(clazz));
 	}
 
 	public static void writeTo(ClassDefinition definition, DataOutputStream out) throws IOException {
 		int code = definition.getCode();
-		CodecSpecification specification = definition.getSpecification();
+		Specification specification = definition.getSpecification();
 		String name = definition.getName();
 		byte[] bytes = name.getBytes(StringUtility.CHARSET);
 		out.writeShort((short) code);
-		out.writeByte(specification.getCode());
+		out.writeByte(getCode(specification));
 		out.writeShort((short) bytes.length);
 		out.write(bytes);
 		out.writeShort((short) definition.properties.length);

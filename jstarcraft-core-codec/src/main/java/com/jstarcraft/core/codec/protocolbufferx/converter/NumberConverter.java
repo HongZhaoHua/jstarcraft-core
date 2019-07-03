@@ -18,7 +18,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -137,7 +137,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Number value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = CodecSpecification.NUMBER.getCode();
+        byte information = ClassDefinition.getCode(Specification.NUMBER);
         if (value == null) {
             out.write(information);
             return;

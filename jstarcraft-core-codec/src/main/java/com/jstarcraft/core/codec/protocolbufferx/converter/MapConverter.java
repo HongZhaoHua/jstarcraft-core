@@ -11,7 +11,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -49,7 +49,7 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
             // definition = context.getClassDefinition(code);
             Map map = (Map) definition.getInstance();
             context.putMapValue(map);
-            ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.TYPE);
+            ProtocolConverter converter = context.getProtocolConverter(Specification.TYPE);
 
             // Type keyType = (Type) converter.readValueFrom(context,
             // Type.class, null);
@@ -61,8 +61,8 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
             Type keyType = types[0];
             Type valueType = types[1];
 
-            ProtocolConverter keyConverter = context.getProtocolConverter(CodecSpecification.getSpecification(keyType));
-            ProtocolConverter valueConverter = context.getProtocolConverter(CodecSpecification.getSpecification(valueType));
+            ProtocolConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
+            ProtocolConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
             for (int index = 0; index < size; index++) {
@@ -105,7 +105,7 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = CodecSpecification.MAP.getCode();
+        byte information = ClassDefinition.getCode(Specification.MAP);
         if (value == null) {
             out.write(information);
             return;
@@ -151,8 +151,8 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
                 // context.getProtocolConverter(CodecSpecification.TYPE);
                 // converter.writeValueTo(context, Type.class, null, keyType);
                 // converter.writeValueTo(context, Type.class, null, valueType);
-                ProtocolConverter keyConverter = context.getProtocolConverter(CodecSpecification.getSpecification(keyType));
-                ProtocolConverter valueConverter = context.getProtocolConverter(CodecSpecification.getSpecification(valueType));
+                ProtocolConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
+                ProtocolConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
                 ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 for (Entry<Object, Object> keyValue : value.entrySet()) {

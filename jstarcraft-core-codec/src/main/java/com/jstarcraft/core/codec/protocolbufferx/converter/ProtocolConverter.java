@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.common.reflection.Specification;
 
 /**
  * 协议转换器

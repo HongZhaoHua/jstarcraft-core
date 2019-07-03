@@ -11,7 +11,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 
 /**
  * 时间转换器
@@ -52,7 +52,7 @@ public class InstantConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = CodecSpecification.INSTANT.getCode();
+        byte information = ClassDefinition.getCode(Specification.INSTANT);
         if (value == null) {
             out.write(information);
             return;

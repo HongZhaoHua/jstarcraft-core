@@ -8,8 +8,8 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -77,7 +77,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = CodecSpecification.OBJECT.getCode();
+        byte information = ClassDefinition.getCode(Specification.OBJECT);
         if (value == null) {
             out.write(information);
             return;

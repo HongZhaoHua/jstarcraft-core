@@ -10,7 +10,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -53,7 +53,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
 			ParameterizedType parameterizedType = (ParameterizedType)type;
 			Type[] types = parameterizedType.getActualTypeArguments();
 			Type elementType = types[0];
-			ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.getSpecification(elementType));
+			ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
 			definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
 			for (int index = 0; index < size; index++) {
 				Object object = converter.readValueFrom(context, elementType, definition);
@@ -86,7 +86,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
 	@Override
 	public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
 		OutputStream out = context.getOutputStream();
-		byte information = CodecSpecification.COLLECTION.getCode();
+		byte information = ClassDefinition.getCode(Specification.COLLECTION);
 		if (value == null) {
 			out.write(information);
 			return;
@@ -124,7 +124,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
 				Type elementType = types[0];
 //				ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.TYPE);
 //				converter.writeValueTo(context, Type.class, null, elementType);
-				ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.getSpecification(elementType));
+				ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
 				definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
 				for (Object object : value) {
 					converter.writeValueTo(context, elementType, definition, object);

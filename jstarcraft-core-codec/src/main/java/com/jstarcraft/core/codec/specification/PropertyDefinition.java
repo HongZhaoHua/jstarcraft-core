@@ -9,6 +9,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.jstarcraft.core.common.reflection.Specification;
+
 /**
  * 属性定义
  * 
@@ -22,7 +24,7 @@ public class PropertyDefinition implements Comparable<PropertyDefinition> {
 	private Field field;
 	private Method getter;
 	private Method setter;
-	private CodecSpecification specification;
+	private Specification specification;
 
 	private PropertyDefinition() {
 	}
@@ -39,7 +41,7 @@ public class PropertyDefinition implements Comparable<PropertyDefinition> {
 		return type;
 	}
 
-	public CodecSpecification getSpecification() {
+	public Specification getSpecification() {
 		return specification;
 	}
 
@@ -102,7 +104,7 @@ public class PropertyDefinition implements Comparable<PropertyDefinition> {
 		definition.name = name;
 		definition.code = code;
 		definition.type = type;
-		definition.specification = CodecSpecification.getSpecification(type);
+		definition.specification = Specification.getSpecification(type);
 		definition.getter = getter;
 		definition.setter = setter;
 		if (definition.getter != null) {
@@ -119,7 +121,7 @@ public class PropertyDefinition implements Comparable<PropertyDefinition> {
 		definition.name = name;
 		definition.code = code;
 		definition.type = type;
-		definition.specification = CodecSpecification.getSpecification(type);
+		definition.specification = Specification.getSpecification(type);
 		definition.field = field;
 		if (definition.field != null) {
 			definition.field.setAccessible(true);

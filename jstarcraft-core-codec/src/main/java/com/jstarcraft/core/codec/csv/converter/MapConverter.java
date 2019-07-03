@@ -11,7 +11,7 @@ import org.apache.commons.csv.CSVPrinter;
 import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -40,9 +40,9 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
 		ClassDefinition definition = context.getClassDefinition(clazz);
 		Map<Object, Object> map = (Map) definition.getInstance();
 		Class<?> keyClazz = TypeUtility.getRawType(types[0], null);
-		CsvConverter keyConverter = context.getCsvConverter(CodecSpecification.getSpecification(keyClazz));
+		CsvConverter keyConverter = context.getCsvConverter(Specification.getSpecification(keyClazz));
 		Class<?> valueClazz = TypeUtility.getRawType(types[1], null);
-		CsvConverter valueConverter = context.getCsvConverter(CodecSpecification.getSpecification(valueClazz));
+		CsvConverter valueConverter = context.getCsvConverter(Specification.getSpecification(valueClazz));
 		for (int index = 0; index < length; index++) {
 			Object key = keyConverter.readValueFrom(context, types[0]);
 			Object element = valueConverter.readValueFrom(context, types[1]);
@@ -65,9 +65,9 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
 		Map<Object, Object> map = Map.class.cast(value);
 		out.print(map.size());
 		Class<?> keyClazz = TypeUtility.getRawType(types[0], null);
-		CsvConverter keyConverter = context.getCsvConverter(CodecSpecification.getSpecification(keyClazz));
+		CsvConverter keyConverter = context.getCsvConverter(Specification.getSpecification(keyClazz));
 		Class<?> valueClazz = TypeUtility.getRawType(types[1], null);
-		CsvConverter valueConverter = context.getCsvConverter(CodecSpecification.getSpecification(valueClazz));
+		CsvConverter valueConverter = context.getCsvConverter(Specification.getSpecification(valueClazz));
 		for (Entry<Object, Object> keyValue : map.entrySet()) {
 			Object key = keyValue.getKey();
 			keyConverter.writeValueTo(context, types[0], key);

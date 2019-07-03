@@ -31,8 +31,8 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
@@ -159,8 +159,8 @@ public class JsonContentCodec implements ContentCodec {
             if (content.length == 0) {
                 return null;
             }
-            CodecSpecification specification = CodecSpecification.getSpecification(type);
-            if (specification == CodecSpecification.TYPE) {
+            Specification specification = Specification.getSpecification(type);
+            if (specification == Specification.TYPE) {
                 currentTypes.set(type);
                 Type value = typeConverter.readValue(content, Type.class);
                 currentTypes.remove();
@@ -178,8 +178,8 @@ public class JsonContentCodec implements ContentCodec {
     @Override
     public Object decode(Type type, InputStream stream) {
         try {
-            CodecSpecification specification = CodecSpecification.getSpecification(type);
-            if (specification == CodecSpecification.TYPE) {
+            Specification specification = Specification.getSpecification(type);
+            if (specification == Specification.TYPE) {
                 currentTypes.set(type);
                 Type value = typeConverter.readValue(stream, Type.class);
                 currentTypes.remove();

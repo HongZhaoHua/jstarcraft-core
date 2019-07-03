@@ -9,7 +9,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -42,7 +42,7 @@ public class ArrayConverter implements CsvConverter<Object> {
 			componentClass = clazz.getComponentType();
 		}
 		Object array = Array.newInstance(componentClass, length);
-		CodecSpecification specification = CodecSpecification.getSpecification(componentClass);
+		Specification specification = Specification.getSpecification(componentClass);
 		CsvConverter converter = context.getCsvConverter(specification);
 		for (int index = 0; index < length; index++) {
 			Object element = converter.readValueFrom(context, componentType);
@@ -72,7 +72,7 @@ public class ArrayConverter implements CsvConverter<Object> {
 		}
 		int length = Array.getLength(value);
 		out.print(length);
-		CodecSpecification specification = CodecSpecification.getSpecification(componentClass);
+		Specification specification = Specification.getSpecification(componentClass);
 		CsvConverter converter = context.getCsvConverter(specification);
 		for (int index = 0; index < length; index++) {
 			Object element = Array.get(value, index);

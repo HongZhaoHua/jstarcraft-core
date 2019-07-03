@@ -10,7 +10,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -56,7 +56,7 @@ public class BooleanConverter extends ProtocolConverter<Object> {
 	@Override
 	public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
 		OutputStream out = context.getOutputStream();
-		byte information = CodecSpecification.BOOLEAN.getCode();
+		byte information = ClassDefinition.getCode(Specification.BOOLEAN);
 		if (value == null) {
 			out.write(information);
 			return;

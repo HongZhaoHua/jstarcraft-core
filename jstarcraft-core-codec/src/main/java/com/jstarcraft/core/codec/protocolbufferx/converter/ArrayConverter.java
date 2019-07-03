@@ -9,7 +9,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -57,7 +57,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
 				clazz = clazz.getComponentType();
 				value = Array.newInstance(clazz, size);
 				context.putArrayValue(value);
-				CodecSpecification specification = clazz.isArray() ? CodecSpecification.ARRAY : definition.getSpecification();
+				Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
 				ProtocolConverter converter = context.getProtocolConverter(specification);
 				for (int index = 0; index < size; index++) {
 					Object object = converter.readValueFrom(context, clazz, definition);
@@ -89,7 +89,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
 	@Override
 	public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
 		OutputStream out = context.getOutputStream();
-		byte information = CodecSpecification.ARRAY.getCode();
+		byte information = ClassDefinition.getCode(Specification.ARRAY);
 		if (value == null) {
 			out.write(information);
 			return;
@@ -130,7 +130,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
 					byte[] data = (byte[]) value;
 					out.write(data);
 				} else {
-					CodecSpecification specification = clazz.isArray() ? CodecSpecification.ARRAY : definition.getSpecification();
+					Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
 					ProtocolConverter converter = context.getProtocolConverter(specification);
 					for (int index = 0; index < size; index++) {
 						Object object = Array.get(value, index);

@@ -22,9 +22,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.exception.CodecDefinitionException;
+import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.PressUtility;
 
 /**
@@ -165,7 +166,7 @@ public class CodecDefinition {
 		for (Type type : types) {
 			findDependentClasses(type, classes);
 		}
-		classes.addAll(CodecSpecification.type2Specifitions.keySet());
+		classes.addAll(Specification.type2Specifitions.keySet());
 		HashMap<Class<?>, Integer> codes = new HashMap<>();
 		for (Class<?> clazz : classes) {
 			if (clazz.isArray()) {

@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.csv.converter.CsvConverter;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 
 /**
  * CSV格式的编解码器
@@ -50,7 +50,7 @@ public class CsvContentCodec implements ContentCodec {
 	public Object decode(Type type, InputStream stream) {
 		try {
 			CsvReader context = new CsvReader(stream, codecDefinition);
-			CsvConverter converter = context.getCsvConverter(CodecSpecification.getSpecification(type));
+			CsvConverter converter = context.getCsvConverter(Specification.getSpecification(type));
 			return converter.readValueFrom(context, type);
 		} catch (Exception exception) {
 			String message = "CSV解码失败:" + exception.getMessage();
@@ -78,7 +78,7 @@ public class CsvContentCodec implements ContentCodec {
 	public void encode(Type type, Object content, OutputStream stream) {
 		try {
 			CsvWriter context = new CsvWriter(stream, codecDefinition);
-			CsvConverter converter = context.getCsvConverter(CodecSpecification.getSpecification(type));
+			CsvConverter converter = context.getCsvConverter(Specification.getSpecification(type));
 			converter.writeValueTo(context, type, content);
 			context.getOutputStream().flush();
 		} catch (Exception exception) {

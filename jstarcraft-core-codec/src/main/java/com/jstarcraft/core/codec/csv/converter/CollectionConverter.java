@@ -10,7 +10,7 @@ import org.apache.commons.csv.CSVPrinter;
 import com.jstarcraft.core.codec.csv.CsvReader;
 import com.jstarcraft.core.codec.csv.CsvWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -39,7 +39,7 @@ public class CollectionConverter implements CsvConverter<Collection<Object>> {
 		ClassDefinition definition = context.getClassDefinition(clazz);
 		Collection<Object> collection = (Collection) definition.getInstance();
 		Class<?> elementClazz = TypeUtility.getRawType(types[0], null);
-		CsvConverter converter = context.getCsvConverter(CodecSpecification.getSpecification(elementClazz));
+		CsvConverter converter = context.getCsvConverter(Specification.getSpecification(elementClazz));
 		for (int index = 0; index < length; index++) {
 			Object element = converter.readValueFrom(context, types[0]);
 			collection.add(element);
@@ -62,7 +62,7 @@ public class CollectionConverter implements CsvConverter<Collection<Object>> {
 		Collection<?> collection = Collection.class.cast(value);
 		out.print(collection.size());
 		Class<?> elementClazz = TypeUtility.getRawType(types[0], null);
-		CsvConverter converter = context.getCsvConverter(CodecSpecification.getSpecification(elementClazz));
+		CsvConverter converter = context.getCsvConverter(Specification.getSpecification(elementClazz));
 		for (Object element : collection) {
 			converter.writeValueTo(context, types[0], element);
 		}

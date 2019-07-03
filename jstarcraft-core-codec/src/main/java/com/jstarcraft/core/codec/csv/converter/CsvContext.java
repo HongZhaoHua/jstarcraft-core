@@ -6,7 +6,7 @@ import org.apache.commons.csv.CSVFormat;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 
 /**
  * CSV上下文
@@ -18,18 +18,18 @@ public class CsvContext {
 
 	protected static final CSVFormat FORMAT = CSVFormat.DEFAULT;
 
-	protected static final EnumMap<CodecSpecification, CsvConverter<?>> converters = new EnumMap<>(CodecSpecification.class);
+	protected static final EnumMap<Specification, CsvConverter<?>> converters = new EnumMap<>(Specification.class);
 	static {
-		converters.put(CodecSpecification.ARRAY, new ArrayConverter());
-		converters.put(CodecSpecification.BOOLEAN, new BooleanConverter());
-		converters.put(CodecSpecification.COLLECTION, new CollectionConverter());
-		converters.put(CodecSpecification.ENUMERATION, new EnumerationConverter());
-		converters.put(CodecSpecification.MAP, new MapConverter());
-		converters.put(CodecSpecification.NUMBER, new NumberConverter());
-		converters.put(CodecSpecification.OBJECT, new ObjectConverter());
-		converters.put(CodecSpecification.STRING, new StringConverter());
-		converters.put(CodecSpecification.INSTANT, new InstantConverter());
-		converters.put(CodecSpecification.TYPE, new TypeConverter());
+		converters.put(Specification.ARRAY, new ArrayConverter());
+		converters.put(Specification.BOOLEAN, new BooleanConverter());
+		converters.put(Specification.COLLECTION, new CollectionConverter());
+		converters.put(Specification.ENUMERATION, new EnumerationConverter());
+		converters.put(Specification.MAP, new MapConverter());
+		converters.put(Specification.NUMBER, new NumberConverter());
+		converters.put(Specification.OBJECT, new ObjectConverter());
+		converters.put(Specification.STRING, new StringConverter());
+		converters.put(Specification.INSTANT, new InstantConverter());
+		converters.put(Specification.TYPE, new TypeConverter());
 	}
 
 	/** 协议定义 */
@@ -39,7 +39,7 @@ public class CsvContext {
 		this.definition = definition;
 	}
 
-	public CsvConverter getCsvConverter(CodecSpecification specification) {
+	public CsvConverter getCsvConverter(Specification specification) {
 		CsvConverter converter = converters.get(specification);
 		return converter;
 	}

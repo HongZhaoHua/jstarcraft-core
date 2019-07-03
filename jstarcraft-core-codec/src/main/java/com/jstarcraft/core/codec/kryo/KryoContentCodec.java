@@ -20,7 +20,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.specification.CodecSpecification;
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
@@ -109,8 +109,8 @@ public class KryoContentCodec implements ContentCodec {
 			return null;
 		}
 		try (Input byteBufferInput = new Input(content)) {
-			CodecSpecification specification = CodecSpecification.getSpecification(type);
-			if (specification == CodecSpecification.TYPE) {
+		    Specification specification = Specification.getSpecification(type);
+			if (specification == Specification.TYPE) {
 				currentTypes.set(type);
 				LinkedList<Integer> list = kryo.readObject(byteBufferInput, LinkedList.class);
 				Type value = readValueFrom(list.iterator());
@@ -138,8 +138,8 @@ public class KryoContentCodec implements ContentCodec {
 			if (stream.available() == 0) {
 				return null;
 			}
-			CodecSpecification specification = CodecSpecification.getSpecification(type);
-			if (specification == CodecSpecification.TYPE) {
+			Specification specification = Specification.getSpecification(type);
+			if (specification == Specification.TYPE) {
 				currentTypes.set(type);
 				LinkedList<Integer> list = kryo.readObject(byteBufferInput, LinkedList.class);
 				Type value = readValueFrom(list.iterator());
@@ -203,8 +203,8 @@ public class KryoContentCodec implements ContentCodec {
 			return new byte[] {};
 		}
 		try (Output byteBufferOutput = new Output(1024, -1)) {
-			CodecSpecification specification = CodecSpecification.getSpecification(type);
-			if (specification == CodecSpecification.TYPE) {
+		    Specification specification = Specification.getSpecification(type);
+			if (specification == Specification.TYPE) {
 				currentTypes.set(type);
 				LinkedList<Integer> list = new LinkedList<>();
 				writeValueTo(list, (Type) content);
@@ -235,8 +235,8 @@ public class KryoContentCodec implements ContentCodec {
 			if (content == null) {
 				return;
 			}
-			CodecSpecification specification = CodecSpecification.getSpecification(type);
-			if (specification == CodecSpecification.TYPE) {
+			Specification specification = Specification.getSpecification(type);
+			if (specification == Specification.TYPE) {
 				currentTypes.set(type);
 				LinkedList<Integer> list = new LinkedList<>();
 				writeValueTo(list, (Type) content);
