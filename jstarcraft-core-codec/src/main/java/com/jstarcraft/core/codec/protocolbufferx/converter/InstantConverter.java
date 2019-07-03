@@ -72,4 +72,5 @@ public class InstantConverter extends ProtocolConverter<Object> {
         out.write(information);
         NumberConverter.writeNumber(out, time);
     }
+
 }
