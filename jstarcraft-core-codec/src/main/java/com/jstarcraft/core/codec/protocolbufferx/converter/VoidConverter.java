@@ -13,15 +13,15 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  * @author Birdy
  *
  */
-public class VoidConverter extends BinaryConverter<Object> {
+public class VoidConverter extends ProtocolConverter<Object> {
 
-	@Override
-	public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
-		return null;
-	}
+    @Override
+    public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
+        return null;
+    }
 
-	@Override
-	public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
-	}
+    @Override
+    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    }
 
 }

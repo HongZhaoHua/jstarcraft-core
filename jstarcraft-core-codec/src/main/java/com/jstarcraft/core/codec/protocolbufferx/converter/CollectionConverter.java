@@ -20,7 +20,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class CollectionConverter extends BinaryConverter<Collection<?>> {
+public class CollectionConverter extends ProtocolConverter<Collection<?>> {
 
 	/** 0000 0000(Null标记) */
 	private static final byte NULL_MARK = (byte) 0x00;

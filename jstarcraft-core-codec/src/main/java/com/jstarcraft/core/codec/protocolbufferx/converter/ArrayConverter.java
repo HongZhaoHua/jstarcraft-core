@@ -19,7 +19,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ArrayConverter extends BinaryConverter<Object> {
+public class ArrayConverter extends ProtocolConverter<Object> {
 
 	/** 0000 0000(Null标记) */
 	private static final byte NULL_MARK = (byte) 0x00;
