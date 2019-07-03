@@ -25,11 +25,11 @@ public class CsvContext {
         converters.put(Specification.BOOLEAN, new BooleanConverter());
         converters.put(Specification.COLLECTION, new CollectionConverter());
         converters.put(Specification.ENUMERATION, new EnumerationConverter());
+        converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.MAP, new MapConverter());
         converters.put(Specification.NUMBER, new NumberConverter());
         converters.put(Specification.OBJECT, new ObjectConverter());
         converters.put(Specification.STRING, new StringConverter());
-        converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.TYPE, new TypeConverter());
     }
 
