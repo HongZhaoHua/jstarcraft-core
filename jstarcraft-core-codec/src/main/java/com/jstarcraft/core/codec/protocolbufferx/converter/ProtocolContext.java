@@ -1,19 +1,8 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.protocolbufferx.converter;
 
 import java.util.EnumMap;
 
-import com.jstarcraft.core.codec.protocolbufferx.converter.ArrayConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.BooleanConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.CollectionConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.EnumerationConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.InstantConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.MapConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.NumberConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.ObjectConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.StringConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.TypeConverter;
-import com.jstarcraft.core.codec.protocolbufferx.converter.VoidConverter;
+import com.jstarcraft.core.codec.protocolbufferx.ProtocolReference;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
@@ -65,71 +54,71 @@ public abstract class ProtocolContext {
         return converter;
     }
 
-    public ClassDefinition getClassDefinition(int index) {
+    protected ClassDefinition getClassDefinition(int index) {
         return definition.getClassDefinition(index);
     }
 
-    public ClassDefinition getClassDefinition(Class<?> clazz) {
+    protected ClassDefinition getClassDefinition(Class<?> clazz) {
         return definition.getClassDefinition(clazz);
     }
 
-    public Object getArrayValue(int index) {
+    protected Object getArrayValue(int index) {
         return arrayReference.getValue(index);
     }
 
-    public int getArrayIndex(Object value) {
+    protected int getArrayIndex(Object value) {
         return arrayReference.getIndex(value);
     }
 
-    public int putArrayValue(Object value) {
+    protected int putArrayValue(Object value) {
         return arrayReference.putValue(value);
     }
 
-    public Object getCollectionValue(int index) {
+    protected Object getCollectionValue(int index) {
         return collectionReference.getValue(index);
     }
 
-    public int getCollectionIndex(Object value) {
+    protected int getCollectionIndex(Object value) {
         return collectionReference.getIndex(value);
     }
 
-    public int putCollectionValue(Object value) {
+    protected int putCollectionValue(Object value) {
         return collectionReference.putValue(value);
     }
 
-    public Object getMapValue(int index) {
+    protected Object getMapValue(int index) {
         return mapReference.getValue(index);
     }
 
-    public int getMapIndex(Object value) {
+    protected int getMapIndex(Object value) {
         return mapReference.getIndex(value);
     }
 
-    public int putMapValue(Object value) {
+    protected int putMapValue(Object value) {
         return mapReference.putValue(value);
     }
 
-    public Object getObjectValue(int index) {
+    protected Object getObjectValue(int index) {
         return objectReference.getValue(index);
     }
 
-    public int getObjectIndex(Object value) {
+    protected int getObjectIndex(Object value) {
         return objectReference.getIndex(value);
     }
 
-    public int putObjectValue(Object value) {
+    protected int putObjectValue(Object value) {
         return objectReference.putValue(value);
     }
 
-    public String getStringValue(int index) {
+    protected String getStringValue(int index) {
         return stringReference.getValue(index);
     }
 
-    public int getStringIndex(String value) {
+    protected int getStringIndex(String value) {
         return stringReference.getIndex(value);
     }
 
-    public int putStringValue(String value) {
+    protected int putStringValue(String value) {
         return stringReference.putValue(value);
     }
 

@@ -16,40 +16,41 @@ import com.jstarcraft.core.common.reflection.Specification;
  */
 public class CsvContext {
 
-	protected static final CSVFormat FORMAT = CSVFormat.DEFAULT;
+    protected static final CSVFormat FORMAT = CSVFormat.DEFAULT;
 
-	protected static final EnumMap<Specification, CsvConverter<?>> converters = new EnumMap<>(Specification.class);
-	static {
-		converters.put(Specification.ARRAY, new ArrayConverter());
-		converters.put(Specification.BOOLEAN, new BooleanConverter());
-		converters.put(Specification.COLLECTION, new CollectionConverter());
-		converters.put(Specification.ENUMERATION, new EnumerationConverter());
-		converters.put(Specification.MAP, new MapConverter());
-		converters.put(Specification.NUMBER, new NumberConverter());
-		converters.put(Specification.OBJECT, new ObjectConverter());
-		converters.put(Specification.STRING, new StringConverter());
-		converters.put(Specification.INSTANT, new InstantConverter());
-		converters.put(Specification.TYPE, new TypeConverter());
-	}
+    protected static final EnumMap<Specification, CsvConverter<?>> converters = new EnumMap<>(Specification.class);
 
-	/** 协议定义 */
-	private final CodecDefinition definition;
+    static {
+        converters.put(Specification.ARRAY, new ArrayConverter());
+        converters.put(Specification.BOOLEAN, new BooleanConverter());
+        converters.put(Specification.COLLECTION, new CollectionConverter());
+        converters.put(Specification.ENUMERATION, new EnumerationConverter());
+        converters.put(Specification.MAP, new MapConverter());
+        converters.put(Specification.NUMBER, new NumberConverter());
+        converters.put(Specification.OBJECT, new ObjectConverter());
+        converters.put(Specification.STRING, new StringConverter());
+        converters.put(Specification.INSTANT, new InstantConverter());
+        converters.put(Specification.TYPE, new TypeConverter());
+    }
 
-	public CsvContext(CodecDefinition definition) {
-		this.definition = definition;
-	}
+    /** 协议定义 */
+    private final CodecDefinition definition;
 
-	public CsvConverter getCsvConverter(Specification specification) {
-		CsvConverter converter = converters.get(specification);
-		return converter;
-	}
+    public CsvContext(CodecDefinition definition) {
+        this.definition = definition;
+    }
 
-	protected ClassDefinition getClassDefinition(int index) {
-		return definition.getClassDefinition(index);
-	}
+    public CsvConverter getCsvConverter(Specification specification) {
+        CsvConverter converter = converters.get(specification);
+        return converter;
+    }
 
-	protected ClassDefinition getClassDefinition(Class<?> clazz) {
-		return definition.getClassDefinition(clazz);
-	}
+    protected ClassDefinition getClassDefinition(int index) {
+        return definition.getClassDefinition(index);
+    }
+
+    protected ClassDefinition getClassDefinition(Class<?> clazz) {
+        return definition.getClassDefinition(clazz);
+    }
 
 }

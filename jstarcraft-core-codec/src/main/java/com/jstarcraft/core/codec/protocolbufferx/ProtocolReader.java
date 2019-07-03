@@ -2,6 +2,7 @@ package com.jstarcraft.core.codec.protocolbufferx;
 
 import java.io.InputStream;
 
+import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 
 /**
