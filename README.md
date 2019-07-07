@@ -7,6 +7,10 @@ JStarCraft Core
 
 **JStarCraft Core是一个面向对象的轻量级框架,遵循Apache 2.0协议.**
 
+JStarCraft Core是一个基于Java语言的核心编程工具包,涵盖了缓存,编解码,通讯,监控,对象关系映射,配置,脚本和事务8个方面.
+
+目标是作为搭建其它框架或者项目的基础.
+
 |作者|洪钊桦|
 |---|---
 |E-mail|110399057@qq.com, jstarcraft@gmail.com
