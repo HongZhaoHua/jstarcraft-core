@@ -7,13 +7,13 @@ import java.lang.annotation.Target;
 import java.util.Comparator;
 
 /**
- * 仓储索引
+ * 资源索引
  * 
  * @author Birdy
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface StorageIndex {
+public @interface ResourceIndex {
 
 	/** 名称 */
 	String name();

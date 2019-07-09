@@ -5,36 +5,32 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.jstarcraft.core.script.JsExpression;
+import com.jstarcraft.core.script.ScriptExpression;
+import com.jstarcraft.core.utility.StringUtility;
+
 /**
- * 仓储访问器
+ * 资源引用
  * 
  * @author Birdy
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface StorageAccessor {
+public @interface ResourceReference {
 
 	/**
-	 * 仓储类型(默认注解的字段类型作为仓储类型)
+	 * 脚本类型
 	 * 
 	 * @return
 	 */
-	Class<?> clazz() default Void.class;
+	Class<? extends ScriptExpression> type() default JsExpression.class;
 
 	/**
-	 * 标识
+	 * 标识表达式(根据字段类型计算资源标识或者Spring标识)
 	 * 
 	 * @return
 	 */
-	String value() default "";
-
-	/**
-	 * 属性
-	 * 
-	 * @return
-	 */
-	String property() default "";
+	String expression() default StringUtility.EMPTY;
 
 	/**
 	 * 是否必须

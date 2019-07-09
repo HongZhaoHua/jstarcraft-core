@@ -6,7 +6,7 @@ import java.util.Observable;
 import org.springframework.beans.factory.BeanFactory;
 
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.Storage;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
@@ -61,7 +61,7 @@ public class SpringReferenceDefinition extends ReferenceDefinition {
 	/** 更新通知 */
 	@Override
 	public void update(Observable object, Object argument) {
-		Storage storage = Storage.class.cast(object);
+		ResourceStorage storage = ResourceStorage.class.cast(object);
 		for (Object instance : storage.getAll()) {
 			setReference(instance);
 		}

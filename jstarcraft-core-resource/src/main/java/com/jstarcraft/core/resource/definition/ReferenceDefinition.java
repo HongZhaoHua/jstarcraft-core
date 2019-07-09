@@ -3,7 +3,7 @@ package com.jstarcraft.core.resource.definition;
 import java.lang.reflect.Field;
 import java.util.Observer;
 
-import com.jstarcraft.core.resource.annotation.StorageReference;
+import com.jstarcraft.core.resource.annotation.ResourceReference;
 
 /**
  * 引用定义
@@ -15,13 +15,13 @@ public abstract class ReferenceDefinition implements Observer {
 	/** 引用字段 */
 	protected final Field field;
 	/** 引用注解 */
-	protected final StorageReference reference;
+	protected final ResourceReference reference;
 
 	ReferenceDefinition(Field field) {
 		if (field == null) {
 			throw new IllegalArgumentException("引用定义字段不能为null");
 		}
-		StorageReference reference = field.getAnnotation(StorageReference.class);
+		ResourceReference reference = field.getAnnotation(ResourceReference.class);
 		if (reference == null) {
 			throw new IllegalArgumentException("引用定义注解不能为null");
 		}

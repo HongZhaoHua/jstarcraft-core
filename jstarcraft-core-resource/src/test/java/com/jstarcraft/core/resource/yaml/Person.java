@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jstarcraft.core.resource.Storage;
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
-import com.jstarcraft.core.resource.annotation.StorageId;
-import com.jstarcraft.core.resource.annotation.StorageIndex;
-import com.jstarcraft.core.resource.annotation.StorageReference;
+import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceId;
+import com.jstarcraft.core.resource.annotation.ResourceIndex;
+import com.jstarcraft.core.resource.annotation.ResourceReference;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 
-@StorageConfiguration
+@ResourceConfiguration
 public class Person {
 
 	public static final String INDEX_NAME = "name";
 	public static final String INDEX_AGE = "age";
 
-	@StorageId
+	@ResourceId
 	private Integer id;
 
-	@StorageIndex(name = INDEX_NAME, unique = true)
+	@ResourceIndex(name = INDEX_NAME, unique = true)
 	private String name;
 
-	@StorageIndex(name = INDEX_AGE, unique = false)
+	@ResourceIndex(name = INDEX_AGE, unique = false)
 	private int age;
 
 	private boolean sex;
@@ -39,14 +39,14 @@ public class Person {
 
 	private Integer childId;
 
-	@StorageReference(expression = "instance.getChildId()")
+	@ResourceReference(expression = "instance.getChildId()")
 	private transient Person child;
 
-	@StorageReference
+	@ResourceReference
 	private transient MockSpringObject reference;
 
-	@StorageReference
-	private transient Storage<Integer, Person> storage;
+	@ResourceReference
+	private transient ResourceStorage<Integer, Person> storage;
 
 	Person() {
 	}
@@ -106,7 +106,7 @@ public class Person {
 		return reference;
 	}
 
-	public Storage<Integer, Person> getStorage() {
+	public ResourceStorage<Integer, Person> getStorage() {
 		return storage;
 	}
 

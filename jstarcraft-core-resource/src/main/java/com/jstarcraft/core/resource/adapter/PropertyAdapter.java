@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.resource.annotation.StorageId;
+import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.exception.StorageException;
 
 /**
@@ -243,7 +243,7 @@ public class PropertyAdapter implements FormatAdapter {
 			Constructor<E> constructor = clazz.getDeclaredConstructor();
 			constructor.setAccessible(true);
 
-			Field storageId = ReflectionUtility.uniqueField(clazz, StorageId.class);
+			Field storageId = ReflectionUtility.uniqueField(clazz, ResourceId.class);
 			storageId.setAccessible(true);
 
 			TreeMap<?, ?> keyValues = new TreeMap<>(properties);

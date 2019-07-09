@@ -7,9 +7,9 @@ import java.util.Observable;
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.Storage;
-import com.jstarcraft.core.resource.StorageManager;
-import com.jstarcraft.core.resource.annotation.StorageId;
+import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
@@ -25,13 +25,13 @@ public class StorageReferenceDefinition extends ReferenceDefinition {
 
 	private final Field attribute;
 
-	private final StorageManager manager;
+	private final ResourceManager manager;
 
-	public StorageReferenceDefinition(Field field, StorageManager manager) {
+	public StorageReferenceDefinition(Field field, ResourceManager manager) {
 		super(field);
 		Class<?> clazz;
 		// TODO 不能有擦拭和通配类型
-		if (Storage.class.isAssignableFrom(field.getType())) {
+		if (ResourceStorage.class.isAssignableFrom(field.getType())) {
 			Type type = field.getGenericType();
 			if (!(type instanceof ParameterizedType)) {
 				String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
@@ -51,7 +51,7 @@ public class StorageReferenceDefinition extends ReferenceDefinition {
 			clazz = field.getType();
 		}
 
-		this.attribute = ReflectionUtility.uniqueField(clazz, StorageId.class);
+		this.attribute = ReflectionUtility.uniqueField(clazz, ResourceId.class);
 		this.manager = manager;
 	}
 
@@ -61,7 +61,7 @@ public class StorageReferenceDefinition extends ReferenceDefinition {
 		if (StringUtility.isBlank(reference.expression())) {
 			value = manager.getStorage(attribute.getDeclaringClass());
 		} else {
-			Storage storage = manager.getStorage(attribute.getDeclaringClass());
+			ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
 			ScriptContext context = new ScriptContext();
 			context.useClasses();
 			ScriptScope scope = new ScriptScope();
@@ -87,7 +87,7 @@ public class StorageReferenceDefinition extends ReferenceDefinition {
 	/** 更新通知 */
 	@Override
 	public void update(Observable object, Object argument) {
-		Storage storage = manager.getStorage(attribute.getDeclaringClass());
+		ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
 		for (Object instance : storage.getAll()) {
 			setReference(instance);
 		}

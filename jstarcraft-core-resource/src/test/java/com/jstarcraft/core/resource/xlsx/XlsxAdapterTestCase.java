@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.resource.Storage;
-import com.jstarcraft.core.resource.annotation.StorageAccessor;
+import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 
 /**
  * XLSX适配器测试
@@ -21,21 +21,21 @@ import com.jstarcraft.core.resource.annotation.StorageAccessor;
 @ContextConfiguration
 public class XlsxAdapterTestCase {
 
-	@StorageAccessor
-	private Storage<Integer, Biology> storage;
+	@ResourceAccessor
+	private ResourceStorage<Integer, Biology> storage;
 
-	@StorageAccessor("1")
+	@ResourceAccessor("1")
 	private Biology cat;
-	@StorageAccessor("2")
+	@ResourceAccessor("2")
 	private Biology dog;
-	@StorageAccessor("3")
+	@ResourceAccessor("3")
 	private Biology tree;
-	@StorageAccessor("4")
+	@ResourceAccessor("4")
 	private Biology shrub;
 
-	@StorageAccessor(value = "0", necessary = false)
+	@ResourceAccessor(value = "0", necessary = false)
 	private Biology ignore;
-	@StorageAccessor(value = "5", necessary = false)
+	@ResourceAccessor(value = "5", necessary = false)
 	private Biology unknow;
 
 	@Test

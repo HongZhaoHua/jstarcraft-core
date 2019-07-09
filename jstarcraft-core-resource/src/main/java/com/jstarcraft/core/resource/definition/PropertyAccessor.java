@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.annotation.StorageId;
-import com.jstarcraft.core.resource.annotation.StorageIndex;
+import com.jstarcraft.core.resource.annotation.ResourceId;
+import com.jstarcraft.core.resource.annotation.ResourceIndex;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -62,8 +62,8 @@ public interface PropertyAccessor {
 	 * @return
 	 */
 	public static PropertyAccessor getIdAccessor(Class<?> clazz) {
-		List<Field> fields = ReflectionUtility.findFields(clazz, StorageId.class);
-		List<Method> methods = ReflectionUtility.findMethods(clazz, StorageId.class);
+		List<Field> fields = ReflectionUtility.findFields(clazz, ResourceId.class);
+		List<Method> methods = ReflectionUtility.findMethods(clazz, ResourceId.class);
 		if (fields.size() + methods.size() != 1) {
 			String message = StringUtility.format("仓储[{}]的主键不是唯一.", clazz);
 			logger.error(message);
@@ -73,7 +73,7 @@ public interface PropertyAccessor {
 		try {
 			if (fields.isEmpty()) {
 				Method method = methods.get(0);
-				StorageId id = method.getAnnotation(StorageId.class);
+				ResourceId id = method.getAnnotation(ResourceId.class);
 				Comparator comparator = null;
 				if (!id.comparator().isInterface()) {
 					comparator = id.comparator().newInstance();
@@ -81,7 +81,7 @@ public interface PropertyAccessor {
 				accessor = new MethodAccessor(method, method.getName(), true, comparator);
 			} else {
 				Field field = fields.get(0);
-				StorageId id = field.getAnnotation(StorageId.class);
+				ResourceId id = field.getAnnotation(ResourceId.class);
 				Comparator comparator = null;
 				if (!id.comparator().isInterface()) {
 					comparator = id.comparator().newInstance();
@@ -103,13 +103,13 @@ public interface PropertyAccessor {
 	 * @return
 	 */
 	public static Map<String, PropertyAccessor> getIndexAccessors(Class<?> clazz) {
-		List<Field> fields = ReflectionUtility.findFields(clazz, StorageIndex.class);
-		List<Method> methods = ReflectionUtility.findMethods(clazz, StorageIndex.class);
+		List<Field> fields = ReflectionUtility.findFields(clazz, ResourceIndex.class);
+		List<Method> methods = ReflectionUtility.findMethods(clazz, ResourceIndex.class);
 		Map<String, PropertyAccessor> assessors = new HashMap<>();
 
 		try {
 			for (Field field : fields) {
-				StorageIndex index = field.getAnnotation(StorageIndex.class);
+				ResourceIndex index = field.getAnnotation(ResourceIndex.class);
 				Comparator comparator = null;
 				if (!index.comparator().isInterface()) {
 					comparator = index.comparator().newInstance();
@@ -123,7 +123,7 @@ public interface PropertyAccessor {
 				assessors.put(accessor.getName(), accessor);
 			}
 			for (Method method : methods) {
-				StorageIndex index = method.getAnnotation(StorageIndex.class);
+				ResourceIndex index = method.getAnnotation(ResourceIndex.class);
 				Comparator comparator = null;
 				if (!index.comparator().isInterface()) {
 					comparator = index.comparator().newInstance();

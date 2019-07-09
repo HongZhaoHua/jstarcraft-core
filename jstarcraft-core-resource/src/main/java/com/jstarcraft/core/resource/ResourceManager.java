@@ -17,8 +17,8 @@ import org.springframework.core.io.ResourceLoader;
 
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.resource.adapter.FormatAdapter;
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
-import com.jstarcraft.core.resource.annotation.StorageReference;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceReference;
 import com.jstarcraft.core.resource.definition.FormatDefinition;
 import com.jstarcraft.core.resource.definition.ReferenceDefinition;
 import com.jstarcraft.core.resource.definition.SpringReferenceDefinition;
@@ -29,20 +29,20 @@ import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 仓储管理器
+ * 资源管理器
  * 
  * @author Birdy
  */
-public class StorageManager {
+public class ResourceManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
 	/** 定义映射 */
 	private final ConcurrentHashMap<Class<?>, StorageDefinition> definitions = new ConcurrentHashMap<>();
 	/** 仓储映射 */
-	private final ConcurrentHashMap<Class<?>, KeyValue<Storage<?, ?>, Resource>> keyValues = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<Class<?>, KeyValue<ResourceStorage<?, ?>, Resource>> keyValues = new ConcurrentHashMap<>();
 
-	private StorageManager() {
+	private ResourceManager() {
 	}
 
 	/**
@@ -51,15 +51,15 @@ public class StorageManager {
 	 * @param definitions
 	 * @param resourceLoader
 	 */
-	public static StorageManager instanceOf(Map<Class<?>, FormatDefinition> definitions, ConfigurableBeanFactory factory) {
-		StorageManager manager = new StorageManager();
+	public static ResourceManager instanceOf(Map<Class<?>, FormatDefinition> definitions, ConfigurableBeanFactory factory) {
+		ResourceManager manager = new ResourceManager();
 		ResourceLoader resourceLoader = (ApplicationContext) factory.getParentBeanFactory();
 		for (Entry<Class<?>, FormatDefinition> keyValue : definitions.entrySet()) {
 			Collection<ReferenceDefinition> references = new HashSet<>();
 			ReflectionUtility.doWithFields(keyValue.getKey(), (field) -> {
-				if (field.getAnnotation(StorageReference.class) != null) {
+				if (field.getAnnotation(ResourceReference.class) != null) {
 					Class type = field.getType();
-					if (type.isAnnotationPresent(StorageConfiguration.class) || Storage.class.isAssignableFrom(type)) {
+					if (type.isAnnotationPresent(ResourceConfiguration.class) || ResourceStorage.class.isAssignableFrom(type)) {
 						ReferenceDefinition definition = new StorageReferenceDefinition(field, manager);
 						references.add(definition);
 					} else {
@@ -81,9 +81,9 @@ public class StorageManager {
 				logger.error(message);
 				throw new StorageException(message);
 			}
-			Storage<?, ?> storage = new Storage<>(definition, adapter);
+			ResourceStorage<?, ?> storage = new ResourceStorage<>(definition, adapter);
 			Resource resource = resourceLoader.getResource(definition.getPath());
-			KeyValue<Storage<?, ?>, Resource> keyValue = new KeyValue<>(storage, resource);
+			KeyValue<ResourceStorage<?, ?>, Resource> keyValue = new KeyValue<>(storage, resource);
 			manager.keyValues.put(definition.getClazz(), keyValue);
 		}
 
@@ -92,11 +92,11 @@ public class StorageManager {
 			for (ReferenceDefinition reference : references) {
 				if (reference instanceof StorageReferenceDefinition) {
 					StorageReferenceDefinition storageReference = StorageReferenceDefinition.class.cast(reference);
-					Storage storage = manager.getStorage(storageReference.getMonitorStorage());
+					ResourceStorage storage = manager.getStorage(storageReference.getMonitorStorage());
 					storage.addObserver(storageReference);
 				} else {
 					SpringReferenceDefinition springReference = SpringReferenceDefinition.class.cast(reference);
-					Storage storage = manager.getStorage(springReference.getMonitorStorage());
+					ResourceStorage storage = manager.getStorage(springReference.getMonitorStorage());
 					storage.addObserver(springReference);
 				}
 			}
@@ -122,8 +122,8 @@ public class StorageManager {
 	 * @param clazz
 	 */
 	public void loadStorage(Class<?> clazz) {
-		KeyValue<Storage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
-		Storage<?, ?> storage = keyValue.getKey();
+		KeyValue<ResourceStorage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
+		ResourceStorage<?, ?> storage = keyValue.getKey();
 		Resource resource = keyValue.getValue();
 		try (InputStream stream = resource.getInputStream()) {
 			storage.load(stream);
@@ -140,8 +140,8 @@ public class StorageManager {
 	 * @param clazz
 	 * @return
 	 */
-	public Storage<?, ?> getStorage(Class<?> clazz) {
-		KeyValue<Storage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
+	public ResourceStorage<?, ?> getStorage(Class<?> clazz) {
+		KeyValue<ResourceStorage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
 		return keyValue.getKey();
 	}
 
@@ -152,7 +152,7 @@ public class StorageManager {
 	 * @return
 	 */
 	public Resource getResource(Class<?> clazz) {
-		KeyValue<Storage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
+		KeyValue<ResourceStorage<?, ?>, Resource> keyValue = this.keyValues.get(clazz);
 		return keyValue.getValue();
 	}
 

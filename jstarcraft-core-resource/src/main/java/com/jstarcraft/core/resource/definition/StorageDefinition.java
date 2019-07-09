@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -39,7 +39,7 @@ public class StorageDefinition {
 		this.clazz = clazz;
 		this.format = format;
 		this.references = references;
-		StorageConfiguration annotation = clazz.getAnnotation(StorageConfiguration.class);
+		ResourceConfiguration annotation = clazz.getAnnotation(ResourceConfiguration.class);
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(path);
 		buffer.append(FILE_PATH);

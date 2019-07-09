@@ -32,9 +32,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * 
  * @author Birdy
  */
-public class Storage<K, V> extends Observable {
+public class ResourceStorage<K, V> extends Observable {
 
-	private static final Logger logger = LoggerFactory.getLogger(Storage.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceStorage.class);
 
 	/** 主键空间 */
 	private Map<K, V> instances = new LinkedHashMap<>();
@@ -57,7 +57,7 @@ public class Storage<K, V> extends Observable {
 	/** 状态 */
 	private final AtomicBoolean state = new AtomicBoolean(false);
 
-	public Storage(StorageDefinition definition, FormatAdapter adapter) {
+	public ResourceStorage(StorageDefinition definition, FormatAdapter adapter) {
 		// 获取资源信息
 		this.definition = definition;
 		this.adapter = adapter;

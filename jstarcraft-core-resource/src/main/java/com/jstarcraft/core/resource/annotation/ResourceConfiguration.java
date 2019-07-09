@@ -4,18 +4,22 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Comparator;
+
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 配置标识
+ * 资源配置
  * 
  * @author Birdy
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface StorageId {
+@Target(ElementType.TYPE)
+public @interface ResourceConfiguration {
 
-	/** 排序器 */
-	Class<? extends Comparator> comparator() default Comparator.class;
+	/** 资源格式 */
+	String format() default StringUtility.EMPTY;
+
+	/** 资源位置 */
+	String path() default StringUtility.EMPTY;
 
 }

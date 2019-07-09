@@ -25,9 +25,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.resource.Storage;
-import com.jstarcraft.core.resource.StorageManager;
-import com.jstarcraft.core.resource.annotation.StorageAccessor;
+import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
@@ -49,14 +49,14 @@ public class JsonAdapterTestCase {
 	@Autowired
 	private MockSpringObject springObject;
 	@Autowired
-	private StorageManager storageManager;
-	@StorageAccessor
-	private Storage<Integer, Person> storage;
-	@StorageAccessor("2")
+	private ResourceManager storageManager;
+	@ResourceAccessor
+	private ResourceStorage<Integer, Person> storage;
+	@ResourceAccessor("2")
 	private Person person;
-	@StorageAccessor(value = "2", clazz = Person.class, property = "sex")
+	@ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
 	private boolean sex;
-	@StorageAccessor(value = "2", clazz = Person.class, property = "description")
+	@ResourceAccessor(value = "2", clazz = Person.class, property = "description")
 	private String description;
 
 	/**

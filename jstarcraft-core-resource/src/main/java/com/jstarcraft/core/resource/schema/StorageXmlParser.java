@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.definition.FormatDefinition;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
@@ -58,7 +58,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 			Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
 			// 提取资源
 			Set<String> names = new HashSet<String>();
-			String name = StorageConfiguration.class.getName();
+			String name = ResourceConfiguration.class.getName();
 			for (Resource resource : resources) {
 				if (!resource.isReadable()) {
 					continue;
@@ -131,7 +131,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 					try {
 						clazz = (Class<?>) Class.forName(className);
 						BeanDefinition format = null;
-						StorageConfiguration configuration = clazz.getAnnotation(StorageConfiguration.class);
+						ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
 						if (StringUtility.isNoneBlank(configuration.format())) {
 							format = formats.get(configuration.format());
 						} else {
@@ -158,7 +158,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 				try {
 					clazz = (Class<?>) Class.forName(className);
 					BeanDefinition format = null;
-					StorageConfiguration configuration = clazz.getAnnotation(StorageConfiguration.class);
+					ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
 					if (StringUtility.isNoneBlank(configuration.format())) {
 						format = formats.get(configuration.format());
 					} else {

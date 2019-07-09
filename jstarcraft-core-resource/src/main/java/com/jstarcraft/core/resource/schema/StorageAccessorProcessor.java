@@ -12,17 +12,17 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.Storage;
-import com.jstarcraft.core.resource.StorageManager;
-import com.jstarcraft.core.resource.StorageMonitor;
-import com.jstarcraft.core.resource.annotation.StorageAccessor;
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
-import com.jstarcraft.core.resource.annotation.StorageId;
+import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.ResourceMonitor;
+import com.jstarcraft.core.resource.annotation.ResourceAccessor;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 仓储访问处理器,负责装配{@link StorageAccessor}注解的资源
+ * 仓储访问处理器,负责装配{@link ResourceAccessor}注解的资源
  * 
  * @author Birdy
  */
@@ -31,7 +31,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 	private static final Logger logger = LoggerFactory.getLogger(StorageAccessorProcessor.class);
 
 	@Autowired
-	private StorageManager manager;
+	private ResourceManager manager;
 
 	/**
 	 * 装配实例
@@ -40,7 +40,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 	 * @param field
 	 * @param annotation
 	 */
-	private void assembleInstance(Object object, Field field, StorageAccessor annotation) throws IllegalArgumentException, IllegalAccessException {
+	private void assembleInstance(Object object, Field field, ResourceAccessor annotation) throws IllegalArgumentException, IllegalAccessException {
 		Class<?> clazz = annotation.clazz();
 		if (clazz == Void.class || clazz == void.class) {
 			if (StringUtility.isNotBlank(annotation.property())) {
@@ -50,7 +50,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 			}
 			clazz = field.getType();
 		}
-		StorageConfiguration configuration = clazz.getAnnotation(StorageConfiguration.class);
+		ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
 		if (configuration == null) {
 			String message = StringUtility.format("仓储[{}]的配置不存在", clazz);
 			logger.error(message);
@@ -59,7 +59,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 
 		Object key = annotation.value();
 		try {
-			key = ConversionUtility.convert(annotation.value(), ReflectionUtility.uniqueField(clazz, StorageId.class).getGenericType());
+			key = ConversionUtility.convert(annotation.value(), ReflectionUtility.uniqueField(clazz, ResourceId.class).getGenericType());
 		} catch (Exception exception) {
 			String message = StringUtility.format("仓储[{}]的主键转换异常", clazz);
 			logger.error(message);
@@ -67,8 +67,8 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 		}
 
 		// 设置监听器
-		Storage storage = manager.getStorage(clazz);
-		StorageMonitor monitor = new StorageMonitor(annotation, object, field, clazz, key);
+		ResourceStorage storage = manager.getStorage(clazz);
+		ResourceMonitor monitor = new ResourceMonitor(annotation, object, field, clazz, key);
 		storage.addObserver(monitor);
 
 		// 触发改动
@@ -82,7 +82,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 	 * @param field
 	 * @param annotation
 	 */
-	private void assembleStorage(Object object, Field field, StorageAccessor annotation) throws IllegalArgumentException, IllegalAccessException {
+	private void assembleStorage(Object object, Field field, ResourceAccessor annotation) throws IllegalArgumentException, IllegalAccessException {
 		Type type = field.getGenericType();
 		if (!(type instanceof ParameterizedType)) {
 			String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
@@ -102,7 +102,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 			throw new StorageException(message);
 		}
 
-		Storage storage = manager.getStorage(clazz);
+		ResourceStorage storage = manager.getStorage(clazz);
 		if (annotation.necessary() && storage == null) {
 			String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
 			logger.error(message);
@@ -115,11 +115,11 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
 	@Override
 	public boolean postProcessAfterInstantiation(final Object object, String name) throws BeansException {
 		ReflectionUtility.doWithFields(object.getClass(), (field) -> {
-			StorageAccessor annotation = field.getAnnotation(StorageAccessor.class);
+			ResourceAccessor annotation = field.getAnnotation(ResourceAccessor.class);
 			if (annotation == null) {
 				return;
 			}
-			if (Storage.class.isAssignableFrom(field.getType())) {
+			if (ResourceStorage.class.isAssignableFrom(field.getType())) {
 				// 装配仓储
 				assembleStorage(object, field, annotation);
 			} else {

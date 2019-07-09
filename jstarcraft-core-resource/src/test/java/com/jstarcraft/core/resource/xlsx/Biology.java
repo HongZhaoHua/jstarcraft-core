@@ -1,12 +1,12 @@
 package com.jstarcraft.core.resource.xlsx;
 
-import com.jstarcraft.core.resource.annotation.StorageConfiguration;
-import com.jstarcraft.core.resource.annotation.StorageId;
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
+import com.jstarcraft.core.resource.annotation.ResourceId;
 
-@StorageConfiguration
+@ResourceConfiguration
 public class Biology {
 
-	@StorageId
+	@ResourceId
 	private Integer id;
 
 	private String name;
