@@ -14,8 +14,8 @@
 		<module>jstarcraft-core-communication</module>
 		<module>jstarcraft-core-monitor</module>
 		<module>jstarcraft-core-orm</module>
+        <module>jstarcraft-core-resource</module>
 		<module>jstarcraft-core-script</module>
-		<module>jstarcraft-core-storage</module>
 		<module>jstarcraft-core-transaction</module>
 	</modules>
 
