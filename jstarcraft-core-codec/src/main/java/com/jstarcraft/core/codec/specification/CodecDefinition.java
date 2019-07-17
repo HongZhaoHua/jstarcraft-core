@@ -28,6 +28,9 @@ import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.PressUtility;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 /**
  * 编解码定义(核心类)
  * 
@@ -167,7 +170,7 @@ public class CodecDefinition {
 			findDependentClasses(type, classes);
 		}
 		classes.addAll(Specification.type2Specifitions.keySet());
-		HashMap<Class<?>, Integer> codes = new HashMap<>();
+		Object2IntMap<Class<?>> codes = new Object2IntOpenHashMap<>();
 		for (Class<?> clazz : classes) {
 			if (clazz.isArray()) {
 				continue;
