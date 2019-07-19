@@ -3,7 +3,6 @@ package com.jstarcraft.core.codec.specification;
 import java.beans.PropertyDescriptor;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -22,6 +21,7 @@ import com.jstarcraft.core.codec.annotation.ExcludeProperty;
 import com.jstarcraft.core.codec.annotation.IncludeProperty;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration.Mode;
+import com.jstarcraft.core.codec.exception.CodecDefinitionException;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -267,69 +267,72 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
         return new ClassDefinition(codes.getInt(clazz), clazz, properties, specification);
     }
 
-    public static ClassDefinition readFrom(DataInputStream in) throws IOException {
-        short code = in.readShort();
-        byte specification = in.readByte();
-        int length = in.readShort();
-        byte[] bytes = new byte[length];
-        in.read(bytes);
-        String className = new String(bytes, StringUtility.CHARSET);
-        Class<?> clazz;
+    public static ClassDefinition readFrom(DataInputStream in) {
         try {
-            clazz = ClassUtility.getClass(className, false);
-        } catch (ClassNotFoundException exception) {
-            throw new IOException(exception);
-        }
-        length = in.readShort();
-        TreeSet<PropertyDefinition> properties = new TreeSet<>();
-        for (int index = 0, size = length; index < size; index++) {
-            // 属性名
-            short propertyCode = in.readShort();
-            length = in.readShort();
-            bytes = new byte[length];
+            short code = in.readShort();
+            byte specification = in.readByte();
+            int length = in.readShort();
+            byte[] bytes = new byte[length];
             in.read(bytes);
-            String name = new String(bytes, StringUtility.CHARSET);
-            Type type = null;
-            Field field = ReflectionUtility.findField(clazz, name);
-            if (field != null) {
-                type = field.getGenericType();
-                PropertyDefinition property = PropertyDefinition.instanceOf(name, propertyCode, type, field);
-                properties.add(property);
-            } else {
-                PropertyDescriptor[] descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
-                for (PropertyDescriptor descriptor : descriptors) {
-                    if (name.equals(descriptor.getName())) {
-                        Method getter = descriptor.getReadMethod();
-                        Method setter = descriptor.getWriteMethod();
-                        type = descriptor.getPropertyType();
-                        PropertyDefinition property = PropertyDefinition.instanceOf(name, code, type, getter, setter);
-                        properties.add(property);
-                        break;
+            String className = new String(bytes, StringUtility.CHARSET);
+            Class<?> clazz = ClassUtility.getClass(className, false);
+            length = in.readShort();
+            TreeSet<PropertyDefinition> properties = new TreeSet<>();
+            for (int index = 0, size = length; index < size; index++) {
+                // 属性名
+                short propertyCode = in.readShort();
+                length = in.readShort();
+                bytes = new byte[length];
+                in.read(bytes);
+                String name = new String(bytes, StringUtility.CHARSET);
+                Type type = null;
+                Field field = ReflectionUtility.findField(clazz, name);
+                if (field != null) {
+                    type = field.getGenericType();
+                    PropertyDefinition property = PropertyDefinition.instanceOf(name, propertyCode, type, field);
+                    properties.add(property);
+                } else {
+                    PropertyDescriptor[] descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
+                    for (PropertyDescriptor descriptor : descriptors) {
+                        if (name.equals(descriptor.getName())) {
+                            Method getter = descriptor.getReadMethod();
+                            Method setter = descriptor.getWriteMethod();
+                            type = descriptor.getPropertyType();
+                            PropertyDefinition property = PropertyDefinition.instanceOf(name, code, type, getter, setter);
+                            properties.add(property);
+                            break;
+                        }
                     }
                 }
+                if (type == null) {
+                    throw new NullPointerException();
+                }
             }
-            if (type == null) {
-                throw new IOException();
-            }
+            return new ClassDefinition(code, clazz, properties, Specification.getSpecification(clazz));
+        } catch (Exception exception) {
+            throw new CodecDefinitionException(exception);
         }
-        return new ClassDefinition(code, clazz, properties, Specification.getSpecification(clazz));
     }
 
-    public static void writeTo(ClassDefinition definition, DataOutputStream out) throws IOException {
-        int code = definition.getCode();
-        Specification specification = definition.getSpecification();
-        String name = definition.getName();
-        byte[] bytes = name.getBytes(StringUtility.CHARSET);
-        out.writeShort((short) code);
-        out.writeByte(getCode(specification));
-        out.writeShort((short) bytes.length);
-        out.write(bytes);
-        out.writeShort((short) definition.properties.length);
-        for (PropertyDefinition property : definition.properties) {
-            bytes = property.getName().getBytes(StringUtility.CHARSET);
-            out.writeShort((short) property.getCode());
+    public static void writeTo(ClassDefinition definition, DataOutputStream out) {
+        try {
+            int code = definition.getCode();
+            Specification specification = definition.getSpecification();
+            String name = definition.getName();
+            byte[] bytes = name.getBytes(StringUtility.CHARSET);
+            out.writeShort((short) code);
+            out.writeByte(getCode(specification));
             out.writeShort((short) bytes.length);
             out.write(bytes);
+            out.writeShort((short) definition.properties.length);
+            for (PropertyDefinition property : definition.properties) {
+                bytes = property.getName().getBytes(StringUtility.CHARSET);
+                out.writeShort((short) property.getCode());
+                out.writeShort((short) bytes.length);
+                out.write(bytes);
+            }
+        } catch (Exception exception) {
+            throw new CodecDefinitionException(exception);
         }
     }
 

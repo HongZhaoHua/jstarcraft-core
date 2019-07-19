@@ -194,37 +194,45 @@ public class CodecDefinition {
         return definition;
     }
 
-    public static CodecDefinition fromBytes(byte[] bytes) throws Exception {
-        CodecDefinition definition = new CodecDefinition();
-        // 解压解密
-        byte[] unzip = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
+    public static CodecDefinition fromBytes(byte[] bytes) {
+        try {
+            CodecDefinition definition = new CodecDefinition();
+            // 解压解密
+            byte[] unzip = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
 
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(unzip);
-        DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
-        int size = dataInputStream.readInt();
-        definition.code2Definitions = new ArrayList<>(size);
-        while (dataInputStream.available() > 0) {
-            ClassDefinition classDefinition = ClassDefinition.readFrom(dataInputStream);
-            Type clazz = classDefinition.getType();
-            definition.code2Definitions.add(classDefinition);
-            definition.type2Definitions.put(clazz, classDefinition);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(unzip);
+            DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
+            int size = dataInputStream.readInt();
+            definition.code2Definitions = new ArrayList<>(size);
+            while (dataInputStream.available() > 0) {
+                ClassDefinition classDefinition = ClassDefinition.readFrom(dataInputStream);
+                Type clazz = classDefinition.getType();
+                definition.code2Definitions.add(classDefinition);
+                definition.type2Definitions.put(clazz, classDefinition);
+            }
+            return definition;
+        } catch (Exception exception) {
+            throw new CodecDefinitionException(exception);
         }
-        return definition;
     }
 
-    public static byte[] toBytes(CodecDefinition definition) throws Exception {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-        int size = definition.code2Definitions.size();
-        dataOutputStream.writeInt(size);
-        for (ClassDefinition classDefinition : definition.code2Definitions) {
-            ClassDefinition.writeTo(classDefinition, dataOutputStream);
-        }
+    public static byte[] toBytes(CodecDefinition definition) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+            int size = definition.code2Definitions.size();
+            dataOutputStream.writeInt(size);
+            for (ClassDefinition classDefinition : definition.code2Definitions) {
+                ClassDefinition.writeTo(classDefinition, dataOutputStream);
+            }
 
-        // 加密压缩
-        byte[] bytes = byteArrayOutputStream.toByteArray();
-        byte[] zip = PressUtility.zip(bytes, 5);
-        return zip;
+            // 加密压缩
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            byte[] zip = PressUtility.zip(bytes, 5);
+            return zip;
+        } catch (Exception exception) {
+            throw new CodecDefinitionException(exception);
+        }
     }
 
 }
