@@ -37,6 +37,9 @@ public class StringUtility extends StringUtils {
     /** 除号 */
     public static final String DIVISION = "/";
 
+    /** 点号 */
+    public static final String DOT = ".";
+
     /** 双引号 */
     public static final String DOUBLE_QUOTATION = "\"";
 
