@@ -43,7 +43,7 @@ http://www.jstarcraft.com/core/communication/communication.xsd">
 
 	<!-- 服务端连接器配置 -->
 	<bean id="nettyServerConnector" class="com.jstarcraft.core.communication.netty.udp.NettyUdpServerConnector">
-		<constructor-arg value=":9999" />
+		<constructor-arg value=":6969" />
 		<constructor-arg>
 			<map>
 				<entry key="ALLOW_HALF_CLOSURE" value-type="java.lang.Boolean" value="false"></entry>
