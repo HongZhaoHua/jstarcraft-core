@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -192,6 +193,10 @@ public class CodecDefinition {
             }
         }
         return definition;
+    }
+
+    public static CodecDefinition instanceOf(Type... types) {
+        return instanceOf(Arrays.asList(types));
     }
 
     public static CodecDefinition fromBytes(byte[] bytes) {
