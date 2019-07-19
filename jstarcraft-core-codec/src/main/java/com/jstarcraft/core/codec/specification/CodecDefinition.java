@@ -167,10 +167,10 @@ public class CodecDefinition {
         CodecDefinition definition = new CodecDefinition();
         // 遍历与排序所有依赖的类型
         TreeSet<Class<?>> classes = new TreeSet<>(typeComparator);
+        classes.addAll(Specification.type2Specifitions.keySet());
         for (Type type : types) {
             findDependentClasses(type, classes);
         }
-        classes.addAll(Specification.type2Specifitions.keySet());
         Object2IntMap<Class<?>> codes = new Object2IntOpenHashMap<>();
         for (Class<?> clazz : classes) {
             if (clazz.isArray()) {
