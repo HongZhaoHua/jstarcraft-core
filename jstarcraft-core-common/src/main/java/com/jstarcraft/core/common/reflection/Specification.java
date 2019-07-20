@@ -8,6 +8,11 @@ import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +37,7 @@ public enum Specification {
     COLLECTION,
     /** 枚举 */
     ENUMERATION,
-    /** 时间 */
+    /** 日期时间 */
     INSTANT,
     /** 映射 */
     MAP,
@@ -81,6 +86,11 @@ public enum Specification {
         // 时间规范
         type2Specifitions.put(Date.class, Specification.INSTANT);
         type2Specifitions.put(Instant.class, Specification.INSTANT);
+        type2Specifitions.put(LocalDate.class, Specification.INSTANT);
+        type2Specifitions.put(LocalTime.class, Specification.INSTANT);
+        type2Specifitions.put(LocalDateTime.class, Specification.INSTANT);
+        type2Specifitions.put(ZonedDateTime.class, Specification.INSTANT);
+        type2Specifitions.put(ZoneOffset.class, Specification.INSTANT);
 
         // 类型规范
         type2Specifitions.put(Class.class, Specification.TYPE);
