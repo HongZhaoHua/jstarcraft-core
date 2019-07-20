@@ -83,7 +83,7 @@ public enum Specification {
         type2Specifitions.put(Character.class, Specification.STRING);
         type2Specifitions.put(String.class, Specification.STRING);
 
-        // 时间规范
+        // 日期时间规范
         type2Specifitions.put(Date.class, Specification.INSTANT);
         type2Specifitions.put(Instant.class, Specification.INSTANT);
         type2Specifitions.put(LocalDate.class, Specification.INSTANT);
