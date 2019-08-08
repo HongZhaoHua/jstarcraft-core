@@ -9,19 +9,19 @@ import java.util.Properties;
  * @author Birdy
  *
  */
-public class Configuration {
+public class Configurator {
 
     /** 配置项 */
     private Properties keyValues;
 
-    public Configuration(Map<?, ?>... keyValues) {
+    public Configurator(Map<?, ?>... keyValues) {
         this.keyValues = new Properties();
         for (Map<?, ?> property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
 
-    public Configuration(Properties... keyValues) {
+    public Configurator(Properties... keyValues) {
         this.keyValues = new Properties();
         for (Properties property : keyValues) {
             this.keyValues.putAll(property);
