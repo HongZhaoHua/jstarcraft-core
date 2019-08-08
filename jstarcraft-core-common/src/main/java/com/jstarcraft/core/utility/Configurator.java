@@ -14,9 +14,9 @@ public class Configurator {
     /** 配置项 */
     private Properties keyValues;
 
-    public Configurator(Map<?, ?>... keyValues) {
+    public Configurator(Map<String, String>... keyValues) {
         this.keyValues = new Properties();
-        for (Map<?, ?> property : keyValues) {
+        for (Map<String, String> property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
