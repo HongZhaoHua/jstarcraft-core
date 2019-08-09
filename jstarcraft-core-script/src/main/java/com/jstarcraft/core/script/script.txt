@@ -24,3 +24,9 @@ http://blinkfox.com/mvel-2-xyu-fa-zhi-nan/
 
 [Mvel]Mvel2.0使用指南一 基础:
 https://blog.csdn.net/SunnyYoona/article/details/75244442
+
+console: Failed to install '': java.nio.charset.UnsupportedCharsetException: cp0.解决方法:
+https://bbs.csdn.net/topics/391865152
+
+可爱的 Jython:
+https://www.oschina.net/question/12_4825
