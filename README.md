@@ -69,6 +69,7 @@ JStarCraft Core框架各个模块之间的关系:
     * JS
     * Lua
     * MVEL
+    * Python
 * 8.配置仓储(storage)
     * 格式
         * CSV
