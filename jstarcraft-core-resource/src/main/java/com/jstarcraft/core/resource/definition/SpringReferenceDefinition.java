@@ -37,7 +37,6 @@ public class SpringReferenceDefinition extends ReferenceDefinition {
 			value = factory.getBean(field.getType());
 		} else {
 			ScriptContext context = new ScriptContext();
-			context.useClasses();
 			ScriptScope scope = new ScriptScope();
 			scope.createAttribute("instance", instance);
 			ScriptExpression expression = ReflectionUtility.getInstance(reference.type(), context, scope, reference.expression());

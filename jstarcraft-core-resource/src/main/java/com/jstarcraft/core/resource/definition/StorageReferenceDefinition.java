@@ -7,8 +7,8 @@ import java.util.Observable;
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.script.ScriptContext;
@@ -63,7 +63,6 @@ public class StorageReferenceDefinition extends ReferenceDefinition {
 		} else {
 			ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
 			ScriptContext context = new ScriptContext();
-			context.useClasses();
 			ScriptScope scope = new ScriptScope();
 			scope.createAttribute("instance", instance);
 			ScriptExpression expression = ReflectionUtility.getInstance(reference.type(), context, scope, reference.expression());
