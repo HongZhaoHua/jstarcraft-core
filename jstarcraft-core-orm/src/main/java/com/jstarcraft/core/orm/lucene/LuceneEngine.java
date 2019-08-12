@@ -27,7 +27,7 @@ import it.unimi.dsi.fastutil.floats.FloatList;
  * @author Birdy
  *
  */
-public class Searcher implements AutoCloseable {
+public class LuceneEngine implements AutoCloseable {
 
     /** 配置 */
     private IndexWriterConfig config;
@@ -44,7 +44,7 @@ public class Searcher implements AutoCloseable {
     /** 信号量 */
     private AtomicInteger semaphore;
 
-    public Searcher(IndexWriterConfig config, Path path) {
+    public LuceneEngine(IndexWriterConfig config, Path path) {
         try {
             this.config = config;
             Directory transienceDirectory = new ByteBuffersDirectory();

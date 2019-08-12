@@ -17,10 +17,10 @@ import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.orm.lucene.Searcher;
+import com.jstarcraft.core.orm.lucene.LuceneEngine;
 import com.jstarcraft.core.utility.RandomUtility;
 
-public class SearcherTestCase {
+public class LuceneEngineTestCase {
 
     @Test
     public void testCRUD() throws Exception {
@@ -29,7 +29,7 @@ public class SearcherTestCase {
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        Searcher searcher = new Searcher(config, path);
+        LuceneEngine searcher = new LuceneEngine(config, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
@@ -84,7 +84,7 @@ public class SearcherTestCase {
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        Searcher searcher = new Searcher(config, path);
+        LuceneEngine searcher = new LuceneEngine(config, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
