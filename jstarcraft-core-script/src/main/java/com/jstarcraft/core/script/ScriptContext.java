@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.jstarcraft.core.script.exception.ScriptContextException;
+import com.jstarcraft.core.utility.StringUtility;
 import com.jstarcraft.core.utility.PackageUtility.PackageScanner;
 
 /**
@@ -37,7 +38,7 @@ public class ScriptContext {
      */
     public ScriptContext useClass(String name, Class<?> clazz) {
         if (contextClasses.containsKey(name) || contextMethods.containsKey(name)) {
-            throw new ScriptContextException("脚本上下文名称冲突");
+            throw new ScriptContextException(StringUtility.format("脚本上下文名称冲突[{}]", name));
         } else {
             contextClasses.put(name, clazz);
             return this;
@@ -92,7 +93,7 @@ public class ScriptContext {
      */
     public ScriptContext useMethod(String name, Method method) {
         if (contextClasses.containsKey(name) || contextMethods.containsKey(name)) {
-            throw new ScriptContextException("脚本上下文名称冲突");
+            throw new ScriptContextException(StringUtility.format("脚本上下文名称冲突[{}]", name));
         } else {
             contextMethods.put(name, method);
             return this;
