@@ -27,6 +27,6 @@ public interface IndexConverter {
      * @param data
      * @return
      */
-    Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchIndex annotation, Type type, Object data);
+    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data);
 
 }

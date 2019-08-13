@@ -52,7 +52,7 @@ import com.jstarcraft.core.utility.KeyValue;
  * @author Birdy
  *
  */
-public class SearchContext {
+public class LuceneContext {
 
     public static final EnumMap<Specification, IndexConverter> INDEX_CONVERTERS = new EnumMap<>(Specification.class);
 
@@ -161,7 +161,7 @@ public class SearchContext {
         this.storeKeyValues.put(definition.getType(), new ArrayList<>(storeKeyValues));
     }
 
-    SearchContext(CodecDefinition... definitions) {
+    public LuceneContext(CodecDefinition... definitions) {
         this.classDefinitions = new HashMap<>();
         this.indexKeyValues = new HashMap<>();
         this.sortKeyValues = new HashMap<>();

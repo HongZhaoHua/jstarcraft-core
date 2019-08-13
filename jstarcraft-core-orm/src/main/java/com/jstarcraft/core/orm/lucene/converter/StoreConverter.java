@@ -28,7 +28,7 @@ public interface StoreConverter {
      * @param indexables
      * @return
      */
-    Object decode(SearchContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables);
+    Object decode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables);
 
     /**
      * 编码存储
@@ -42,6 +42,6 @@ public interface StoreConverter {
      * @param instance
      * @return
      */
-    NavigableMap<String, IndexableField> encode(SearchContext context, String path, Field field, SearchStore annotation, Type type, Object instance);
+    NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, Object instance);
 
 }

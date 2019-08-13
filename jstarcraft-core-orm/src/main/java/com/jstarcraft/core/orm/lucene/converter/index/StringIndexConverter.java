@@ -12,7 +12,7 @@ import org.apache.lucene.index.IndexableField;
 import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
 import com.jstarcraft.core.orm.lucene.annotation.SearchTerm;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
-import com.jstarcraft.core.orm.lucene.converter.SearchContext;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 
 /**
  * 字符串索引转换器
@@ -23,7 +23,7 @@ import com.jstarcraft.core.orm.lucene.converter.SearchContext;
 public class StringIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         FieldType configuration = new FieldType();
         configuration.setIndexOptions(IndexOptions.DOCS);

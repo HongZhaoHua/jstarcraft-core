@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
-import com.jstarcraft.core.orm.lucene.converter.SearchContext;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
 import com.jstarcraft.core.orm.lucene.exception.SearchException;
 
@@ -22,7 +22,7 @@ import com.jstarcraft.core.orm.lucene.exception.SearchException;
 public class CollectionSortConverter implements SortConverter {
 
     @Override
-    public Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchSort annotatio, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchSort annotatio, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();

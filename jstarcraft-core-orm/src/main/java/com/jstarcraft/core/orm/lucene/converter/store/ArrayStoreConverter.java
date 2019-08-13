@@ -13,7 +13,7 @@ import org.apache.lucene.index.IndexableField;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
-import com.jstarcraft.core.orm.lucene.converter.SearchContext;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
 
 /**
@@ -26,7 +26,7 @@ import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
 public class ArrayStoreConverter implements StoreConverter {
 
     @Override
-    public Object decode(SearchContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
+    public Object decode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
         String from = path;
         char character = path.charAt(path.length() - 1);
         character++;
@@ -56,7 +56,7 @@ public class ArrayStoreConverter implements StoreConverter {
     }
 
     @Override
-    public NavigableMap<String, IndexableField> encode(SearchContext context, String path, Field field, SearchStore annotation, Type type, Object instance) {
+    public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, Object instance) {
         NavigableMap<String, IndexableField> indexables = new TreeMap<>();
         Class<?> componentClass = null;
         Type componentType = null;

@@ -11,7 +11,7 @@ import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
-import com.jstarcraft.core.orm.lucene.converter.SearchContext;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 
 /**
  * 枚举索引转换器
@@ -22,7 +22,7 @@ import com.jstarcraft.core.orm.lucene.converter.SearchContext;
 public class EnumerationIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         indexables.add(new StringField(path, data.toString(), Store.NO));
         return indexables;

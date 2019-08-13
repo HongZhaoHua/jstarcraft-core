@@ -1,4 +1,4 @@
-package com.jstarcraft.core.orm.lucene.converter;
+package com.jstarcraft.core.orm.lucene;
 
 import java.time.Instant;
 
@@ -20,9 +20,11 @@ import org.apache.lucene.store.Directory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.orm.lucene.converter.SearchCodec;
+import com.jstarcraft.core.orm.lucene.LuceneCodec;
+import com.jstarcraft.core.orm.lucene.converter.MockComplexObject;
+import com.jstarcraft.core.orm.lucene.converter.MockEnumeration;
 
-public class ConverterTestCase {
+public class LuceneCodecTestCase {
 
     @Test
     public void testCodec() throws Exception {
@@ -31,7 +33,7 @@ public class ConverterTestCase {
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         IndexWriter indexWriter = new IndexWriter(directory, config);
 
-        SearchCodec<MockComplexObject, MockComplexObject> codec = new SearchCodec<>(MockComplexObject.class, MockComplexObject.class);
+        LuceneCodec<MockComplexObject, MockComplexObject> codec = new LuceneCodec<>(MockComplexObject.class, MockComplexObject.class);
         Instant now = Instant.now();
         MockComplexObject protoss = MockComplexObject.instanceOf(-1, "protoss", "jstarcraft", -1, now, MockEnumeration.PROTOSS);
         MockComplexObject terran = MockComplexObject.instanceOf(0, "terran", "jstarcraft", 0, now, MockEnumeration.TERRAN);

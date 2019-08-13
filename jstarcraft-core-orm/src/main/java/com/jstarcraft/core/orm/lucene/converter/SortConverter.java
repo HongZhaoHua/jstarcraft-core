@@ -25,6 +25,6 @@ public interface SortConverter {
      * @param data
      * @return
      */
-    Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchSort annotation, Type type, Object data);
+    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchSort annotation, Type type, Object data);
 
 }

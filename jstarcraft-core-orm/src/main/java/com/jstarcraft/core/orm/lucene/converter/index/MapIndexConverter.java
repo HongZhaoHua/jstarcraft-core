@@ -13,7 +13,7 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
-import com.jstarcraft.core.orm.lucene.converter.SearchContext;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.exception.SearchException;
 
 /**
@@ -25,7 +25,7 @@ import com.jstarcraft.core.orm.lucene.exception.SearchException;
 public class MapIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(SearchContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         // 兼容UniMi
         type = TypeUtility.refineType(type, Map.class);

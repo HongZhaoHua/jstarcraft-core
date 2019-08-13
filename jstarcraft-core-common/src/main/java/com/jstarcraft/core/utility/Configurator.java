@@ -2,6 +2,8 @@ package com.jstarcraft.core.utility;
 
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * 配置
@@ -12,18 +14,18 @@ import java.util.Properties;
 public class Configurator {
 
     /** 配置项 */
-    private Properties keyValues;
+    private TreeMap<String, String> keyValues;
 
     public Configurator(Map<String, String>... keyValues) {
-        this.keyValues = new Properties();
+        this.keyValues = new TreeMap<>();
         for (Map<String, String> property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
 
     public Configurator(Properties... keyValues) {
-        this.keyValues = new Properties();
-        for (Properties property : keyValues) {
+        this.keyValues = new TreeMap<>();
+        for (Map property : keyValues) {
             this.keyValues.putAll(property);
         }
     }
@@ -101,7 +103,15 @@ public class Configurator {
     }
 
     public String getString(String name) {
-        return keyValues.getProperty(name);
+        return keyValues.get(name);
+    }
+
+    public Set<String> getKeys() {
+        return keyValues.keySet();
+    }
+
+    public Set<String> getKeys(String from, String to) {
+        return keyValues.subMap(from, to).keySet();
     }
 
 }

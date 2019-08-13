@@ -1,4 +1,4 @@
-package com.jstarcraft.core.orm.lucene.converter;
+package com.jstarcraft.core.orm.lucene;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -13,6 +13,10 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
 import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
 import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
+import com.jstarcraft.core.orm.lucene.converter.SortConverter;
+import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
 import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.KeyValue;
 
@@ -24,19 +28,19 @@ import com.jstarcraft.core.utility.KeyValue;
  * @param <T>
  */
 // TODO 以后会整合到Searcher
-public class SearchCodec<S, L> {
+public class LuceneCodec<S, L> {
 
-    private SearchContext context;
+    private LuceneContext context;
 
     private ClassDefinition saveDefinition;
 
     private ClassDefinition loadDefinition;
 
-    public SearchCodec(Class<S> saveClass, Class<L> loadClass) {
+    public LuceneCodec(Class<S> saveClass, Class<L> loadClass) {
         CodecDefinition saveDefinition = CodecDefinition.instanceOf(saveClass);
         CodecDefinition loadDefinition = CodecDefinition.instanceOf(loadClass);
 
-        this.context = new SearchContext(saveDefinition, loadDefinition);
+        this.context = new LuceneContext(saveDefinition, loadDefinition);
 
         this.saveDefinition = saveDefinition.getClassDefinition(saveClass);
         this.loadDefinition = loadDefinition.getClassDefinition(loadClass);
