@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
@@ -16,9 +17,6 @@ import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.jstarcraft.core.orm.lucene.LuceneEngine;
-import com.jstarcraft.core.utility.RandomUtility;
 
 public class LuceneEngineTestCase {
 
@@ -94,8 +92,12 @@ public class LuceneEngineTestCase {
             searcher.createDocument(data, document);
         }
         searcher.mergeManager();
+        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
 
         AtomicBoolean state = new AtomicBoolean(true);
+        AtomicInteger readExceptions = new AtomicInteger();
+        AtomicInteger writeExceptions = new AtomicInteger();
+
         for (int index = 0; index < Runtime.getRuntime().availableProcessors(); index++) {
             Thread readThead = new Thread() {
 
@@ -107,6 +109,7 @@ public class LuceneEngineTestCase {
                             Thread.sleep(1L);
                         }
                     } catch (Exception exception) {
+                        readExceptions.incrementAndGet();
                         Assert.fail();
                     }
                 }
@@ -121,7 +124,7 @@ public class LuceneEngineTestCase {
                 public void run() {
                     try {
                         while (state.get()) {
-                            String data = String.valueOf(RandomUtility.randomInteger(1000));
+                            String data = String.valueOf(0);
                             Document document = new Document();
                             Field field = new StringField("title", data, Store.NO);
                             document.add(field);
@@ -129,6 +132,7 @@ public class LuceneEngineTestCase {
                             Thread.sleep(1L);
                         }
                     } catch (Exception exception) {
+                        writeExceptions.incrementAndGet();
                         Assert.fail();
                     }
                 }
@@ -137,8 +141,16 @@ public class LuceneEngineTestCase {
             writeThead.setDaemon(true);
             writeThead.start();
         }
-        searcher.mergeManager();
+
+        for (int index = 0; index < 10; index++) {
+            // 不断触发合并
+            searcher.mergeManager();
+            Thread.sleep(1000L);
+        }
+
         state.set(false);
+        Assert.assertEquals(0, readExceptions.get());
+        Assert.assertEquals(0, writeExceptions.get());
         Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
 
         searcher.close();

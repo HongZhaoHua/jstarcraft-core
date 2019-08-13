@@ -149,7 +149,8 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
         try {
             if (this.changed.compareAndSet(true, false)) {
                 if (this.transienceManager != null) {
-                    IndexReader reader = DirectoryReader.open(this.transienceManager.getDirectory());
+                    Directory directory = this.transienceManager.getDirectory();
+                    IndexReader reader = DirectoryReader.open(directory);
                     reader = new MultiReader(reader, this.reader);
                     return reader;
                 }

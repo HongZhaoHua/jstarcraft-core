@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.lucene.document.Document;
@@ -30,7 +33,7 @@ import it.unimi.dsi.fastutil.floats.FloatList;
 public class LuceneEngine implements AutoCloseable {
 
     /** 配置 */
-    private IndexWriterConfig config;
+    private final IndexWriterConfig config;
 
     /** 瞬时化管理器 */
     private volatile TransienceManager transienceManager;
@@ -41,8 +44,13 @@ public class LuceneEngine implements AutoCloseable {
     /** Lucene搜索器 */
     private volatile LuceneSearcher searcher;
 
-    /** 信号量 */
-    private AtomicInteger semaphore;
+    /** 信号量(读写隔离) */
+    private final AtomicInteger semaphore;
+
+    /** 读写锁(合并隔离) */
+    private final Lock readLock;
+
+    private final Lock writeLock;
 
     public LuceneEngine(IndexWriterConfig config, Path path) {
         try {
@@ -52,7 +60,11 @@ public class LuceneEngine implements AutoCloseable {
             Directory persistenceDirectory = FSDirectory.open(path);
             this.persistenceManager = new PersistenceManager((IndexWriterConfig) BeanUtils.cloneBean(config), persistenceDirectory);
             this.searcher = new LuceneSearcher(this.transienceManager, this.persistenceManager);
+
             this.semaphore = new AtomicInteger();
+            ReadWriteLock lock = new ReentrantReadWriteLock();
+            this.readLock = lock.readLock();
+            this.writeLock = lock.writeLock();
         } catch (Exception exception) {
             throw new SearchException(exception);
         }
@@ -106,20 +118,22 @@ public class LuceneEngine implements AutoCloseable {
      * @throws Exception
      */
     void mergeManager() throws Exception {
+        writeLock.lock();
         TransienceManager newTransienceManager = new TransienceManager((IndexWriterConfig) BeanUtils.cloneBean(config), new ByteBuffersDirectory());
         TransienceManager oldTransienceManager = this.transienceManager;
-
         try {
             lockWrite();
             this.transienceManager = newTransienceManager;
+            // 触发变更
             this.persistenceManager.setManager(oldTransienceManager);
         } finally {
             unlockWrite();
         }
-
-        // 此处需要考虑防止有线程在使用时关闭.
+        
+        // 此处需要防止有线程在使用时关闭.
         try {
             lockRead();
+            // 只关闭writer,不关闭reader.
             oldTransienceManager.close();
         } finally {
             unlockRead();
@@ -129,10 +143,12 @@ public class LuceneEngine implements AutoCloseable {
 
         try {
             lockWrite();
+            // 触发变更
             this.persistenceManager.setManager(null);
         } finally {
             unlockWrite();
         }
+        writeLock.unlock();
     }
 
     /**
@@ -197,6 +213,7 @@ public class LuceneEngine implements AutoCloseable {
      */
     public KeyValue<List<Document>, FloatList> retrieveDocuments(Query query, Sort sort, int size) {
         try {
+            readLock.lock();
             lockRead();
             synchronized (this.semaphore) {
                 if (this.transienceManager.isChanged() || this.persistenceManager.isChanged()) {
@@ -221,6 +238,7 @@ public class LuceneEngine implements AutoCloseable {
             throw new SearchException(exception);
         } finally {
             unlockRead();
+            readLock.unlock();
         }
     }
 
@@ -233,17 +251,20 @@ public class LuceneEngine implements AutoCloseable {
      */
     public int countDocuments(Query query) {
         try {
+            readLock.lock();
             lockRead();
             synchronized (this.semaphore) {
                 if (this.transienceManager.isChanged() || this.persistenceManager.isChanged()) {
                     this.searcher = new LuceneSearcher(this.transienceManager, this.persistenceManager);
                 }
             }
-            return this.searcher.count(query);
+            int count = this.searcher.count(query);
+            return count;
         } catch (Exception exception) {
             throw new SearchException(exception);
         } finally {
             unlockRead();
+            readLock.unlock();
         }
     }
 

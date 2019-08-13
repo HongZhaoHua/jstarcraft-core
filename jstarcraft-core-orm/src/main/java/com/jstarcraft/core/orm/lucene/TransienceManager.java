@@ -83,6 +83,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             for (int index = 0; index < size; index++) {
                 this.lockables[index] = new HashLockable();
             }
+            this.writer.commit();
         } catch (Exception exception) {
             throw new SearchException(exception);
         }
