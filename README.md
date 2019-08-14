@@ -22,12 +22,12 @@ JStarCraft Core是一个基于Java语言的核心编程工具包,涵盖了缓存
 ## JStarCraft Core架构
 
 JStarCraft Core框架各个模块之间的关系:
-![core](https://github.com/HongZhaoHua/jstarcraft-reference/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
+![core](https://github.com/HongZhaoHua/jstarcraft-tutorial/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
 
 *****
 
 ## JStarCraft Core特性
-* [1.缓存(cache)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E7%BC%93%E5%AD%98)
+* [1.缓存(cache)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E7%BC%93%E5%AD%98)
     * Cache Aside
     * Cache as Record
 * 2.编解码(codec)
@@ -55,12 +55,12 @@ JStarCraft Core框架各个模块之间的关系:
 * 4.通讯(communication)
     * TCP
     * UDP
-* [5.分布式(distribution)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E5%88%86%E5%B8%83%E5%BC%8F)
+* [5.分布式(distribution)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%88%86%E5%B8%83%E5%BC%8F)
     * 数据路由
     * 一致性哈希
     * 标识管理
     * 分布式锁
-* [6.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core-1.0/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
+* [6.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
     * 键值数据库(Berkeley DB)
     * 关系型数据库(Hibernate/MyBatis)
     * 文档型数据库(Lucene/Mongo DB)
