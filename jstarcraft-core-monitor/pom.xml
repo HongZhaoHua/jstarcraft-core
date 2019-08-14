@@ -35,7 +35,6 @@
 			<artifactId>log4j-core</artifactId>
 		</dependency>
 
-
 		<!-- 路由框架依赖 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
