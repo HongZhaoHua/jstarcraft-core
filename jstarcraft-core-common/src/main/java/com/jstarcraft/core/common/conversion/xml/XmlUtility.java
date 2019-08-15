@@ -128,11 +128,11 @@ public class XmlUtility extends DomUtils {
         return StringEscapeUtils.unescapeHtml4(string);
     }
 
-    static class Wrapper<T> {
+    public static class Wrapper<T> {
 
         private List<T> instances;
 
-        Wrapper() {
+        public Wrapper() {
             instances = new ArrayList<T>();
         }
 

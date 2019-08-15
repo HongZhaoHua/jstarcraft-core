@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:resource="http://www.jstarcraft.com/core/resource"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.jstarcraft.com/core/resource
+http://www.jstarcraft.com/core/resource/resource.xsd">
+
+	<bean id="xmlAdapter" class="com.jstarcraft.core.resource.adapter.XmlAdapter">
+	</bean>
+
+	<!-- 仓储管理器配置 -->
+	<resource:configuration id="storageManager" format="xml">
+		<resource:format name="xml" adapter="xmlAdapter" path="com/jstarcraft/core/resource/xml" suffix="xml" />
+		<resource:scan>
+			<resource:package name="com.jstarcraft.core.resource.xml" />
+		</resource:scan>
+	</resource:configuration>
+
+</beans>
