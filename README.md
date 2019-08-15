@@ -77,6 +77,7 @@ JStarCraft Core框架各个模块之间的关系:
         * JSON
         * Properties
         * XLSX
+        * XML
         * YAML
     * 路径与流
         * Disk
