@@ -35,10 +35,10 @@ import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy.TransienceType;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.conversion.xml.XmlUtility;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.XmlUtility;
 
 /**
  * 缓存XML解析器

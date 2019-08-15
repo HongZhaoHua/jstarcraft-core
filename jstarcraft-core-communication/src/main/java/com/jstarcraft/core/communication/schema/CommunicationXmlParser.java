@@ -29,12 +29,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.jstarcraft.core.common.conversion.xml.XmlUtility;
 import com.jstarcraft.core.communication.annotation.CommunicationModule;
 import com.jstarcraft.core.communication.annotation.CommunicationModule.ModuleSide;
 import com.jstarcraft.core.communication.command.CommandDefinition;
 import com.jstarcraft.core.communication.exception.CommunicationConfigurationException;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.XmlUtility;
 
 /**
  * 通讯XML解析器

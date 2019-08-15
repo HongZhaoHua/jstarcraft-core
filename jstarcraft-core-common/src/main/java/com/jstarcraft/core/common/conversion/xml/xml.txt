@@ -1,0 +1,8 @@
+Java与XML映射利器:
+https://elim.iteye.com/category/375896
+
+XML解析之JAXB(实现Java对象与XML的相互转换):
+https://blog.csdn.net/xqhys/article/details/54344831
+
+Creating a Generic List Wrapper in JAXB:
+http://blog.bdoughan.com/2012/11/creating-generic-list-wrapper-in-jaxb.html

@@ -24,9 +24,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jstarcraft.core.common.conversion.xml.XmlUtility;
 import com.jstarcraft.core.orm.exception.OrmConfigurationException;
 import com.jstarcraft.core.utility.StringUtility;
-import com.jstarcraft.core.utility.XmlUtility;
 
 /**
  * MyBatisXML解析器
