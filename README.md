@@ -49,20 +49,23 @@ JStarCraft Core框架各个模块之间的关系:
     * 锁(lockable)
         * 链锁
         * 哈希锁
-    * 日志(log)
-        * Log4j 1
-        * Log4j 2
     * 反射(reflection)
     * 安全(security)
 * 4.通讯(communication)
     * TCP
     * UDP
-* [5.分布式(distribution)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%88%86%E5%B8%83%E5%BC%8F)
-    * 数据路由
-    * 一致性哈希
-    * 标识管理
-    * 分布式锁
+* 5.监控(monitor)
+    * 追踪(trace)
+        * 日志(log)
+            * Log4j 1
+            * Log4j 2
+    * 统计(statistics)
+    * 节流(throttle)
+    * 路由(route)
+        * 数据路由
+        * 一致性哈希
 * [6.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
+    * 标识管理
     * 键值数据库(Berkeley DB)
     * 关系型数据库(Hibernate/MyBatis)
     * 文档型数据库(Lucene/Mongo DB)
@@ -88,8 +91,10 @@ JStarCraft Core框架各个模块之间的关系:
         * HTTP
         * SVN
         * ZooKeeper
-* 9.监控(monitor)
-    * 追踪(trace)
-    * 统计(statistics)
-    * 节流(throttle)
-    * 路由(route)
+ * 9.事务(transaction)
+    * 分布式锁
+        * Hazelcast
+        * Hibernate
+        * Mongo
+        * Redis
+        * ZooKeeper
