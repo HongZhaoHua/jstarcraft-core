@@ -8,23 +8,23 @@ import java.lang.annotation.Target;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 
 /**
- * 搜索索引
+ * Lucene索引
  * 
  * @author Birdy
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface SearchIndex {
+public @interface LuceneIndex {
 
     /** 是否分词 */
     boolean analyze() default false;
 
     /** 反向词向量 */
-    SearchTerm negative() default @SearchTerm;
+    LuceneTerm negative() default @LuceneTerm;
 
     /** 正向词向量 */
-    SearchTerm positive() default @SearchTerm;
+    LuceneTerm positive() default @LuceneTerm;
 
     /** 索引转换器 */
     Class<? extends IndexConverter> clazz() default IndexConverter.class;

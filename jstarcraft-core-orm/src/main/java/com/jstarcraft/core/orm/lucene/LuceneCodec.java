@@ -10,14 +10,14 @@ import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.KeyValue;
 
 /**
@@ -63,7 +63,7 @@ public class LuceneCodec<S, L> {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
-                SearchStore annotation = field.getAnnotation(SearchStore.class);
+                LuceneStore annotation = field.getAnnotation(LuceneStore.class);
                 String path = field.getName();
                 Type type = field.getGenericType();
                 Object data = converter.decode(this.context, path, field, annotation, type, indexables);
@@ -72,7 +72,7 @@ public class LuceneCodec<S, L> {
             return instance;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -89,7 +89,7 @@ public class LuceneCodec<S, L> {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 IndexConverter converter = keyValue.getValue();
-                SearchIndex annotation = field.getAnnotation(SearchIndex.class);
+                LuceneIndex annotation = field.getAnnotation(LuceneIndex.class);
                 String path = field.getName();
                 Type type = field.getGenericType();
                 Object data = field.get(object);
@@ -101,7 +101,7 @@ public class LuceneCodec<S, L> {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 SortConverter converter = keyValue.getValue();
-                SearchSort annotation = field.getAnnotation(SearchSort.class);
+                LuceneSort annotation = field.getAnnotation(LuceneSort.class);
                 String path = field.getName();
                 Type type = field.getGenericType();
                 Object data = field.get(object);
@@ -113,7 +113,7 @@ public class LuceneCodec<S, L> {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
-                SearchStore annotation = field.getAnnotation(SearchStore.class);
+                LuceneStore annotation = field.getAnnotation(LuceneStore.class);
                 String path = field.getName();
                 Type type = field.getGenericType();
                 Object data = field.get(object);
@@ -124,7 +124,7 @@ public class LuceneCodec<S, L> {
             return document;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

@@ -27,7 +27,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 
 import com.jstarcraft.core.common.lockable.HashLockable;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
+import com.jstarcraft.core.orm.exception.OrmException;
 
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -85,7 +85,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             }
             this.writer.commit();
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -122,7 +122,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             lockable.close();
             changed.set(true);
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -146,7 +146,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             lockable.close();
             changed.set(true);
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -163,7 +163,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             lockable.close();
             changed.set(true);
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -224,7 +224,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             }
             return this.reader;
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -239,7 +239,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
             // 只关闭writer,不关闭reader.
             this.writer.close();
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

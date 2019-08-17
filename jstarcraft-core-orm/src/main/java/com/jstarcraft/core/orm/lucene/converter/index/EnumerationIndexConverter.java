@@ -9,7 +9,7 @@ import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 
@@ -22,7 +22,7 @@ import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 public class EnumerationIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         indexables.add(new StringField(path, data.toString(), Store.NO));
         return indexables;

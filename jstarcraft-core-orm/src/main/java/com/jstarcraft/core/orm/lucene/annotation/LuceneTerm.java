@@ -4,13 +4,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * 词向量
+ * Lucene词向量
  * 
  * @author Birdy
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SearchTerm {
+public @interface LuceneTerm {
 
     /** 词频 */
     boolean frequency() default false;

@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 
 /**
  * 索引转换器
@@ -27,6 +27,6 @@ public interface IndexConverter {
      * @param data
      * @return
      */
-    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data);
+    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data);
 
 }

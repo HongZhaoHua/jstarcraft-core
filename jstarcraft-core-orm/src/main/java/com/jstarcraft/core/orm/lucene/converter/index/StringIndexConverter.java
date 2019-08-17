@@ -9,8 +9,8 @@ import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
-import com.jstarcraft.core.orm.lucene.annotation.SearchTerm;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneTerm;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 
@@ -23,14 +23,14 @@ import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 public class StringIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         FieldType configuration = new FieldType();
         configuration.setIndexOptions(IndexOptions.DOCS);
         if (annotation.analyze()) {
             configuration.setTokenized(true);
 
-            SearchTerm negative = annotation.negative();
+            LuceneTerm negative = annotation.negative();
             if (negative.offset()) {
                 configuration.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
             } else if (negative.position()) {
@@ -39,7 +39,7 @@ public class StringIndexConverter implements IndexConverter {
                 configuration.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
             }
 
-            SearchTerm positive = annotation.positive();
+            LuceneTerm positive = annotation.positive();
             if (positive.offset()) {
                 configuration.setStoreTermVectorOffsets(true);
             }

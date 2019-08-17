@@ -8,10 +8,10 @@ import java.util.LinkedList;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.KeyValue;
 
 /**
@@ -23,7 +23,7 @@ import com.jstarcraft.core.utility.KeyValue;
 public class ObjectSortConverter implements SortConverter {
 
     @Override
-    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchSort annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         Class<?> clazz = TypeUtility.getRawType(type, null);
 
@@ -33,7 +33,7 @@ public class ObjectSortConverter implements SortConverter {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 SortConverter converter = keyValue.getValue();
-                annotation = field.getAnnotation(SearchSort.class);
+                annotation = field.getAnnotation(LuceneSort.class);
                 String name = field.getName();
                 for (IndexableField indexable : converter.convert(context, path + "." + name, field, annotation, field.getGenericType(), field.get(data))) {
                     indexables.add(indexable);
@@ -42,7 +42,7 @@ public class ObjectSortConverter implements SortConverter {
             return indexables;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

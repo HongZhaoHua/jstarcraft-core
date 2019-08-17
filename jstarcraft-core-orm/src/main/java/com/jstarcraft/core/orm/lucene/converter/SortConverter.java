@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 
 /**
  * 排序转换器
@@ -25,6 +25,6 @@ public interface SortConverter {
      * @param data
      * @return
      */
-    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchSort annotation, Type type, Object data);
+    Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data);
 
 }

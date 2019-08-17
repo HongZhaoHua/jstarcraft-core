@@ -15,10 +15,10 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.ArrayUtility;
 
 /**
@@ -84,7 +84,7 @@ public class ArrayIndexConverter implements IndexConverter {
     }
 
     @Override
-    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         Class<?> componentClass = null;
         Type componentType = null;
@@ -160,6 +160,7 @@ public class ArrayIndexConverter implements IndexConverter {
                 indexables.add(new DoublePoint(path, (double[]) data));
                 return indexables;
             }
+            // 每个字符串都索引
             if (String[].class == clazz) {
                 for (String string : (String[]) data) {
                     indexables.add(new StringField(path, string, Store.NO));
@@ -167,7 +168,7 @@ public class ArrayIndexConverter implements IndexConverter {
                 return indexables;
             }
         }
-        throw new SearchException();
+        throw new OrmException();
     }
 
 }

@@ -13,9 +13,10 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.index.ArrayIndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.index.BooleanIndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.index.CollectionIndexConverter;
@@ -43,7 +44,6 @@ import com.jstarcraft.core.orm.lucene.converter.store.MapStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.NumberStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.ObjectStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.StringStoreConverter;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.KeyValue;
 
 /**
@@ -116,7 +116,7 @@ public class LuceneContext {
             Specification specification = Specification.getSpecification(type);
 
             try {
-                SearchIndex index = field.getAnnotation(SearchIndex.class);
+                LuceneIndex index = field.getAnnotation(LuceneIndex.class);
                 if (index != null) {
                     Class<? extends IndexConverter> clazz = index.clazz();
                     if (IndexConverter.class == clazz) {
@@ -128,7 +128,7 @@ public class LuceneContext {
                     }
                 }
 
-                SearchSort sort = field.getAnnotation(SearchSort.class);
+                LuceneSort sort = field.getAnnotation(LuceneSort.class);
                 if (sort != null) {
                     Class<? extends SortConverter> clazz = sort.clazz();
                     if (SortConverter.class == clazz) {
@@ -140,7 +140,7 @@ public class LuceneContext {
                     }
                 }
 
-                SearchStore store = field.getAnnotation(SearchStore.class);
+                LuceneStore store = field.getAnnotation(LuceneStore.class);
                 if (store != null) {
                     Class<? extends StoreConverter> clazz = store.clazz();
                     if (StoreConverter.class == clazz) {
@@ -152,7 +152,7 @@ public class LuceneContext {
                     }
                 }
             } catch (Exception exception) {
-                throw new SearchException(exception);
+                throw new OrmException(exception);
             }
         });
 

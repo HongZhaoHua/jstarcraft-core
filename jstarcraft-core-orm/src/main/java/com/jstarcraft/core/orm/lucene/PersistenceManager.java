@@ -19,7 +19,7 @@ import org.apache.lucene.search.LeafCollector;
 import org.apache.lucene.search.Scorable;
 import org.apache.lucene.store.Directory;
 
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
+import com.jstarcraft.core.orm.exception.OrmException;
 
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 
@@ -56,7 +56,7 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
             this.writer = new IndexWriter(this.directory, this.config);
             this.reader = DirectoryReader.open(this.writer);
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -89,7 +89,7 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
             this.writer.deleteDocuments(terms);
             this.writer.addIndexes(this.transienceManager.getDirectory());
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -162,7 +162,7 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
             }
             return this.reader;
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
@@ -177,7 +177,7 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
             this.reader.close();
             this.writer.close();
         } catch (Exception exception) {
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

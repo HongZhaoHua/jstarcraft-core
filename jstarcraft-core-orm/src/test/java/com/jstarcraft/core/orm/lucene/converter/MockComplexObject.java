@@ -8,9 +8,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 
 /**
  * 模仿复杂对象
@@ -20,52 +20,52 @@ import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
  */
 public class MockComplexObject {
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private Integer id;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private String firstName;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private String lastName;
 
-    @SearchIndex
-    @SearchStore
+    @LuceneIndex
+    @LuceneStore
     private String[] names;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private int money;
 
-    @SearchIndex
-    @SearchStore
+    @LuceneIndex
+    @LuceneStore
     private int[] currencies;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private Instant instant;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private MockEnumeration race;
 
-    @SearchIndex
-    @SearchStore
+    @LuceneIndex
+    @LuceneStore
     private MockSimpleObject object;
 
-    @SearchStore
+    @LuceneStore
     private LinkedList<MockSimpleObject> list;
 
-    @SearchStore
+    @LuceneStore
     private HashMap<Integer, MockSimpleObject> map;
 
     public MockComplexObject() {

@@ -8,10 +8,10 @@ import java.util.TreeMap;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.KeyValue;
 
 /**
@@ -23,7 +23,7 @@ import com.jstarcraft.core.utility.KeyValue;
 public class ObjectStoreConverter implements StoreConverter {
 
     @Override
-    public Object decode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
+    public Object decode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
         String from = path;
         char character = path.charAt(path.length() - 1);
         character++;
@@ -38,7 +38,7 @@ public class ObjectStoreConverter implements StoreConverter {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
-                annotation = field.getAnnotation(SearchStore.class);
+                annotation = field.getAnnotation(LuceneStore.class);
                 String name = field.getName();
                 type = field.getGenericType();
                 Object data = converter.decode(context, path + "." + name, field, annotation, type, indexables);
@@ -47,12 +47,12 @@ public class ObjectStoreConverter implements StoreConverter {
             return instance;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
     @Override
-    public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, Object instance) {
+    public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, Object instance) {
         NavigableMap<String, IndexableField> indexables = new TreeMap<>();
         Class<?> clazz = TypeUtility.getRawType(type, null);
 
@@ -62,7 +62,7 @@ public class ObjectStoreConverter implements StoreConverter {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
-                annotation = field.getAnnotation(SearchStore.class);
+                annotation = field.getAnnotation(LuceneStore.class);
                 String name = field.getName();
                 type = field.getGenericType();
                 Object data = field.get(instance);
@@ -73,7 +73,7 @@ public class ObjectStoreConverter implements StoreConverter {
             return indexables;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

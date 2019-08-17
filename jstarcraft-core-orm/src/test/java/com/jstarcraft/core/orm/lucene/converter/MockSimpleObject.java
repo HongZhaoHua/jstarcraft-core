@@ -4,9 +4,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
-import com.jstarcraft.core.orm.lucene.annotation.SearchSort;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 
 /**
  * 模仿简单对象
@@ -16,14 +16,14 @@ import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
  */
 public class MockSimpleObject {
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private long id;
 
-    @SearchIndex
-    @SearchSort
-    @SearchStore
+    @LuceneIndex
+    @LuceneSort
+    @LuceneStore
     private String name;
 
     public long getId() {

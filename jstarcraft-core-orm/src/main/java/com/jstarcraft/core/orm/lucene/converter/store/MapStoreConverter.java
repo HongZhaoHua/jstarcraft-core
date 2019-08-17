@@ -13,10 +13,10 @@ import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 
 /**
  * 映射存储转换器
@@ -27,7 +27,7 @@ import com.jstarcraft.core.orm.lucene.exception.SearchException;
 public class MapStoreConverter implements StoreConverter {
 
     @Override
-    public Object decode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
+    public Object decode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, NavigableMap<String, IndexableField> indexables) {
         String from = path;
         char character = path.charAt(path.length() - 1);
         character++;
@@ -61,12 +61,12 @@ public class MapStoreConverter implements StoreConverter {
             return map;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 
     @Override
-    public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, Object instance) {
+    public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, Object instance) {
         NavigableMap<String, IndexableField> indexables = new TreeMap<>();
         // 兼容UniMi
         type = TypeUtility.refineType(type, Map.class);
@@ -99,7 +99,7 @@ public class MapStoreConverter implements StoreConverter {
             return indexables;
         } catch (Exception exception) {
             // TODO
-            throw new SearchException(exception);
+            throw new OrmException(exception);
         }
     }
 

@@ -6,7 +6,7 @@ import java.util.NavigableMap;
 
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.orm.lucene.annotation.SearchStore;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 
 /**
  * 存储转换器
@@ -28,7 +28,7 @@ public interface StoreConverter {
      * @param indexables
      * @return
      */
-    Object decode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, NavigableMap<String, IndexableField> indexables);
+    Object decode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, NavigableMap<String, IndexableField> indexables);
 
     /**
      * 编码存储
@@ -42,6 +42,6 @@ public interface StoreConverter {
      * @param instance
      * @return
      */
-    NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, SearchStore annotation, Type type, Object instance);
+    NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, Object instance);
 
 }

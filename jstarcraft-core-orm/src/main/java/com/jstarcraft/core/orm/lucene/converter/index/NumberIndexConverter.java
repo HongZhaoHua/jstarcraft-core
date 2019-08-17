@@ -12,10 +12,10 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.orm.lucene.annotation.SearchIndex;
+import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
-import com.jstarcraft.core.orm.lucene.exception.SearchException;
 import com.jstarcraft.core.utility.ClassUtility;
 
 /**
@@ -27,7 +27,7 @@ import com.jstarcraft.core.utility.ClassUtility;
 public class NumberIndexConverter implements IndexConverter {
 
     @Override
-    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, SearchIndex annotation, Type type, Object data) {
+    public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = ClassUtility.primitiveToWrapper(clazz);
@@ -55,7 +55,7 @@ public class NumberIndexConverter implements IndexConverter {
             indexables.add(new DoublePoint(path, (double) data));
             return indexables;
         }
-        throw new SearchException();
+        throw new OrmException();
     }
 
 }

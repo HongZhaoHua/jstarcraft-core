@@ -8,14 +8,14 @@ import java.lang.annotation.Target;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
 
 /**
- * 搜索排序
+ * Lucene排序
  * 
  * @author Birdy
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface SearchSort {
+public @interface LuceneSort {
 
     /** 排序转换器 */
     Class<? extends SortConverter> clazz() default SortConverter.class;
