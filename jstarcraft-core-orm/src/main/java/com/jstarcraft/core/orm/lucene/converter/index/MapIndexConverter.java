@@ -45,7 +45,7 @@ public class MapIndexConverter implements IndexConverter {
             IndexConverter valueConverter = context.getIndexConverter(valueSpecification);
 
             // 只索引Key,不索引Value
-            return keyConverter.convert(context, path, field, annotation, keyType, map.keySet());
+            return context.getIndexConverter(Specification.COLLECTION).convert(context, path, field, annotation, TypeUtility.parameterize(Collection.class, keyType), map.keySet());
         } catch (Exception exception) {
             // TODO
             throw new OrmException(exception);

@@ -14,6 +14,7 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexableField;
 
+import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
@@ -148,7 +149,19 @@ public class CollectionIndexConverter implements IndexConverter {
                 }
                 return indexables;
             }
-            throw new OrmException();
+            // TODO 此处需要代码重构
+            Collection<?> collection = Collection.class.cast(data);
+            Specification specification = Specification.getSpecification(elementClazz);
+            IndexConverter converter = context.getIndexConverter(specification);
+
+            int index = 0;
+            for (Object element : collection) {
+                for (IndexableField indexable : converter.convert(context, path + "[" + index + "]", field, annotation, elementType, element)) {
+                    indexables.add(indexable);
+                }
+                index++;
+            }
+            return indexables;
         } catch (Exception exception) {
             // TODO
             throw new OrmException(exception);

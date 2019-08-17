@@ -62,9 +62,11 @@ public class MockComplexObject {
     @LuceneStore
     private MockSimpleObject object;
 
+    @LuceneIndex
     @LuceneStore
     private LinkedList<MockSimpleObject> list;
 
+    @LuceneIndex
     @LuceneStore
     private HashMap<Integer, MockSimpleObject> map;
 
