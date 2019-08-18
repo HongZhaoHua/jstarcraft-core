@@ -1,6 +1,7 @@
 package com.jstarcraft.core.orm.lucene;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +20,26 @@ import com.jstarcraft.core.orm.OrmPagination;
  */
 public class LuceneAccessor implements OrmAccessor {
 
+    /** 元数据集合 */
+    private HashMap<Class<?>, LuceneMetadata> metadatas = new HashMap<>();
+
+    private LuceneEngine engine;
+
+    /** 编解码器映射 */
+    private Map<Class<?>, LuceneCodec<Class, Class>> codecs = new HashMap<>();
+
+    public LuceneAccessor(Collection<Class<?>> classes, LuceneEngine engine) {
+        this.engine = engine;
+
+        for (Class<?> ormClass : classes) {
+            LuceneMetadata metadata = new LuceneMetadata(ormClass);
+            metadatas.put(ormClass, metadata);
+        }
+    }
+
     @Override
     public Collection<? extends OrmMetadata> getAllMetadata() {
-        // TODO Auto-generated method stub
-        return null;
+        return metadatas.values();
     }
 
     @Override
