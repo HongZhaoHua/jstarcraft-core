@@ -7,10 +7,11 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.jstarcraft.core.resource.json.JsonAdapterTestCase;
 import com.jstarcraft.core.resource.property.PropertyAdapterTestCase;
 import com.jstarcraft.core.resource.xlsx.XlsxAdapterTestCase;
+import com.jstarcraft.core.resource.xml.XmlAdapterTestCase;
 import com.jstarcraft.core.resource.yaml.YamlAdapterTestCase;
 
 @RunWith(Suite.class)
-@SuiteClasses({ JsonAdapterTestCase.class, PropertyAdapterTestCase.class, XlsxAdapterTestCase.class, YamlAdapterTestCase.class })
+@SuiteClasses({ JsonAdapterTestCase.class, PropertyAdapterTestCase.class, XlsxAdapterTestCase.class, XmlAdapterTestCase.class, YamlAdapterTestCase.class })
 public class ResourceTestSuite {
 
 }
