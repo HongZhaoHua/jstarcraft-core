@@ -84,7 +84,7 @@ public class XlsxAdapter implements FormatAdapter {
 			XSSFReader xssfParser = new XSSFReader(xlsxPackage);
 			SharedStringsTable references = xssfParser.getSharedStringsTable();
 			Constructor<E> constructor = clazz.getDeclaredConstructor();
-			constructor.setAccessible(true);
+			ReflectionUtility.makeAccessible(constructor);
 			// 按照页遍历
 			XSSFReader.SheetIterator iterator = (XSSFReader.SheetIterator) xssfParser.getSheetsData();
 			while (iterator.hasNext()) {

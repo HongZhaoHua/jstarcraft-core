@@ -26,6 +26,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.text.StringEscapeUtils;
 
 import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.ClassUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -56,7 +57,7 @@ public class CsvUtility {
 						return null;
 					}
 					Constructor<?> constructor = clazz.getDeclaredConstructor();
-					constructor.setAccessible(true);
+					ReflectionUtility.makeAccessible(constructor);
 					String[] names = configuration.value();
 					LinkedList<Field> fields = new LinkedList<>();
 					for (String name : names) {

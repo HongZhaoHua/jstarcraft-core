@@ -197,14 +197,14 @@ public abstract class ReflectionUtility extends ReflectionUtils {
         }
         try {
             Constructor<?> constructor = clazz.getDeclaredConstructor(classes);
-            constructor.setAccessible(true);
+            ReflectionUtility.makeAccessible(constructor);
             return (T) constructor.newInstance(parameters);
         } catch (NoSuchMethodException exception) {
             Constructor<?>[] constructors = clazz.getDeclaredConstructors();
             try {
                 for (Constructor<?> constructor : constructors) {
                     if (match(constructor.isVarArgs(), constructor.getParameterTypes(), classes)) {
-                        constructor.setAccessible(true);
+                        ReflectionUtility.makeAccessible(constructor);
                         return (T) constructor.newInstance(parameters);
                     }
                 }

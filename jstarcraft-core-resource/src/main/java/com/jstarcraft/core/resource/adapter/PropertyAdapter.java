@@ -73,7 +73,7 @@ public class PropertyAdapter implements FormatAdapter {
 					fieldName = fieldNames.pollFirst();
 					if (property == null) {
 						Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-						constructor.setAccessible(true);
+						ReflectionUtility.makeAccessible(constructor);
 						property = constructor.newInstance();
 						field.set(instanceObject, property);
 					}
@@ -117,7 +117,7 @@ public class PropertyAdapter implements FormatAdapter {
 						Map map = Map.class.cast(field.get(instanceObject));
 						if (map == null) {
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							map = Map.class.cast(constructor.newInstance());
 							field.set(instanceObject, map);
 						}
@@ -133,7 +133,7 @@ public class PropertyAdapter implements FormatAdapter {
 						List list = List.class.cast(field.get(instanceObject));
 						if (list == null) {
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							list = List.class.cast(constructor.newInstance());
 							field.set(instanceObject, list);
 						}
@@ -151,7 +151,7 @@ public class PropertyAdapter implements FormatAdapter {
 								throw new StorageException();
 							}
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							Object element = constructor.newInstance();
 							Array.set(property, 0, element);
 							field.set(instanceObject, property);
@@ -167,7 +167,7 @@ public class PropertyAdapter implements FormatAdapter {
 									Array.set(newArray, index, Array.get(oldArray, index));
 								}
 								Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-								constructor.setAccessible(true);
+								ReflectionUtility.makeAccessible(constructor);
 								Object element = constructor.newInstance();
 								Array.set(newArray, size, element);
 								property = newArray;
@@ -187,7 +187,7 @@ public class PropertyAdapter implements FormatAdapter {
 						Map map = Map.class.cast(field.get(instanceObject));
 						if (map == null) {
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							map = Map.class.cast(constructor.newInstance());
 							field.set(instanceObject, map);
 						}
@@ -196,7 +196,7 @@ public class PropertyAdapter implements FormatAdapter {
 						if (value == null) {
 							instanceClazz = TypeUtility.getRawType(valueType, null);
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							value = constructor.newInstance();
 							map.put(key, value);
 						}
@@ -211,7 +211,7 @@ public class PropertyAdapter implements FormatAdapter {
 						List list = List.class.cast(field.get(instanceObject));
 						if (list == null) {
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							list = List.class.cast(constructor.newInstance());
 							field.set(instanceObject, list);
 						}
@@ -220,7 +220,7 @@ public class PropertyAdapter implements FormatAdapter {
 						if (value == null) {
 							instanceClazz = TypeUtility.getRawType(elementType, null);
 							Constructor<?> constructor = instanceClazz.getDeclaredConstructor();
-							constructor.setAccessible(true);
+							ReflectionUtility.makeAccessible(constructor);
 							value = constructor.newInstance();
 							list.add(value);
 						}
@@ -241,7 +241,7 @@ public class PropertyAdapter implements FormatAdapter {
 			Properties properties = new Properties();
 			properties.load(stream);
 			Constructor<E> constructor = clazz.getDeclaredConstructor();
-			constructor.setAccessible(true);
+			ReflectionUtility.makeAccessible(constructor);
 
 			Field storageId = ReflectionUtility.uniqueField(clazz, ResourceId.class);
 			storageId.setAccessible(true);

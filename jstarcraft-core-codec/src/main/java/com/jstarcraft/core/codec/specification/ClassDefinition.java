@@ -96,7 +96,7 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
         // 不是所有类型都有无参数构造器
         for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
             if (constructor.getParameterTypes().length == 0) {
-                constructor.setAccessible(true);
+                ReflectionUtility.makeAccessible(constructor);
                 this.constructor = constructor;
                 break;
             }
