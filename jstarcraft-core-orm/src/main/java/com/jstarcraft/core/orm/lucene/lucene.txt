@@ -47,6 +47,9 @@ https://github.com/lionsoul2014/jcseg
 mmseg4j中文分词:
 https://github.com/chenlb/mmseg4j-core
 
+MYNLP中文分词:
+https://github.com/mayabot/mynlp/
+
 NLPIR中文分词:
 https://github.com/NLPIR-team/nlpir-analysis-cn-ictclas
 
