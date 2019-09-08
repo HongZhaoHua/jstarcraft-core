@@ -13,7 +13,7 @@ public class AtomicFloat extends Number implements java.io.Serializable {
     private static final AtomicIntegerFieldUpdater<AtomicFloat> updater = AtomicIntegerFieldUpdater.newUpdater(AtomicFloat.class, "value");
 
     /**
-     * Creates a new {@code AtomicDouble} with the given initial value.
+     * Creates a new {@code AtomicFloat} with the given initial value.
      *
      * @param initialValue the initial value
      */
@@ -21,7 +21,7 @@ public class AtomicFloat extends Number implements java.io.Serializable {
         value = floatToRawIntBits(initialValue);
     }
 
-    /** Creates a new {@code AtomicDouble} with initial value {@code 0.0}. */
+    /** Creates a new {@code AtomicFloat} with initial value {@code 0.0}. */
     public AtomicFloat() {
         // assert doubleToRawLongBits(0.0) == 0L;
     }
@@ -143,7 +143,7 @@ public class AtomicFloat extends Number implements java.io.Serializable {
     }
 
     /**
-     * Returns the value of this {@code AtomicDouble} as an {@code int} after a
+     * Returns the value of this {@code AtomicFloat} as an {@code int} after a
      * narrowing primitive conversion.
      */
     public int intValue() {
@@ -151,7 +151,7 @@ public class AtomicFloat extends Number implements java.io.Serializable {
     }
 
     /**
-     * Returns the value of this {@code AtomicDouble} as a {@code long} after a
+     * Returns the value of this {@code AtomicFloat} as a {@code long} after a
      * narrowing primitive conversion.
      */
     public long longValue() {
@@ -159,14 +159,14 @@ public class AtomicFloat extends Number implements java.io.Serializable {
     }
 
     /**
-     * Returns the value of this {@code AtomicDouble} as a {@code float} after a
+     * Returns the value of this {@code AtomicFloat} as a {@code float} after a
      * narrowing primitive conversion.
      */
     public float floatValue() {
         return get();
     }
 
-    /** Returns the value of this {@code AtomicDouble} as a {@code double}. */
+    /** Returns the value of this {@code AtomicFloat} as a {@code double}. */
     public double doubleValue() {
         return get();
     }
