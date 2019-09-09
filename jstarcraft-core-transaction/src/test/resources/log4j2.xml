@@ -17,14 +17,14 @@
 	</Appenders>
 
 	<Loggers>
-		<Root level="DEBUG">
+		<Root level="INFO">
 			<AppenderRef ref="Console" />
 		</Root>
 		<Logger name="com.jstarcraft" level="ERROR" />
-		<Logger name="com.jstarcraft.core.cache" level="DEBUG" />
-		<Logger name="com.jstarcraft.core.codec" level="DEBUG" />
-		<Logger name="com.jstarcraft.core.communication" level="DEBUG" />
-		<Logger name="com.jstarcraft.core.log" level="DEBUG" />
+		<Logger name="com.jstarcraft.core.cache" level="INFO" />
+		<Logger name="com.jstarcraft.core.codec" level="INFO" />
+		<Logger name="com.jstarcraft.core.communication" level="INFO" />
+		<Logger name="com.jstarcraft.core.log" level="INFO" />
 		<Logger name="Storage" level="INFO" additivity="false">
 			<AppenderRef ref="Storage" />
 			<AppenderRef ref="Console" />
