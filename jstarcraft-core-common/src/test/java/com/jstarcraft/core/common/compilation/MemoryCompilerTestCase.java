@@ -23,8 +23,8 @@ public class MemoryCompilerTestCase {
 	private final static StringBuilder singleJava = new StringBuilder();
 
 	static {
-		singleJava.append("package com.jstarcraft.core;                                   ");
-		singleJava.append("import com.jstarcraft.core.utility.compiler.*;                 ");
+		singleJava.append("package com.jstarcraft.core.common.compilation;                                   ");
+		singleJava.append("import com.jstarcraft.core.common.compilation.*;                 ");
 		singleJava.append("public class Single extends MockObject implements Counter {    ");
 		singleJava.append("    int count = 0;                                             ");
 		singleJava.append("    public void setId(String id) {                             ");
@@ -52,10 +52,10 @@ public class MemoryCompilerTestCase {
 	public void testCompileSingleClass() throws Exception {
 		Map<String, byte[]> classes = compiler.compile("Single.java", singleJava.toString());
 		assertEquals(1, classes.size());
-		assertTrue(classes.containsKey("com.jstarcraft.core.Single"));
+		assertTrue(classes.containsKey("com.jstarcraft.core.common.compilation.Single"));
 
 		try (MemoryClassLoader classLoader = new MemoryClassLoader(classes)) {
-			Class<?> clazz = classLoader.loadClass("com.jstarcraft.core.Single");
+			Class<?> clazz = classLoader.loadClass("com.jstarcraft.core.common.compilation.Single");
 			Method setId = clazz.getMethod("setId", String.class);
 			Method setName = clazz.getMethod("setName", String.class);
 			Method setInstant = clazz.getMethod("setInstant", long.class);
@@ -80,7 +80,7 @@ public class MemoryCompilerTestCase {
 	private final static StringBuilder multipleJava = new StringBuilder();
 
 	static {
-		multipleJava.append("package com.jstarcraft.core;                                   ");
+		multipleJava.append("package com.jstarcraft.core.common.compilation;                                   ");
 		multipleJava.append("import java.util.*;                                            ");
 		multipleJava.append("public class Multiple {                                        ");
 		multipleJava.append("    List<MockObject> list = new ArrayList<MockObject>();       ");
@@ -109,13 +109,13 @@ public class MemoryCompilerTestCase {
 	public void testCompileMultipleClasses() throws Exception {
 		Map<String, byte[]> classes = compiler.compile("Multiple.java", multipleJava.toString());
 		assertEquals(4, classes.size());
-		assertTrue(classes.containsKey("com.jstarcraft.core.Multiple"));
-		assertTrue(classes.containsKey("com.jstarcraft.core.Multiple$StaticObject"));
-		assertTrue(classes.containsKey("com.jstarcraft.core.Multiple$NestObject"));
-		assertTrue(classes.containsKey("com.jstarcraft.core.MockObject"));
+		assertTrue(classes.containsKey("com.jstarcraft.core.common.compilation.Multiple"));
+		assertTrue(classes.containsKey("com.jstarcraft.core.common.compilation.Multiple$StaticObject"));
+		assertTrue(classes.containsKey("com.jstarcraft.core.common.compilation.Multiple$NestObject"));
+		assertTrue(classes.containsKey("com.jstarcraft.core.common.compilation.MockObject"));
 
 		try (MemoryClassLoader classLoader = new MemoryClassLoader(classes)) {
-			Class<?> clazz = classLoader.loadClass("com.jstarcraft.core.Multiple");
+			Class<?> clazz = classLoader.loadClass("com.jstarcraft.core.common.compilation.Multiple");
 			Object instance = clazz.newInstance();
 			assertNotNull(instance);
 		}
