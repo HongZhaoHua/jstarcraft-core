@@ -10,20 +10,20 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class HashLockable implements Lockable {
 
-	private ReentrantLock lock;
+    private ReentrantLock lock;
 
-	public HashLockable() {
-		this.lock = new ReentrantLock();
-	}
+    public HashLockable() {
+        this.lock = new ReentrantLock();
+    }
 
-	@Override
-	public void open() {
-		lock.lock();
-	}
+    @Override
+    public void open() {
+        lock.lock();
+    }
 
-	@Override
-	public void close() {
-		lock.unlock();
-	}
+    @Override
+    public void close() {
+        lock.unlock();
+    }
 
 }

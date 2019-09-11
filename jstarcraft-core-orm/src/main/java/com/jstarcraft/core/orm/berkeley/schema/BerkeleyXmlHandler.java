@@ -11,9 +11,9 @@ import com.jstarcraft.core.orm.berkeley.schema.BerkeleyXmlParser.ElementDefiniti
  */
 public class BerkeleyXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new BerkeleyXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new BerkeleyXmlParser());
+    }
 
 }

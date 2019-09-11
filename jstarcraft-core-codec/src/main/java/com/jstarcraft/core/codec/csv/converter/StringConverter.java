@@ -21,30 +21,30 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class StringConverter implements CsvConverter<Object> {
 
-	@Override
-	public Object readValueFrom(CsvReader context, Type type) throws Exception {
-		Iterator<String> in = context.getInputStream();
-		String element = in.next();
-		if (StringUtility.isEmpty(element)) {
-			return null;
-		}
-		element = element.substring(0, element.length() - 1);
-		if (type == char.class || type == Character.class) {
-			return element.charAt(0);
-		} else {
-			return element;
-		}
-	}
+    @Override
+    public Object readValueFrom(CsvReader context, Type type) throws Exception {
+        Iterator<String> in = context.getInputStream();
+        String element = in.next();
+        if (StringUtility.isEmpty(element)) {
+            return null;
+        }
+        element = element.substring(0, element.length() - 1);
+        if (type == char.class || type == Character.class) {
+            return element.charAt(0);
+        } else {
+            return element;
+        }
+    }
 
-	@Override
-	public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
-		CSVPrinter out = context.getOutputStream();
-		if (value == null) {
-			out.print(StringUtility.EMPTY);
-			return;
-		}
-		value = value + StringUtility.SEMICOLON;
-		out.print(value);
-	}
+    @Override
+    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+        CSVPrinter out = context.getOutputStream();
+        if (value == null) {
+            out.print(StringUtility.EMPTY);
+            return;
+        }
+        value = value + StringUtility.SEMICOLON;
+        out.print(value);
+    }
 
 }

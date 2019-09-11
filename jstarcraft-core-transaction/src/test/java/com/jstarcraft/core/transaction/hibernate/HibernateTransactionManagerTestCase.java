@@ -16,25 +16,25 @@ import com.jstarcraft.core.transaction.hibernate.HibernateTransactionManager;
 @ContextConfiguration
 public class HibernateTransactionManagerTestCase extends TransactionManagerTestCase {
 
-	@Autowired
-	private HibernateAccessor accessor;
+    @Autowired
+    private HibernateAccessor accessor;
 
-	private HibernateTransactionManager manager;
+    private HibernateTransactionManager manager;
 
-	@Before
-	public void testBefore() {
-		manager = new HibernateTransactionManager(accessor);
-		manager.create(name);
-	}
+    @Before
+    public void testBefore() {
+        manager = new HibernateTransactionManager(accessor);
+        manager.create(name);
+    }
 
-	@After
-	public void testAfter() {
-		manager.delete(name);
-	}
+    @After
+    public void testAfter() {
+        manager.delete(name);
+    }
 
-	@Override
-	protected TransactionManager getDistributionManager() {
-		return manager;
-	}
+    @Override
+    protected TransactionManager getDistributionManager() {
+        return manager;
+    }
 
 }

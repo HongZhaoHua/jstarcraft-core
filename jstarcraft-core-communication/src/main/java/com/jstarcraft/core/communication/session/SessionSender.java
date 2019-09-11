@@ -9,18 +9,18 @@ package com.jstarcraft.core.communication.session;
  */
 public interface SessionSender<T> {
 
-	/**
-	 * 推入会话(配合调度器使用)
-	 * 
-	 * @return
-	 */
-	void pushSession(CommunicationSession<T> session);
+    /**
+     * 推入会话(配合调度器使用)
+     * 
+     * @return
+     */
+    void pushSession(CommunicationSession<T> session);
 
-	/**
-	 * 等待处理的会话数量
-	 * 
-	 * @return
-	 */
-	int getSendSize();
+    /**
+     * 等待处理的会话数量
+     * 
+     * @return
+     */
+    int getSendSize();
 
 }

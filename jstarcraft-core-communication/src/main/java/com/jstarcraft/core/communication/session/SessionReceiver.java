@@ -9,18 +9,18 @@ package com.jstarcraft.core.communication.session;
  */
 public interface SessionReceiver<T> {
 
-	/**
-	 * 拉出会话(配合调度器使用)
-	 * 
-	 * @return
-	 */
-	CommunicationSession<T> pullSession();
+    /**
+     * 拉出会话(配合调度器使用)
+     * 
+     * @return
+     */
+    CommunicationSession<T> pullSession();
 
-	/**
-	 * 等待处理的会话数量
-	 * 
-	 * @return
-	 */
-	int getReceiveSize();
+    /**
+     * 等待处理的会话数量
+     * 
+     * @return
+     */
+    int getReceiveSize();
 
 }

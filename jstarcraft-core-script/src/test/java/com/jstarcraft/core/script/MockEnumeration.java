@@ -2,10 +2,10 @@ package com.jstarcraft.core.script;
 
 public enum MockEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG;
+    ZERG;
 
 }

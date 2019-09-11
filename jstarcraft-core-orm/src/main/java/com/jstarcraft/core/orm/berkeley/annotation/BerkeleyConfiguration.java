@@ -17,10 +17,10 @@ import com.jstarcraft.core.utility.StringUtility;
 @Target(ElementType.TYPE)
 public @interface BerkeleyConfiguration {
 
-	/** 贮存名称 */
-	String store();
+    /** 贮存名称 */
+    String store();
 
-	/** 版本字段(类型必须是{@link Integer}) */
-	String version() default StringUtility.EMPTY;
+    /** 版本字段(类型必须是{@link Integer}) */
+    String version() default StringUtility.EMPTY;
 
 }

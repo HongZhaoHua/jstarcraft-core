@@ -10,13 +10,13 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  */
 public interface ProxyTransformer {
 
-	/**
-	 * 将指定缓存对象转换为代理对象
-	 * 
-	 * @param instance
-	 * @return
-	 * @throws CacheProxyException
-	 */
-	<T extends IdentityObject<?>> T transform(T instance) throws CacheProxyException;
+    /**
+     * 将指定缓存对象转换为代理对象
+     * 
+     * @param instance
+     * @return
+     * @throws CacheProxyException
+     */
+    <T extends IdentityObject<?>> T transform(T instance) throws CacheProxyException;
 
 }

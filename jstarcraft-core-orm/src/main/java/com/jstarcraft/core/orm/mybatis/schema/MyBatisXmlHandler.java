@@ -11,9 +11,9 @@ import com.jstarcraft.core.orm.mybatis.schema.MyBatisXmlParser.ElementDefinition
  */
 public class MyBatisXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new MyBatisXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new MyBatisXmlParser());
+    }
 
 }

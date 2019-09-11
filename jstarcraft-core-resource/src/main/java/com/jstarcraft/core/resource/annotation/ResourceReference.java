@@ -18,25 +18,25 @@ import com.jstarcraft.core.utility.StringUtility;
 @Target(ElementType.FIELD)
 public @interface ResourceReference {
 
-	/**
-	 * 脚本类型
-	 * 
-	 * @return
-	 */
-	Class<? extends ScriptExpression> type() default JsExpression.class;
+    /**
+     * 脚本类型
+     * 
+     * @return
+     */
+    Class<? extends ScriptExpression> type() default JsExpression.class;
 
-	/**
-	 * 标识表达式(根据字段类型计算资源标识或者Spring标识)
-	 * 
-	 * @return
-	 */
-	String expression() default StringUtility.EMPTY;
+    /**
+     * 标识表达式(根据字段类型计算资源标识或者Spring标识)
+     * 
+     * @return
+     */
+    String expression() default StringUtility.EMPTY;
 
-	/**
-	 * 是否必须
-	 * 
-	 * @return
-	 */
-	boolean necessary() default true;
+    /**
+     * 是否必须
+     * 
+     * @return
+     */
+    boolean necessary() default true;
 
 }

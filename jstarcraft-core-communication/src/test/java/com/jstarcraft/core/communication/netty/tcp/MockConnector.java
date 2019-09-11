@@ -10,37 +10,37 @@ import io.netty.channel.Channel;
 
 public class MockConnector implements NettyConnector<Channel> {
 
-	private AtomicInteger count = new AtomicInteger();
+    private AtomicInteger count = new AtomicInteger();
 
-	private CommunicationMessage message;
+    private CommunicationMessage message;
 
-	@Override
-	public void checkData(Channel context, CommunicationMessage message) {
-		count.incrementAndGet();
-		this.message = message;
-	}
+    @Override
+    public void checkData(Channel context, CommunicationMessage message) {
+        count.incrementAndGet();
+        this.message = message;
+    }
 
-	@Override
-	public CommunicationState getState() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public CommunicationState getState() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void start() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void start() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public void stop() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void stop() {
+        throw new UnsupportedOperationException();
+    }
 
-	public int getCount() {
-		return count.get();
-	}
+    public int getCount() {
+        return count.get();
+    }
 
-	public CommunicationMessage getMessage() {
-		return message;
-	}
+    public CommunicationMessage getMessage() {
+        return message;
+    }
 
 }

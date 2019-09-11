@@ -15,90 +15,90 @@ import com.jstarcraft.core.orm.hibernate.NestObject;
 @Document
 public class MockObject implements IdentityObject<Integer> {
 
-	@Id
-	private Integer id;
+    @Id
+    private Integer id;
 
-	@Indexed
-	private String name;
+    @Indexed
+    private String name;
 
-	private int money;
+    private int money;
 
-	private Instant instant;
+    private Instant instant;
 
-	private MockEnumeration race;
+    private MockEnumeration race;
 
-	private LinkedList<NestObject> children;
-	
-	@Version
-	private long version;
+    private LinkedList<NestObject> children;
 
-	public MockObject() {
-	}
+    @Version
+    private long version;
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    public MockObject() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getMoney() {
-		return money;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Instant getInstant() {
-		return instant;
-	}
+    public int getMoney() {
+        return money;
+    }
 
-	public MockEnumeration getRace() {
-		return race;
-	}
-	
-	public LinkedList<NestObject> getChildren() {
-		return children;
-	}
+    public Instant getInstant() {
+        return instant;
+    }
 
-	public int[] toCurrencies() {
-		return new int[] { money };
-	}
+    public MockEnumeration getRace() {
+        return race;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (!(object instanceof MockObject))
-			return false;
-		MockObject that = (MockObject) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.getId(), that.getId());
-		equal.append(this.getName(), that.getName());
-		equal.append(this.getMoney(), that.getMoney());
-		equal.append(this.getInstant(), that.getInstant());
-		equal.append(this.getRace(), that.getRace());
-		equal.append(this.getChildren(), that.getChildren());
-		return equal.isEquals();
-	}
+    public LinkedList<NestObject> getChildren() {
+        return children;
+    }
 
-	public static MockObject instanceOf(Integer id, String name, String childrenName, int money, Instant instant, MockEnumeration race) {
-		MockObject instance = new MockObject();
-		instance.id = id;
-		instance.name = name;
-		instance.money = money;
-		instance.instant = instant;
-		instance.race = race;
-		instance.children = new LinkedList<>();
-		for (int index = 0; index < money; index++) {
-			instance.children.add(NestObject.instanceOf(index, childrenName));
-		}
-		return instance;
-	}
+    public int[] toCurrencies() {
+        return new int[] { money };
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (!(object instanceof MockObject))
+            return false;
+        MockObject that = (MockObject) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.getId(), that.getId());
+        equal.append(this.getName(), that.getName());
+        equal.append(this.getMoney(), that.getMoney());
+        equal.append(this.getInstant(), that.getInstant());
+        equal.append(this.getRace(), that.getRace());
+        equal.append(this.getChildren(), that.getChildren());
+        return equal.isEquals();
+    }
+
+    public static MockObject instanceOf(Integer id, String name, String childrenName, int money, Instant instant, MockEnumeration race) {
+        MockObject instance = new MockObject();
+        instance.id = id;
+        instance.name = name;
+        instance.money = money;
+        instance.instant = instant;
+        instance.race = race;
+        instance.children = new LinkedList<>();
+        for (int index = 0; index < money; index++) {
+            instance.children.add(NestObject.instanceOf(index, childrenName));
+        }
+        return instance;
+    }
 
 }

@@ -31,128 +31,128 @@ import com.jstarcraft.core.orm.OrmMetadata;
 @SuppressWarnings("rawtypes")
 public class MongoMetadata implements OrmMetadata {
 
-	public static final String mongoId = "_id";
+    public static final String mongoId = "_id";
 
-	private static final HashSet<Class<?>> mongoTypes = new HashSet<>();
-	static {
-		// 布尔规范
-		mongoTypes.add(AtomicBoolean.class);
-		mongoTypes.add(boolean.class);
-		mongoTypes.add(Boolean.class);
+    private static final HashSet<Class<?>> mongoTypes = new HashSet<>();
+    static {
+        // 布尔规范
+        mongoTypes.add(AtomicBoolean.class);
+        mongoTypes.add(boolean.class);
+        mongoTypes.add(Boolean.class);
 
-		// 数值规范
-		mongoTypes.add(AtomicInteger.class);
-		mongoTypes.add(AtomicLong.class);
-		mongoTypes.add(byte.class);
-		mongoTypes.add(short.class);
-		mongoTypes.add(int.class);
-		mongoTypes.add(long.class);
-		mongoTypes.add(float.class);
-		mongoTypes.add(double.class);
-		mongoTypes.add(Byte.class);
-		mongoTypes.add(Short.class);
-		mongoTypes.add(Integer.class);
-		mongoTypes.add(Long.class);
-		mongoTypes.add(Float.class);
-		mongoTypes.add(Double.class);
-		mongoTypes.add(BigInteger.class);
-		mongoTypes.add(BigDecimal.class);
+        // 数值规范
+        mongoTypes.add(AtomicInteger.class);
+        mongoTypes.add(AtomicLong.class);
+        mongoTypes.add(byte.class);
+        mongoTypes.add(short.class);
+        mongoTypes.add(int.class);
+        mongoTypes.add(long.class);
+        mongoTypes.add(float.class);
+        mongoTypes.add(double.class);
+        mongoTypes.add(Byte.class);
+        mongoTypes.add(Short.class);
+        mongoTypes.add(Integer.class);
+        mongoTypes.add(Long.class);
+        mongoTypes.add(Float.class);
+        mongoTypes.add(Double.class);
+        mongoTypes.add(BigInteger.class);
+        mongoTypes.add(BigDecimal.class);
 
-		// 字符规范
-		mongoTypes.add(char.class);
-		mongoTypes.add(Character.class);
-		mongoTypes.add(String.class);
+        // 字符规范
+        mongoTypes.add(char.class);
+        mongoTypes.add(Character.class);
+        mongoTypes.add(String.class);
 
-		// 时间规范
-		mongoTypes.add(Date.class);
-		mongoTypes.add(Instant.class);
-	}
+        // 时间规范
+        mongoTypes.add(Date.class);
+        mongoTypes.add(Instant.class);
+    }
 
-	/** 实体名称 */
-	private String ormName;
-	/** 实体类型 */
-	private Class ormClass;
-	/** 主键名称 */
-	private String primaryName;
-	/** 主键类型 */
-	private Class primaryClass;
-	/** 字段映射(名称-类型) */
-	private Map<String, Class<?>> fields = new HashMap<>();
-	/** 索引域名 */
-	private Collection<String> indexNames = new HashSet<>();
-	/** 版本号域名 */
-	private String versionName;
+    /** 实体名称 */
+    private String ormName;
+    /** 实体类型 */
+    private Class ormClass;
+    /** 主键名称 */
+    private String primaryName;
+    /** 主键类型 */
+    private Class primaryClass;
+    /** 字段映射(名称-类型) */
+    private Map<String, Class<?>> fields = new HashMap<>();
+    /** 索引域名 */
+    private Collection<String> indexNames = new HashSet<>();
+    /** 版本号域名 */
+    private String versionName;
 
-	/**
-	 * 构造方法
-	 * 
-	 * @param metadata
-	 */
-	MongoMetadata(Class<?> clazz) {
-		if (!clazz.isAnnotationPresent(Document.class)) {
-			throw new IllegalArgumentException();
-		}
-		ormClass = clazz;
-		ormName = clazz.getName();
-		ReflectionUtility.doWithFields(ormClass, (field) -> {
-			if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
-				return;
-			}
-			if (field.isAnnotationPresent(Version.class)) {
-				versionName = field.getName();
-				return;
-			}
-			Class<?> type = field.getType();
-			fields.put(field.getName(), type);
-			if (field.isAnnotationPresent(Id.class)) {
-				primaryName = field.getName();
-				primaryClass = type;
-			}
-			if (field.isAnnotationPresent(Indexed.class)) {
-				indexNames.add(field.getName());
-			}
-		});
-	}
+    /**
+     * 构造方法
+     * 
+     * @param metadata
+     */
+    MongoMetadata(Class<?> clazz) {
+        if (!clazz.isAnnotationPresent(Document.class)) {
+            throw new IllegalArgumentException();
+        }
+        ormClass = clazz;
+        ormName = clazz.getName();
+        ReflectionUtility.doWithFields(ormClass, (field) -> {
+            if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
+                return;
+            }
+            if (field.isAnnotationPresent(Version.class)) {
+                versionName = field.getName();
+                return;
+            }
+            Class<?> type = field.getType();
+            fields.put(field.getName(), type);
+            if (field.isAnnotationPresent(Id.class)) {
+                primaryName = field.getName();
+                primaryClass = type;
+            }
+            if (field.isAnnotationPresent(Indexed.class)) {
+                indexNames.add(field.getName());
+            }
+        });
+    }
 
-	@Override
-	public String getOrmName() {
-		return ormName;
-	}
+    @Override
+    public String getOrmName() {
+        return ormName;
+    }
 
-	@Override
-	public Map<String, Class<?>> getFields() {
-		return fields;
-	}
+    @Override
+    public Map<String, Class<?>> getFields() {
+        return fields;
+    }
 
-	@Override
-	public String getPrimaryName() {
-		return primaryName;
-	}
+    @Override
+    public String getPrimaryName() {
+        return primaryName;
+    }
 
-	@Override
-	public Collection<String> getIndexNames() {
-		return indexNames;
-	}
+    @Override
+    public Collection<String> getIndexNames() {
+        return indexNames;
+    }
 
-	@Override
-	public String getVersionName() {
-		return versionName;
-	}
+    @Override
+    public String getVersionName() {
+        return versionName;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public <K extends Serializable> Class<K> getPrimaryClass() {
-		return primaryClass;
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public <K extends Serializable> Class<K> getPrimaryClass() {
+        return primaryClass;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends IdentityObject> Class<T> getOrmClass() {
-		return ormClass;
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends IdentityObject> Class<T> getOrmClass() {
+        return ormClass;
+    }
 
-	boolean isJsonField(String name) {
-		return mongoTypes.contains(fields.get(name));
-	}
+    boolean isJsonField(String name) {
+        return mongoTypes.contains(fields.get(name));
+    }
 
 }

@@ -16,15 +16,15 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  */
 public class ProtocolReader extends ProtocolContext {
 
-	private InputStream inputStream;
+    private InputStream inputStream;
 
-	public ProtocolReader(InputStream inputStream, CodecDefinition definition) {
-		super(definition);
-		this.inputStream = inputStream;
-	}
+    public ProtocolReader(InputStream inputStream, CodecDefinition definition) {
+        super(definition);
+        this.inputStream = inputStream;
+    }
 
-	public InputStream getInputStream() {
-		return inputStream;
-	}
+    public InputStream getInputStream() {
+        return inputStream;
+    }
 
 }

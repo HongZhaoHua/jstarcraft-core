@@ -10,29 +10,29 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class ComplexCondition implements AwkCondition {
 
-	private final AwkOperator operator;
-	private final AwkCondition left;
-	private final AwkCondition right;
+    private final AwkOperator operator;
+    private final AwkCondition left;
+    private final AwkCondition right;
 
-	ComplexCondition(AwkOperator operator, AwkCondition left, AwkCondition right) {
-		this.left = left;
-		this.right = right;
-		this.operator = operator;
-	}
+    ComplexCondition(AwkOperator operator, AwkCondition left, AwkCondition right) {
+        this.left = left;
+        this.right = right;
+        this.operator = operator;
+    }
 
-	@Override
-	public String getBeginContent() {
-		return left.getBeginContent() + right.getBeginContent();
-	}
+    @Override
+    public String getBeginContent() {
+        return left.getBeginContent() + right.getBeginContent();
+    }
 
-	@Override
-	public String getEndContent() {
-		return left.getEndContent() + right.getEndContent();
-	}
+    @Override
+    public String getEndContent() {
+        return left.getEndContent() + right.getEndContent();
+    }
 
-	@Override
-	public String toString() {
-		return "(" + left + StringUtility.SPACE + operator.getOperate() + StringUtility.SPACE + right + ")";
-	}
+    @Override
+    public String toString() {
+        return "(" + left + StringUtility.SPACE + operator.getOperate() + StringUtility.SPACE + right + ")";
+    }
 
 }

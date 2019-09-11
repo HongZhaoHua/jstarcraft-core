@@ -6,17 +6,17 @@ import com.jstarcraft.core.resource.annotation.ResourceId;
 @ResourceConfiguration
 public class Biology {
 
-	@ResourceId
-	private Integer id;
+    @ResourceId
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
 }

@@ -7,22 +7,22 @@ package com.jstarcraft.core.orm.exception;
  */
 public class OrmQueryException extends OrmException {
 
-	private static final long serialVersionUID = -1710027252202582783L;
+    private static final long serialVersionUID = -1710027252202582783L;
 
-	public OrmQueryException() {
-		super();
-	}
+    public OrmQueryException() {
+        super();
+    }
 
-	public OrmQueryException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public OrmQueryException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public OrmQueryException(String message) {
-		super(message);
-	}
+    public OrmQueryException(String message) {
+        super(message);
+    }
 
-	public OrmQueryException(Throwable cause) {
-		super(cause);
-	}
+    public OrmQueryException(Throwable cause) {
+        super(cause);
+    }
 
 }

@@ -19,27 +19,27 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class NumberConverter implements CsvConverter<Number> {
 
-	@Override
-	public Number readValueFrom(CsvReader context, Type type) throws Exception {
-		// TODO 处理null
-		Iterator<String> in = context.getInputStream();
-		String element = in.next();
-		if (StringUtility.isEmpty(element)) {
-			return null;
-		}
-		Class<Number> clazz = (Class<Number>) TypeUtility.getRawType(type, null);
-		return NumberUtility.convert(element, clazz);
-	}
+    @Override
+    public Number readValueFrom(CsvReader context, Type type) throws Exception {
+        // TODO 处理null
+        Iterator<String> in = context.getInputStream();
+        String element = in.next();
+        if (StringUtility.isEmpty(element)) {
+            return null;
+        }
+        Class<Number> clazz = (Class<Number>) TypeUtility.getRawType(type, null);
+        return NumberUtility.convert(element, clazz);
+    }
 
-	@Override
-	public void writeValueTo(CsvWriter context, Type type, Number value) throws Exception {
-		// TODO 处理null
-		CSVPrinter out = context.getOutputStream();
-		if (value == null) {
-			out.print(StringUtility.EMPTY);
-			return;
-		}
-		out.print(value);
-	}
+    @Override
+    public void writeValueTo(CsvWriter context, Type type, Number value) throws Exception {
+        // TODO 处理null
+        CSVPrinter out = context.getOutputStream();
+        if (value == null) {
+            out.print(StringUtility.EMPTY);
+            return;
+        }
+        out.print(value);
+    }
 
 }

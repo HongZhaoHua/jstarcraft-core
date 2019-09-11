@@ -18,28 +18,28 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class EnumerationConverter implements CsvConverter<Object> {
 
-	@Override
-	public Object readValueFrom(CsvReader context, Type type) throws Exception {
-		Iterator<String> in = context.getInputStream();
-		String element = in.next();
-		if (StringUtility.isEmpty(element)) {
-			return null;
-		}
-		int index = Integer.valueOf(element);
-		Class<?> clazz = TypeUtility.getRawType(type, null);
-		return clazz.getEnumConstants()[index];
-	}
+    @Override
+    public Object readValueFrom(CsvReader context, Type type) throws Exception {
+        Iterator<String> in = context.getInputStream();
+        String element = in.next();
+        if (StringUtility.isEmpty(element)) {
+            return null;
+        }
+        int index = Integer.valueOf(element);
+        Class<?> clazz = TypeUtility.getRawType(type, null);
+        return clazz.getEnumConstants()[index];
+    }
 
-	@Override
-	public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
-		CSVPrinter out = context.getOutputStream();
-		if (value == null) {
-			out.print(StringUtility.EMPTY);
-			return;
-		}
-		Enum<?> enumeration = (Enum<?>) value;
-		int index = enumeration.ordinal();
-		out.print(index);
-	}
+    @Override
+    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+        CSVPrinter out = context.getOutputStream();
+        if (value == null) {
+            out.print(StringUtility.EMPTY);
+            return;
+        }
+        Enum<?> enumeration = (Enum<?>) value;
+        int index = enumeration.ordinal();
+        out.print(index);
+    }
 
 }

@@ -11,9 +11,9 @@ import com.sleepycat.persist.raw.RawStore;
  */
 public class IgnoreConverter implements MigrationConverter {
 
-	@Override
-	public boolean convert(MigrationContext context, RawStore oldRawStore, RawStore newRawStore, RawObject oldObject, RawObject newObject) throws Exception {
-		return false;
-	}
+    @Override
+    public boolean convert(MigrationContext context, RawStore oldRawStore, RawStore newRawStore, RawObject oldObject, RawObject newObject) throws Exception {
+        return false;
+    }
 
 }

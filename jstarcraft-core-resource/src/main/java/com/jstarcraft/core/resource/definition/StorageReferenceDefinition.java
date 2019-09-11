@@ -23,73 +23,73 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class StorageReferenceDefinition extends ReferenceDefinition {
 
-	private final Field attribute;
+    private final Field attribute;
 
-	private final ResourceManager manager;
+    private final ResourceManager manager;
 
-	public StorageReferenceDefinition(Field field, ResourceManager manager) {
-		super(field);
-		Class<?> clazz;
-		// TODO 不能有擦拭和通配类型
-		if (ResourceStorage.class.isAssignableFrom(field.getType())) {
-			Type type = field.getGenericType();
-			if (!(type instanceof ParameterizedType)) {
-				String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
-				throw new StorageException(message);
-			}
+    public StorageReferenceDefinition(Field field, ResourceManager manager) {
+        super(field);
+        Class<?> clazz;
+        // TODO 不能有擦拭和通配类型
+        if (ResourceStorage.class.isAssignableFrom(field.getType())) {
+            Type type = field.getGenericType();
+            if (!(type instanceof ParameterizedType)) {
+                String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
+                throw new StorageException(message);
+            }
 
-			Type[] types = ((ParameterizedType) type).getActualTypeArguments();
-			if (types[1] instanceof Class) {
-				clazz = (Class<?>) types[1];
-			} else if (types[1] instanceof ParameterizedType) {
-				clazz = (Class<?>) ((ParameterizedType) types[1]).getRawType();
-			} else {
-				String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
-				throw new StorageException(message);
-			}
-		} else {
-			clazz = field.getType();
-		}
+            Type[] types = ((ParameterizedType) type).getActualTypeArguments();
+            if (types[1] instanceof Class) {
+                clazz = (Class<?>) types[1];
+            } else if (types[1] instanceof ParameterizedType) {
+                clazz = (Class<?>) ((ParameterizedType) types[1]).getRawType();
+            } else {
+                String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
+                throw new StorageException(message);
+            }
+        } else {
+            clazz = field.getType();
+        }
 
-		this.attribute = ReflectionUtility.uniqueField(clazz, ResourceId.class);
-		this.manager = manager;
-	}
+        this.attribute = ReflectionUtility.uniqueField(clazz, ResourceId.class);
+        this.manager = manager;
+    }
 
-	@Override
-	public void setReference(Object instance) {
-		Object value;
-		if (StringUtility.isBlank(reference.expression())) {
-			value = manager.getStorage(attribute.getDeclaringClass());
-		} else {
-			ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
-			ScriptContext context = new ScriptContext();
-			ScriptScope scope = new ScriptScope();
-			scope.createAttribute("instance", instance);
-			ScriptExpression expression = ReflectionUtility.getInstance(reference.type(), context, scope, reference.expression());
-			value = storage.getInstance(ConversionUtility.convert(expression.doWith(String.class), attribute.getGenericType()), false);
-		}
-		if (value == null && reference.necessary()) {
-			throw new StorageException("引用定义对象不能为null");
-		}
-		try {
-			field.set(instance, value);
-		} catch (Exception exception) {
-			throw new StorageException("引用定义设置对象异常", exception);
-		}
-	}
+    @Override
+    public void setReference(Object instance) {
+        Object value;
+        if (StringUtility.isBlank(reference.expression())) {
+            value = manager.getStorage(attribute.getDeclaringClass());
+        } else {
+            ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
+            ScriptContext context = new ScriptContext();
+            ScriptScope scope = new ScriptScope();
+            scope.createAttribute("instance", instance);
+            ScriptExpression expression = ReflectionUtility.getInstance(reference.type(), context, scope, reference.expression());
+            value = storage.getInstance(ConversionUtility.convert(expression.doWith(String.class), attribute.getGenericType()), false);
+        }
+        if (value == null && reference.necessary()) {
+            throw new StorageException("引用定义对象不能为null");
+        }
+        try {
+            field.set(instance, value);
+        } catch (Exception exception) {
+            throw new StorageException("引用定义设置对象异常", exception);
+        }
+    }
 
-	@Override
-	public Class getMonitorStorage() {
-		return attribute.getDeclaringClass();
-	}
+    @Override
+    public Class getMonitorStorage() {
+        return attribute.getDeclaringClass();
+    }
 
-	/** 更新通知 */
-	@Override
-	public void update(Observable object, Object argument) {
-		ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
-		for (Object instance : storage.getAll()) {
-			setReference(instance);
-		}
-	}
+    /** 更新通知 */
+    @Override
+    public void update(Observable object, Object argument) {
+        ResourceStorage storage = manager.getStorage(attribute.getDeclaringClass());
+        for (Object instance : storage.getAll()) {
+            setReference(instance);
+        }
+    }
 
 }

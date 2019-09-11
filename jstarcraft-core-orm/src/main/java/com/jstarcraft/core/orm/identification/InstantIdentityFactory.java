@@ -21,82 +21,82 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class InstantIdentityFactory implements IdentityFactory {
 
-	/** 标识定义 */
-	private final IdentityDefinition definition;
+    /** 标识定义 */
+    private final IdentityDefinition definition;
 
-	/** 时间截 */
-	private long current = -1L;
+    /** 时间截 */
+    private long current = -1L;
 
-	/** 掩码 */
-	private final long mask;
+    /** 掩码 */
+    private final long mask;
 
-	/** 偏移 */
-	private final long offset;
+    /** 偏移 */
+    private final long offset;
 
-	/** 分区 */
-	private final int partition;
+    /** 分区 */
+    private final int partition;
 
-	/** 序列 */
-	private long sequence;
+    /** 序列 */
+    private long sequence;
 
-	public InstantIdentityFactory(IdentityDefinition definition, int partition, Instant offsetInstant) {
-		List<IdentitySection> sections = definition.getSections();
-		assert sections.size() == 3;
-		this.definition = definition;
-		this.partition = partition;
-		int sequenceBit = sections.get(2).getBit();
-		this.mask = -1L ^ (-1L << sequenceBit);
-		this.offset = offsetInstant.toEpochMilli();
-	}
+    public InstantIdentityFactory(IdentityDefinition definition, int partition, Instant offsetInstant) {
+        List<IdentitySection> sections = definition.getSections();
+        assert sections.size() == 3;
+        this.definition = definition;
+        this.partition = partition;
+        int sequenceBit = sections.get(2).getBit();
+        this.mask = -1L ^ (-1L << sequenceBit);
+        this.offset = offsetInstant.toEpochMilli();
+    }
 
-	/**
-	 * 阻塞到下一个毫秒,直到获得时间戳
-	 * 
-	 * @param last
-	 * @return
-	 */
-	private long waitInstant(long last) {
-		long current = System.currentTimeMillis();
-		while (current <= last) {
-			current = System.currentTimeMillis();
-		}
-		return current;
-	}
+    /**
+     * 阻塞到下一个毫秒,直到获得时间戳
+     * 
+     * @param last
+     * @return
+     */
+    private long waitInstant(long last) {
+        long current = System.currentTimeMillis();
+        while (current <= last) {
+            current = System.currentTimeMillis();
+        }
+        return current;
+    }
 
-	@Override
-	public IdentityDefinition getDefinition() {
-		return definition;
-	}
+    @Override
+    public IdentityDefinition getDefinition() {
+        return definition;
+    }
 
-	@Override
-	public int getPartition() {
-		return partition;
-	}
+    @Override
+    public int getPartition() {
+        return partition;
+    }
 
-	@Override
-	public synchronized long getSequence() {
-		long now = System.currentTimeMillis();
-		// 如果当前时间戳小于最近时间戳,则说明系统时钟倒退.应当抛出异常
-		if (now < current) {
-			throw new RuntimeException(StringUtility.format("序列异常,时钟倒退{}毫秒.", current - now));
-		}
-		// 如果当前时间戳与最近时间戳相等,则使用序列防止冲突.
-		if (current == now) {
-			sequence = (sequence + 1) & mask;
-			if (sequence == 0) {
-				// 阻塞到下一个时间戳
-				current = waitInstant(current);
-			}
-		} else {
-			// 时间戳改变,重置序列
-			sequence = 0L;
-			current = now;
-		}
-		return definition.make(partition, current - offset, sequence);
-	}
+    @Override
+    public synchronized long getSequence() {
+        long now = System.currentTimeMillis();
+        // 如果当前时间戳小于最近时间戳,则说明系统时钟倒退.应当抛出异常
+        if (now < current) {
+            throw new RuntimeException(StringUtility.format("序列异常,时钟倒退{}毫秒.", current - now));
+        }
+        // 如果当前时间戳与最近时间戳相等,则使用序列防止冲突.
+        if (current == now) {
+            sequence = (sequence + 1) & mask;
+            if (sequence == 0) {
+                // 阻塞到下一个时间戳
+                current = waitInstant(current);
+            }
+        } else {
+            // 时间戳改变,重置序列
+            sequence = 0L;
+            current = now;
+        }
+        return definition.make(partition, current - offset, sequence);
+    }
 
-	public long getOffset() {
-		return offset;
-	}
+    public long getOffset() {
+        return offset;
+    }
 
 }

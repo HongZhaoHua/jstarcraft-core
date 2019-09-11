@@ -7,22 +7,22 @@ package com.jstarcraft.core.script.exception;
  */
 public class ScriptExpressionException extends ScriptException {
 
-	private static final long serialVersionUID = 5627673680043115031L;
+    private static final long serialVersionUID = 5627673680043115031L;
 
-	public ScriptExpressionException() {
-		super();
-	}
+    public ScriptExpressionException() {
+        super();
+    }
 
-	public ScriptExpressionException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public ScriptExpressionException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public ScriptExpressionException(String message) {
-		super(message);
-	}
+    public ScriptExpressionException(String message) {
+        super(message);
+    }
 
-	public ScriptExpressionException(Throwable exception) {
-		super(exception);
-	}
+    public ScriptExpressionException(Throwable exception) {
+        super(exception);
+    }
 
 }

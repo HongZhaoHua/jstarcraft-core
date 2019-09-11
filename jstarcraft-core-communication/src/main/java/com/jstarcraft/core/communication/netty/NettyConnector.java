@@ -12,12 +12,12 @@ import com.jstarcraft.core.communication.message.CommunicationMessage;
  */
 public interface NettyConnector<T> {
 
-	void checkData(T context, CommunicationMessage message);
+    void checkData(T context, CommunicationMessage message);
 
-	CommunicationState getState();
+    CommunicationState getState();
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
 }

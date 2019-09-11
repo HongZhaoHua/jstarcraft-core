@@ -8,14 +8,14 @@ package com.jstarcraft.core.common.lockable;
  */
 public interface Lockable extends AutoCloseable {
 
-	/**
-	 * 开启锁
-	 */
-	public void open();
+    /**
+     * 开启锁
+     */
+    public void open();
 
-	/**
-	 * 关闭锁
-	 */
-	public void close();
+    /**
+     * 关闭锁
+     */
+    public void close();
 
 }

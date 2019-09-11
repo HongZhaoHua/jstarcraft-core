@@ -5,54 +5,54 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class NestObject {
 
-	private long id;
+    private long id;
 
-	private String name;
+    private String name;
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (!(object instanceof NestObject))
-			return false;
-		NestObject that = (NestObject) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.id, that.id);
-		equal.append(this.name, that.name);
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (!(object instanceof NestObject))
+            return false;
+        NestObject that = (NestObject) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.id, that.id);
+        equal.append(this.name, that.name);
+        return equal.isEquals();
+    }
 
-	@Override
-	public String toString() {
-		ToStringBuilder string = new ToStringBuilder(this);
-		string.append(id);
-		string.append(name);
-		return string.toString();
-	}
+    @Override
+    public String toString() {
+        ToStringBuilder string = new ToStringBuilder(this);
+        string.append(id);
+        string.append(name);
+        return string.toString();
+    }
 
-	public static NestObject instanceOf(long id, String name) {
-		NestObject instance = new NestObject();
-		instance.id = id;
-		instance.name = name;
-		return instance;
-	}
+    public static NestObject instanceOf(long id, String name) {
+        NestObject instance = new NestObject();
+        instance.id = id;
+        instance.name = name;
+        return instance;
+    }
 
 }

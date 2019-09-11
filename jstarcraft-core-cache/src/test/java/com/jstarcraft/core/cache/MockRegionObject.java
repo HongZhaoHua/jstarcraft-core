@@ -15,55 +15,55 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 @CacheConfiguration(unit = Unit.REGION, indexes = { "owner" }, transienceStrategy = "lruMemoryStrategy", persistenceStrategy = "queuePersistenceStrategy")
 public class MockRegionObject implements IdentityObject<Integer> {
 
-	@Id
-	private Integer id;
+    @Id
+    private Integer id;
 
-	private int owner;
+    private int owner;
 
-	MockRegionObject() {
-	}
+    MockRegionObject() {
+    }
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	public int getOwner() {
-		return owner;
-	}
+    public int getOwner() {
+        return owner;
+    }
 
-	@CacheChange(values = { "true" })
-	public boolean modify(int owner, boolean result) {
-		this.owner = owner;
-		return result;
-	}
+    @CacheChange(values = { "true" })
+    public boolean modify(int owner, boolean result) {
+        this.owner = owner;
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (!(object instanceof MockRegionObject))
-			return false;
-		MockRegionObject that = (MockRegionObject) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.id, that.id);
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (!(object instanceof MockRegionObject))
+            return false;
+        MockRegionObject that = (MockRegionObject) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.id, that.id);
+        return equal.isEquals();
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(id);
-		return hash.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(id);
+        return hash.toHashCode();
+    }
 
-	public static MockRegionObject instanceOf(Integer id, int owner) {
-		MockRegionObject instance = new MockRegionObject();
-		instance.id = id;
-		instance.owner = owner;
-		return instance;
-	}
+    public static MockRegionObject instanceOf(Integer id, int owner) {
+        MockRegionObject instance = new MockRegionObject();
+        instance.id = id;
+        instance.owner = owner;
+        return instance;
+    }
 
 }

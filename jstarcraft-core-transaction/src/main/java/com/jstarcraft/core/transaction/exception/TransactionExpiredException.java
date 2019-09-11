@@ -7,22 +7,22 @@ package com.jstarcraft.core.transaction.exception;
  */
 public class TransactionExpiredException extends TransactionException {
 
-	private static final long serialVersionUID = -4342551686681422269L;
+    private static final long serialVersionUID = -4342551686681422269L;
 
-	public TransactionExpiredException() {
-		super();
-	}
+    public TransactionExpiredException() {
+        super();
+    }
 
-	public TransactionExpiredException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public TransactionExpiredException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public TransactionExpiredException(String message) {
-		super(message);
-	}
+    public TransactionExpiredException(String message) {
+        super(message);
+    }
 
-	public TransactionExpiredException(Throwable exception) {
-		super(exception);
-	}
+    public TransactionExpiredException(Throwable exception) {
+        super(exception);
+    }
 
 }

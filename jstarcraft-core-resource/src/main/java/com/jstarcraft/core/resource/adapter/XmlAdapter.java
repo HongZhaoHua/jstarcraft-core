@@ -25,7 +25,7 @@ public class XmlAdapter implements FormatAdapter {
             JAXBContext context = JAXBContext.newInstance(Wrapper.class, clazz);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             Wrapper<E> wrapper = (Wrapper<E>) unmarshaller.unmarshal(new StreamSource(stream), Wrapper.class).getValue();
-            List<E> instances =  wrapper.getInstances();
+            List<E> instances = wrapper.getInstances();
             return instances.iterator();
         } catch (Exception exception) {
             throw new StorageException("遍历XML异常", exception);

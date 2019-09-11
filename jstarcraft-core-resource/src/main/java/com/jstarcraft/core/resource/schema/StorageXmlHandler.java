@@ -11,9 +11,9 @@ import com.jstarcraft.core.resource.schema.StorageXmlParser.ElementDefinition;
  */
 public class StorageXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new StorageXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new StorageXmlParser());
+    }
 
 }

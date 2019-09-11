@@ -15,23 +15,23 @@ import io.netty.channel.Channel;
 @ContextConfiguration
 public class NettyTcpTestCase extends NettyTestCase<Channel> {
 
-	@Override
-	public void testConnect() throws Exception {
-		nettyClientConnector.open(clientAddress, 5000L);
-		Thread.sleep(1000L);
-		Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(1));
+    @Override
+    public void testConnect() throws Exception {
+        nettyClientConnector.open(clientAddress, 5000L);
+        Thread.sleep(1000L);
+        Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(1));
 
-		try {
-			nettyClientConnector.open(clientAddress, 5000L);
-			Assert.fail();
-		} catch (CommunicationException exception) {
-		}
-		Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(1));
+        try {
+            nettyClientConnector.open(clientAddress, 5000L);
+            Assert.fail();
+        } catch (CommunicationException exception) {
+        }
+        Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(1));
 
-		nettyClientConnector.close(clientAddress);
-		// 此处依赖于连接器清理时间.
-		Thread.sleep(5500L);
-		Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(0));
-	}
+        nettyClientConnector.close(clientAddress);
+        // 此处依赖于连接器清理时间.
+        Thread.sleep(5500L);
+        Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(0));
+    }
 
 }

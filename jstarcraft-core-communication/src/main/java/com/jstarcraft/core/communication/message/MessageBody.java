@@ -24,95 +24,95 @@ import com.jstarcraft.core.utility.PressUtility;
  */
 public class MessageBody {
 
-	/** 内容 */
-	private byte[] content;
+    /** 内容 */
+    private byte[] content;
 
-	/** 编解码格式 */
-	private MessageFormat type;
+    /** 编解码格式 */
+    private MessageFormat type;
 
-	/** 是否Zip */
-	private boolean zip;
+    /** 是否Zip */
+    private boolean zip;
 
-	public byte[] getContent() {
-		return content;
-	}
+    public byte[] getContent() {
+        return content;
+    }
 
-	public MessageFormat getType() {
-		return type;
-	}
+    public MessageFormat getType() {
+        return type;
+    }
 
-	public boolean isZip() {
-		return zip;
-	}
+    public boolean isZip() {
+        return zip;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (getClass() != object.getClass())
-			return false;
-		MessageBody that = (MessageBody) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.content, that.content);
-		equal.append(this.type, that.type);
-		equal.append(this.zip, that.zip);
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        MessageBody that = (MessageBody) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.content, that.content);
+        equal.append(this.type, that.type);
+        equal.append(this.zip, that.zip);
+        return equal.isEquals();
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(content);
-		hash.append(type);
-		hash.append(zip);
-		return hash.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(content);
+        hash.append(type);
+        hash.append(zip);
+        return hash.toHashCode();
+    }
 
-	static MessageBody fromBytes(byte[] data) throws IOException {
-		if (data.length == 0) {
-			return null;
-		}
-		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
-		DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
-		MessageBody value = new MessageBody();
-		byte information = dataInputStream.readByte();
-		value.type = MessageFormat.fromByte(information);
-		value.zip = MessageFormat.isZip(information);
+    static MessageBody fromBytes(byte[] data) throws IOException {
+        if (data.length == 0) {
+            return null;
+        }
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+        DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
+        MessageBody value = new MessageBody();
+        byte information = dataInputStream.readByte();
+        value.type = MessageFormat.fromByte(information);
+        value.zip = MessageFormat.isZip(information);
 
-		byte[] content = new byte[dataInputStream.available()];
-		dataInputStream.read(content);
-		if (value.zip) {
-			content = PressUtility.unzip(content, 5, TimeUnit.SECONDS);
-		}
-		value.content = content;
-		return value;
-	}
+        byte[] content = new byte[dataInputStream.available()];
+        dataInputStream.read(content);
+        if (value.zip) {
+            content = PressUtility.unzip(content, 5, TimeUnit.SECONDS);
+        }
+        value.content = content;
+        return value;
+    }
 
-	static byte[] toBytes(MessageBody value) throws IOException {
-		if (value == null) {
-			return new byte[0];
-		}
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-		byte information = value.zip ? (byte) (value.type.getMark() | MessageFormat.ZIP_MASK) : value.type.getMark();
-		dataOutputStream.writeByte(information);
-		byte[] content = value.content;
-		if (value.zip) {
-			content = PressUtility.zip(content, 5);
-		}
-		dataOutputStream.write(content);
-		byte[] data = byteArrayOutputStream.toByteArray();
-		return data;
-	}
+    static byte[] toBytes(MessageBody value) throws IOException {
+        if (value == null) {
+            return new byte[0];
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        byte information = value.zip ? (byte) (value.type.getMark() | MessageFormat.ZIP_MASK) : value.type.getMark();
+        dataOutputStream.writeByte(information);
+        byte[] content = value.content;
+        if (value.zip) {
+            content = PressUtility.zip(content, 5);
+        }
+        dataOutputStream.write(content);
+        byte[] data = byteArrayOutputStream.toByteArray();
+        return data;
+    }
 
-	public static MessageBody instanceOf(boolean zip, MessageFormat type, byte[] content) {
-		MessageBody instance = new MessageBody();
-		instance.zip = zip;
-		instance.type = type;
-		instance.content = content;
-		return instance;
-	}
+    public static MessageBody instanceOf(boolean zip, MessageFormat type, byte[] content) {
+        MessageBody instance = new MessageBody();
+        instance.zip = zip;
+        instance.type = type;
+        instance.content = content;
+        return instance;
+    }
 
 }

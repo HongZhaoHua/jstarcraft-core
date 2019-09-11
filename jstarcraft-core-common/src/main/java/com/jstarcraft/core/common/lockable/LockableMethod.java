@@ -14,16 +14,16 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface LockableMethod {
 
-	/**
-	 * 锁策略
-	 * 
-	 * @return
-	 */
-	Class<? extends LockableStrategy> strategy();
+    /**
+     * 锁策略
+     * 
+     * @return
+     */
+    Class<? extends LockableStrategy> strategy();
 
-	/**
-	 * 是否强制使用锁
-	 */
-	boolean value() default false;
+    /**
+     * 是否强制使用锁
+     */
+    boolean value() default false;
 
 }

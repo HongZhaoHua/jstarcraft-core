@@ -2,10 +2,10 @@ package com.jstarcraft.core.monitor.trace;
 
 public enum CsvEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG;
+    ZERG;
 
 }

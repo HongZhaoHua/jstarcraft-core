@@ -11,9 +11,9 @@ import com.jstarcraft.core.codec.schema.CodecXmlParser.ElementDefinition;
  */
 public class CodecXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CodecXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CodecXmlParser());
+    }
 
 }

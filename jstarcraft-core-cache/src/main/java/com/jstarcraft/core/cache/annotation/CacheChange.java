@@ -18,7 +18,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface CacheChange {
 
-	/** 触发变更的方法返回值 */
-	String[] values() default {};
+    /** 触发变更的方法返回值 */
+    String[] values() default {};
 
 }

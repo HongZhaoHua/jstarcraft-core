@@ -8,13 +8,13 @@ package com.jstarcraft.core.script;
  */
 public interface ScriptFunction {
 
-	/**
-	 * 执行函数
-	 * 
-	 * @param clazz
-	 * @param arguments
-	 * @return
-	 */
-	<T> T doWith(Class<T> clazz, Object... arguments);
+    /**
+     * 执行函数
+     * 
+     * @param clazz
+     * @param arguments
+     * @return
+     */
+    <T> T doWith(Class<T> clazz, Object... arguments);
 
 }

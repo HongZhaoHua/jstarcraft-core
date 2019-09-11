@@ -9,12 +9,12 @@ import com.jstarcraft.core.orm.berkeley.migration.MigrationTestCase;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-		// Berkeley访问器测试
-		BerkeleyAccessorTestCase.class, BerkeleyMetadataTestCase.class,
-		// Berleley文件备份测试
-		FileMemorandumTestCase.class,
-		// Berkeley迁移测试
-		MigrationTestCase.class })
+        // Berkeley访问器测试
+        BerkeleyAccessorTestCase.class, BerkeleyMetadataTestCase.class,
+        // Berleley文件备份测试
+        FileMemorandumTestCase.class,
+        // Berkeley迁移测试
+        MigrationTestCase.class })
 public class BerkeleyTestSuite {
 
 }

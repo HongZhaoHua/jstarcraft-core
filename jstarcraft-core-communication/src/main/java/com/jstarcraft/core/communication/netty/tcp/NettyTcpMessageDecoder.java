@@ -24,71 +24,71 @@ import io.netty.handler.codec.ByteToMessageDecoder;
  */
 class NettyTcpMessageDecoder extends ByteToMessageDecoder {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NettyTcpMessageDecoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyTcpMessageDecoder.class);
 
-	/** 连接器 */
-	private final NettyConnector<Channel> connector;
+    /** 连接器 */
+    private final NettyConnector<Channel> connector;
 
-	NettyTcpMessageDecoder(NettyConnector<Channel> connector) {
-		this.connector = connector;
-	}
+    NettyTcpMessageDecoder(NettyConnector<Channel> connector) {
+        this.connector = connector;
+    }
 
-	@Override
-	protected void decode(ChannelHandlerContext context, ByteBuf buffer, List<Object> decode) throws Exception {
-		try {
-			Channel channel = context.channel();
-			if (LOGGER.isDebugEnabled()) {
-				int length = buffer.readableBytes();
-				byte[] bytes = new byte[length];
-				buffer.getBytes(buffer.readerIndex(), bytes);
-				LOGGER.debug("解码消息:长度{},内容{}", new Object[] { length, bytes });
-			}
+    @Override
+    protected void decode(ChannelHandlerContext context, ByteBuf buffer, List<Object> decode) throws Exception {
+        try {
+            Channel channel = context.channel();
+            if (LOGGER.isDebugEnabled()) {
+                int length = buffer.readableBytes();
+                byte[] bytes = new byte[length];
+                buffer.getBytes(buffer.readerIndex(), bytes);
+                LOGGER.debug("解码消息:长度{},内容{}", new Object[] { length, bytes });
+            }
 
-			while (buffer.readableBytes() > 4) {
-				// 定位MESSAGE_MARK
-				int count = 0;
-				for (int index = 0, size = buffer.readableBytes(); index < size; index++) {
-					if (buffer.readByte() == -1) {
-						// 累计合法字节
-						count++;
-						if (count == 4) {
-							break;
-						}
-					} else {
-						// 丢弃非法字节
-						buffer.markReaderIndex();
-						count = 0;
-					}
-				}
+            while (buffer.readableBytes() > 4) {
+                // 定位MESSAGE_MARK
+                int count = 0;
+                for (int index = 0, size = buffer.readableBytes(); index < size; index++) {
+                    if (buffer.readByte() == -1) {
+                        // 累计合法字节
+                        count++;
+                        if (count == 4) {
+                            break;
+                        }
+                    } else {
+                        // 丢弃非法字节
+                        buffer.markReaderIndex();
+                        count = 0;
+                    }
+                }
 
-				if (count != 4) {
-					buffer.resetReaderIndex();
-					return;
-				}
+                if (count != 4) {
+                    buffer.resetReaderIndex();
+                    return;
+                }
 
-				if (buffer.readableBytes() < 4) {
-					buffer.resetReaderIndex();
-					return;
-				}
+                if (buffer.readableBytes() < 4) {
+                    buffer.resetReaderIndex();
+                    return;
+                }
 
-				// 消息长度
-				int length = buffer.readInt();
-				buffer.resetReaderIndex();
-				// 此处消息长度+8是由于mark与length占用的长度大小
-				if (buffer.readableBytes() < length + 8) {
-					return;
-				}
+                // 消息长度
+                int length = buffer.readInt();
+                buffer.resetReaderIndex();
+                // 此处消息长度+8是由于mark与length占用的长度大小
+                if (buffer.readableBytes() < length + 8) {
+                    return;
+                }
 
-				NettyBufferInputStream inputBuffer = new NettyBufferInputStream(buffer);
-				DataInputStream dataInputStream = new DataInputStream(inputBuffer);
-				CommunicationMessage message = CommunicationMessage.readFrom(dataInputStream);
-				connector.checkData(channel, message);
-				buffer.markReaderIndex();
-			}
-		} catch (Exception exception) {
-			LOGGER.error("解码消息异常", exception);
-			throw new CommunicationException(exception);
-		}
-	}
+                NettyBufferInputStream inputBuffer = new NettyBufferInputStream(buffer);
+                DataInputStream dataInputStream = new DataInputStream(inputBuffer);
+                CommunicationMessage message = CommunicationMessage.readFrom(dataInputStream);
+                connector.checkData(channel, message);
+                buffer.markReaderIndex();
+            }
+        } catch (Exception exception) {
+            LOGGER.error("解码消息异常", exception);
+            throw new CommunicationException(exception);
+        }
+    }
 
 }

@@ -42,213 +42,213 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class StorageXmlParser extends AbstractBeanDefinitionParser {
 
-	private static final Logger logger = LoggerFactory.getLogger(StorageXmlParser.class);
-	/** 资源匹配符 */
-	private static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+    private static final Logger logger = LoggerFactory.getLogger(StorageXmlParser.class);
+    /** 资源匹配符 */
+    private static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
 
-	/** 资源搜索分析器(负责查找StorageConfiguration) */
-	private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-	/** 元数据分析器(负责获取注解) */
-	private MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+    /** 资源搜索分析器(负责查找StorageConfiguration) */
+    private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+    /** 元数据分析器(负责获取注解) */
+    private MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
-	private String[] getResources(String packageName) {
-		try {
-			// 搜索资源
-			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(packageName)) + "/" + DEFAULT_RESOURCE_PATTERN;
-			Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
-			// 提取资源
-			Set<String> names = new HashSet<String>();
-			String name = ResourceConfiguration.class.getName();
-			for (Resource resource : resources) {
-				if (!resource.isReadable()) {
-					continue;
-				}
-				// 判断是否静态资源
-				MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
-				AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
-				if (!annotationMetadata.hasAnnotation(name)) {
-					continue;
-				}
-				ClassMetadata classMetadata = metadataReader.getClassMetadata();
-				names.add(classMetadata.getClassName());
-			}
-			return names.toArray(new String[0]);
-		} catch (IOException exception) {
-			String message = "无法获取资源";
-			logger.error(message, exception);
-			throw new StorageException(message, exception);
-		}
-	}
-	
-	private void assembleProcessor(ParserContext parserContext) {
-		BeanDefinitionRegistry registry = parserContext.getRegistry();
-		String name = StringUtility.uncapitalize(StorageAccessorProcessor.class.getSimpleName());
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageAccessorProcessor.class);
-		registry.registerBeanDefinition(name, factory.getBeanDefinition());
-	}
+    private String[] getResources(String packageName) {
+        try {
+            // 搜索资源
+            String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(SystemPropertyUtils.resolvePlaceholders(packageName)) + "/" + DEFAULT_RESOURCE_PATTERN;
+            Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
+            // 提取资源
+            Set<String> names = new HashSet<String>();
+            String name = ResourceConfiguration.class.getName();
+            for (Resource resource : resources) {
+                if (!resource.isReadable()) {
+                    continue;
+                }
+                // 判断是否静态资源
+                MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
+                if (!annotationMetadata.hasAnnotation(name)) {
+                    continue;
+                }
+                ClassMetadata classMetadata = metadataReader.getClassMetadata();
+                names.add(classMetadata.getClassName());
+            }
+            return names.toArray(new String[0]);
+        } catch (IOException exception) {
+            String message = "无法获取资源";
+            logger.error(message, exception);
+            throw new StorageException(message, exception);
+        }
+    }
 
-	@Override
-	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
-		assembleProcessor(parserContext);
-		
-		// 仓储管理器工厂
-		BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageManagerFactory.class);
+    private void assembleProcessor(ParserContext parserContext) {
+        BeanDefinitionRegistry registry = parserContext.getRegistry();
+        String name = StringUtility.uncapitalize(StorageAccessorProcessor.class.getSimpleName());
+        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageAccessorProcessor.class);
+        registry.registerBeanDefinition(name, factory.getBeanDefinition());
+    }
 
-		String formatName = element.getAttribute(AttributeDefinition.FORMAT.getName());
+    @Override
+    protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+        assembleProcessor(parserContext);
 
-		// 设置仓储格式映射
-		Map<String, BeanDefinition> formats = new ManagedMap<>();
-		Collection<Element> formatElements = XmlUtility.getChildElementsByTagName(element, ElementDefinition.FORMAT.getName());
-		for (Element formatElement : formatElements) {
-			String adapter = formatElement.getAttribute(AttributeDefinition.ADAPTER.getName());
-			String name = formatElement.getAttribute(AttributeDefinition.NAME.getName());
-			String path = formatElement.getAttribute(AttributeDefinition.PATH.getName());
-			String suffix = formatElement.getAttribute(AttributeDefinition.SUFFIX.getName());
-			BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FormatDefinition.class);
-			builder.addConstructorArgReference(adapter);
-			builder.addConstructorArgValue(name);
-			builder.addConstructorArgValue(path);
-			builder.addConstructorArgValue(suffix);
-			BeanDefinition format = builder.getBeanDefinition();
-			formats.put(name, format);
-		}
+        // 仓储管理器工厂
+        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageManagerFactory.class);
 
-		// 设置仓储定义映射
-		Map<Class<?>, BeanDefinition> definitions = new ManagedMap<>();
-		NodeList scanNodes = XmlUtility.getChildElementByTagName(element, ElementDefinition.SCAN.getName()).getChildNodes();
-		for (int index = 0; index < scanNodes.getLength(); index++) {
-			Node node = scanNodes.item(index);
-			if (node.getNodeType() != Node.ELEMENT_NODE) {
-				continue;
-			}
-			String name = node.getLocalName();
-			if (name.equals(ElementDefinition.PACKAGE.getName())) {
-				// 自动包扫描处理
-				String packageName = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
-				String[] classNames = getResources(packageName);
-				for (String className : classNames) {
-					Class<?> clazz = null;
-					try {
-						clazz = (Class<?>) Class.forName(className);
-						BeanDefinition format = null;
-						ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
-						if (StringUtility.isNoneBlank(configuration.format())) {
-							format = formats.get(configuration.format());
-						} else {
-							format = formats.get(formatName);
-						}
-						if (format == null) {
-							String message = StringUtility.format("无法获取格式[{}]", format);
-							logger.error(message);
-							throw new StorageException(message);
-						}
-						definitions.put(clazz, format);
-					} catch (ClassNotFoundException exception) {
-						String message = StringUtility.format("无法获取类型[{}]", className);
-						logger.error(message);
-						throw new StorageException(message, exception);
-					}
-				}
-			}
+        String formatName = element.getAttribute(AttributeDefinition.FORMAT.getName());
 
-			if (name.equals(ElementDefinition.CLASS.getName())) {
-				// 自动类加载处理
-				String className = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
-				Class<?> clazz = null;
-				try {
-					clazz = (Class<?>) Class.forName(className);
-					BeanDefinition format = null;
-					ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
-					if (StringUtility.isNoneBlank(configuration.format())) {
-						format = formats.get(configuration.format());
-					} else {
-						format = formats.get(formatName);
-					}
-					if (format == null) {
-						String message = StringUtility.format("无法获取格式[{}]", format);
-						logger.error(message);
-						throw new StorageException(message);
-					}
-					definitions.put(clazz, format);
-				} catch (ClassNotFoundException exception) {
-					String message = StringUtility.format("无法获取类型[{}]", className);
-					logger.error(message);
-					throw new StorageException(message, exception);
-				}
-			}
-		}
-		factory.addPropertyValue(StorageManagerFactory.DEFINITIONS, definitions);
+        // 设置仓储格式映射
+        Map<String, BeanDefinition> formats = new ManagedMap<>();
+        Collection<Element> formatElements = XmlUtility.getChildElementsByTagName(element, ElementDefinition.FORMAT.getName());
+        for (Element formatElement : formatElements) {
+            String adapter = formatElement.getAttribute(AttributeDefinition.ADAPTER.getName());
+            String name = formatElement.getAttribute(AttributeDefinition.NAME.getName());
+            String path = formatElement.getAttribute(AttributeDefinition.PATH.getName());
+            String suffix = formatElement.getAttribute(AttributeDefinition.SUFFIX.getName());
+            BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FormatDefinition.class);
+            builder.addConstructorArgReference(adapter);
+            builder.addConstructorArgValue(name);
+            builder.addConstructorArgValue(path);
+            builder.addConstructorArgValue(suffix);
+            BeanDefinition format = builder.getBeanDefinition();
+            formats.put(name, format);
+        }
 
-		return factory.getBeanDefinition();
-	}
+        // 设置仓储定义映射
+        Map<Class<?>, BeanDefinition> definitions = new ManagedMap<>();
+        NodeList scanNodes = XmlUtility.getChildElementByTagName(element, ElementDefinition.SCAN.getName()).getChildNodes();
+        for (int index = 0; index < scanNodes.getLength(); index++) {
+            Node node = scanNodes.item(index);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            String name = node.getLocalName();
+            if (name.equals(ElementDefinition.PACKAGE.getName())) {
+                // 自动包扫描处理
+                String packageName = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
+                String[] classNames = getResources(packageName);
+                for (String className : classNames) {
+                    Class<?> clazz = null;
+                    try {
+                        clazz = (Class<?>) Class.forName(className);
+                        BeanDefinition format = null;
+                        ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
+                        if (StringUtility.isNoneBlank(configuration.format())) {
+                            format = formats.get(configuration.format());
+                        } else {
+                            format = formats.get(formatName);
+                        }
+                        if (format == null) {
+                            String message = StringUtility.format("无法获取格式[{}]", format);
+                            logger.error(message);
+                            throw new StorageException(message);
+                        }
+                        definitions.put(clazz, format);
+                    } catch (ClassNotFoundException exception) {
+                        String message = StringUtility.format("无法获取类型[{}]", className);
+                        logger.error(message);
+                        throw new StorageException(message, exception);
+                    }
+                }
+            }
 
-	/**
-	 * 仓储Schema定义的元素
-	 * 
-	 * @author Birdy
-	 */
-	enum ElementDefinition {
+            if (name.equals(ElementDefinition.CLASS.getName())) {
+                // 自动类加载处理
+                String className = ((Element) node).getAttribute(AttributeDefinition.NAME.getName());
+                Class<?> clazz = null;
+                try {
+                    clazz = (Class<?>) Class.forName(className);
+                    BeanDefinition format = null;
+                    ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
+                    if (StringUtility.isNoneBlank(configuration.format())) {
+                        format = formats.get(configuration.format());
+                    } else {
+                        format = formats.get(formatName);
+                    }
+                    if (format == null) {
+                        String message = StringUtility.format("无法获取格式[{}]", format);
+                        logger.error(message);
+                        throw new StorageException(message);
+                    }
+                    definitions.put(clazz, format);
+                } catch (ClassNotFoundException exception) {
+                    String message = StringUtility.format("无法获取类型[{}]", className);
+                    logger.error(message);
+                    throw new StorageException(message, exception);
+                }
+            }
+        }
+        factory.addPropertyValue(StorageManagerFactory.DEFINITIONS, definitions);
 
-		/** 根配置元素(属性id,format) */
-		CONFIGURATION("configuration"),
+        return factory.getBeanDefinition();
+    }
 
-		/** 格式定义元素(属性name,adapter,path,suffix) */
-		FORMAT("format"),
+    /**
+     * 仓储Schema定义的元素
+     * 
+     * @author Birdy
+     */
+    enum ElementDefinition {
 
-		/** 扫描定义元素 */
-		SCAN("scan"),
-		/** 包定义元素(属性name) */
-		PACKAGE("package"),
-		/** 类定义元素(属性name) */
-		CLASS("class");
+        /** 根配置元素(属性id,format) */
+        CONFIGURATION("configuration"),
 
-		private String name;
+        /** 格式定义元素(属性name,adapter,path,suffix) */
+        FORMAT("format"),
 
-		private ElementDefinition(String name) {
-			this.name = name;
-		}
+        /** 扫描定义元素 */
+        SCAN("scan"),
+        /** 包定义元素(属性name) */
+        PACKAGE("package"),
+        /** 类定义元素(属性name) */
+        CLASS("class");
 
-		public String getName() {
-			return name;
-		}
+        private String name;
 
-	}
+        private ElementDefinition(String name) {
+            this.name = name;
+        }
 
-	/**
-	 * 仓储Schema定义的属性
-	 * 
-	 * @author Birdy
-	 */
-	enum AttributeDefinition {
+        public String getName() {
+            return name;
+        }
 
-		/** 标识 */
-		ID("id"),
+    }
 
-		/** 格式 */
-		FORMAT("format"),
+    /**
+     * 仓储Schema定义的属性
+     * 
+     * @author Birdy
+     */
+    enum AttributeDefinition {
 
-		/** 适配器 */
-		ADAPTER("adapter"),
+        /** 标识 */
+        ID("id"),
 
-		/** 名称 */
-		NAME("name"),
+        /** 格式 */
+        FORMAT("format"),
 
-		/** 路径 */
-		PATH("path"),
+        /** 适配器 */
+        ADAPTER("adapter"),
 
-		/** 后缀 */
-		SUFFIX("suffix");
+        /** 名称 */
+        NAME("name"),
 
-		private String name;
+        /** 路径 */
+        PATH("path"),
 
-		private AttributeDefinition(String name) {
-			this.name = name;
-		}
+        /** 后缀 */
+        SUFFIX("suffix");
 
-		public String getName() {
-			return name;
-		}
+        private String name;
 
-	}
+        private AttributeDefinition(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+    }
 
 }

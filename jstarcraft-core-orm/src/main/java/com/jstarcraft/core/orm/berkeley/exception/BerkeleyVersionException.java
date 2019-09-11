@@ -9,18 +9,18 @@ import com.jstarcraft.core.orm.exception.OrmException;
  */
 public class BerkeleyVersionException extends OrmException {
 
-	private static final long serialVersionUID = 4228883407972897712L;
+    private static final long serialVersionUID = 4228883407972897712L;
 
-	public BerkeleyVersionException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public BerkeleyVersionException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public BerkeleyVersionException(String message) {
-		super(message);
-	}
+    public BerkeleyVersionException(String message) {
+        super(message);
+    }
 
-	public BerkeleyVersionException(Throwable cause) {
-		super(cause);
-	}
+    public BerkeleyVersionException(Throwable cause) {
+        super(cause);
+    }
 
 }

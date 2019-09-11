@@ -20,49 +20,49 @@ import com.sleepycat.persist.model.SecondaryKey;
 @Entity
 public class Person implements IdentityObject<Long> {
 
-	@PrimaryKey
-	private long id;
+    @PrimaryKey
+    private long id;
 
-	@SecondaryKey(relate = Relationship.ONE_TO_ONE)
-	private String name;
+    @SecondaryKey(relate = Relationship.ONE_TO_ONE)
+    private String name;
 
-	private Person() {
-	}
+    private Person() {
+    }
 
-	public Person(long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+    public Person(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (!(object instanceof Person))
-			return false;
-		Person that = (Person) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.getId(), that.getId());
-		equal.append(this.getName(), that.getName());
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (!(object instanceof Person))
+            return false;
+        Person that = (Person) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.getId(), that.getId());
+        equal.append(this.getName(), that.getName());
+        return equal.isEquals();
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(getId());
-		return hash.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(getId());
+        return hash.toHashCode();
+    }
 
 }

@@ -7,22 +7,22 @@ package com.jstarcraft.core.communication.exception;
  */
 public class CommunicationException extends RuntimeException {
 
-	private static final long serialVersionUID = 5690545554687210032L;
+    private static final long serialVersionUID = 5690545554687210032L;
 
-	public CommunicationException() {
-		super();
-	}
+    public CommunicationException() {
+        super();
+    }
 
-	public CommunicationException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public CommunicationException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public CommunicationException(String message) {
-		super(message);
-	}
+    public CommunicationException(String message) {
+        super(message);
+    }
 
-	public CommunicationException(Throwable exception) {
-		super(exception);
-	}
+    public CommunicationException(Throwable exception) {
+        super(exception);
+    }
 
 }

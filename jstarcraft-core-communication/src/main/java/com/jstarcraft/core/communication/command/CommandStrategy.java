@@ -8,11 +8,11 @@ package com.jstarcraft.core.communication.command;
  */
 public interface CommandStrategy {
 
-	/**
-	 * 使用指定的执行策略
-	 * 
-	 * @param task
-	 */
-	void execute(Runnable task);
+    /**
+     * 使用指定的执行策略
+     * 
+     * @param task
+     */
+    void execute(Runnable task);
 
 }

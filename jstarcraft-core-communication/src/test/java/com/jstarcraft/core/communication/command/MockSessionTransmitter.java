@@ -12,37 +12,37 @@ import io.netty.channel.Channel;
 
 public class MockSessionTransmitter implements SessionReceiver<Channel>, SessionSender<Channel> {
 
-	private NettySessionManager sessionManager;
+    private NettySessionManager sessionManager;
 
-	private ConcurrentLinkedQueue<CommunicationSession<Channel>> sessions = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<CommunicationSession<Channel>> sessions = new ConcurrentLinkedQueue<>();
 
-	MockSessionTransmitter(NettySessionManager sessionManager) {
-		this.sessionManager = sessionManager;
-	}
+    MockSessionTransmitter(NettySessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
 
-	@Override
-	public CommunicationSession<Channel> pullSession() {
-		return sessions.poll();
-	}
+    @Override
+    public CommunicationSession<Channel> pullSession() {
+        return sessions.poll();
+    }
 
-	@Override
-	public int getReceiveSize() {
-		return sessions.size();
-	}
+    @Override
+    public int getReceiveSize() {
+        return sessions.size();
+    }
 
-	@Override
-	public void pushSession(CommunicationSession<Channel> session) {
-		CommunicationMessage message = session.pullSendMessage();
-		if (message != null) {
-			session = sessionManager.getSession(session.getKey());
-			session.pushReceiveMessage(message);
-		}
-		sessions.offer(session);
-	}
+    @Override
+    public void pushSession(CommunicationSession<Channel> session) {
+        CommunicationMessage message = session.pullSendMessage();
+        if (message != null) {
+            session = sessionManager.getSession(session.getKey());
+            session.pushReceiveMessage(message);
+        }
+        sessions.offer(session);
+    }
 
-	@Override
-	public int getSendSize() {
-		return sessions.size();
-	}
+    @Override
+    public int getSendSize() {
+        return sessions.size();
+    }
 
 }

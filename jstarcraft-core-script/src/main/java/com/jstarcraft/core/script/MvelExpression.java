@@ -15,53 +15,53 @@ import org.mvel2.ParserContext;
  */
 public class MvelExpression implements ScriptExpression {
 
-	private class MvelHolder {
+    private class MvelHolder {
 
-		private ScriptScope scope;
+        private ScriptScope scope;
 
-		private MvelHolder(ScriptScope scope) {
-			this.scope = scope.copyScope();
-		}
+        private MvelHolder(ScriptScope scope) {
+            this.scope = scope.copyScope();
+        }
 
-	}
+    }
 
-	private ThreadLocal<MvelHolder> threadHolder = new ThreadLocal<MvelHolder>() {
+    private ThreadLocal<MvelHolder> threadHolder = new ThreadLocal<MvelHolder>() {
 
-		@Override
-		protected MvelHolder initialValue() {
-			MvelHolder holder = new MvelHolder(scope);
-			return holder;
-		}
+        @Override
+        protected MvelHolder initialValue() {
+            MvelHolder holder = new MvelHolder(scope);
+            return holder;
+        }
 
-	};
+    };
 
-	private ScriptScope scope;
+    private ScriptScope scope;
 
-	private String expression;
+    private String expression;
 
-	private Serializable script;
+    private Serializable script;
 
-	public MvelExpression(ScriptContext context, ScriptScope scope, String expression) {
-		this.scope = scope.copyScope();
-		this.expression = expression;
-		ParserContext parserContext = new ParserContext();
-		for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
-			parserContext.addImport(keyValue.getKey(), keyValue.getValue());
-		}
-		for (Entry<String, Method> keyValue : context.getMethods().entrySet()) {
-			parserContext.addImport(keyValue.getKey(), keyValue.getValue());
-		}
-		this.script = MVEL.compileExpression(expression, parserContext);
-	}
+    public MvelExpression(ScriptContext context, ScriptScope scope, String expression) {
+        this.scope = scope.copyScope();
+        this.expression = expression;
+        ParserContext parserContext = new ParserContext();
+        for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
+            parserContext.addImport(keyValue.getKey(), keyValue.getValue());
+        }
+        for (Entry<String, Method> keyValue : context.getMethods().entrySet()) {
+            parserContext.addImport(keyValue.getKey(), keyValue.getValue());
+        }
+        this.script = MVEL.compileExpression(expression, parserContext);
+    }
 
-	@Override
-	public ScriptScope getScope() {
-		return threadHolder.get().scope;
-	}
+    @Override
+    public ScriptScope getScope() {
+        return threadHolder.get().scope;
+    }
 
-	@Override
-	public <T> T doWith(Class<T> clazz) {
-		return MVEL.executeExpression(script, threadHolder.get().scope.getAttributes(), clazz);
-	}
+    @Override
+    public <T> T doWith(Class<T> clazz) {
+        return MVEL.executeExpression(script, threadHolder.get().scope.getAttributes(), clazz);
+    }
 
 }

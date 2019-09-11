@@ -4,8 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(Suite.class) 
-@SuiteClasses({JavassistEntityProxyTestCase.class, JavassistRegionProxyTestCase.class}) 
+@RunWith(Suite.class)
+@SuiteClasses({ JavassistEntityProxyTestCase.class, JavassistRegionProxyTestCase.class })
 public class ProxyTestSuite {
 
 }

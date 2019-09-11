@@ -13,25 +13,25 @@ import io.netty.buffer.ByteBuf;
  */
 public class NettyBufferInputStream extends InputStream {
 
-	private final ByteBuf buffer;
+    private final ByteBuf buffer;
 
-	public NettyBufferInputStream(ByteBuf buffer) {
-		this.buffer = buffer;
-	}
+    public NettyBufferInputStream(ByteBuf buffer) {
+        this.buffer = buffer;
+    }
 
-	public int available() throws IOException {
-		return buffer.readableBytes();
-	}
+    public int available() throws IOException {
+        return buffer.readableBytes();
+    }
 
-	@Override
-	public int read() throws IOException {
-		int data = buffer.readByte() & 0xFF;
-		return data;
-	}
+    @Override
+    public int read() throws IOException {
+        int data = buffer.readByte() & 0xFF;
+        return data;
+    }
 
-	@Override
-	public String toString() {
-		return "NettyBufferInputStream [buffer=" + buffer + "]";
-	}
+    @Override
+    public String toString() {
+        return "NettyBufferInputStream [buffer=" + buffer + "]";
+    }
 
 }

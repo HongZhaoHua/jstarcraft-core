@@ -15,13 +15,13 @@ import java.util.Comparator;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface ResourceIndex {
 
-	/** 名称 */
-	String name();
+    /** 名称 */
+    String name();
 
-	/** 是否唯一 */
-	boolean unique() default false;
+    /** 是否唯一 */
+    boolean unique() default false;
 
-	/** 排序器 */
-	Class<? extends Comparator> comparator() default Comparator.class;
+    /** 排序器 */
+    Class<? extends Comparator> comparator() default Comparator.class;
 
 }

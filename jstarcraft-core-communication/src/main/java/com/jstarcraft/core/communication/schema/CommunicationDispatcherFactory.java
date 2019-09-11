@@ -30,92 +30,92 @@ import com.jstarcraft.core.communication.session.SessionSender;
  */
 public class CommunicationDispatcherFactory implements FactoryBean<CommandDispatcher>, ApplicationListener<ApplicationEvent> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommunicationDispatcherFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommunicationDispatcherFactory.class);
 
-	public static final String DEFINITIONS = "definitions";
+    public static final String DEFINITIONS = "definitions";
 
-	public static final String STRATEGIES = "strategies";
+    public static final String STRATEGIES = "strategies";
 
-	@Autowired(required = true)
-	private ApplicationContext applicationContext;
+    @Autowired(required = true)
+    private ApplicationContext applicationContext;
 
-	private ModuleSide side;
-	private List<CommandDefinition> definitions;
-	private SessionReceiver receiver;
-	private SessionSender sender;
-	private Map<String, CommandStrategy> strategies;
-	private CommandDispatcher commandDispatcher;
-	private long wait;
+    private ModuleSide side;
+    private List<CommandDefinition> definitions;
+    private SessionReceiver receiver;
+    private SessionSender sender;
+    private Map<String, CommandStrategy> strategies;
+    private CommandDispatcher commandDispatcher;
+    private long wait;
 
-	@Override
-	public synchronized void onApplicationEvent(ApplicationEvent event) {
-		getObject();
-		if (event instanceof ContextRefreshedEvent) {
-			if (commandDispatcher.getState() == null) {
-				Set<Object> objects = new HashSet<>();
-				String[] beanNames = applicationContext.getBeanDefinitionNames();
-				for (String name : beanNames) {
-					final Object bean = applicationContext.getBean(name);
-					for (CommandDefinition definition : definitions) {
-						if (definition.getClazz().isInstance(bean)) {
-							objects.add(bean);
-						}
-					}
-				}
-				// TODO 配置数量
-				commandDispatcher.start(objects, 1, 5);
-			}
-			return;
-		}
+    @Override
+    public synchronized void onApplicationEvent(ApplicationEvent event) {
+        getObject();
+        if (event instanceof ContextRefreshedEvent) {
+            if (commandDispatcher.getState() == null) {
+                Set<Object> objects = new HashSet<>();
+                String[] beanNames = applicationContext.getBeanDefinitionNames();
+                for (String name : beanNames) {
+                    final Object bean = applicationContext.getBean(name);
+                    for (CommandDefinition definition : definitions) {
+                        if (definition.getClazz().isInstance(bean)) {
+                            objects.add(bean);
+                        }
+                    }
+                }
+                // TODO 配置数量
+                commandDispatcher.start(objects, 1, 5);
+            }
+            return;
+        }
 
-		if (event instanceof ContextClosedEvent) {
-			if (commandDispatcher.getState() == CommunicationState.STARTED) {
-				commandDispatcher.stop();
-			}
-			return;
-		}
-	}
+        if (event instanceof ContextClosedEvent) {
+            if (commandDispatcher.getState() == CommunicationState.STARTED) {
+                commandDispatcher.stop();
+            }
+            return;
+        }
+    }
 
-	public void setSide(ModuleSide side) {
-		this.side = side;
-	}
+    public void setSide(ModuleSide side) {
+        this.side = side;
+    }
 
-	public void setDefinitions(List<CommandDefinition> definitions) {
-		this.definitions = definitions;
-	}
+    public void setDefinitions(List<CommandDefinition> definitions) {
+        this.definitions = definitions;
+    }
 
-	public void setReceiver(SessionReceiver receiver) {
-		this.receiver = receiver;
-	}
+    public void setReceiver(SessionReceiver receiver) {
+        this.receiver = receiver;
+    }
 
-	public void setSender(SessionSender sender) {
-		this.sender = sender;
-	}
+    public void setSender(SessionSender sender) {
+        this.sender = sender;
+    }
 
-	public void setStrategies(Map<String, CommandStrategy> strategies) {
-		this.strategies = strategies;
-	}
+    public void setStrategies(Map<String, CommandStrategy> strategies) {
+        this.strategies = strategies;
+    }
 
-	public void setWait(long wait) {
-		this.wait = wait;
-	}
+    public void setWait(long wait) {
+        this.wait = wait;
+    }
 
-	@Override
-	public synchronized CommandDispatcher getObject() {
-		if (commandDispatcher == null) {
-			commandDispatcher = new CommandDispatcher<>(side, definitions, receiver, sender, strategies, wait);
-		}
-		return commandDispatcher;
-	}
+    @Override
+    public synchronized CommandDispatcher getObject() {
+        if (commandDispatcher == null) {
+            commandDispatcher = new CommandDispatcher<>(side, definitions, receiver, sender, strategies, wait);
+        }
+        return commandDispatcher;
+    }
 
-	@Override
-	public Class<?> getObjectType() {
-		return CommandDispatcher.class;
-	}
+    @Override
+    public Class<?> getObjectType() {
+        return CommandDispatcher.class;
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return true;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
 }

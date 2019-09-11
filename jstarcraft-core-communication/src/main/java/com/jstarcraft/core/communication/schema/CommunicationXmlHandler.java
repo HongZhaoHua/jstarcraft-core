@@ -11,9 +11,9 @@ import com.jstarcraft.core.communication.schema.CommunicationXmlParser.ElementDe
  */
 public class CommunicationXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CommunicationXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CommunicationXmlParser());
+    }
 
 }

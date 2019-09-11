@@ -21,39 +21,39 @@ import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 
 public class MongoTransactionManagerTestCase extends TransactionManagerTestCase {
 
-	private static MongodForTestsFactory factory;
+    private static MongodForTestsFactory factory;
 
-	private static MongoAccessor accessor;
+    private static MongoAccessor accessor;
 
-	@BeforeClass
-	public static void startMongo() throws IOException {
-		factory = new MongodForTestsFactory(Version.Main.V3_5);
-		MongoClient mongo = factory.newMongo();
-		MongoTemplate template = new MongoTemplate(mongo, "test");
-		accessor = new MongoAccessor(Arrays.asList(MongoTransactionDefinition.class), template);
-	}
+    @BeforeClass
+    public static void startMongo() throws IOException {
+        factory = new MongodForTestsFactory(Version.Main.V3_5);
+        MongoClient mongo = factory.newMongo();
+        MongoTemplate template = new MongoTemplate(mongo, "test");
+        accessor = new MongoAccessor(Arrays.asList(MongoTransactionDefinition.class), template);
+    }
 
-	@AfterClass
-	public static void stopMongo() throws IOException {
-		factory.shutdown();
-	}
+    @AfterClass
+    public static void stopMongo() throws IOException {
+        factory.shutdown();
+    }
 
-	private MongoTransactionManager manager;
+    private MongoTransactionManager manager;
 
-	@Before
-	public void testBefore() {
-		manager = new MongoTransactionManager(accessor);
-		manager.create(name);
-	}
+    @Before
+    public void testBefore() {
+        manager = new MongoTransactionManager(accessor);
+        manager.create(name);
+    }
 
-	@After
-	public void testAfter() {
-		manager.delete(name);
-	}
+    @After
+    public void testAfter() {
+        manager.delete(name);
+    }
 
-	@Override
-	protected TransactionManager getDistributionManager() {
-		return manager;
-	}
+    @Override
+    protected TransactionManager getDistributionManager() {
+        return manager;
+    }
 
 }

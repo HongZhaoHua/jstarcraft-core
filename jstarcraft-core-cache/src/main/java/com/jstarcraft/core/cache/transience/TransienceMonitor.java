@@ -7,12 +7,12 @@ package com.jstarcraft.core.cache.transience;
  */
 public interface TransienceMonitor {
 
-	/**
-	 * 交换通知
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	void notifyExchanged(Object key, Object value);
+    /**
+     * 交换通知
+     * 
+     * @param key
+     * @param value
+     */
+    void notifyExchanged(Object key, Object value);
 
 }

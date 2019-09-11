@@ -12,6 +12,6 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  */
 public interface CacheObjectFactory<K extends Comparable, T extends IdentityObject<K>> {
 
-	T instanceOf(K id);
+    T instanceOf(K id);
 
 }

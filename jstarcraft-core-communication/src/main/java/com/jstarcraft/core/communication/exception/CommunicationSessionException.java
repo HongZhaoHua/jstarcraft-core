@@ -7,22 +7,22 @@ package com.jstarcraft.core.communication.exception;
  */
 public class CommunicationSessionException extends CommunicationException {
 
-	private static final long serialVersionUID = -2967988518844512960L;
+    private static final long serialVersionUID = -2967988518844512960L;
 
-	public CommunicationSessionException() {
-		super();
-	}
+    public CommunicationSessionException() {
+        super();
+    }
 
-	public CommunicationSessionException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public CommunicationSessionException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public CommunicationSessionException(String message) {
-		super(message);
-	}
+    public CommunicationSessionException(String message) {
+        super(message);
+    }
 
-	public CommunicationSessionException(Throwable exception) {
-		super(exception);
-	}
+    public CommunicationSessionException(Throwable exception) {
+        super(exception);
+    }
 
 }

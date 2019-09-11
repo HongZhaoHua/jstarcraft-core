@@ -13,32 +13,32 @@ import com.jstarcraft.core.transaction.TransactionDefinition;
  */
 public class HazelcastTransactionDefinition implements Serializable {
 
-	private static final long serialVersionUID = -2615267956144491936L;
+    private static final long serialVersionUID = -2615267956144491936L;
 
-	/** 锁名称 */
-	private String name;
+    /** 锁名称 */
+    private String name;
 
-	/** 最多锁定到指定的时间(必选) */
-	private Instant most;
+    /** 最多锁定到指定的时间(必选) */
+    private Instant most;
 
-	HazelcastTransactionDefinition() {
-	}
+    HazelcastTransactionDefinition() {
+    }
 
-	public HazelcastTransactionDefinition(TransactionDefinition definition) {
-		this(definition.getName(), definition.getMost());
-	}
+    public HazelcastTransactionDefinition(TransactionDefinition definition) {
+        this(definition.getName(), definition.getMost());
+    }
 
-	public HazelcastTransactionDefinition(String name, Instant most) {
-		this.name = name;
-		this.most = most;
-	}
+    public HazelcastTransactionDefinition(String name, Instant most) {
+        this.name = name;
+        this.most = most;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Instant getMost() {
-		return most;
-	}
+    public Instant getMost() {
+        return most;
+    }
 
 }

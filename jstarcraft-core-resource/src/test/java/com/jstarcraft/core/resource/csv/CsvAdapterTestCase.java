@@ -27,62 +27,62 @@ import com.jstarcraft.core.utility.KeyValue;
 @Component
 public class CsvAdapterTestCase {
 
-	@Autowired
-	private MockSpringObject springObject;
-	@Autowired
-	private ResourceManager storageManager;
-	@ResourceAccessor
-	private ResourceStorage<Integer, Person> storage;
-	@ResourceAccessor("2")
-	private Person person;
-	@ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
-	private boolean sex;
-	@ResourceAccessor(value = "2", clazz = Person.class, property = "description")
-	private String description;
+    @Autowired
+    private MockSpringObject springObject;
+    @Autowired
+    private ResourceManager storageManager;
+    @ResourceAccessor
+    private ResourceStorage<Integer, Person> storage;
+    @ResourceAccessor("2")
+    private Person person;
+    @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
+    private boolean sex;
+    @ResourceAccessor(value = "2", clazz = Person.class, property = "description")
+    private String description;
 
-	/**
-	 * 测试仓储访问器
-	 */
-	@Test
-	public void testAssemblage() {
-		// 保证@StorageAccessor注解的接口与类型能被自动装配
-		Assert.assertThat(springObject, CoreMatchers.notNullValue());
-		Assert.assertThat(storage, CoreMatchers.notNullValue());
-		Assert.assertThat(person, CoreMatchers.notNullValue());
+    /**
+     * 测试仓储访问器
+     */
+    @Test
+    public void testAssemblage() {
+        // 保证@StorageAccessor注解的接口与类型能被自动装配
+        Assert.assertThat(springObject, CoreMatchers.notNullValue());
+        Assert.assertThat(storage, CoreMatchers.notNullValue());
+        Assert.assertThat(person, CoreMatchers.notNullValue());
 
-		// 检查仓储访问
-		Assert.assertThat(storage.getAll().size(), CoreMatchers.equalTo(3));
-		Assert.assertThat(storage.getInstance(2, false), CoreMatchers.sameInstance(person));
+        // 检查仓储访问
+        Assert.assertThat(storage.getAll().size(), CoreMatchers.equalTo(3));
+        Assert.assertThat(storage.getInstance(2, false), CoreMatchers.sameInstance(person));
 
-		// 检查实例访问
-		Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
-		KeyValue<?, ?> keyValue = new KeyValue<>("key", "value");
-		Assert.assertThat(person.getObject(), CoreMatchers.equalTo(keyValue));
-		keyValue = new KeyValue<>(1, "1");
-		Assert.assertThat(person.getArray()[1], CoreMatchers.equalTo(keyValue));
-		Assert.assertThat(person.getMap().get("1"), CoreMatchers.equalTo(keyValue));
-		Assert.assertThat(person.getList().get(1), CoreMatchers.equalTo(keyValue));
+        // 检查实例访问
+        Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
+        KeyValue<?, ?> keyValue = new KeyValue<>("key", "value");
+        Assert.assertThat(person.getObject(), CoreMatchers.equalTo(keyValue));
+        keyValue = new KeyValue<>(1, "1");
+        Assert.assertThat(person.getArray()[1], CoreMatchers.equalTo(keyValue));
+        Assert.assertThat(person.getMap().get("1"), CoreMatchers.equalTo(keyValue));
+        Assert.assertThat(person.getList().get(1), CoreMatchers.equalTo(keyValue));
 
-		// 检查引用访问
-		Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(storage.getInstance(2, false)));
-		Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
-		Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(storage));
+        // 检查引用访问
+        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(storage.getInstance(2, false)));
+        Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
+        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(storage));
 
-		// 检查属性访问
-		Assert.assertTrue(sex);
-		Assert.assertThat(description, CoreMatchers.notNullValue());
-	}
+        // 检查属性访问
+        Assert.assertTrue(sex);
+        Assert.assertThat(description, CoreMatchers.notNullValue());
+    }
 
-	/**
-	 * 测试仓储索引
-	 */
-	@Test
-	public void testIndex() {
-		List<Person> ageIndex = storage.getMultiple(Person.INDEX_AGE, 32);
-		Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
+    /**
+     * 测试仓储索引
+     */
+    @Test
+    public void testIndex() {
+        List<Person> ageIndex = storage.getMultiple(Person.INDEX_AGE, 32);
+        Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-		Person birdy = storage.getSingle(Person.INDEX_NAME, "Birdy");
-		Assert.assertThat(birdy, CoreMatchers.equalTo(storage.getInstance(1, false)));
-	}
+        Person birdy = storage.getSingle(Person.INDEX_NAME, "Birdy");
+        Assert.assertThat(birdy, CoreMatchers.equalTo(storage.getInstance(1, false)));
+    }
 
 }

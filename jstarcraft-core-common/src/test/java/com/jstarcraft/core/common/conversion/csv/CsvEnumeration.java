@@ -2,10 +2,10 @@ package com.jstarcraft.core.common.conversion.csv;
 
 public enum CsvEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG;
+    ZERG;
 
 }

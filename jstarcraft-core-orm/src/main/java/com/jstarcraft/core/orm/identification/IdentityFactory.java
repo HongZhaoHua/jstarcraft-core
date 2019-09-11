@@ -8,27 +8,27 @@ package com.jstarcraft.core.orm.identification;
  */
 public interface IdentityFactory {
 
-	/**
-	 * 获取标识定义
-	 * 
-	 * @return
-	 */
-	IdentityDefinition getDefinition();
+    /**
+     * 获取标识定义
+     * 
+     * @return
+     */
+    IdentityDefinition getDefinition();
 
-	/**
-	 * 获取标识分区
-	 * 
-	 * @return
-	 */
-	int getPartition();
+    /**
+     * 获取标识分区
+     * 
+     * @return
+     */
+    int getPartition();
 
-	/**
-	 * 根据标识序列
-	 * 
-	 * @param clazz
-	 * @param partition
-	 * @return
-	 */
-	long getSequence();
+    /**
+     * 根据标识序列
+     * 
+     * @param clazz
+     * @param partition
+     * @return
+     */
+    long getSequence();
 
 }

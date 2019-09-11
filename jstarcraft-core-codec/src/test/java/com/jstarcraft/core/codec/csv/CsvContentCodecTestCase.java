@@ -6,10 +6,10 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 
 public class CsvContentCodecTestCase extends ContentCodecTestCase {
 
-	@Override
-	protected ContentCodec getContentCodec(CodecDefinition protocolDefinition) {
-		CsvContentCodec codec = new CsvContentCodec(protocolDefinition);
-		return codec;
-	}
+    @Override
+    protected ContentCodec getContentCodec(CodecDefinition protocolDefinition) {
+        CsvContentCodec codec = new CsvContentCodec(protocolDefinition);
+        return codec;
+    }
 
 }

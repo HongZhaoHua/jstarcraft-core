@@ -17,16 +17,16 @@ import com.jstarcraft.core.communication.message.MessageFormat;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessageCodec {
 
-	/** 输入格式(默认使用通讯模块的格式,{@link MessageFormat#toByte(MessageFormat, boolean)}) */
-	MessageFormat inputFormat();
+    /** 输入格式(默认使用通讯模块的格式,{@link MessageFormat#toByte(MessageFormat, boolean)}) */
+    MessageFormat inputFormat();
 
-	/** 输出格式(默认使用通讯模块的格式,{@link MessageFormat#toByte(MessageFormat, boolean)}) */
-	MessageFormat outputFormat();
+    /** 输出格式(默认使用通讯模块的格式,{@link MessageFormat#toByte(MessageFormat, boolean)}) */
+    MessageFormat outputFormat();
 
-	/** 输入是否zip */
-	boolean inputZip() default false;
+    /** 输入是否zip */
+    boolean inputZip() default false;
 
-	/** 输出是否zip */
-	boolean outputZip() default false;
+    /** 输出是否zip */
+    boolean outputZip() default false;
 
 }

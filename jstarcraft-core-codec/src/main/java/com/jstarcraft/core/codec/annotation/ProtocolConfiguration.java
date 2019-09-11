@@ -14,27 +14,27 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ProtocolConfiguration {
 
-	/**
-	 * 模式
-	 * 
-	 * @author Birdy
-	 */
-	public enum Mode {
+    /**
+     * 模式
+     * 
+     * @author Birdy
+     */
+    public enum Mode {
 
-		/** 字段 */
-		FIELD,
+        /** 字段 */
+        FIELD,
 
-		/** 方法(Getter/Setter) */
-		METHOD,
+        /** 方法(Getter/Setter) */
+        METHOD,
 
-		/** 指定 */
-		SPECIFY;
+        /** 指定 */
+        SPECIFY;
 
-	}
+    }
 
-	/**
-	 * 模式
-	 */
-	Mode mode() default Mode.FIELD;
+    /**
+     * 模式
+     */
+    Mode mode() default Mode.FIELD;
 
 }

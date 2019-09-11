@@ -2,10 +2,10 @@ package com.jstarcraft.core.common.conversion.json;
 
 public enum MockEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG;
+    ZERG;
 
 }

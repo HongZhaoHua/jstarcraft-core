@@ -21,27 +21,27 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 class NettyTcpMessageEncoder extends MessageToByteEncoder<CommunicationMessage> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NettyTcpMessageEncoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyTcpMessageEncoder.class);
 
-	NettyTcpMessageEncoder() {
-	}
+    NettyTcpMessageEncoder() {
+    }
 
-	@Override
-	protected void encode(ChannelHandlerContext context, CommunicationMessage encode, ByteBuf buffer) throws Exception {
-		try {
-			NettyBufferOutputStream outputBuffer = new NettyBufferOutputStream(buffer);
-			DataOutputStream dataOutputStream = new DataOutputStream(outputBuffer);
-			CommunicationMessage.writeTo(dataOutputStream, encode);
-			if (LOGGER.isDebugEnabled()) {
-				int length = buffer.readableBytes();
-				byte[] bytes = new byte[length];
-				buffer.getBytes(buffer.readerIndex(), bytes);
-				LOGGER.debug("编码消息:长度{},内容{}", new Object[] { length, bytes });
-			}
-		} catch (Throwable exception) {
-			LOGGER.error("编码消息异常", exception);
-			throw new CommunicationException(exception);
-		}
-	}
+    @Override
+    protected void encode(ChannelHandlerContext context, CommunicationMessage encode, ByteBuf buffer) throws Exception {
+        try {
+            NettyBufferOutputStream outputBuffer = new NettyBufferOutputStream(buffer);
+            DataOutputStream dataOutputStream = new DataOutputStream(outputBuffer);
+            CommunicationMessage.writeTo(dataOutputStream, encode);
+            if (LOGGER.isDebugEnabled()) {
+                int length = buffer.readableBytes();
+                byte[] bytes = new byte[length];
+                buffer.getBytes(buffer.readerIndex(), bytes);
+                LOGGER.debug("编码消息:长度{},内容{}", new Object[] { length, bytes });
+            }
+        } catch (Throwable exception) {
+            LOGGER.error("编码消息异常", exception);
+            throw new CommunicationException(exception);
+        }
+    }
 
 }

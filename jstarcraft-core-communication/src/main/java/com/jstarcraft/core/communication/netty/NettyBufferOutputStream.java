@@ -13,20 +13,20 @@ import io.netty.buffer.ByteBuf;
  */
 public class NettyBufferOutputStream extends OutputStream {
 
-	private final ByteBuf buffer;
+    private final ByteBuf buffer;
 
-	public NettyBufferOutputStream(ByteBuf buffer) {
-		this.buffer = buffer;
-	}
+    public NettyBufferOutputStream(ByteBuf buffer) {
+        this.buffer = buffer;
+    }
 
-	@Override
-	public void write(int data) throws IOException {
-		buffer.writeByte(data);
-	}
+    @Override
+    public void write(int data) throws IOException {
+        buffer.writeByte(data);
+    }
 
-	@Override
-	public String toString() {
-		return "NettyBufferOutputStream [buffer=" + buffer + "]";
-	}
+    @Override
+    public String toString() {
+        return "NettyBufferOutputStream [buffer=" + buffer + "]";
+    }
 
 }

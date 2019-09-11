@@ -57,281 +57,281 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 @Sharable
 public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPacket> implements NettyServerConnector<InetSocketAddress>, SessionReceiver<InetSocketAddress>, SessionSender<InetSocketAddress> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NettyUdpServerConnector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyUdpServerConnector.class);
 
-	/** 修复时间间隔 */
-	private static final long FIX_TIME = 1000;
+    /** 修复时间间隔 */
+    private static final long FIX_TIME = 1000;
 
-	/** 最大尝试次数 */
-	private static final int MAXIMUM_TRY_TIMES = 10;
+    /** 最大尝试次数 */
+    private static final int MAXIMUM_TRY_TIMES = 10;
 
-	/** 通讯地址 */
-	private InetSocketAddress address;
-	/** Netty客户端 */
-	private Bootstrap connector;
-	/** Netty事件分组 */
-	private EventLoopGroup eventLoopGroup;
-	/** Netty选项 */
-	private Map<String, Object> options;
-	/** Netty通道 */
-	private Channel channel;
-	/** 会话管理器 */
-	private NettySessionManager<InetSocketAddress> sessionManager;
-	/** 到期时间间隔 */
-	private final int expired;
-	/** 已接收的会话队列 */
-	private LinkedBlockingQueue<CommunicationSession<InetSocketAddress>> receiveSessions = new LinkedBlockingQueue<>();
-	/** 未发送的会话队列 */
-	private LinkedBlockingQueue<CommunicationSession<InetSocketAddress>> sendSessions = new LinkedBlockingQueue<>();
+    /** 通讯地址 */
+    private InetSocketAddress address;
+    /** Netty客户端 */
+    private Bootstrap connector;
+    /** Netty事件分组 */
+    private EventLoopGroup eventLoopGroup;
+    /** Netty选项 */
+    private Map<String, Object> options;
+    /** Netty通道 */
+    private Channel channel;
+    /** 会话管理器 */
+    private NettySessionManager<InetSocketAddress> sessionManager;
+    /** 到期时间间隔 */
+    private final int expired;
+    /** 已接收的会话队列 */
+    private LinkedBlockingQueue<CommunicationSession<InetSocketAddress>> receiveSessions = new LinkedBlockingQueue<>();
+    /** 未发送的会话队列 */
+    private LinkedBlockingQueue<CommunicationSession<InetSocketAddress>> sendSessions = new LinkedBlockingQueue<>();
 
-	/** 状态 */
-	private AtomicReference<CommunicationState> state = new AtomicReference<>(CommunicationState.STOPPED);
-	/** 定时队列 */
-	private final SensitivityQueue<DelayElement<CommunicationSession<InetSocketAddress>>> queue = new SensitivityQueue<>(FIX_TIME);
-	/** 清理者线程 */
-	private final Runnable cleaner = new Runnable() {
+    /** 状态 */
+    private AtomicReference<CommunicationState> state = new AtomicReference<>(CommunicationState.STOPPED);
+    /** 定时队列 */
+    private final SensitivityQueue<DelayElement<CommunicationSession<InetSocketAddress>>> queue = new SensitivityQueue<>(FIX_TIME);
+    /** 清理者线程 */
+    private final Runnable cleaner = new Runnable() {
 
-		public void run() {
-			while (true) {
-				try {
-					DelayElement<CommunicationSession<InetSocketAddress>> element = queue.take();
-					CommunicationSession<InetSocketAddress> content = element.getContent();
-					Instant now = Instant.now();
-					if (now.isAfter(content.getUpdatedAt().plusMillis(expired))) {
-						sessionManager.detachSession(content.getKey());
-					} else {
-						// 将会话放到定时队列
-						Instant expire = now.plusMillis(expired);
-						element = new DelayElement<>(content, expire);
-						queue.offer(element);
-					}
-				} catch (InterruptedException exception) {
-					if (state.get() == CommunicationState.STARTED) {
-						LOGGER.error("清理者异常", exception);
-					} else {
-						// 中断
-						queue.clear();
-						return;
-					}
-				} catch (Exception exception) {
-					// TODO 需要考虑异常处理
-					LOGGER.error("清理会话异常", exception);
-				}
-			}
-		}
+        public void run() {
+            while (true) {
+                try {
+                    DelayElement<CommunicationSession<InetSocketAddress>> element = queue.take();
+                    CommunicationSession<InetSocketAddress> content = element.getContent();
+                    Instant now = Instant.now();
+                    if (now.isAfter(content.getUpdatedAt().plusMillis(expired))) {
+                        sessionManager.detachSession(content.getKey());
+                    } else {
+                        // 将会话放到定时队列
+                        Instant expire = now.plusMillis(expired);
+                        element = new DelayElement<>(content, expire);
+                        queue.offer(element);
+                    }
+                } catch (InterruptedException exception) {
+                    if (state.get() == CommunicationState.STARTED) {
+                        LOGGER.error("清理者异常", exception);
+                    } else {
+                        // 中断
+                        queue.clear();
+                        return;
+                    }
+                } catch (Exception exception) {
+                    // TODO 需要考虑异常处理
+                    LOGGER.error("清理会话异常", exception);
+                }
+            }
+        }
 
-	};
-	/** 发送者线程 */
-	private Runnable sender = new Runnable() {
+    };
+    /** 发送者线程 */
+    private Runnable sender = new Runnable() {
 
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					CommunicationSession<InetSocketAddress> session = sendSessions.take();
-					if (session == null) {
-						Thread.yield();
-					} else {
-						InetSocketAddress address = session.getContext();
-						if (address == null) {
-							// TODO 此处可能存在Bug,按照现在的逻辑,如果通道不存在不应该再放到发送队列.
-							sendSessions.offer(session);
-							continue;
-						}
-						while (session.hasSendMessage()) {
-							try {
-								CommunicationMessage message = session.pullSendMessage();
-								ByteBuf buffer = channel.alloc().buffer();
-								NettyBufferOutputStream outputBuffer = new NettyBufferOutputStream(buffer);
-								DataOutputStream dataOutputStream = new DataOutputStream(outputBuffer);
-								CommunicationMessage.writeTo(dataOutputStream, message);
-								if (LOGGER.isDebugEnabled()) {
-									int length = buffer.readableBytes();
-									byte[] bytes = new byte[length];
-									buffer.getBytes(0, bytes);
-									LOGGER.debug("编码消息:长度{},内容{}", new Object[] { length, bytes });
-								}
-								// 注意:Netty4.0.9之后write()方法不会发送消息,修改为writeAndFlush()/或者write()+flush()
-								channel.writeAndFlush(new DatagramPacket(buffer, address));
-							} catch (Throwable exception) {
-								LOGGER.error("编码消息异常", exception);
-								throw new CommunicationException(exception);
-							}
-						}
-					}
-				} catch (InterruptedException exception) {
-					if (state.get() == CommunicationState.STARTED) {
-						LOGGER.error("发送者异常", exception);
-					} else {
-						return;
-					}
-				} catch (Exception exception) {
-					// TODO 需要考虑异常处理
-					LOGGER.error("发送消息异常", exception);
-				}
-			}
-		}
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    CommunicationSession<InetSocketAddress> session = sendSessions.take();
+                    if (session == null) {
+                        Thread.yield();
+                    } else {
+                        InetSocketAddress address = session.getContext();
+                        if (address == null) {
+                            // TODO 此处可能存在Bug,按照现在的逻辑,如果通道不存在不应该再放到发送队列.
+                            sendSessions.offer(session);
+                            continue;
+                        }
+                        while (session.hasSendMessage()) {
+                            try {
+                                CommunicationMessage message = session.pullSendMessage();
+                                ByteBuf buffer = channel.alloc().buffer();
+                                NettyBufferOutputStream outputBuffer = new NettyBufferOutputStream(buffer);
+                                DataOutputStream dataOutputStream = new DataOutputStream(outputBuffer);
+                                CommunicationMessage.writeTo(dataOutputStream, message);
+                                if (LOGGER.isDebugEnabled()) {
+                                    int length = buffer.readableBytes();
+                                    byte[] bytes = new byte[length];
+                                    buffer.getBytes(0, bytes);
+                                    LOGGER.debug("编码消息:长度{},内容{}", new Object[] { length, bytes });
+                                }
+                                // 注意:Netty4.0.9之后write()方法不会发送消息,修改为writeAndFlush()/或者write()+flush()
+                                channel.writeAndFlush(new DatagramPacket(buffer, address));
+                            } catch (Throwable exception) {
+                                LOGGER.error("编码消息异常", exception);
+                                throw new CommunicationException(exception);
+                            }
+                        }
+                    }
+                } catch (InterruptedException exception) {
+                    if (state.get() == CommunicationState.STARTED) {
+                        LOGGER.error("发送者异常", exception);
+                    } else {
+                        return;
+                    }
+                } catch (Exception exception) {
+                    // TODO 需要考虑异常处理
+                    LOGGER.error("发送消息异常", exception);
+                }
+            }
+        }
 
-	};
+    };
 
-	private Thread cleanThread;
-	private Thread sendThread;
+    private Thread cleanThread;
+    private Thread sendThread;
 
-	public NettyUdpServerConnector(String address, Map<String, Object> options, NettySessionManager<InetSocketAddress> sessionManager, int expired) {
-		// 验证地址
-		if (StringUtility.isEmpty(address)) {
-			throw new IllegalArgumentException();
-		}
+    public NettyUdpServerConnector(String address, Map<String, Object> options, NettySessionManager<InetSocketAddress> sessionManager, int expired) {
+        // 验证地址
+        if (StringUtility.isEmpty(address)) {
+            throw new IllegalArgumentException();
+        }
 
-		int colonIndex = address.lastIndexOf(StringUtility.COLON);
-		if (colonIndex > 0) {
-			String host = address.substring(0, colonIndex);
-			int port = Integer.parseInt(address.substring(colonIndex + 1));
-			if (!StringUtility.ASTERISK.equals(host)) {
-				this.address = new InetSocketAddress(host, port);
-			} else {
-				this.address = new InetSocketAddress(port);
-			}
-		} else {
-			int port = Integer.parseInt(address.substring(colonIndex + 1));
-			this.address = new InetSocketAddress(port);
-		}
-		this.options = options;
-		this.sessionManager = sessionManager;
-		this.expired = expired;
-	}
+        int colonIndex = address.lastIndexOf(StringUtility.COLON);
+        if (colonIndex > 0) {
+            String host = address.substring(0, colonIndex);
+            int port = Integer.parseInt(address.substring(colonIndex + 1));
+            if (!StringUtility.ASTERISK.equals(host)) {
+                this.address = new InetSocketAddress(host, port);
+            } else {
+                this.address = new InetSocketAddress(port);
+            }
+        } else {
+            int port = Integer.parseInt(address.substring(colonIndex + 1));
+            this.address = new InetSocketAddress(port);
+        }
+        this.options = options;
+        this.sessionManager = sessionManager;
+        this.expired = expired;
+    }
 
-	@Override
-	protected void decode(ChannelHandlerContext context, DatagramPacket packet, List<Object> decode) throws Exception {
-		try {
-			ByteBuf buffer = packet.content();
-			NettyBufferInputStream inputBuffer = new NettyBufferInputStream(buffer);
-			DataInputStream dataInputStream = new DataInputStream(inputBuffer);
-			CommunicationMessage message = CommunicationMessage.readFrom(dataInputStream);
-			checkData(packet.sender(), message);
-		} catch (Exception exception) {
-			LOGGER.error("解码消息异常", exception);
-			throw new CommunicationException(exception);
-		}
-	}
+    @Override
+    protected void decode(ChannelHandlerContext context, DatagramPacket packet, List<Object> decode) throws Exception {
+        try {
+            ByteBuf buffer = packet.content();
+            NettyBufferInputStream inputBuffer = new NettyBufferInputStream(buffer);
+            DataInputStream dataInputStream = new DataInputStream(inputBuffer);
+            CommunicationMessage message = CommunicationMessage.readFrom(dataInputStream);
+            checkData(packet.sender(), message);
+        } catch (Exception exception) {
+            LOGGER.error("解码消息异常", exception);
+            throw new CommunicationException(exception);
+        }
+    }
 
-	@Override
-	public void checkData(InetSocketAddress address, CommunicationMessage message) {
-		String key = address.getHostName() + ":" + address.getPort();
-		CommunicationSession<InetSocketAddress> session = sessionManager.getSession(key);
-		if (session == null) {
-			synchronized (sessionManager) {
-				session = sessionManager.getSession(key);
-				if (session == null) {
-					session = sessionManager.attachSession(key, address);
-					// 将会话放到定时队列
-					Instant now = session.getUpdatedAt();
-					Instant expire = now.plusMillis(expired);
-					DelayElement<CommunicationSession<InetSocketAddress>> element = new DelayElement<>(session, expire);
-					queue.offer(element);
-				}
-			}
-		}
-		session.pushReceiveMessage(message);
-		receiveSessions.offer(session);
-	}
+    @Override
+    public void checkData(InetSocketAddress address, CommunicationMessage message) {
+        String key = address.getHostName() + ":" + address.getPort();
+        CommunicationSession<InetSocketAddress> session = sessionManager.getSession(key);
+        if (session == null) {
+            synchronized (sessionManager) {
+                session = sessionManager.getSession(key);
+                if (session == null) {
+                    session = sessionManager.attachSession(key, address);
+                    // 将会话放到定时队列
+                    Instant now = session.getUpdatedAt();
+                    Instant expire = now.plusMillis(expired);
+                    DelayElement<CommunicationSession<InetSocketAddress>> element = new DelayElement<>(session, expire);
+                    queue.offer(element);
+                }
+            }
+        }
+        session.pushReceiveMessage(message);
+        receiveSessions.offer(session);
+    }
 
-	@Override
-	public CommunicationSession<InetSocketAddress> pullSession() {
-		try {
-			return receiveSessions.take();
-		} catch (Exception exception) {
-			throw new CommunicationException(exception);
-		}
-	}
+    @Override
+    public CommunicationSession<InetSocketAddress> pullSession() {
+        try {
+            return receiveSessions.take();
+        } catch (Exception exception) {
+            throw new CommunicationException(exception);
+        }
+    }
 
-	@Override
-	public int getReceiveSize() {
-		return receiveSessions.size();
-	}
+    @Override
+    public int getReceiveSize() {
+        return receiveSessions.size();
+    }
 
-	@Override
-	public void pushSession(CommunicationSession<InetSocketAddress> session) {
-		sendSessions.offer(session);
-	}
+    @Override
+    public void pushSession(CommunicationSession<InetSocketAddress> session) {
+        sendSessions.offer(session);
+    }
 
-	@Override
-	public int getSendSize() {
-		return sendSessions.size();
-	}
+    @Override
+    public int getSendSize() {
+        return sendSessions.size();
+    }
 
-	@Override
-	public CommunicationState getState() {
-		return state.get();
-	}
+    @Override
+    public CommunicationState getState() {
+        return state.get();
+    }
 
-	@Override
-	public void start() {
-		if (!state.compareAndSet(CommunicationState.STOPPED, CommunicationState.STARTED)) {
-			throw new CommunicationException();
-		}
-		connector = new Bootstrap();
-		for (Entry<String, Object> keyValue : options.entrySet()) {
-			ChannelOption<Object> key = ChannelOption.valueOf(keyValue.getKey());
-			Object value = keyValue.getValue();
-			connector.option(key, value);
-		}
-		eventLoopGroup = new NioEventLoopGroup(1, new NameThreadFactory("服务端主EventLoop线程"));
-		connector.group(eventLoopGroup);
-		connector.channel(NioDatagramChannel.class);
-		connector.handler(new ChannelInitializer<Channel>() {
-			@Override
-			protected void initChannel(Channel channel) throws Exception {
-				ChannelPipeline pipeline = channel.pipeline();
-				pipeline.addLast("connector", NettyUdpServerConnector.this);
-			}
-		});
-		for (int tryTimes = 0; tryTimes < MAXIMUM_TRY_TIMES; tryTimes++) {
-			try {
-				tryTimes++;
-				connector.localAddress(address);
-				ChannelFuture bind = connector.bind();
-				channel = bind.sync().channel();
+    @Override
+    public void start() {
+        if (!state.compareAndSet(CommunicationState.STOPPED, CommunicationState.STARTED)) {
+            throw new CommunicationException();
+        }
+        connector = new Bootstrap();
+        for (Entry<String, Object> keyValue : options.entrySet()) {
+            ChannelOption<Object> key = ChannelOption.valueOf(keyValue.getKey());
+            Object value = keyValue.getValue();
+            connector.option(key, value);
+        }
+        eventLoopGroup = new NioEventLoopGroup(1, new NameThreadFactory("服务端主EventLoop线程"));
+        connector.group(eventLoopGroup);
+        connector.channel(NioDatagramChannel.class);
+        connector.handler(new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel channel) throws Exception {
+                ChannelPipeline pipeline = channel.pipeline();
+                pipeline.addLast("connector", NettyUdpServerConnector.this);
+            }
+        });
+        for (int tryTimes = 0; tryTimes < MAXIMUM_TRY_TIMES; tryTimes++) {
+            try {
+                tryTimes++;
+                connector.localAddress(address);
+                ChannelFuture bind = connector.bind();
+                channel = bind.sync().channel();
 
-				cleanThread = new Thread(cleaner);
-				cleanThread.setDaemon(true);
-				cleanThread.start();
+                cleanThread = new Thread(cleaner);
+                cleanThread.setDaemon(true);
+                cleanThread.start();
 
-				sendThread = new Thread(sender);
-				sendThread.setDaemon(true);
-				sendThread.start();
-				return;
-			} catch (Throwable throwable) {
-				String message = StringUtility.format("服务端异常");
-				LOGGER.error(message, throwable);
-			}
-		}
-		throw new CommunicationException("服务端异常");
-	}
+                sendThread = new Thread(sender);
+                sendThread.setDaemon(true);
+                sendThread.start();
+                return;
+            } catch (Throwable throwable) {
+                String message = StringUtility.format("服务端异常");
+                LOGGER.error(message, throwable);
+            }
+        }
+        throw new CommunicationException("服务端异常");
+    }
 
-	@Override
-	public void stop() {
-		if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
-			throw new CommunicationException();
-		}
-		if (channel != null) {
-			channel.close().awaitUninterruptibly();
-		}
-		eventLoopGroup.shutdownGracefully();
-		cleanThread.interrupt();
-		sendThread.interrupt();
-		while (cleanThread.isAlive() || sendThread.isAlive()) {
-			Thread.yield();
-		}
-		Collection<CommunicationSession<InetSocketAddress>> sessions = sessionManager.getSessions(null);
-		for (CommunicationSession<InetSocketAddress> session : sessions) {
-			sessionManager.detachSession(session.getKey());
-		}
-	}
+    @Override
+    public void stop() {
+        if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
+            throw new CommunicationException();
+        }
+        if (channel != null) {
+            channel.close().awaitUninterruptibly();
+        }
+        eventLoopGroup.shutdownGracefully();
+        cleanThread.interrupt();
+        sendThread.interrupt();
+        while (cleanThread.isAlive() || sendThread.isAlive()) {
+            Thread.yield();
+        }
+        Collection<CommunicationSession<InetSocketAddress>> sessions = sessionManager.getSessions(null);
+        for (CommunicationSession<InetSocketAddress> session : sessions) {
+            sessionManager.detachSession(session.getKey());
+        }
+    }
 
-	@Override
-	public String getAddress() {
-		return StringUtility.format("{}:{}", address.getHostName(), address.getPort());
-	}
+    @Override
+    public String getAddress() {
+        return StringUtility.format("{}:{}", address.getHostName(), address.getPort());
+    }
 
 }

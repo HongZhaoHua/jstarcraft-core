@@ -26,63 +26,63 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  */
 public class ProtocolContentCodec implements ContentCodec {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProtocolContentCodec.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProtocolContentCodec.class);
 
-	private CodecDefinition codecDefinition;
+    private CodecDefinition codecDefinition;
 
-	public ProtocolContentCodec(CodecDefinition definition) {
-		this.codecDefinition = definition;
-	}
+    public ProtocolContentCodec(CodecDefinition definition) {
+        this.codecDefinition = definition;
+    }
 
-	@Override
-	public Object decode(Type type, byte[] content) {
-		try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content); DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream)) {
-			return decode(type, dataInputStream);
-		} catch (Exception exception) {
-			String message = "Protocol解码失败:" + exception.getMessage();
-			LOGGER.error(message, exception);
-			throw new CodecException(message, exception);
-		}
-	}
+    @Override
+    public Object decode(Type type, byte[] content) {
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content); DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream)) {
+            return decode(type, dataInputStream);
+        } catch (Exception exception) {
+            String message = "Protocol解码失败:" + exception.getMessage();
+            LOGGER.error(message, exception);
+            throw new CodecException(message, exception);
+        }
+    }
 
-	@Override
-	public Object decode(Type type, InputStream stream) {
-		try {
-			ProtocolReader context = new ProtocolReader(stream, codecDefinition);
-			ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
-			ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
-			return converter.readValueFrom(context, type, classDefinition);
-		} catch (Exception exception) {
-			String message = "Protocol解码失败:" + exception.getMessage();
-			LOGGER.error(message, exception);
-			throw new CodecException(message, exception);
-		}
-	}
+    @Override
+    public Object decode(Type type, InputStream stream) {
+        try {
+            ProtocolReader context = new ProtocolReader(stream, codecDefinition);
+            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
+            return converter.readValueFrom(context, type, classDefinition);
+        } catch (Exception exception) {
+            String message = "Protocol解码失败:" + exception.getMessage();
+            LOGGER.error(message, exception);
+            throw new CodecException(message, exception);
+        }
+    }
 
-	@Override
-	public byte[] encode(Type type, Object content) {
-		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
-			encode(type, content, dataOutputStream);
-			return byteArrayOutputStream.toByteArray();
-		} catch (Exception exception) {
-			String message = "Protocol编码失败:" + exception.getMessage();
-			LOGGER.error(message, exception);
-			throw new CodecException(message, exception);
-		}
-	}
+    @Override
+    public byte[] encode(Type type, Object content) {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
+            encode(type, content, dataOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception exception) {
+            String message = "Protocol编码失败:" + exception.getMessage();
+            LOGGER.error(message, exception);
+            throw new CodecException(message, exception);
+        }
+    }
 
-	@Override
-	public void encode(Type type, Object content, OutputStream stream) {
-		try {
-			ProtocolWriter context = new ProtocolWriter(stream, codecDefinition);
-			ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
-			ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
-			converter.writeValueTo(context, type, classDefinition, content);
-		} catch (Exception exception) {
-			String message = "Protocol编码失败:" + exception.getMessage();
-			LOGGER.error(message, exception);
-			throw new CodecException(message, exception);
-		}
-	}
+    @Override
+    public void encode(Type type, Object content, OutputStream stream) {
+        try {
+            ProtocolWriter context = new ProtocolWriter(stream, codecDefinition);
+            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
+            converter.writeValueTo(context, type, classDefinition, content);
+        } catch (Exception exception) {
+            String message = "Protocol编码失败:" + exception.getMessage();
+            LOGGER.error(message, exception);
+            throw new CodecException(message, exception);
+        }
+    }
 
 }

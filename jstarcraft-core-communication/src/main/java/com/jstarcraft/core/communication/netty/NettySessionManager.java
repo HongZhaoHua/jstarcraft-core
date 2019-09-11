@@ -19,40 +19,40 @@ import com.jstarcraft.core.communication.session.SessionMatcher;
  */
 public class NettySessionManager<T> implements SessionManager<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NettySessionManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettySessionManager.class);
 
-	/** 会话映射 */
-	private final ConcurrentHashMap<String, CommunicationSession<T>> sessions = new ConcurrentHashMap<>();
+    /** 会话映射 */
+    private final ConcurrentHashMap<String, CommunicationSession<T>> sessions = new ConcurrentHashMap<>();
 
-	@Override
-	public CommunicationSession<T> attachSession(String key, T context) {
-		CommunicationSession<T> session = NettySession.instanceOf(key, context);
-		return (sessions.putIfAbsent(key, session) == null) ? session : null;
-	}
+    @Override
+    public CommunicationSession<T> attachSession(String key, T context) {
+        CommunicationSession<T> session = NettySession.instanceOf(key, context);
+        return (sessions.putIfAbsent(key, session) == null) ? session : null;
+    }
 
-	@Override
-	public boolean detachSession(String key) {
-		return sessions.remove(key) != null;
-	}
+    @Override
+    public boolean detachSession(String key) {
+        return sessions.remove(key) != null;
+    }
 
-	@Override
-	public CommunicationSession<T> getSession(String key) {
-		CommunicationSession<T> session = sessions.get(key);
-		return session;
-	}
+    @Override
+    public CommunicationSession<T> getSession(String key) {
+        CommunicationSession<T> session = sessions.get(key);
+        return session;
+    }
 
-	@Override
-	public List<CommunicationSession<T>> getSessions(SessionMatcher<T> matcher) {
-		if (matcher == null) {
-			return new ArrayList<>(sessions.values());
-		}
-		LinkedList<CommunicationSession<T>> values = new LinkedList<>();
-		for (CommunicationSession<T> session : sessions.values()) {
-			if (matcher.match(session)) {
-				values.addLast(session);
-			}
-		}
-		return values;
-	}
+    @Override
+    public List<CommunicationSession<T>> getSessions(SessionMatcher<T> matcher) {
+        if (matcher == null) {
+            return new ArrayList<>(sessions.values());
+        }
+        LinkedList<CommunicationSession<T>> values = new LinkedList<>();
+        for (CommunicationSession<T> session : sessions.values()) {
+            if (matcher.match(session)) {
+                values.addLast(session);
+            }
+        }
+        return values;
+    }
 
 }

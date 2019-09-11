@@ -12,60 +12,60 @@ import com.jstarcraft.core.resource.adapter.FormatAdapter;
  */
 public class FormatDefinition {
 
-	/** 适配器 */
-	private final FormatAdapter adapter;
+    /** 适配器 */
+    private final FormatAdapter adapter;
 
-	/** 名称 */
-	private final String name;
+    /** 名称 */
+    private final String name;
 
-	/** 路径 */
-	private final String path;
+    /** 路径 */
+    private final String path;
 
-	/** 后缀 */
-	private final String suffix;
+    /** 后缀 */
+    private final String suffix;
 
-	public FormatDefinition(FormatAdapter adapter, String name, String path, String suffix) {
-		this.adapter = adapter;
-		this.name = name;
-		this.path = path;
-		this.suffix = suffix;
-	}
+    public FormatDefinition(FormatAdapter adapter, String name, String path, String suffix) {
+        this.adapter = adapter;
+        this.name = name;
+        this.path = path;
+        this.suffix = suffix;
+    }
 
-	public FormatAdapter getAdapter() {
-		return adapter;
-	}
+    public FormatAdapter getAdapter() {
+        return adapter;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public String getSuffix() {
-		return suffix;
-	}
+    public String getSuffix() {
+        return suffix;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (getClass() != object.getClass())
-			return false;
-		FormatDefinition that = (FormatDefinition) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.name, that.name);
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        FormatDefinition that = (FormatDefinition) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.name, that.name);
+        return equal.isEquals();
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(name);
-		return hash.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(name);
+        return hash.toHashCode();
+    }
 
 }

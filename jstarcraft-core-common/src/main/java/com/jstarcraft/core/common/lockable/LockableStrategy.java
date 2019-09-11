@@ -8,12 +8,12 @@ package com.jstarcraft.core.common.lockable;
  */
 public interface LockableStrategy {
 
-	/**
-	 * 获取指定的参数对应的锁
-	 * 
-	 * @param arguments
-	 * @return
-	 */
-	Lockable getLock(Object... arguments);
+    /**
+     * 获取指定的参数对应的锁
+     * 
+     * @param arguments
+     * @return
+     */
+    Lockable getLock(Object... arguments);
 
 }

@@ -18,7 +18,7 @@ import com.jstarcraft.core.communication.message.MessageFormat;
 @MessageCodec(inputFormat = MessageFormat.JSON, outputFormat = MessageFormat.JSON)
 public interface MockClientInterface {
 
-	@CommunicationCommand(code = 0)
-	public void testExecute(@CommandVariable(type = VariableType.MESSAGE_BODY) UserObject object);
+    @CommunicationCommand(code = 0)
+    public void testExecute(@CommandVariable(type = VariableType.MESSAGE_BODY) UserObject object);
 
 }

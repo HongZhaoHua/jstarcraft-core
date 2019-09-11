@@ -7,16 +7,16 @@ package com.jstarcraft.core.orm.berkeley;
  */
 public interface BerkeleyMonitor {
 
-	/** 开启通知 */
-	void notifyOpen(BerkeleyTransactor transactor);
+    /** 开启通知 */
+    void notifyOpen(BerkeleyTransactor transactor);
 
-	/** 成功通知 */
-	void notifySuccess(BerkeleyTransactor transactor);
+    /** 成功通知 */
+    void notifySuccess(BerkeleyTransactor transactor);
 
-	/** 失败通知 */
-	void notifyFailure(BerkeleyTransactor transactor);
+    /** 失败通知 */
+    void notifyFailure(BerkeleyTransactor transactor);
 
-	/** 关闭通知 */
-	void notifyClose(BerkeleyTransactor transactor);
+    /** 关闭通知 */
+    void notifyClose(BerkeleyTransactor transactor);
 
 }

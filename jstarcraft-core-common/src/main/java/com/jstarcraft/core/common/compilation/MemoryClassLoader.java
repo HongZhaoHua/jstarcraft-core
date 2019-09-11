@@ -13,34 +13,34 @@ import java.util.Map;
  */
 public class MemoryClassLoader extends URLClassLoader {
 
-	private Map<String, byte[]> bytes = new HashMap<String, byte[]>();
+    private Map<String, byte[]> bytes = new HashMap<String, byte[]>();
 
-	public MemoryClassLoader(Map<String, byte[]> bytes) {
-		this(bytes, Thread.currentThread().getContextClassLoader());
-	}
+    public MemoryClassLoader(Map<String, byte[]> bytes) {
+        this(bytes, Thread.currentThread().getContextClassLoader());
+    }
 
-	public MemoryClassLoader(Map<String, byte[]> bytes, ClassLoader container) {
-		super(new URL[0], container);
-		this.bytes.putAll(bytes);
-	}
+    public MemoryClassLoader(Map<String, byte[]> bytes, ClassLoader container) {
+        super(new URL[0], container);
+        this.bytes.putAll(bytes);
+    }
 
-	@Override
-	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		try {
-			Class<?> clazz = super.findClass(name);
-			return clazz;
-		} catch (ClassNotFoundException exception) {
-			byte[] buffer = bytes.get(name);
-			if (buffer == null) {
-				throw exception;
-			} else {
-				return super.defineClass(name, buffer, 0, buffer.length);
-			}
-		}
-	}
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        try {
+            Class<?> clazz = super.findClass(name);
+            return clazz;
+        } catch (ClassNotFoundException exception) {
+            byte[] buffer = bytes.get(name);
+            if (buffer == null) {
+                throw exception;
+            } else {
+                return super.defineClass(name, buffer, 0, buffer.length);
+            }
+        }
+    }
 
-	public byte[] getBytes(String name) {
-		return bytes.get(name);
-	}
+    public byte[] getBytes(String name) {
+        return bytes.get(name);
+    }
 
 }

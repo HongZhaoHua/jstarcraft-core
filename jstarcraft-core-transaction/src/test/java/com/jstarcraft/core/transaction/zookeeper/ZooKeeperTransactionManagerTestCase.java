@@ -20,53 +20,53 @@ import com.jstarcraft.core.transaction.zookeeper.ZooKeeperTransactionManager;
 
 public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestCase {
 
-	private TestingServer testZooKeeper;
+    private TestingServer testZooKeeper;
 
-	private CuratorFramework curator;
+    private CuratorFramework curator;
 
-	@Before
-	public void testBefore() throws Exception {
-		testZooKeeper = new TestingServer();
-		curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
-		curator.start();
-	}
+    @Before
+    public void testBefore() throws Exception {
+        testZooKeeper = new TestingServer();
+        curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
+        curator.start();
+    }
 
-	@After
-	public void testAfter() throws Exception {
-		curator.close();
-		testZooKeeper.stop();
-	}
+    @After
+    public void testAfter() throws Exception {
+        curator.close();
+        testZooKeeper.stop();
+    }
 
-	@Override
-	protected TransactionManager getDistributionManager() {
-		return new ZooKeeperTransactionManager(curator);
-	}
+    @Override
+    protected TransactionManager getDistributionManager() {
+        return new ZooKeeperTransactionManager(curator);
+    }
 
-	@Test
-	public void testCuratorStop() throws Exception {
-		{
-			ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
-			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			TransactionDefinition definition = new TransactionDefinition(name, most);
-			manager.lock(definition);
-			Assert.assertNotNull(curator.checkExists().forPath(manager.getNodePath(definition)));
-			curator.close();
-			try {
-				manager.unlock(definition);
-				Assert.fail();
-			} catch (TransactionUnlockException exception) {
-			}
-		}
+    @Test
+    public void testCuratorStop() throws Exception {
+        {
+            ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
+            Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
+            TransactionDefinition definition = new TransactionDefinition(name, most);
+            manager.lock(definition);
+            Assert.assertNotNull(curator.checkExists().forPath(manager.getNodePath(definition)));
+            curator.close();
+            try {
+                manager.unlock(definition);
+                Assert.fail();
+            } catch (TransactionUnlockException exception) {
+            }
+        }
 
-		{
-			curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
-			curator.start();
-			ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
-			Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-			TransactionDefinition definition = new TransactionDefinition(name, most);
-			Assert.assertNull(curator.checkExists().forPath(manager.getNodePath(definition)));
-			manager.lock(definition);
-		}
-	}
+        {
+            curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
+            curator.start();
+            ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
+            Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
+            TransactionDefinition definition = new TransactionDefinition(name, most);
+            Assert.assertNull(curator.checkExists().forPath(manager.getNodePath(definition)));
+            manager.lock(definition);
+        }
+    }
 
 }

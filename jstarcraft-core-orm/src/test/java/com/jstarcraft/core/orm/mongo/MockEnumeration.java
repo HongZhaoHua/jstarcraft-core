@@ -2,12 +2,12 @@ package com.jstarcraft.core.orm.mongo;
 
 public enum MockEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG,
-	
-	RANDOM;
+    ZERG,
+
+    RANDOM;
 
 }

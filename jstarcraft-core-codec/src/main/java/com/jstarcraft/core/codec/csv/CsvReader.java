@@ -18,24 +18,24 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  */
 public class CsvReader extends CsvContext {
 
-	private Iterator<String> inputStream;
+    private Iterator<String> inputStream;
 
-	public CsvReader(InputStream inputStream, CodecDefinition definition) {
-		super(definition);
-		InputStreamReader buffer = new InputStreamReader(inputStream);
-		try (CSVParser input = new CSVParser(buffer, FORMAT)) {
-			Iterator<CSVRecord> iterator = input.iterator();
-			if (iterator.hasNext()) {
-				CSVRecord values = iterator.next();
-				this.inputStream = values.iterator();
-			}
-		} catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
+    public CsvReader(InputStream inputStream, CodecDefinition definition) {
+        super(definition);
+        InputStreamReader buffer = new InputStreamReader(inputStream);
+        try (CSVParser input = new CSVParser(buffer, FORMAT)) {
+            Iterator<CSVRecord> iterator = input.iterator();
+            if (iterator.hasNext()) {
+                CSVRecord values = iterator.next();
+                this.inputStream = values.iterator();
+            }
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
-	public Iterator<String> getInputStream() {
-		return inputStream;
-	}
+    public Iterator<String> getInputStream() {
+        return inputStream;
+    }
 
 }

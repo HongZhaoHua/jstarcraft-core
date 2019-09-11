@@ -10,12 +10,12 @@ import java.util.List;
  */
 public interface RouteStrategy {
 
-	/**
-	 * 选择数据源
-	 * 
-	 * @param keys
-	 * @return
-	 */
-	String chooseDataSource(List<String> keys);
+    /**
+     * 选择数据源
+     * 
+     * @param keys
+     * @return
+     */
+    String chooseDataSource(List<String> keys);
 
 }

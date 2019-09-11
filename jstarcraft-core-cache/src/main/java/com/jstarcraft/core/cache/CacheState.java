@@ -8,9 +8,9 @@ package com.jstarcraft.core.cache;
  */
 public enum CacheState {
 
-	/** 启动 */
-	STARTED,
-	/** 停止 */
-	STOPPED;
+    /** 启动 */
+    STARTED,
+    /** 停止 */
+    STOPPED;
 
 }

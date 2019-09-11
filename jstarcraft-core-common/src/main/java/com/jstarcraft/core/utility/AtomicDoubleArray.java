@@ -5,7 +5,6 @@ import static java.lang.Double.longBitsToDouble;
 
 import java.util.concurrent.atomic.AtomicLongArray;
 
-
 public class AtomicDoubleArray implements java.io.Serializable {
     private static final long serialVersionUID = 0L;
 

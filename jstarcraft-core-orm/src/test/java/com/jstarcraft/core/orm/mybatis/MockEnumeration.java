@@ -2,10 +2,10 @@ package com.jstarcraft.core.orm.mybatis;
 
 public enum MockEnumeration {
 
-	PROTOSS,
+    PROTOSS,
 
-	TERRAN,
+    TERRAN,
 
-	ZERG;
+    ZERG;
 
 }

@@ -21,74 +21,74 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class LuaExpression implements ScriptExpression {
 
-	private final static String ENGINE_NAME = "luaj";
+    private final static String ENGINE_NAME = "luaj";
 
-	private class LuaHolder {
+    private class LuaHolder {
 
-		private ScriptScope scope;
+        private ScriptScope scope;
 
-		private Bindings attributes;
+        private Bindings attributes;
 
-		private CompiledScript script;
+        private CompiledScript script;
 
-		private LuaHolder(ScriptScope scope, String expression) {
-			try {
-				this.scope = scope.copyScope();
-				ScriptEngineManager factory = new ScriptEngineManager();
-				ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
-				this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
-				Compilable compilable = (Compilable) engine;
-				this.script = compilable.compile(expression);
-			} catch (ScriptException exception) {
-				throw new ScriptExpressionException(exception);
-			}
-		}
+        private LuaHolder(ScriptScope scope, String expression) {
+            try {
+                this.scope = scope.copyScope();
+                ScriptEngineManager factory = new ScriptEngineManager();
+                ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+                this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
+                Compilable compilable = (Compilable) engine;
+                this.script = compilable.compile(expression);
+            } catch (ScriptException exception) {
+                throw new ScriptExpressionException(exception);
+            }
+        }
 
-	}
+    }
 
-	private ThreadLocal<LuaHolder> threadHolder = new ThreadLocal<LuaHolder>() {
+    private ThreadLocal<LuaHolder> threadHolder = new ThreadLocal<LuaHolder>() {
 
-		@Override
-		protected LuaHolder initialValue() {
-			LuaHolder holder = new LuaHolder(scope, expression);
-			return holder;
-		}
+        @Override
+        protected LuaHolder initialValue() {
+            LuaHolder holder = new LuaHolder(scope, expression);
+            return holder;
+        }
 
-	};
+    };
 
-	private ScriptScope scope;
+    private ScriptScope scope;
 
-	private String expression;
+    private String expression;
 
-	public LuaExpression(ScriptContext context, ScriptScope scope, String expression) {
-		StringBuilder buffer = new StringBuilder();
-		for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
-			buffer.append(StringUtility.format("local {} = luajava.bindClass('{}'); ", keyValue.getKey(), keyValue.getValue().getName()));
-		}
-		for (Entry<String, Method> keyValue : context.getMethods().entrySet()) {
-			buffer.append(StringUtility.format("local {} = luajava.bindClass('{}').{}; ", keyValue.getKey(), keyValue.getValue().getDeclaringClass().getName(), keyValue.getValue().getName()));
-		}
-		buffer.append(expression);
-		this.scope = scope.copyScope();
-		this.expression = buffer.toString();
-	}
+    public LuaExpression(ScriptContext context, ScriptScope scope, String expression) {
+        StringBuilder buffer = new StringBuilder();
+        for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
+            buffer.append(StringUtility.format("local {} = luajava.bindClass('{}'); ", keyValue.getKey(), keyValue.getValue().getName()));
+        }
+        for (Entry<String, Method> keyValue : context.getMethods().entrySet()) {
+            buffer.append(StringUtility.format("local {} = luajava.bindClass('{}').{}; ", keyValue.getKey(), keyValue.getValue().getDeclaringClass().getName(), keyValue.getValue().getName()));
+        }
+        buffer.append(expression);
+        this.scope = scope.copyScope();
+        this.expression = buffer.toString();
+    }
 
-	@Override
-	public ScriptScope getScope() {
-		return threadHolder.get().scope;
-	}
+    @Override
+    public ScriptScope getScope() {
+        return threadHolder.get().scope;
+    }
 
-	@Override
-	public <T> T doWith(Class<T> clazz) {
-		try {
-			LuaHolder holder = threadHolder.get();
-			holder.attributes.putAll(holder.scope.getAttributes());
-			CompiledScript script = holder.script;
-			T object = (T) script.eval();
-			return object;
-		} catch (ScriptException exception) {
-			throw new ScriptExpressionException(exception);
-		}
-	}
+    @Override
+    public <T> T doWith(Class<T> clazz) {
+        try {
+            LuaHolder holder = threadHolder.get();
+            holder.attributes.putAll(holder.scope.getAttributes());
+            CompiledScript script = holder.script;
+            T object = (T) script.eval();
+            return object;
+        } catch (ScriptException exception) {
+            throw new ScriptExpressionException(exception);
+        }
+    }
 
 }

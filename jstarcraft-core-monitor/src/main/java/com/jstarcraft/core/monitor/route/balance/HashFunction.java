@@ -8,6 +8,6 @@ package com.jstarcraft.core.monitor.route.balance;
  */
 public interface HashFunction {
 
-	int hash(String data);
+    int hash(String data);
 
 }

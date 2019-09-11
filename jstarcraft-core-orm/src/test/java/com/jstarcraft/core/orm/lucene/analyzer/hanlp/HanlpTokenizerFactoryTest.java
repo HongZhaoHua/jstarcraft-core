@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.jstarcraft.core.orm.lucene.analyzer.hanlp.HanlpTokenizerFactory;
 
-public class HanlpTokenizerFactoryTest  {
+public class HanlpTokenizerFactoryTest {
 
     @Test
     public void testCreate() throws Exception {

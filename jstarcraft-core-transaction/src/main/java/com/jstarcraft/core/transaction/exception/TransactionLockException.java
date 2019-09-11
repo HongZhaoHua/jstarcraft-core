@@ -9,22 +9,22 @@ import com.jstarcraft.core.transaction.TransactionManager;
  */
 public class TransactionLockException extends TransactionException {
 
-	private static final long serialVersionUID = -8052326981691061048L;
+    private static final long serialVersionUID = -8052326981691061048L;
 
-	public TransactionLockException() {
-		super();
-	}
+    public TransactionLockException() {
+        super();
+    }
 
-	public TransactionLockException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public TransactionLockException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public TransactionLockException(String message) {
-		super(message);
-	}
+    public TransactionLockException(String message) {
+        super(message);
+    }
 
-	public TransactionLockException(Throwable exception) {
-		super(exception);
-	}
+    public TransactionLockException(Throwable exception) {
+        super(exception);
+    }
 
 }

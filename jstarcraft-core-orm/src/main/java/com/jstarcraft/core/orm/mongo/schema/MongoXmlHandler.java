@@ -11,9 +11,9 @@ import com.jstarcraft.core.orm.mongo.schema.MongoXmlParser.ElementDefinition;
  */
 public class MongoXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new MongoXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new MongoXmlParser());
+    }
 
 }

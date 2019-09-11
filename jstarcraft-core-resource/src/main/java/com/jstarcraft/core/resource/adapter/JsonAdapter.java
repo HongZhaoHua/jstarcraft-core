@@ -21,24 +21,24 @@ import com.jstarcraft.core.resource.exception.StorageException;
  */
 public class JsonAdapter implements FormatAdapter {
 
-	/** 类型转换器(基于Jackson) */
-	private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
+    /** 类型转换器(基于Jackson) */
+    private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
 
-	static {
-		TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		JavaTimeModule module = new JavaTimeModule();
-		TYPE_CONVERTER.registerModule(module);
-	}
+    static {
+        TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        JavaTimeModule module = new JavaTimeModule();
+        TYPE_CONVERTER.registerModule(module);
+    }
 
-	@Override
-	public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
-		try {
-			JavaType type = JsonUtility.type2Java(TypeUtility.parameterize(LinkedList.class, clazz));
-			List<E> list = TYPE_CONVERTER.readValue(stream, type);
-			return list.iterator();
-		} catch (Exception exception) {
-			throw new StorageException("遍历JSON异常", exception);
-		}
-	}
+    @Override
+    public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
+        try {
+            JavaType type = JsonUtility.type2Java(TypeUtility.parameterize(LinkedList.class, clazz));
+            List<E> list = TYPE_CONVERTER.readValue(stream, type);
+            return list.iterator();
+        } catch (Exception exception) {
+            throw new StorageException("遍历JSON异常", exception);
+        }
+    }
 
 }

@@ -129,7 +129,7 @@ public class LuceneEngine implements AutoCloseable {
         } finally {
             unlockWrite();
         }
-        
+
         // 此处需要防止有线程在使用时关闭.
         try {
             lockRead();

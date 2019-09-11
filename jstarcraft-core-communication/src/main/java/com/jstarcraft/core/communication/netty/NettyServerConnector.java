@@ -9,11 +9,11 @@ package com.jstarcraft.core.communication.netty;
  */
 public interface NettyServerConnector<T> extends NettyConnector<T> {
 
-	/**
-	 * 获取通道地址
-	 * 
-	 * @return
-	 */
-	String getAddress();
+    /**
+     * 获取通道地址
+     * 
+     * @return
+     */
+    String getAddress();
 
 }

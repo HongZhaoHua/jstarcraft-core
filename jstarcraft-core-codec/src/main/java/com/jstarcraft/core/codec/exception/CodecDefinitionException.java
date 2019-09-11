@@ -6,24 +6,24 @@ package com.jstarcraft.core.codec.exception;
  * @author Birdy
  *
  */
-public class CodecDefinitionException extends CodecException{
-	
-	private static final long serialVersionUID = 8408961463958421623L;
+public class CodecDefinitionException extends CodecException {
 
-	public CodecDefinitionException() {
-		super();
-	}
+    private static final long serialVersionUID = 8408961463958421623L;
 
-	public CodecDefinitionException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public CodecDefinitionException() {
+        super();
+    }
 
-	public CodecDefinitionException(String message) {
-		super(message);
-	}
+    public CodecDefinitionException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public CodecDefinitionException(Throwable exception) {
-		super(exception);
-	}
-	
+    public CodecDefinitionException(String message) {
+        super(message);
+    }
+
+    public CodecDefinitionException(Throwable exception) {
+        super(exception);
+    }
+
 }

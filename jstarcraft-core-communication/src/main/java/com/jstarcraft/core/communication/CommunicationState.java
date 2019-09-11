@@ -8,9 +8,9 @@ package com.jstarcraft.core.communication;
  */
 public enum CommunicationState {
 
-	/** 启动 */
-	STARTED,
-	/** 停止 */
-	STOPPED;
+    /** 启动 */
+    STARTED,
+    /** 停止 */
+    STOPPED;
 
 }

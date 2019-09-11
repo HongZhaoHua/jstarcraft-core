@@ -16,62 +16,62 @@ import com.sleepycat.persist.model.PrimaryKey;
 @BerkeleyConfiguration(store = "migration")
 public class Information implements IdentityObject<Long> {
 
-	@PrimaryKey(sequence = "Entity_ID")
-	private long id;
+    @PrimaryKey(sequence = "Entity_ID")
+    private long id;
 
-	private int owner;
+    private int owner;
 
-	private String pack;
+    private String pack;
 
-	private String name;
+    private String name;
 
-	private Persist persist;
+    private Persist persist;
 
-	private Map<Enumerate, Persist> map;
+    private Map<Enumerate, Persist> map;
 
-	private List<Persist> list;
+    private List<Persist> list;
 
-	private AtomicInteger integer;
+    private AtomicInteger integer;
 
-	Information() {
-	}
+    Information() {
+    }
 
-	public Information(int owner, String pack, String name, Map<Enumerate, Persist> map) {
-		this.owner = owner;
-		this.pack = pack;
-		this.name = name;
-		this.map = map;
-		this.persist = new Persist();
-		this.list = new ArrayList<Persist>();
-		for (int index = 0; index < 5; index++) {
-			this.list.add(this.persist);
-		}
-		integer = new AtomicInteger();
-	}
+    public Information(int owner, String pack, String name, Map<Enumerate, Persist> map) {
+        this.owner = owner;
+        this.pack = pack;
+        this.name = name;
+        this.map = map;
+        this.persist = new Persist();
+        this.list = new ArrayList<Persist>();
+        for (int index = 0; index < 5; index++) {
+            this.list.add(this.persist);
+        }
+        integer = new AtomicInteger();
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public int getOwner() {
-		return owner;
-	}
+    public int getOwner() {
+        return owner;
+    }
 
-	public String getPack() {
-		return pack;
-	}
+    public String getPack() {
+        return pack;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Map<Enumerate, Persist> getMap() {
-		return map;
-	}
+    public Map<Enumerate, Persist> getMap() {
+        return map;
+    }
 
-	public AtomicInteger getInteger() {
-		return integer;
-	}
+    public AtomicInteger getInteger() {
+        return integer;
+    }
 
 }

@@ -15,45 +15,45 @@ import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class TransactionManagerTestCase {
-	
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	protected final String name = "jstarcraft";
 
-	protected abstract TransactionManager getDistributionManager();
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Test
-	public void test() {
-		try {
-			TransactionManager manager = getDistributionManager();
+    protected final String name = "jstarcraft";
 
-			{
-				Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
-				TransactionDefinition definition = new TransactionDefinition(name, most);
-				manager.lock(definition);
-				try {
-					manager.lock(definition);
-					Assert.fail();
-				} catch (TransactionLockException exception) {
-				}
-				manager.unlock(definition);
-			}
+    protected abstract TransactionManager getDistributionManager();
 
-			{
-				Instant most = Instant.now().plus(1, ChronoUnit.SECONDS);
-				TransactionDefinition definition = new TransactionDefinition(name, most);
-				manager.lock(definition);
-				Thread.sleep(1500);
-				try {
-					manager.unlock(definition);
-					Assert.fail();
-				} catch (TransactionUnlockException exception) {
-				}
-			}
-		} catch (Exception exception) {
-			logger.error(StringUtility.EMPTY, exception);
-			Assert.fail();
-		}
-	}
+    @Test
+    public void test() {
+        try {
+            TransactionManager manager = getDistributionManager();
+
+            {
+                Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);
+                TransactionDefinition definition = new TransactionDefinition(name, most);
+                manager.lock(definition);
+                try {
+                    manager.lock(definition);
+                    Assert.fail();
+                } catch (TransactionLockException exception) {
+                }
+                manager.unlock(definition);
+            }
+
+            {
+                Instant most = Instant.now().plus(1, ChronoUnit.SECONDS);
+                TransactionDefinition definition = new TransactionDefinition(name, most);
+                manager.lock(definition);
+                Thread.sleep(1500);
+                try {
+                    manager.unlock(definition);
+                    Assert.fail();
+                } catch (TransactionUnlockException exception) {
+                }
+            }
+        } catch (Exception exception) {
+            logger.error(StringUtility.EMPTY, exception);
+            Assert.fail();
+        }
+    }
 
 }

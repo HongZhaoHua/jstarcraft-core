@@ -11,11 +11,11 @@ package com.jstarcraft.core.orm;
  */
 public interface OrmIterator<T> {
 
-	/**
-	 * 遍历指定的对象
-	 * 
-	 * @param object
-	 */
-	void iterate(T object);
+    /**
+     * 遍历指定的对象
+     * 
+     * @param object
+     */
+    void iterate(T object);
 
 }

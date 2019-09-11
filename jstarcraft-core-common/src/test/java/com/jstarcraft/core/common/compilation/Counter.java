@@ -2,8 +2,8 @@ package com.jstarcraft.core.common.compilation;
 
 public interface Counter {
 
-	void invokeCount();
+    void invokeCount();
 
-	int getCount();
+    int getCount();
 
 }

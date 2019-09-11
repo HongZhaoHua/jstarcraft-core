@@ -13,26 +13,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class RouteDataSourceTestCase {
 
-	@Autowired
-	private NestRouteStrategy strategy;
+    @Autowired
+    private NestRouteStrategy strategy;
 
-	@Autowired
-	private RouteDataSource dataSource;
+    @Autowired
+    private RouteDataSource dataSource;
 
-	/**
-	 * 测试切换数据源
-	 * 
-	 * @throws SQLException
-	 */
-	@Test
-	public void testSwitch() throws SQLException {
-		strategy.pushKey("leftDataSource");
-		Assert.assertEquals("jdbc:h2:nio:/target/database/left", dataSource.getConnection().getMetaData().getURL());
-		strategy.pullKey();
+    /**
+     * 测试切换数据源
+     * 
+     * @throws SQLException
+     */
+    @Test
+    public void testSwitch() throws SQLException {
+        strategy.pushKey("leftDataSource");
+        Assert.assertEquals("jdbc:h2:nio:/target/database/left", dataSource.getConnection().getMetaData().getURL());
+        strategy.pullKey();
 
-		strategy.pushKey("rightDataSource");
-		Assert.assertEquals("jdbc:h2:nio:/target/database/right", dataSource.getConnection().getMetaData().getURL());
-		strategy.pullKey();
-	}
+        strategy.pushKey("rightDataSource");
+        Assert.assertEquals("jdbc:h2:nio:/target/database/right", dataSource.getConnection().getMetaData().getURL());
+        strategy.pullKey();
+    }
 
 }

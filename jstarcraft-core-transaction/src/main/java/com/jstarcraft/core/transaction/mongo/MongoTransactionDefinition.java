@@ -17,36 +17,36 @@ import com.jstarcraft.core.transaction.TransactionDefinition;
 @Document
 public class MongoTransactionDefinition implements IdentityObject<String> {
 
-	/** 锁名称 */
-	@Id
-	private String name;
+    /** 锁名称 */
+    @Id
+    private String name;
 
-	/** 最多锁定到指定的时间(必选) */
-	private long most;
+    /** 最多锁定到指定的时间(必选) */
+    private long most;
 
-	MongoTransactionDefinition() {
-	}
+    MongoTransactionDefinition() {
+    }
 
-	public MongoTransactionDefinition(TransactionDefinition definition) {
-		this(definition.getName(), definition.getMost());
-	}
+    public MongoTransactionDefinition(TransactionDefinition definition) {
+        this(definition.getName(), definition.getMost());
+    }
 
-	public MongoTransactionDefinition(String name, Instant most) {
-		this.name = name;
-		this.most = most.toEpochMilli();
-	}
+    public MongoTransactionDefinition(String name, Instant most) {
+        this.name = name;
+        this.most = most.toEpochMilli();
+    }
 
-	@Override
-	public String getId() {
-		return name;
-	}
+    @Override
+    public String getId() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public long getMost() {
-		return most;
-	}
+    public long getMost() {
+        return most;
+    }
 
 }

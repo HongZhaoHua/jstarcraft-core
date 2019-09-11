@@ -20,45 +20,45 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class ObjectConverter implements CsvConverter<Object> {
 
-	@Override
-	public Object readValueFrom(CsvReader context, Type type) throws Exception {
-		// TODO 处理null
-		Iterator<String> in = context.getInputStream();
-		String check = in.next();
-		if (StringUtility.isEmpty(check)) {
-			return null;
-		}
-		int length = Integer.valueOf(check);
-		// 处理对象类型
-		Class<?> clazz = TypeUtility.getRawType(type, null);
-		ClassDefinition definition = context.getClassDefinition(clazz);
-		Object instance = definition.getInstance();
-		for (PropertyDefinition property : definition.getProperties()) {
-			CsvConverter converter = context.getCsvConverter(property.getSpecification());
-			Object value = converter.readValueFrom(context, property.getType());
-			property.setValue(instance, value);
-		}
-		return instance;
-	}
+    @Override
+    public Object readValueFrom(CsvReader context, Type type) throws Exception {
+        // TODO 处理null
+        Iterator<String> in = context.getInputStream();
+        String check = in.next();
+        if (StringUtility.isEmpty(check)) {
+            return null;
+        }
+        int length = Integer.valueOf(check);
+        // 处理对象类型
+        Class<?> clazz = TypeUtility.getRawType(type, null);
+        ClassDefinition definition = context.getClassDefinition(clazz);
+        Object instance = definition.getInstance();
+        for (PropertyDefinition property : definition.getProperties()) {
+            CsvConverter converter = context.getCsvConverter(property.getSpecification());
+            Object value = converter.readValueFrom(context, property.getType());
+            property.setValue(instance, value);
+        }
+        return instance;
+    }
 
-	@Override
-	public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
-		// TODO 处理null
-		CSVPrinter out = context.getOutputStream();
-		if (instance == null) {
-			out.print(StringUtility.EMPTY);
-			return;
-		}
-		// 处理对象类型
-		Class<?> clazz = TypeUtility.getRawType(type, null);
-		ClassDefinition definition = context.getClassDefinition(clazz);
-		int length = definition.getProperties().length;
-		out.print(length);
-		for (PropertyDefinition property : definition.getProperties()) {
-			CsvConverter converter = context.getCsvConverter(property.getSpecification());
-			Object value = property.getValue(instance);
-			converter.writeValueTo(context, property.getType(), value);
-		}
-	}
+    @Override
+    public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
+        // TODO 处理null
+        CSVPrinter out = context.getOutputStream();
+        if (instance == null) {
+            out.print(StringUtility.EMPTY);
+            return;
+        }
+        // 处理对象类型
+        Class<?> clazz = TypeUtility.getRawType(type, null);
+        ClassDefinition definition = context.getClassDefinition(clazz);
+        int length = definition.getProperties().length;
+        out.print(length);
+        for (PropertyDefinition property : definition.getProperties()) {
+            CsvConverter converter = context.getCsvConverter(property.getSpecification());
+            Object value = property.getValue(instance);
+            converter.writeValueTo(context, property.getType(), value);
+        }
+    }
 
 }

@@ -6,8 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-		// Mongo访问器测试
-		MongoAccessorTestCase.class, MongoMetadataTestCase.class })
+        // Mongo访问器测试
+        MongoAccessorTestCase.class, MongoMetadataTestCase.class })
 public class MongoTestSuite {
 
 }

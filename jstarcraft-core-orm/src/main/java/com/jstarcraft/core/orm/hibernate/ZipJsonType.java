@@ -35,153 +35,153 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class ZipJsonType implements UserType {
 
-	public final static String CLASS_NAME = "com.jstarcraft.core.orm.hibernate.ZipJsonType";
+    public final static String CLASS_NAME = "com.jstarcraft.core.orm.hibernate.ZipJsonType";
 
-	private static Map<Class<?>, Map<String, String>> CLAZZ_2_COLUMN = new ConcurrentHashMap<>();
+    private static Map<Class<?>, Map<String, String>> CLAZZ_2_COLUMN = new ConcurrentHashMap<>();
 
-	@Override
-	public int[] sqlTypes() {
-		return new int[] { BlobType.INSTANCE.sqlType() };
-	}
+    @Override
+    public int[] sqlTypes() {
+        return new int[] { BlobType.INSTANCE.sqlType() };
+    }
 
-	@Override
-	public Class<Object> returnedClass() {
-		return Object.class;
-	}
+    @Override
+    public Class<Object> returnedClass() {
+        return Object.class;
+    }
 
-	@Override
-	public boolean equals(Object left, Object right) throws HibernateException {
-		if (left == right) {
-			return true;
-		}
-		if (left == null || left == null) {
-			return false;
-		}
-		return left.equals(right);
-	}
+    @Override
+    public boolean equals(Object left, Object right) throws HibernateException {
+        if (left == right) {
+            return true;
+        }
+        if (left == null || left == null) {
+            return false;
+        }
+        return left.equals(right);
+    }
 
-	@Override
-	public int hashCode(Object object) throws HibernateException {
-		return object.hashCode();
-	}
+    @Override
+    public int hashCode(Object object) throws HibernateException {
+        return object.hashCode();
+    }
 
-	@Override
-	public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object object) throws HibernateException, SQLException {
-		InputStream inputStream = resultSet.getBinaryStream(names[0]);
-		byte[] bytes;
-		try {
-			int length = inputStream.available();
-			bytes = new byte[length];
-			inputStream.read(bytes);
-		} catch (IOException exception) {
-			throw new OrmAccessException("BLOB字节流异常", exception);
-		}
-		byte[] unzip = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
-		String columnName = getColumnName(resultSet, names[0]);
-		String fieldName = getFieldName(object.getClass(), columnName);
-		Type type = null;
-		try {
-			type = ReflectionUtility.findField(object.getClass(), fieldName).getGenericType();
-		} catch (Exception exception) {
-			throw new OrmAccessException(exception);
-		}
-		String json = new String(unzip, StringUtility.CHARSET);
-		Object value = JsonUtility.string2Object(json, type);
-		return value;
-	}
+    @Override
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object object) throws HibernateException, SQLException {
+        InputStream inputStream = resultSet.getBinaryStream(names[0]);
+        byte[] bytes;
+        try {
+            int length = inputStream.available();
+            bytes = new byte[length];
+            inputStream.read(bytes);
+        } catch (IOException exception) {
+            throw new OrmAccessException("BLOB字节流异常", exception);
+        }
+        byte[] unzip = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
+        String columnName = getColumnName(resultSet, names[0]);
+        String fieldName = getFieldName(object.getClass(), columnName);
+        Type type = null;
+        try {
+            type = ReflectionUtility.findField(object.getClass(), fieldName).getGenericType();
+        } catch (Exception exception) {
+            throw new OrmAccessException(exception);
+        }
+        String json = new String(unzip, StringUtility.CHARSET);
+        Object value = JsonUtility.string2Object(json, type);
+        return value;
+    }
 
-	@Override
-	public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
-		if (value != null) {
-			String json;
-			synchronized (value) {
-				json = JsonUtility.object2String(value);
-			}
-			byte[] bytes = json.getBytes(StringUtility.CHARSET);
-			byte[] zip = PressUtility.zip(bytes, 5);
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(zip);
-			preparedStatement.setBinaryStream(index, inputStream);
-		} else {
-			preparedStatement.setNull(index, BlobType.INSTANCE.sqlType());
-		}
-	}
+    @Override
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+        if (value != null) {
+            String json;
+            synchronized (value) {
+                json = JsonUtility.object2String(value);
+            }
+            byte[] bytes = json.getBytes(StringUtility.CHARSET);
+            byte[] zip = PressUtility.zip(bytes, 5);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(zip);
+            preparedStatement.setBinaryStream(index, inputStream);
+        } else {
+            preparedStatement.setNull(index, BlobType.INSTANCE.sqlType());
+        }
+    }
 
-	@Override
-	public Object deepCopy(Object value) throws HibernateException {
-		return value;
-	}
+    @Override
+    public Object deepCopy(Object value) throws HibernateException {
+        return value;
+    }
 
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
+    @Override
+    public boolean isMutable() {
+        return true;
+    }
 
-	@Override
-	public Serializable disassemble(Object value) throws HibernateException {
-		return ((Serializable) value);
-	}
+    @Override
+    public Serializable disassemble(Object value) throws HibernateException {
+        return ((Serializable) value);
+    }
 
-	@Override
-	public Object assemble(Serializable cached, Object object) throws HibernateException {
-		return cached;
-	}
+    @Override
+    public Object assemble(Serializable cached, Object object) throws HibernateException {
+        return cached;
+    }
 
-	@Override
-	public Object replace(Object original, Object target, Object object) throws HibernateException {
-		return original;
-	}
+    @Override
+    public Object replace(Object original, Object target, Object object) throws HibernateException {
+        return original;
+    }
 
-	private static String getFieldName(Class<?> clazz, String columnName) {
-		Map<String, String> column2Field = CLAZZ_2_COLUMN.get(clazz);
-		synchronized (CLAZZ_2_COLUMN) {
-			if (column2Field == null) {
-				column2Field = new ConcurrentHashMap<>();
-				CLAZZ_2_COLUMN.put(clazz, column2Field);
-			}
-		}
-		String fieldName = column2Field.get(columnName);
-		if (fieldName != null) {
-			return fieldName;
-		}
-		synchronized (column2Field) {
-			while (clazz != null) {
-				Field[] fields = clazz.getDeclaredFields();
-				for (Field field : fields) {
-					org.hibernate.annotations.Type typeAnnotation = field.getDeclaredAnnotation(org.hibernate.annotations.Type.class);
-					if (typeAnnotation != null && typeAnnotation.type().equals(JsonType.class.getName())) {
-						if (field.getName().equalsIgnoreCase(columnName)) {
-							fieldName = field.getName();
-							column2Field.put(columnName, fieldName);
-							return fieldName;
-						} else {
-							Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
-							if (columnAnnotation != null && columnAnnotation.name().equalsIgnoreCase(columnName)) {
-								fieldName = field.getName();
-								column2Field.put(columnName, fieldName);
-								return fieldName;
-							}
-						}
-					}
-				}
-				clazz = clazz.getSuperclass();
-			}
-		}
-		String message = StringUtility.format("数据列{}对应字段的不存在", columnName);
-		throw new OrmAccessException(message);
-	}
+    private static String getFieldName(Class<?> clazz, String columnName) {
+        Map<String, String> column2Field = CLAZZ_2_COLUMN.get(clazz);
+        synchronized (CLAZZ_2_COLUMN) {
+            if (column2Field == null) {
+                column2Field = new ConcurrentHashMap<>();
+                CLAZZ_2_COLUMN.put(clazz, column2Field);
+            }
+        }
+        String fieldName = column2Field.get(columnName);
+        if (fieldName != null) {
+            return fieldName;
+        }
+        synchronized (column2Field) {
+            while (clazz != null) {
+                Field[] fields = clazz.getDeclaredFields();
+                for (Field field : fields) {
+                    org.hibernate.annotations.Type typeAnnotation = field.getDeclaredAnnotation(org.hibernate.annotations.Type.class);
+                    if (typeAnnotation != null && typeAnnotation.type().equals(JsonType.class.getName())) {
+                        if (field.getName().equalsIgnoreCase(columnName)) {
+                            fieldName = field.getName();
+                            column2Field.put(columnName, fieldName);
+                            return fieldName;
+                        } else {
+                            Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+                            if (columnAnnotation != null && columnAnnotation.name().equalsIgnoreCase(columnName)) {
+                                fieldName = field.getName();
+                                column2Field.put(columnName, fieldName);
+                                return fieldName;
+                            }
+                        }
+                    }
+                }
+                clazz = clazz.getSuperclass();
+            }
+        }
+        String message = StringUtility.format("数据列{}对应字段的不存在", columnName);
+        throw new OrmAccessException(message);
+    }
 
-	private static String getColumnName(ResultSet resultSet, String fieldName) throws SQLException {
-		ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-		int count = resultSetMetaData.getColumnCount();
-		for (int index = 1; index <= count; index++) {
-			String columnLabel = resultSetMetaData.getColumnLabel(index);
-			String columnName = resultSetMetaData.getColumnName(index);
-			if (columnLabel.equalsIgnoreCase(fieldName)) {
-				return columnName;
-			}
-		}
-		String message = StringUtility.format("字段{}对应的数据列不存在", fieldName);
-		throw new OrmAccessException(message);
-	}
+    private static String getColumnName(ResultSet resultSet, String fieldName) throws SQLException {
+        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+        int count = resultSetMetaData.getColumnCount();
+        for (int index = 1; index <= count; index++) {
+            String columnLabel = resultSetMetaData.getColumnLabel(index);
+            String columnName = resultSetMetaData.getColumnName(index);
+            if (columnLabel.equalsIgnoreCase(fieldName)) {
+                return columnName;
+            }
+        }
+        String message = StringUtility.format("字段{}对应的数据列不存在", fieldName);
+        throw new OrmAccessException(message);
+    }
 
 }

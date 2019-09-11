@@ -11,9 +11,9 @@ import com.jstarcraft.core.cache.schema.CacheXmlParser.ElementDefinition;
  */
 public class CacheXmlHandler extends NamespaceHandlerSupport {
 
-	@Override
-	public void init() {
-		registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CacheXmlParser());
-	}
+    @Override
+    public void init() {
+        registerBeanDefinitionParser(ElementDefinition.CONFIGURATION.getName(), new CacheXmlParser());
+    }
 
 }

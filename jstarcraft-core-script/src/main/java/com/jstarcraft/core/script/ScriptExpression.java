@@ -8,19 +8,19 @@ package com.jstarcraft.core.script;
  */
 public interface ScriptExpression {
 
-	/**
-	 * 获取表达式范围
-	 * 
-	 * @return
-	 */
-	ScriptScope getScope();
+    /**
+     * 获取表达式范围
+     * 
+     * @return
+     */
+    ScriptScope getScope();
 
-	/**
-	 * 执行表达式
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	<T> T doWith(Class<T> clazz);
+    /**
+     * 执行表达式
+     * 
+     * @param clazz
+     * @return
+     */
+    <T> T doWith(Class<T> clazz);
 
 }

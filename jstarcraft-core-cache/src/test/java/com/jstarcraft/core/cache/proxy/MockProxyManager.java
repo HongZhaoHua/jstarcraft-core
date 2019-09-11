@@ -4,15 +4,15 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 
 public class MockProxyManager implements ProxyManager<Integer, IdentityObject<Integer>> {
 
-	private int modifyDatas;
+    private int modifyDatas;
 
-	public int getModifyDatas() {
-		return modifyDatas;
-	}
+    public int getModifyDatas() {
+        return modifyDatas;
+    }
 
-	@Override
-	public void modifyInstance(IdentityObject<Integer> object) {
-		this.modifyDatas++;
-	}
+    @Override
+    public void modifyInstance(IdentityObject<Integer> object) {
+        this.modifyDatas++;
+    }
 
 }

@@ -7,21 +7,21 @@ package com.jstarcraft.core.cache.exception;
  */
 public class CacheOperationException extends CacheException {
 
-	private static final long serialVersionUID = 1622804717507686589L;
+    private static final long serialVersionUID = 1622804717507686589L;
 
-	public CacheOperationException() {
-		super();
-	}
+    public CacheOperationException() {
+        super();
+    }
 
-	public CacheOperationException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public CacheOperationException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public CacheOperationException(String message) {
-		super(message);
-	}
+    public CacheOperationException(String message) {
+        super(message);
+    }
 
-	public CacheOperationException(Throwable exception) {
-		super(exception);
-	}
+    public CacheOperationException(Throwable exception) {
+        super(exception);
+    }
 }

@@ -11,13 +11,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class UnitNumberDeserializer extends JsonDeserializer<UnitNumber> {
 
-	@Override
-	public UnitNumber deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
-		ObjectCodec objectCodec = parser.getCodec();
-		JsonNode node = objectCodec.readTree(parser);
-		double value = node.get(0).asDouble();
-		int unit = node.get(1).asInt();
-		return new UnitNumber(unit, value);
-	}
+    @Override
+    public UnitNumber deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+        ObjectCodec objectCodec = parser.getCodec();
+        JsonNode node = objectCodec.readTree(parser);
+        double value = node.get(0).asDouble();
+        int unit = node.get(1).asInt();
+        return new UnitNumber(unit, value);
+    }
 
 }

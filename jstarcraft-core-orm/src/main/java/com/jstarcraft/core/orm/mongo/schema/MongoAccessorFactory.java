@@ -17,39 +17,39 @@ import com.jstarcraft.core.orm.mongo.MongoAccessor;
  */
 public class MongoAccessorFactory implements FactoryBean<MongoAccessor> {
 
-	private static final Logger logger = LoggerFactory.getLogger(MongoAccessorFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(MongoAccessorFactory.class);
 
-	public static final String CLASSES = "classes";
+    public static final String CLASSES = "classes";
 
-	private MongoAccessor accessor;
-	private Collection<Class<?>> classes;
+    private MongoAccessor accessor;
+    private Collection<Class<?>> classes;
 
-	private MongoTemplate template;
+    private MongoTemplate template;
 
-	@Override
-	public MongoAccessor getObject() {
-		if (accessor == null) {
-			accessor = new MongoAccessor(classes, template);
-		}
-		return accessor;
-	}
+    @Override
+    public MongoAccessor getObject() {
+        if (accessor == null) {
+            accessor = new MongoAccessor(classes, template);
+        }
+        return accessor;
+    }
 
-	@Override
-	public Class<?> getObjectType() {
-		return MongoAccessor.class;
-	}
+    @Override
+    public Class<?> getObjectType() {
+        return MongoAccessor.class;
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return true;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
-	public void setClasses(Collection<Class<?>> classes) {
-		this.classes = classes;
-	}
+    public void setClasses(Collection<Class<?>> classes) {
+        this.classes = classes;
+    }
 
-	public void setTemplate(MongoTemplate template) {
-		this.template = template;
-	}
+    public void setTemplate(MongoTemplate template) {
+        this.template = template;
+    }
 
 }

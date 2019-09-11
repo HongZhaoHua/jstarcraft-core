@@ -16,40 +16,40 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  */
 public class MockObject<T extends Comparable<T> & Serializable> implements IdentityObject<T> {
 
-	private T id;
+    private T id;
 
-	private int hash;
+    private int hash;
 
-	public MockObject(T id) {
-		this.id = id;
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(this.id);
-		this.hash = hash.toHashCode();
-	}
+    public MockObject(T id) {
+        this.id = id;
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(this.id);
+        this.hash = hash.toHashCode();
+    }
 
-	@Override
-	public T getId() {
-		return id;
-	}
+    @Override
+    public T getId() {
+        return id;
+    }
 
-	@Override
-	public int hashCode() {
-		return hash;
+    @Override
+    public int hashCode() {
+        return hash;
 
-	}
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (!(object instanceof MockObject))
-			return false;
-		MockObject that = (MockObject) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.getId(), that.getId());
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (!(object instanceof MockObject))
+            return false;
+        MockObject that = (MockObject) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.getId(), that.getId());
+        return equal.isEquals();
+    }
 
 }

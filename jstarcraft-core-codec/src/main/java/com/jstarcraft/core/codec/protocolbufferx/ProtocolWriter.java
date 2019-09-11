@@ -16,15 +16,15 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  */
 public class ProtocolWriter extends ProtocolContext {
 
-	private OutputStream outputStream;
+    private OutputStream outputStream;
 
-	public ProtocolWriter(OutputStream outputStream, CodecDefinition definition) {
-		super(definition);
-		this.outputStream = outputStream;
-	}
+    public ProtocolWriter(OutputStream outputStream, CodecDefinition definition) {
+        super(definition);
+        this.outputStream = outputStream;
+    }
 
-	public OutputStream getOutputStream() {
-		return outputStream;
-	}
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
 
 }

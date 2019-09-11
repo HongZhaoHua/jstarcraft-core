@@ -11,12 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PollRouteStrategy implements RouteStrategy {
 
-	/** 计数 */
-	private AtomicInteger count = new AtomicInteger(0);
+    /** 计数 */
+    private AtomicInteger count = new AtomicInteger(0);
 
-	@Override
-	public String chooseDataSource(List<String> keys) {
-		return keys.get(Math.abs(count.getAndIncrement()) % keys.size());
-	}
+    @Override
+    public String chooseDataSource(List<String> keys) {
+        return keys.get(Math.abs(count.getAndIncrement()) % keys.size());
+    }
 
 }

@@ -23,35 +23,35 @@ import com.jstarcraft.core.cache.transience.TransienceStrategy;
 @Target(ElementType.TYPE)
 public @interface CacheConfiguration {
 
-	/**
-	 * 缓存单位
-	 * 
-	 * <pre>
-	 * 决定由哪种缓存管理器管理
-	 * </pre>
-	 * 
-	 * @author Birdy
-	 */
-	public enum Unit {
+    /**
+     * 缓存单位
+     * 
+     * <pre>
+     * 决定由哪种缓存管理器管理
+     * </pre>
+     * 
+     * @author Birdy
+     */
+    public enum Unit {
 
-		/** 实体,配合{@link EntityManager}使用. */
-		ENTITY,
+        /** 实体,配合{@link EntityManager}使用. */
+        ENTITY,
 
-		/** 域,配合{@link RegionManager}使用. */
-		REGION;
+        /** 域,配合{@link RegionManager}使用. */
+        REGION;
 
-	}
+    }
 
-	/** 缓存单位 */
-	Unit unit();
+    /** 缓存单位 */
+    Unit unit();
 
-	/** 缓存索引 */
-	String[] indexes() default {};
+    /** 缓存索引 */
+    String[] indexes() default {};
 
-	/** 内存策略,配合{@link TransienceStrategy}使用. */
-	String transienceStrategy();
+    /** 内存策略,配合{@link TransienceStrategy}使用. */
+    String transienceStrategy();
 
-	/** 持久策略,配合{@link PersistenceStrategy}使用. */
-	String persistenceStrategy();
+    /** 持久策略,配合{@link PersistenceStrategy}使用. */
+    String persistenceStrategy();
 
 }

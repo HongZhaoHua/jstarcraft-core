@@ -15,7 +15,7 @@ import java.util.Comparator;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface ResourceId {
 
-	/** 排序器 */
-	Class<? extends Comparator> comparator() default Comparator.class;
+    /** 排序器 */
+    Class<? extends Comparator> comparator() default Comparator.class;
 
 }

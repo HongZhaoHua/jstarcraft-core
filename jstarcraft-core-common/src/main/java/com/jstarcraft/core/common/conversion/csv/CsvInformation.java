@@ -11,21 +11,21 @@ import java.lang.reflect.Field;
  */
 class CsvInformation {
 
-	private final Constructor constructor;
+    private final Constructor constructor;
 
-	private final Field[] fields;
+    private final Field[] fields;
 
-	CsvInformation(Constructor constructor, Field[] fields) {
-		this.constructor = constructor;
-		this.fields = fields;
-	}
+    CsvInformation(Constructor constructor, Field[] fields) {
+        this.constructor = constructor;
+        this.fields = fields;
+    }
 
-	public Constructor getConstructor() {
-		return constructor;
-	}
+    public Constructor getConstructor() {
+        return constructor;
+    }
 
-	public Field[] getFields() {
-		return fields;
-	}
+    public Field[] getFields() {
+        return fields;
+    }
 
 }

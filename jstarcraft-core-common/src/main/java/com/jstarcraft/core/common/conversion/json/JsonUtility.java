@@ -24,132 +24,132 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class JsonUtility {
 
-	/** 类型转换器(基于Jackson) */
-	private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
+    /** 类型转换器(基于Jackson) */
+    private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
 
-	/** 类型工厂(基于Jackson) */
-	private static final TypeFactory TYPE_FACTORY = TypeFactory.defaultInstance();
+    /** 类型工厂(基于Jackson) */
+    private static final TypeFactory TYPE_FACTORY = TypeFactory.defaultInstance();
 
-	/** 类型转换器(基于Jackson) */
-	private static final SimpleModule TYPE_MODULE;
+    /** 类型转换器(基于Jackson) */
+    private static final SimpleModule TYPE_MODULE;
 
-	static {
-		TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		TYPE_MODULE = new JavaTimeModule();
-		TYPE_CONVERTER.registerModule(TYPE_MODULE);
-	}
+    static {
+        TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        TYPE_MODULE = new JavaTimeModule();
+        TYPE_CONVERTER.registerModule(TYPE_MODULE);
+    }
 
-	/**
-	 * 注册指定类型的序列化器与反序列化器
-	 * 
-	 * @param clazz
-	 * @param deserializer
-	 * @param serializer
-	 */
-	public static <T> void registerModule(Class<T> clazz, JsonDeserializer<T> deserializer, JsonSerializer<T> serializer) {
-		if (deserializer != null) {
-			TYPE_MODULE.addDeserializer(clazz, deserializer);
-		}
-		if (serializer != null) {
-			TYPE_MODULE.addSerializer(clazz, serializer);
-		}
-	}
+    /**
+     * 注册指定类型的序列化器与反序列化器
+     * 
+     * @param clazz
+     * @param deserializer
+     * @param serializer
+     */
+    public static <T> void registerModule(Class<T> clazz, JsonDeserializer<T> deserializer, JsonSerializer<T> serializer) {
+        if (deserializer != null) {
+            TYPE_MODULE.addDeserializer(clazz, deserializer);
+        }
+        if (serializer != null) {
+            TYPE_MODULE.addSerializer(clazz, serializer);
+        }
+    }
 
-	/**
-	 * 将任意实例转换为JSON字符串
-	 * 
-	 * @param instance
-	 * @return
-	 */
-	public static String object2String(Object instance) {
-		if (instance == null) {
-			return null;
-		}
-		try {
-			return TYPE_CONVERTER.writeValueAsString(instance);
-		} catch (Exception exception) {
-			String message = StringUtility.format("将对象[{}]转换为JSON字符串时异常", instance);
-			throw new RuntimeException(message, exception);
-		}
-	}
+    /**
+     * 将任意实例转换为JSON字符串
+     * 
+     * @param instance
+     * @return
+     */
+    public static String object2String(Object instance) {
+        if (instance == null) {
+            return null;
+        }
+        try {
+            return TYPE_CONVERTER.writeValueAsString(instance);
+        } catch (Exception exception) {
+            String message = StringUtility.format("将对象[{}]转换为JSON字符串时异常", instance);
+            throw new RuntimeException(message, exception);
+        }
+    }
 
-	/**
-	 * 将JSON字符串转换为对象
-	 * 
-	 * @param json
-	 * @param type
-	 * @return
-	 */
-	public static <T> T string2Object(String json, Type type) {
-		if (StringUtility.isBlank(json)) {
-			return null;
-		}
-		try {
-			return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
-		} catch (Exception exception) {
-			String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
-			throw new RuntimeException(message, exception);
-		}
-	}
+    /**
+     * 将JSON字符串转换为对象
+     * 
+     * @param json
+     * @param type
+     * @return
+     */
+    public static <T> T string2Object(String json, Type type) {
+        if (StringUtility.isBlank(json)) {
+            return null;
+        }
+        try {
+            return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
+        } catch (Exception exception) {
+            String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
+            throw new RuntimeException(message, exception);
+        }
+    }
 
-	public static JavaType type2Java(Type type) {
-		JavaType java = TYPE_FACTORY.constructType(type);
-		return java;
-	}
+    public static JavaType type2Java(Type type) {
+        JavaType java = TYPE_FACTORY.constructType(type);
+        return java;
+    }
 
-	public static Type java2Type(JavaType java) {
-		Type type = null;
-		if (java.isArrayType()) {
-			// 数组类型
-			type = java.getRawClass();
-		} else if (java.hasGenericTypes()) {
-			// 泛型类型
-			List<JavaType> javas = java.getBindings().getTypeParameters();
-			Type[] generics = new Type[javas.size()];
-			int index = 0;
-			for (JavaType term : javas) {
-				generics[index++] = java2Type(term);
-			}
-			Class<?> clazz = java.getRawClass();
-			type = TypeUtility.parameterize(clazz, generics);
-		} else {
-			type = java.getRawClass();
-		}
-		return type;
-	}
+    public static Type java2Type(JavaType java) {
+        Type type = null;
+        if (java.isArrayType()) {
+            // 数组类型
+            type = java.getRawClass();
+        } else if (java.hasGenericTypes()) {
+            // 泛型类型
+            List<JavaType> javas = java.getBindings().getTypeParameters();
+            Type[] generics = new Type[javas.size()];
+            int index = 0;
+            for (JavaType term : javas) {
+                generics[index++] = java2Type(term);
+            }
+            Class<?> clazz = java.getRawClass();
+            type = TypeUtility.parameterize(clazz, generics);
+        } else {
+            type = java.getRawClass();
+        }
+        return type;
+    }
 
-	/**
-	 * 对字符串执行JSON转义
-	 * 
-	 * @param string
-	 * @return
-	 */
-	public static final String escapeJson(String string) {
-		return StringEscapeUtils.escapeJson(string);
-	}
+    /**
+     * 对字符串执行JSON转义
+     * 
+     * @param string
+     * @return
+     */
+    public static final String escapeJson(String string) {
+        return StringEscapeUtils.escapeJson(string);
+    }
 
-	/**
-	 * 对字符串执行JSON翻译
-	 * 
-	 * @param string
-	 * @return
-	 */
-	public static final String unescapeJson(String string) {
-		return StringEscapeUtils.unescapeJson(string);
-	}
+    /**
+     * 对字符串执行JSON翻译
+     * 
+     * @param string
+     * @return
+     */
+    public static final String unescapeJson(String string) {
+        return StringEscapeUtils.unescapeJson(string);
+    }
 
-	public static <T> T convert(Object instance, Type type) {
-		// 尝试利用Jackson将指定对象转换为指定类型
-		JavaType java = TYPE_FACTORY.constructType(type);
-		if (instance instanceof String) {
-			try {
-				return (T) TYPE_CONVERTER.readValue((String) instance, java);
-			} catch (Exception exception) {
-				return (T) TYPE_CONVERTER.convertValue(instance, java);
-			}
-		} else {
-			return (T) TYPE_CONVERTER.convertValue(instance, java);
-		}
-	}
+    public static <T> T convert(Object instance, Type type) {
+        // 尝试利用Jackson将指定对象转换为指定类型
+        JavaType java = TYPE_FACTORY.constructType(type);
+        if (instance instanceof String) {
+            try {
+                return (T) TYPE_CONVERTER.readValue((String) instance, java);
+            } catch (Exception exception) {
+                return (T) TYPE_CONVERTER.convertValue(instance, java);
+            }
+        } else {
+            return (T) TYPE_CONVERTER.convertValue(instance, java);
+        }
+    }
 
 }

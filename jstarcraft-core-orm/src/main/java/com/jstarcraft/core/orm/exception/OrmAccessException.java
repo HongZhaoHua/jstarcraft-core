@@ -7,22 +7,22 @@ package com.jstarcraft.core.orm.exception;
  */
 public class OrmAccessException extends OrmException {
 
-	private static final long serialVersionUID = -8396525701135532677L;
+    private static final long serialVersionUID = -8396525701135532677L;
 
-	public OrmAccessException() {
-		super();
-	}
+    public OrmAccessException() {
+        super();
+    }
 
-	public OrmAccessException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public OrmAccessException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public OrmAccessException(String message) {
-		super(message);
-	}
+    public OrmAccessException(String message) {
+        super(message);
+    }
 
-	public OrmAccessException(Throwable cause) {
-		super(cause);
-	}
+    public OrmAccessException(Throwable cause) {
+        super(cause);
+    }
 
 }

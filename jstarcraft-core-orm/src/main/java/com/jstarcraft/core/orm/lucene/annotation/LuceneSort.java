@@ -19,5 +19,5 @@ public @interface LuceneSort {
 
     /** 排序转换器 */
     Class<? extends SortConverter> clazz() default SortConverter.class;
-    
+
 }

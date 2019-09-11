@@ -20,96 +20,96 @@ import com.jstarcraft.core.script.exception.ScriptContextException;
  */
 public class ScriptScope {
 
-	private HashMap<String, Object> scopeAttributes = new HashMap<>();
+    private HashMap<String, Object> scopeAttributes = new HashMap<>();
 
-	/**
-	 * 创建属性
-	 * 
-	 * @param name
-	 * @param attribute
-	 * @return
-	 */
-	public ScriptScope createAttribute(String name, Object attribute) {
-		if (scopeAttributes.containsKey(name)) {
-			throw new ScriptContextException("脚本范围名称冲突");
-		}
-		scopeAttributes.put(name, attribute);
-		return this;
-	}
+    /**
+     * 创建属性
+     * 
+     * @param name
+     * @param attribute
+     * @return
+     */
+    public ScriptScope createAttribute(String name, Object attribute) {
+        if (scopeAttributes.containsKey(name)) {
+            throw new ScriptContextException("脚本范围名称冲突");
+        }
+        scopeAttributes.put(name, attribute);
+        return this;
+    }
 
-	/**
-	 * 创建属性
-	 * 
-	 * @param attributes
-	 * @return
-	 */
-	public ScriptScope createAttributes(HashMap<String, Object> attributes) {
-		for (Entry<String, Object> keyValue : attributes.entrySet()) {
-			createAttribute(keyValue.getKey(), keyValue.getValue());
-		}
-		return this;
-	}
+    /**
+     * 创建属性
+     * 
+     * @param attributes
+     * @return
+     */
+    public ScriptScope createAttributes(HashMap<String, Object> attributes) {
+        for (Entry<String, Object> keyValue : attributes.entrySet()) {
+            createAttribute(keyValue.getKey(), keyValue.getValue());
+        }
+        return this;
+    }
 
-	/**
-	 * 删除属性
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public ScriptScope deleteAttribute(String name) {
-		scopeAttributes.remove(name);
-		return this;
-	}
+    /**
+     * 删除属性
+     * 
+     * @param name
+     * @return
+     */
+    public ScriptScope deleteAttribute(String name) {
+        scopeAttributes.remove(name);
+        return this;
+    }
 
-	/**
-	 * 删除属性
-	 * 
-	 * @return
-	 */
-	public ScriptScope deleteAttributes() {
-		scopeAttributes.clear();
-		return this;
-	}
+    /**
+     * 删除属性
+     * 
+     * @return
+     */
+    public ScriptScope deleteAttributes() {
+        scopeAttributes.clear();
+        return this;
+    }
 
-	/**
-	 * 获取属性
-	 * 
-	 * @return
-	 */
-	HashMap<String, Object> getAttributes() {
-		return scopeAttributes;
-	}
+    /**
+     * 获取属性
+     * 
+     * @return
+     */
+    HashMap<String, Object> getAttributes() {
+        return scopeAttributes;
+    }
 
-	/**
-	 * 拷贝范围
-	 * 
-	 * @return
-	 */
-	ScriptScope copyScope() {
-		ScriptScope scope = new ScriptScope();
-		scope.scopeAttributes.putAll(scopeAttributes);
-		return scope;
-	}
+    /**
+     * 拷贝范围
+     * 
+     * @return
+     */
+    ScriptScope copyScope() {
+        ScriptScope scope = new ScriptScope();
+        scope.scopeAttributes.putAll(scopeAttributes);
+        return scope;
+    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (object == null)
-			return false;
-		if (getClass() != object.getClass())
-			return false;
-		ScriptScope that = (ScriptScope) object;
-		EqualsBuilder equal = new EqualsBuilder();
-		equal.append(this.scopeAttributes, that.scopeAttributes);
-		return equal.isEquals();
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        ScriptScope that = (ScriptScope) object;
+        EqualsBuilder equal = new EqualsBuilder();
+        equal.append(this.scopeAttributes, that.scopeAttributes);
+        return equal.isEquals();
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hash = new HashCodeBuilder();
-		hash.append(scopeAttributes);
-		return hash.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hash = new HashCodeBuilder();
+        hash.append(scopeAttributes);
+        return hash.toHashCode();
+    }
 
 }

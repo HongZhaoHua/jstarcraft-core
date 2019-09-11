@@ -8,8 +8,8 @@ package com.jstarcraft.core.common.conversion.csv.query;
  */
 public interface AwkCondition {
 
-	String getBeginContent();
+    String getBeginContent();
 
-	String getEndContent();
+    String getEndContent();
 
 }

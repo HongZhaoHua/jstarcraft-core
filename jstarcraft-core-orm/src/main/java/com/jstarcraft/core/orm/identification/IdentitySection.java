@@ -8,23 +8,23 @@ package com.jstarcraft.core.orm.identification;
  */
 public class IdentitySection {
 
-	/** 位数 */
-	private final int bit;
+    /** 位数 */
+    private final int bit;
 
-	/** 掩码 */
-	private final long mask;
+    /** 掩码 */
+    private final long mask;
 
-	IdentitySection(int bit, long mask) {
-		this.bit = bit;
-		this.mask = mask;
-	}
+    IdentitySection(int bit, long mask) {
+        this.bit = bit;
+        this.mask = mask;
+    }
 
-	public int getBit() {
-		return bit;
-	}
+    public int getBit() {
+        return bit;
+    }
 
-	public long getMask() {
-		return mask;
-	}
+    public long getMask() {
+        return mask;
+    }
 
 }

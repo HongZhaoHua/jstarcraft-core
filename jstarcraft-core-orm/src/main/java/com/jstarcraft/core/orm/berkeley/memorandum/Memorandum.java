@@ -12,10 +12,10 @@ import com.sleepycat.je.Environment;
  */
 public interface Memorandum {
 
-	void checkIn(Environment environment, Instant now);
+    void checkIn(Environment environment, Instant now);
 
-	void checkOut(Instant from, Instant to);
+    void checkOut(Instant from, Instant to);
 
-	void clean(Instant expire);
+    void clean(Instant expire);
 
 }

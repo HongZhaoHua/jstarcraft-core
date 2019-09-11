@@ -7,32 +7,32 @@ package com.jstarcraft.core.common.conversion.csv.query;
  */
 public enum AwkOperator {
 
-	/** && */
-	AND("&&"),
-	/** == */
-	EQUAL("=="),
-	/** >= */
-	GREATER_EQUAL(">="),
-	/** > */
-	GREATER_THAN(">"),
-	/** in */
-	IN("in"),
-	/** <= */
-	LESS_EQUAL("<="),
-	/** < */
-	LESS_THAN("<"),
-	/** != */
-	NOT("!="),
-	/** || */
-	OR("||");
+    /** && */
+    AND("&&"),
+    /** == */
+    EQUAL("=="),
+    /** >= */
+    GREATER_EQUAL(">="),
+    /** > */
+    GREATER_THAN(">"),
+    /** in */
+    IN("in"),
+    /** <= */
+    LESS_EQUAL("<="),
+    /** < */
+    LESS_THAN("<"),
+    /** != */
+    NOT("!="),
+    /** || */
+    OR("||");
 
-	private final String operate;
+    private final String operate;
 
-	private AwkOperator(String operate) {
-		this.operate = operate;
-	}
+    private AwkOperator(String operate) {
+        this.operate = operate;
+    }
 
-	public String getOperate() {
-		return operate;
-	}
+    public String getOperate() {
+        return operate;
+    }
 }

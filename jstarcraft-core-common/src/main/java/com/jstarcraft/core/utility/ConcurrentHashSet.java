@@ -18,59 +18,59 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ConcurrentHashSet<E> extends AbstractSet<E> {
 
-	private static final Object object = new Object();
+    private static final Object object = new Object();
 
-	protected final ConcurrentHashMap<E, Object> map;
+    protected final ConcurrentHashMap<E, Object> map;
 
-	public ConcurrentHashSet() {
-		this.map = new ConcurrentHashMap<E, Object>();
-	}
+    public ConcurrentHashSet() {
+        this.map = new ConcurrentHashMap<E, Object>();
+    }
 
-	public ConcurrentHashSet(int capacity) {
-		this.map = new ConcurrentHashMap<E, Object>(capacity);
-	}
+    public ConcurrentHashSet(int capacity) {
+        this.map = new ConcurrentHashMap<E, Object>(capacity);
+    }
 
-	public ConcurrentHashSet(int capacity, float factor) {
-		this.map = new ConcurrentHashMap<E, Object>(capacity, factor);
-	}
+    public ConcurrentHashSet(int capacity, float factor) {
+        this.map = new ConcurrentHashMap<E, Object>(capacity, factor);
+    }
 
-	public ConcurrentHashSet(int capacity, float factor, int concurrencyLevel) {
-		this.map = new ConcurrentHashMap<E, Object>(capacity, factor, concurrencyLevel);
-	}
+    public ConcurrentHashSet(int capacity, float factor, int concurrencyLevel) {
+        this.map = new ConcurrentHashMap<E, Object>(capacity, factor, concurrencyLevel);
+    }
 
-	public ConcurrentHashSet(Collection<E> collection) {
-		this(collection.size());
-		addAll(collection);
-	}
+    public ConcurrentHashSet(Collection<E> collection) {
+        this(collection.size());
+        addAll(collection);
+    }
 
-	@Override
-	public int size() {
-		return map.size();
-	}
+    @Override
+    public int size() {
+        return map.size();
+    }
 
-	@Override
-	public boolean contains(Object element) {
-		return map.containsKey(element);
-	}
+    @Override
+    public boolean contains(Object element) {
+        return map.containsKey(element);
+    }
 
-	@Override
-	public Iterator<E> iterator() {
-		return map.keySet().iterator();
-	}
+    @Override
+    public Iterator<E> iterator() {
+        return map.keySet().iterator();
+    }
 
-	@Override
-	public boolean add(E element) {
-		return map.put(element, object) == null;
-	}
+    @Override
+    public boolean add(E element) {
+        return map.put(element, object) == null;
+    }
 
-	@Override
-	public boolean remove(Object element) {
-		return map.remove(element) != null;
-	}
+    @Override
+    public boolean remove(Object element) {
+        return map.remove(element) != null;
+    }
 
-	@Override
-	public void clear() {
-		map.clear();
-	}
+    @Override
+    public void clear() {
+        map.clear();
+    }
 
 }

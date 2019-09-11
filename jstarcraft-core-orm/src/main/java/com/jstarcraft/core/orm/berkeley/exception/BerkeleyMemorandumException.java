@@ -10,22 +10,22 @@ import com.jstarcraft.core.orm.exception.OrmException;
  */
 public class BerkeleyMemorandumException extends OrmException {
 
-	private static final long serialVersionUID = 6634969038060172220L;
+    private static final long serialVersionUID = 6634969038060172220L;
 
-	public BerkeleyMemorandumException() {
-		super();
-	}
+    public BerkeleyMemorandumException() {
+        super();
+    }
 
-	public BerkeleyMemorandumException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public BerkeleyMemorandumException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public BerkeleyMemorandumException(String message) {
-		super(message);
-	}
+    public BerkeleyMemorandumException(String message) {
+        super(message);
+    }
 
-	public BerkeleyMemorandumException(Throwable cause) {
-		super(cause);
-	}
+    public BerkeleyMemorandumException(Throwable cause) {
+        super(cause);
+    }
 
 }

@@ -14,30 +14,30 @@ import com.jstarcraft.core.transaction.redis.RedisTransactionManager;
 
 public class RedisTransactionManagerTestCase extends TransactionManagerTestCase {
 
-	private Redisson redisson;
-	private RKeys keys;
+    private Redisson redisson;
+    private RKeys keys;
 
-	@Before
-	public void testBefore() {
-		// 注意此处的编解码器
-		Codec codec = new JsonJacksonCodec();
-		Config configuration = new Config();
-		configuration.setCodec(codec);
-		configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
-		redisson = (Redisson) Redisson.create(configuration);
-		keys = redisson.getKeys();
-		keys.flushdb();
-	}
+    @Before
+    public void testBefore() {
+        // 注意此处的编解码器
+        Codec codec = new JsonJacksonCodec();
+        Config configuration = new Config();
+        configuration.setCodec(codec);
+        configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
+        redisson = (Redisson) Redisson.create(configuration);
+        keys = redisson.getKeys();
+        keys.flushdb();
+    }
 
-	@After
-	public void testAfter() {
-		keys.flushdb();
-		redisson.shutdown();
-	}
+    @After
+    public void testAfter() {
+        keys.flushdb();
+        redisson.shutdown();
+    }
 
-	@Override
-	protected TransactionManager getDistributionManager() {
-		return new RedisTransactionManager(redisson.getScript());
-	}
+    @Override
+    protected TransactionManager getDistributionManager() {
+        return new RedisTransactionManager(redisson.getScript());
+    }
 
 }

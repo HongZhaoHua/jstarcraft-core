@@ -17,20 +17,20 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class CsvWriter extends CsvContext {
 
-	private CSVPrinter outputStream;
+    private CSVPrinter outputStream;
 
-	public CsvWriter(OutputStream outputStream, CodecDefinition definition) {
-		super(definition);
-		try {
-			OutputStreamWriter buffer = new OutputStreamWriter(outputStream, StringUtility.CHARSET);
-			this.outputStream = new CSVPrinter(buffer, FORMAT);
-		} catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
+    public CsvWriter(OutputStream outputStream, CodecDefinition definition) {
+        super(definition);
+        try {
+            OutputStreamWriter buffer = new OutputStreamWriter(outputStream, StringUtility.CHARSET);
+            this.outputStream = new CSVPrinter(buffer, FORMAT);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
-	public CSVPrinter getOutputStream() {
-		return outputStream;
-	}
+    public CSVPrinter getOutputStream() {
+        return outputStream;
+    }
 
 }

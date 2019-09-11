@@ -16,12 +16,12 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  */
 public interface ProxyManager<K extends Comparable, T extends IdentityObject<K>> {
 
-	/**
-	 * 修改指定缓存对象的数据
-	 * 
-	 * @param id
-	 * @param instance
-	 */
-	void modifyInstance(T instance);
+    /**
+     * 修改指定缓存对象的数据
+     * 
+     * @param id
+     * @param instance
+     */
+    void modifyInstance(T instance);
 
 }

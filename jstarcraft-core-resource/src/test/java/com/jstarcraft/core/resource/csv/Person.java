@@ -16,89 +16,89 @@ import com.jstarcraft.core.utility.StringUtility;
 @CsvConfiguration({ "id", "name", "age", "sex", "object", "array", "map", "list", "childId" })
 public class Person {
 
-	public static final String INDEX_NAME = "name";
-	public static final String INDEX_AGE = "age";
+    public static final String INDEX_NAME = "name";
+    public static final String INDEX_AGE = "age";
 
-	@ResourceId
-	private Integer id;
+    @ResourceId
+    private Integer id;
 
-	@ResourceIndex(name = INDEX_NAME, unique = true)
-	private String name;
+    @ResourceIndex(name = INDEX_NAME, unique = true)
+    private String name;
 
-	@ResourceIndex(name = INDEX_AGE, unique = false)
-	private int age;
+    @ResourceIndex(name = INDEX_AGE, unique = false)
+    private int age;
 
-	private boolean sex;
+    private boolean sex;
 
-	private KeyValue<String, String> object;
+    private KeyValue<String, String> object;
 
-	private KeyValue<Integer, String>[] array;
+    private KeyValue<Integer, String>[] array;
 
-	private HashMap<String, KeyValue<Integer, String>> map;
+    private HashMap<String, KeyValue<Integer, String>> map;
 
-	private ArrayList<KeyValue<Integer, String>> list;
+    private ArrayList<KeyValue<Integer, String>> list;
 
-	private Integer childId;
+    private Integer childId;
 
-	@ResourceReference(expression = "instance.getChildId()")
-	private transient Person child;
+    @ResourceReference(expression = "instance.getChildId()")
+    private transient Person child;
 
-	@ResourceReference
-	private transient MockSpringObject reference;
+    @ResourceReference
+    private transient MockSpringObject reference;
 
-	@ResourceReference
-	private transient ResourceStorage<Integer, Person> storage;
+    @ResourceReference
+    private transient ResourceStorage<Integer, Person> storage;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public boolean isSex() {
-		return sex;
-	}
+    public boolean isSex() {
+        return sex;
+    }
 
-	public KeyValue<String, String> getObject() {
-		return object;
-	}
+    public KeyValue<String, String> getObject() {
+        return object;
+    }
 
-	public KeyValue<Integer, String>[] getArray() {
-		return array;
-	}
+    public KeyValue<Integer, String>[] getArray() {
+        return array;
+    }
 
-	public HashMap<String, KeyValue<Integer, String>> getMap() {
-		return map;
-	}
+    public HashMap<String, KeyValue<Integer, String>> getMap() {
+        return map;
+    }
 
-	public ArrayList<KeyValue<Integer, String>> getList() {
-		return list;
-	}
+    public ArrayList<KeyValue<Integer, String>> getList() {
+        return list;
+    }
 
-	public Integer getChildId() {
-		return childId;
-	}
+    public Integer getChildId() {
+        return childId;
+    }
 
-	public Person getChild() {
-		return child;
-	}
+    public Person getChild() {
+        return child;
+    }
 
-	public MockSpringObject getReference() {
-		return reference;
-	}
+    public MockSpringObject getReference() {
+        return reference;
+    }
 
-	public ResourceStorage<Integer, Person> getStorage() {
-		return storage;
-	}
+    public ResourceStorage<Integer, Person> getStorage() {
+        return storage;
+    }
 
-	public String getDescription() {
-		return StringUtility.reflect(this);
-	}
+    public String getDescription() {
+        return StringUtility.reflect(this);
+    }
 
 }

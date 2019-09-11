@@ -8,22 +8,22 @@ package com.jstarcraft.core.resource.exception;
  */
 public class StorageException extends RuntimeException {
 
-	private static final long serialVersionUID = 4013433856373480929L;
+    private static final long serialVersionUID = 4013433856373480929L;
 
-	public StorageException() {
-		super();
-	}
+    public StorageException() {
+        super();
+    }
 
-	public StorageException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public StorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public StorageException(String message) {
-		super(message);
-	}
+    public StorageException(String message) {
+        super(message);
+    }
 
-	public StorageException(Throwable cause) {
-		super(cause);
-	}
+    public StorageException(Throwable cause) {
+        super(cause);
+    }
 
 }

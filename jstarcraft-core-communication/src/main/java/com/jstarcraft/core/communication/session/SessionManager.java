@@ -14,36 +14,36 @@ import java.util.List;
  */
 public interface SessionManager<T> {
 
-	/**
-	 * 创建会话
-	 * 
-	 * @param session
-	 * @return
-	 */
-	CommunicationSession<T> attachSession(String key, T context);
+    /**
+     * 创建会话
+     * 
+     * @param session
+     * @return
+     */
+    CommunicationSession<T> attachSession(String key, T context);
 
-	/**
-	 * 删除会话
-	 * 
-	 * @param key
-	 * @return
-	 */
-	boolean detachSession(String key);
+    /**
+     * 删除会话
+     * 
+     * @param key
+     * @return
+     */
+    boolean detachSession(String key);
 
-	/**
-	 * 获取会话
-	 * 
-	 * @param key
-	 * @return
-	 */
-	CommunicationSession<T> getSession(String key);
+    /**
+     * 获取会话
+     * 
+     * @param key
+     * @return
+     */
+    CommunicationSession<T> getSession(String key);
 
-	/**
-	 * 获取所有匹配的会话
-	 * 
-	 * @param matcher
-	 * @return
-	 */
-	List<CommunicationSession<T>> getSessions(SessionMatcher<T> matcher);
+    /**
+     * 获取所有匹配的会话
+     * 
+     * @param matcher
+     * @return
+     */
+    List<CommunicationSession<T>> getSessions(SessionMatcher<T> matcher);
 
 }

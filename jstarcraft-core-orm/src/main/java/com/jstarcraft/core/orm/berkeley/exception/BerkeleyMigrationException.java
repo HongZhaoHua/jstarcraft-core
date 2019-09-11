@@ -10,18 +10,18 @@ import com.jstarcraft.core.orm.exception.OrmException;
  */
 public class BerkeleyMigrationException extends OrmException {
 
-	private static final long serialVersionUID = 9130426400020103627L;
+    private static final long serialVersionUID = 9130426400020103627L;
 
-	public BerkeleyMigrationException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public BerkeleyMigrationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public BerkeleyMigrationException(String message) {
-		super(message);
-	}
+    public BerkeleyMigrationException(String message) {
+        super(message);
+    }
 
-	public BerkeleyMigrationException(Throwable cause) {
-		super(cause);
-	}
+    public BerkeleyMigrationException(Throwable cause) {
+        super(cause);
+    }
 
 }

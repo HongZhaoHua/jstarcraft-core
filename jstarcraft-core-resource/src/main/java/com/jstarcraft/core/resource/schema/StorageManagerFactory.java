@@ -19,47 +19,47 @@ import com.jstarcraft.core.resource.definition.FormatDefinition;
  */
 public class StorageManagerFactory extends DefaultListableBeanFactory implements ApplicationContextAware, FactoryBean<ResourceManager> {
 
-	public static final String DEFINITIONS = "definitions";
+    public static final String DEFINITIONS = "definitions";
 
-	private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
-	/** 仓储定义列表 */
-	private Map<Class<?>, FormatDefinition> definitions;
+    /** 仓储定义列表 */
+    private Map<Class<?>, FormatDefinition> definitions;
 
-	private ResourceManager storageManager;
+    private ResourceManager storageManager;
 
-	public void setDefinitions(Map<Class<?>, FormatDefinition> definitions) {
-		this.definitions = definitions;
-	}
+    public void setDefinitions(Map<Class<?>, FormatDefinition> definitions) {
+        this.definitions = definitions;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-		// TODO 将applicationContext设置为StorageManagerFactory的工厂.
-		this.setParentBeanFactory(this.applicationContext);
-		// 支持属性文件(*.properties)
-		Map<String, PropertyPlaceholderConfigurer> propertyConfigurers = this.applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class);
-		for (PropertyPlaceholderConfigurer ropertyConfigurer : propertyConfigurers.values()) {
-			ropertyConfigurer.postProcessBeanFactory(this);
-		}
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+        // TODO 将applicationContext设置为StorageManagerFactory的工厂.
+        this.setParentBeanFactory(this.applicationContext);
+        // 支持属性文件(*.properties)
+        Map<String, PropertyPlaceholderConfigurer> propertyConfigurers = this.applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class);
+        for (PropertyPlaceholderConfigurer ropertyConfigurer : propertyConfigurers.values()) {
+            ropertyConfigurer.postProcessBeanFactory(this);
+        }
+    }
 
-	@Override
-	public synchronized ResourceManager getObject() throws Exception {
-		if (storageManager == null) {
-			storageManager =  ResourceManager.instanceOf(this.definitions, this);
-		}
-		return storageManager;
-	}
+    @Override
+    public synchronized ResourceManager getObject() throws Exception {
+        if (storageManager == null) {
+            storageManager = ResourceManager.instanceOf(this.definitions, this);
+        }
+        return storageManager;
+    }
 
-	@Override
-	public Class<ResourceManager> getObjectType() {
-		return ResourceManager.class;
-	}
+    @Override
+    public Class<ResourceManager> getObjectType() {
+        return ResourceManager.class;
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return true;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
 }

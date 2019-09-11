@@ -11,40 +11,40 @@ import java.lang.reflect.Type;
  */
 public interface ContentCodec {
 
-	/**
-	 * 解码内容
-	 * 
-	 * @param type
-	 * @param content
-	 * @return
-	 */
-	Object decode(Type type, byte[] content);
+    /**
+     * 解码内容
+     * 
+     * @param type
+     * @param content
+     * @return
+     */
+    Object decode(Type type, byte[] content);
 
-	/**
-	 * 解码内容
-	 * 
-	 * @param type
-	 * @param stream
-	 * @return
-	 */
-	Object decode(Type type, InputStream stream);
+    /**
+     * 解码内容
+     * 
+     * @param type
+     * @param stream
+     * @return
+     */
+    Object decode(Type type, InputStream stream);
 
-	/**
-	 * 编码内容
-	 * 
-	 * @param type
-	 * @param content
-	 * @return
-	 */
-	byte[] encode(Type type, Object content);
+    /**
+     * 编码内容
+     * 
+     * @param type
+     * @param content
+     * @return
+     */
+    byte[] encode(Type type, Object content);
 
-	/**
-	 * 编码内容
-	 * 
-	 * @param type
-	 * @param content
-	 * @param stream
-	 */
-	void encode(Type type, Object content, OutputStream stream);
+    /**
+     * 编码内容
+     * 
+     * @param type
+     * @param content
+     * @param stream
+     */
+    void encode(Type type, Object content, OutputStream stream);
 
 }

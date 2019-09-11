@@ -20,13 +20,13 @@ import com.jstarcraft.core.orm.berkeley.BerkeleyIsolation;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BerkeleyTransaction {
 
-	/** 隔离级别 */
-	BerkeleyIsolation isolation();
+    /** 隔离级别 */
+    BerkeleyIsolation isolation();
 
-	/** 冲突等待(单位:毫秒) */
-	int conflictWait() default 100;
+    /** 冲突等待(单位:毫秒) */
+    int conflictWait() default 100;
 
-	/** 尝试次数 */
-	int tryTimes() default 5;
+    /** 尝试次数 */
+    int tryTimes() default 5;
 
 }

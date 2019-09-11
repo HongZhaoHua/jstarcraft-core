@@ -13,18 +13,18 @@ import com.jstarcraft.core.resource.annotation.ResourceId;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Biology {
 
-	@ResourceId
-	@XmlAttribute
-	private Integer id;
+    @ResourceId
+    @XmlAttribute
+    private Integer id;
 
-	private String name;
+    private String name;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
 }

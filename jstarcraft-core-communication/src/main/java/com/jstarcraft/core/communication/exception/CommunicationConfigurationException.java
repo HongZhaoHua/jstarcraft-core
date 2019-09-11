@@ -7,22 +7,22 @@ package com.jstarcraft.core.communication.exception;
  */
 public class CommunicationConfigurationException extends CommunicationException {
 
-	private static final long serialVersionUID = 8489014829295689684L;
+    private static final long serialVersionUID = 8489014829295689684L;
 
-	public CommunicationConfigurationException() {
-		super();
-	}
+    public CommunicationConfigurationException() {
+        super();
+    }
 
-	public CommunicationConfigurationException(String message, Throwable exception) {
-		super(message, exception);
-	}
+    public CommunicationConfigurationException(String message, Throwable exception) {
+        super(message, exception);
+    }
 
-	public CommunicationConfigurationException(String message) {
-		super(message);
-	}
+    public CommunicationConfigurationException(String message) {
+        super(message);
+    }
 
-	public CommunicationConfigurationException(Throwable exception) {
-		super(exception);
-	}
+    public CommunicationConfigurationException(Throwable exception) {
+        super(exception);
+    }
 
 }

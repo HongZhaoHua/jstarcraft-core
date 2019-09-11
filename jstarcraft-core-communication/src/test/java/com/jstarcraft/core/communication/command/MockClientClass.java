@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MockClientClass implements MockClientInterface {
 
-	private AtomicInteger times = new AtomicInteger();
+    private AtomicInteger times = new AtomicInteger();
 
-	@Override
-	public void testExecute(UserObject object) {
-		times.incrementAndGet();
-	}
+    @Override
+    public void testExecute(UserObject object) {
+        times.incrementAndGet();
+    }
 
-	public int getTimes() {
-		return times.get();
-	}
+    public int getTimes() {
+        return times.get();
+    }
 
 }
