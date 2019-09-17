@@ -15,6 +15,15 @@ public final class RandomUtility {
     }
 
     /**
+     * 设置随机引擎
+     * 
+     * @param engine
+     */
+    public static void setRandom(Random engine) {
+        random = engine;
+    }
+
+    /**
      * 设置随机种子
      * 
      * @param seed
@@ -274,6 +283,16 @@ public final class RandomUtility {
             datas[index] = datas[random];
             datas[random] = data;
         }
+    }
+
+    /**
+     * 随机分布
+     * 
+     * @return
+     */
+    // TODO 考虑是否使用概率分布替代
+    public static double randomGaussian() {
+        return random.nextGaussian();
     }
 
 }
