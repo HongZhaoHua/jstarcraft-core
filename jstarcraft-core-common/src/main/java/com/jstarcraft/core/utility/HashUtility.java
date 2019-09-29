@@ -141,6 +141,28 @@ public class HashUtility {
     }
 
     /**
+     * <pre>
+     * An algorithm produced by Arash Partow. 
+     * I took ideas from all of the above hash functions making a hybrid rotative and additive hash function algorithm. There isn't any real mathematical analysis explaining why one should use this hash function instead of the others described above other than the fact that I tired to resemble the design as close as possible to a simple LFSR. An empirical result which demonstrated the distributive abilities of the hash algorithm was obtained using a hash-table with 100003 buckets, hashing The Project Gutenberg Etext of Webster's Unabridged Dictionary, the longest encountered chain length was 7, the average chain length was 2, the number of empty buckets was 4579.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long apStringHash64(String data) {
+        int size = data.length();
+        long hash = 0xAAAAAAAA;
+        for (int index = 0; index < size; index++) {
+            if ((index & 1) == 0) {
+                hash ^= ((hash << 7) ^ data.charAt(index) * (hash >> 3));
+            } else {
+                hash ^= (~((hash << 11) + data.charAt(index) ^ (hash >> 5)));
+            }
+        }
+        return hash;
+    }
+
+    /**
      * 乘法哈希
      * 
      * @param value
@@ -176,6 +198,25 @@ public class HashUtility {
 
     /**
      * <pre>
+     * This hash function comes from Brian Kernighan and Dennis Ritchie's book "The C Programming Language". 
+     * It is a simple hash function using a strange set of possible seeds which all constitute a pattern of 31....31...31 etc, it seems to be very similar to the DJB hash function.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long bkdrStringHash64(String data) {
+        int size = data.length();
+        long seed = 131; // 31 131 1313 13131 131313 etc..
+        long hash = 0;
+        for (int index = 0; index < size; index++) {
+            hash = (hash * seed) + data.charAt(index);
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
      * https://github.com/bennybp
      * </pre>
      * 
@@ -183,17 +224,26 @@ public class HashUtility {
      * @return
      */
     // TODO 注意bpStringHash32从long改到int的时候,单元测试的冲突变化非常大.
-    // public static long bpStringHash32(String data) {
-    // int size = data.length();
-    // long hash = 0;
-    // for (int index = 0; index < size; index++) {
-    // hash = hash << 7 ^ data.charAt(index);
-    // }
-    // return hash;
-    // }
     public static int bpStringHash32(String data) {
         int size = data.length();
         int hash = 0;
+        for (int index = 0; index < size; index++) {
+            hash = hash << 7 ^ data.charAt(index);
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * https://github.com/bennybp
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long bpStringHash64(String data) {
+        int size = data.length();
+        long hash = 0;
         for (int index = 0; index < size; index++) {
             hash = hash << 7 ^ data.charAt(index);
         }
@@ -302,6 +352,23 @@ public class HashUtility {
 
     /**
      * <pre>
+     * An algorithm proposed by Donald E. Knuth in The Art Of Computer Programming Volume 3, under the topic of sorting and search chapter 6.4.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long dekStringHash64(String data) {
+        int size = data.length();
+        long hash = data.length();
+        for (int index = 0; index < size; index++) {
+            hash = ((hash << 5) ^ (hash >> 27)) ^ data.charAt(index);
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
      * An algorithm produced by Professor Daniel J. Bernstein and shown first to the world on the usenet newsgroup comp.lang.c. 
      * It is one of the most efficient hash functions ever published.
      * </pre>
@@ -312,6 +379,24 @@ public class HashUtility {
     public static int djbStringHash32(String data) {
         int size = data.length();
         int hash = 5381;
+        for (int index = 0; index < size; index++) {
+            hash = ((hash << 5) + hash) + data.charAt(index);
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * An algorithm produced by Professor Daniel J. Bernstein and shown first to the world on the usenet newsgroup comp.lang.c. 
+     * It is one of the most efficient hash functions ever published.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long djbStringHash64(String data) {
+        int size = data.length();
+        long hash = 5381;
         for (int index = 0; index < size; index++) {
             hash = ((hash << 5) + hash) + data.charAt(index);
         }
@@ -343,6 +428,29 @@ public class HashUtility {
 
     /**
      * <pre>
+     * Similar to the PJW Hash function, but tweaked for 32-bit processors. 
+     * It is a widely used hash function on UNIX based systems.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long elfStringHash64(String data) {
+        int size = data.length();
+        long hash = 0;
+        long mask = 0;
+        for (int index = 0; index < size; index++) {
+            hash = (hash << 4) + data.charAt(index);
+            if ((mask = hash & 0xF0000000L) != 0) {
+                hash ^= (mask >> 24);
+            }
+            hash &= ~mask;
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
      * http://www.isthe.com/chongo/tech/comp/fnv/
      * </pre>
      * 
@@ -357,6 +465,27 @@ public class HashUtility {
             hash *= prime;
             hash ^= data.charAt(index);
         }
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * http://www.isthe.com/chongo/tech/comp/fnv/
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long fnv0StringHash64(String data) {
+        int size = data.length();
+        long prime = 0x811C9DC5;
+        long hash = 0;
+
+        for (int index = 0; index < size; index++) {
+            hash *= prime;
+            hash ^= data.charAt(index);
+        }
+
         return hash;
     }
 
@@ -391,6 +520,23 @@ public class HashUtility {
     public static int jsStringHash32(String data) {
         int size = data.length();
         int hash = 1315423911;
+        for (int index = 0; index < size; index++) {
+            hash ^= ((hash << 5) + data.charAt(index) + (hash >> 2));
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * A bitwise hash function written by Justin Sobel.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long jsStringHash64(String data) {
+        int size = data.length();
+        long hash = 1315423911;
         for (int index = 0; index < size; index++) {
             hash ^= ((hash << 5) + data.charAt(index) + (hash >> 2));
         }
@@ -642,6 +788,32 @@ public class HashUtility {
     }
 
     /**
+     * <pre>
+     * This hash algorithm is based on work by Peter J. Weinberger of AT&T Bell Labs. 
+     * The book Compilers (Principles, Techniques and Tools) by Aho, Sethi and Ulman, recommends the use of hash functions that employ the hashing methodology found in this particular algorithm.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long pjwStringHash64(String data) {
+        int size = data.length();
+        long bits = (long) (4 * 8);
+        long threeFourth = (long) ((bits * 3) / 4);
+        long oneEighth = (long) (bits / 8);
+        long mask = (long) (0xFFFFFFFF) << (bits - oneEighth);
+        long hash = 0;
+        long test = 0;
+        for (int index = 0; index < size; index++) {
+            hash = (hash << oneEighth) + data.charAt(index);
+            if ((test = hash & mask) != 0) {
+                hash = ((hash ^ (test >> threeFourth)) & (~mask));
+            }
+        }
+        return hash;
+    }
+
+    /**
      * 旋转哈希
      * 
      * @param data
@@ -679,6 +851,27 @@ public class HashUtility {
 
     /**
      * <pre>
+     * A simple hash function from Robert Sedgwicks Algorithms in C book. 
+     * I've added some simple optimizations to the algorithm in order to speed up its hashing process.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long rsStringHash64(String data) {
+        int size = data.length();
+        int alpha = 63689;
+        int beta = 378551;
+        long hash = 0;
+        for (int index = 0; index < size; index++) {
+            hash = hash * alpha + data.charAt(index);
+            alpha = alpha * beta;
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
      * This is the algorithm of choice which is used in the open source SDBM project. The hash function seems to have a good over-all distribution for many different data sets. 
      * It seems to work well in situations where there is a high variance in the MSBs of the elements in a data set.
      * </pre>
@@ -689,6 +882,24 @@ public class HashUtility {
     public static int sdbmStringHash32(String data) {
         int size = data.length();
         int hash = 0;
+        for (int index = 0; index < size; index++) {
+            hash = data.charAt(index) + (hash << 6) + (hash << 16) - hash;
+        }
+        return hash;
+    }
+
+    /**
+     * <pre>
+     * This is the algorithm of choice which is used in the open source SDBM project. The hash function seems to have a good over-all distribution for many different data sets. 
+     * It seems to work well in situations where there is a high variance in the MSBs of the elements in a data set.
+     * </pre>
+     * 
+     * @param data
+     * @return
+     */
+    public static long sdbmStringHash64(String data) {
+        int size = data.length();
+        long hash = 0;
         for (int index = 0; index < size; index++) {
             hash = data.charAt(index) + (hash << 6) + (hash << 16) - hash;
         }

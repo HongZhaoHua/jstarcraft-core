@@ -64,9 +64,35 @@ public class HashUtilityTestCase {
         Assert.assertThat(HashUtility.sdbmStringHash32(string), CoreMatchers.equalTo(-845395960));
     }
 
+    @Test
+    public void testStringHash64() {
+        String string = "abcdefghijklmnopqrstuvwxyz1234567890";
+        Assert.assertEquals(-6348894989450125275L, HashUtility.apStringHash64(string));
+
+        Assert.assertEquals(-3340620259685570120L, HashUtility.bkdrStringHash64(string));
+        Assert.assertEquals(-5591551353237398352L, HashUtility.bpStringHash64(string));
+
+        Assert.assertEquals(-2883402263783970963L, HashUtility.dekStringHash64(string));
+        Assert.assertEquals(-999317002173065295L, HashUtility.djbStringHash64(string));
+
+        Assert.assertEquals(126631744L, HashUtility.elfStringHash64(string));
+
+        Assert.assertEquals(1012045081597555778L, HashUtility.fnv0StringHash64(string));
+
+        Assert.assertEquals(-5709909030471576674L, HashUtility.jsStringHash64(string));
+
+        Assert.assertEquals(126631744L, HashUtility.pjwStringHash64(string));
+
+        Assert.assertEquals(-9134725312221806098L, HashUtility.rsStringHash64(string));
+
+        Assert.assertEquals(-6905727910056015864L, HashUtility.sdbmStringHash64(string));
+    }
+
     private final TreeMap<String, Method> numberHash32Methods = new TreeMap<>();
 
     private final TreeMap<String, Method> stringHash32Methods = new TreeMap<>();
+
+    private final TreeMap<String, Method> stringHash64Methods = new TreeMap<>();
 
     {
         ReflectionUtility.doWithMethods(HashUtility.class, (method) -> {
@@ -75,6 +101,9 @@ public class HashUtilityTestCase {
             }
             if (method.getName().endsWith("StringHash32")) {
                 stringHash32Methods.put(method.getName(), method);
+            }
+            if (method.getName().endsWith("StringHash64")) {
+                stringHash64Methods.put(method.getName(), method);
             }
         }, (method) -> {
             // 选择参数数量为1的静态方法
@@ -105,7 +134,7 @@ public class HashUtilityTestCase {
         return variance / size;
     }
 
-    private void testCollision(String message, Method method, Object[] datas, Collection<Object> hashes, TreeMap<Integer, Integer> counts) throws Exception {
+    private void test32Collision(String message, Method method, Object[] datas, Collection<Object> hashes, TreeMap<Integer, Integer> counts) throws Exception {
         double size = 1000D;
         double step = Integer.MAX_VALUE;
         step -= Integer.MIN_VALUE;
@@ -118,8 +147,35 @@ public class HashUtilityTestCase {
         long time = System.currentTimeMillis();
         int collision = 0;
         for (Object data : datas) {
-            Integer hash = Integer.class.cast(method.invoke(null, data.toString()));
+            Integer hash = Integer.class.cast(method.invoke(null, data));
             Entry<Integer, Integer> term = counts.higherEntry(hash);
+            counts.put(term.getKey(), term.getValue() + 1);
+            if (!hashes.add(hash)) {
+                collision++;
+            }
+        }
+
+        message = StringUtility.format("{}使用[{}]算法,哈希{}次,冲突{}次,方差{},时间{}毫秒", message, method.getName(), datas.length, collision, (long) getVariance(counts.values()), System.currentTimeMillis() - time);
+        logger.debug(message);
+        hashes.clear();
+        counts.clear();
+    }
+
+    private void test64Collision(String message, Method method, Object[] datas, Collection<Object> hashes, TreeMap<Long, Integer> counts) throws Exception {
+        double size = 1000D;
+        double step = Long.MAX_VALUE;
+        step -= Long.MIN_VALUE;
+        step /= size;
+
+        for (int index = 0; index < size; index++) {
+            counts.put((long) (Long.MAX_VALUE - step * index), 0);
+        }
+
+        long time = System.currentTimeMillis();
+        int collision = 0;
+        for (Object data : datas) {
+            Long hash = Long.class.cast(method.invoke(null, data.toString()));
+            Entry<Long, Integer> term = counts.higherEntry(hash);
             counts.put(term.getKey(), term.getValue() + 1);
             if (!hashes.add(hash)) {
                 collision++;
@@ -140,19 +196,23 @@ public class HashUtilityTestCase {
         int size = 1000000;
         Object[] datas = new Object[size];
         Collection<Object> hashes = new HashSet<>(size);
-        TreeMap<Integer, Integer> counts = new TreeMap<>();
         for (int index = 0; index < size; index++) {
-            datas[index] = new UUID(RandomUtility.randomLong(), RandomUtility.randomLong());
+            datas[index] = new UUID(RandomUtility.randomLong(), RandomUtility.randomLong()).toString();
         }
+        TreeMap<Integer, Integer> count32s = new TreeMap<>();
         for (Method method : stringHash32Methods.values()) {
-            testCollision("UUID", method, datas, hashes, counts);
+            test32Collision("UUID", method, datas, hashes, count32s);
+        }
+        TreeMap<Long, Integer> count64s = new TreeMap<>();
+        for (Method method : stringHash64Methods.values()) {
+            test64Collision("UUID", method, datas, hashes, count64s);
         }
 
         for (int index = 0; index < size; index++) {
             datas[index] = index + size;
         }
-        for (Method method : stringHash32Methods.values()) {
-            testCollision("连续整数", method, datas, hashes, counts);
+        for (Method method : numberHash32Methods.values()) {
+            test32Collision("连续整数", method, datas, hashes, count32s);
         }
     }
 

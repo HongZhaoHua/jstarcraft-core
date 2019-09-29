@@ -20,7 +20,7 @@
 		<Root level="INFO">
 			<AppenderRef ref="Console" />
 		</Root>
-		<Logger name="com.jstarcraft" level="ERROR" />
+		<Logger name="com.jstarcraft" level="DEBUG" />
 		<Logger name="com.jstarcraft.core.cache" level="INFO" />
 		<Logger name="com.jstarcraft.core.codec" level="INFO" />
 		<Logger name="com.jstarcraft.core.communication" level="INFO" />
