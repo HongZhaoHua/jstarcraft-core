@@ -1,3 +1,0 @@
-ORM框架
-全局索引的唯一索引会存放在redis
-当Hibernate与网络中断导致缓存数据无法写入的时候,使用berkeleydb将数据存在本地
