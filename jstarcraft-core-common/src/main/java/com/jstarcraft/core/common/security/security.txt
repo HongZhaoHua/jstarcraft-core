@@ -1,0 +1,5 @@
+[信息安全]MD(消息摘要),MAC(消息认证码),数字签名的区别:
+https://blog.csdn.net/C2681595858/article/details/85106076
+
+消息摘要,MAC(消息认证码),数字签名扫盲贴:
+https://blog.csdn.net/aitangyong/article/details/54426711
