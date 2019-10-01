@@ -4,8 +4,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.hash.HashUtility;
 import com.jstarcraft.core.monitor.route.exception.RouteException;
-import com.jstarcraft.core.utility.HashUtility;
 
 public class HashCycleTestCase {
 
