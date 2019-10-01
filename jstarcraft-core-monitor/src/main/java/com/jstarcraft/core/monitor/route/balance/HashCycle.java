@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.jstarcraft.core.common.hash.HashFunction;
 import com.jstarcraft.core.monitor.route.exception.RouteException;
 
 /**

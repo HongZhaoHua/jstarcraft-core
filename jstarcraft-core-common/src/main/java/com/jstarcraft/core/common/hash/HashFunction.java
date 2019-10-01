@@ -1,4 +1,4 @@
-package com.jstarcraft.core.monitor.route.balance;
+package com.jstarcraft.core.common.hash;
 
 /**
  * 哈希函数
