@@ -1,4 +1,6 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.hash;
+
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 哈希工具

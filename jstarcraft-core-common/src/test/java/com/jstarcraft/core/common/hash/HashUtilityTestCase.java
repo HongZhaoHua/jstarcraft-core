@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.security;
+package com.jstarcraft.core.common.hash;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -15,8 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.common.hash.HashUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.utility.HashUtility;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
