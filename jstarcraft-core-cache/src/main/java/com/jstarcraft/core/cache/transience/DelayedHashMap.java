@@ -80,7 +80,7 @@ public class DelayedHashMap<K, V> implements Map<K, V> {
     }
 
     private void clean() {
-        // 从尾部删除一个桶,到头添加一个桶.最后一个桶的数据是最旧的;
+        // 从尾部删除一个桶,到头部加一个桶.最后一个桶的数据是最旧的;
         final Map<K, V> clean = segments.removeLast();
         segments.addFirst(new ConcurrentHashMap<K, V>());
 
