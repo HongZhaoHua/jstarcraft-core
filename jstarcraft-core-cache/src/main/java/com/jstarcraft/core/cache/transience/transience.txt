@@ -3,3 +3,9 @@ http://blog.jobbole.com/30940/
 
 缓存淘汰算法系列:
 http://blog.csdn.net/yunhua_lee/article/details/7599671
+
+ConcurrentLinkedHashMap设计与代码解析:
+https://blog.csdn.net/u014410538/article/details/78657657
+
+google的ConcurrentLinkedHashmap源代码解析:
+https://www.cnblogs.com/yhlx/articles/3069247.html
