@@ -25,7 +25,7 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.floats.FloatList;
 
 /**
- * 搜索器
+ * Lucene引擎
  * 
  * @author Birdy
  *
