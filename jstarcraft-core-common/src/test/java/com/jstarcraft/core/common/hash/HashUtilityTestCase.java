@@ -9,13 +9,11 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.common.hash.HashUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -28,40 +26,42 @@ public class HashUtilityTestCase {
     public void testStringHash32() {
         int number = 1656899;
         String string = "abcdefghijklmnopqrstuvwxyz1234567890";
-        Assert.assertThat(HashUtility.murmur2NumberHash32(number), CoreMatchers.equalTo(-1434001724));
-        Assert.assertThat(HashUtility.murmur3NumberHash32(number), CoreMatchers.equalTo(363720497));
-        Assert.assertThat(HashUtility.rjNumberHash32(number), CoreMatchers.equalTo(-755170596));
-        Assert.assertThat(HashUtility.twNumberHash32(number), CoreMatchers.equalTo(800802560));
+        Assert.assertEquals(-1434001724, HashUtility.murmur2NumberHash32(number));
+        Assert.assertEquals(363720497, HashUtility.murmur3NumberHash32(number));
+        Assert.assertEquals(-755170596, HashUtility.rjNumberHash32(number));
+        Assert.assertEquals(800802560, HashUtility.twNumberHash32(number));
 
-        Assert.assertThat(HashUtility.additiveStringHash32(string), CoreMatchers.equalTo(3408));
-        Assert.assertThat(HashUtility.apStringHash32(string), CoreMatchers.equalTo(-419280992));
+        Assert.assertEquals(3408, HashUtility.additiveStringHash32(string));
+        Assert.assertEquals(-419280992, HashUtility.apStringHash32(string));
 
-        Assert.assertThat(HashUtility.bernsteinStringHash32(string), CoreMatchers.equalTo(1151693868));
-        Assert.assertThat(HashUtility.bkdrStringHash32(string), CoreMatchers.equalTo(-1141380680));
-        Assert.assertThat(HashUtility.bpStringHash32(string), CoreMatchers.equalTo(1726880944));
+        Assert.assertEquals(1151693868, HashUtility.bernsteinStringHash32(string));
+        Assert.assertEquals(-1141380680, HashUtility.bkdrStringHash32(string));
+        Assert.assertEquals(1726880944, HashUtility.bpStringHash32(string));
 
-        Assert.assertThat(HashUtility.crcStringHash32(string), CoreMatchers.equalTo(354978945));
+        Assert.assertEquals(354978945, HashUtility.crcStringHash32(string));
 
-        Assert.assertThat(HashUtility.dekStringHash32(string), CoreMatchers.equalTo(-1055497406));
-        Assert.assertThat(HashUtility.djbStringHash32(string), CoreMatchers.equalTo(729241521));
+        Assert.assertEquals(-1055497406, HashUtility.dekStringHash32(string));
+        Assert.assertEquals(729241521, HashUtility.djbStringHash32(string));
 
-        Assert.assertThat(HashUtility.elfStringHash32(string), CoreMatchers.equalTo(140307872));
+        Assert.assertEquals(140307872, HashUtility.elfStringHash32(string));
 
-        Assert.assertThat(HashUtility.fnv0StringHash32(string), CoreMatchers.equalTo(-1051872190));
-        Assert.assertThat(HashUtility.fnv1StringHash32(string), CoreMatchers.equalTo(-672044013));
+        Assert.assertEquals(-1051872190, HashUtility.fnv0StringHash32(string));
+        Assert.assertEquals(-672044013, HashUtility.fnv1StringHash32(string));
 
-        Assert.assertThat(HashUtility.jsStringHash32(string), CoreMatchers.equalTo(1825986044));
+        Assert.assertEquals(1825986044, HashUtility.jsStringHash32(string));
 
-        Assert.assertThat(HashUtility.murmur1StringHash32(string), CoreMatchers.equalTo(425323693));
-        Assert.assertThat(HashUtility.murmur2StringHash32(string), CoreMatchers.equalTo(-275809860));
-        Assert.assertThat(HashUtility.murmur3StringHash32(string), CoreMatchers.equalTo(1683129604));
+        Assert.assertEquals(425323693, HashUtility.murmur1StringHash32(string));
+        Assert.assertEquals(-275809860, HashUtility.murmur2StringHash32(string));
+        Assert.assertEquals(1683129604, HashUtility.murmur3StringHash32(string));
 
-        Assert.assertThat(HashUtility.pjwStringHash32(string), CoreMatchers.equalTo(140307872));
+        Assert.assertEquals(-1166771897, HashUtility.oneByOneStringHash32(string));
 
-        Assert.assertThat(HashUtility.rotatingStringHash32(string), CoreMatchers.equalTo(1361166149));
-        Assert.assertThat(HashUtility.rsStringHash32(string), CoreMatchers.equalTo(-197131794));
+        Assert.assertEquals(140307872, HashUtility.pjwStringHash32(string));
 
-        Assert.assertThat(HashUtility.sdbmStringHash32(string), CoreMatchers.equalTo(-845395960));
+        Assert.assertEquals(1361166149, HashUtility.rotatingStringHash32(string));
+        Assert.assertEquals(-197131794, HashUtility.rsStringHash32(string));
+
+        Assert.assertEquals(-845395960, HashUtility.sdbmStringHash32(string));
     }
 
     @Test
@@ -86,6 +86,8 @@ public class HashUtilityTestCase {
         Assert.assertEquals(-9134725312221806098L, HashUtility.rsStringHash64(string));
 
         Assert.assertEquals(-6905727910056015864L, HashUtility.sdbmStringHash64(string));
+
+        Assert.assertEquals(603797126L, HashUtility.tianlStringHash64(string));
     }
 
     private final TreeMap<String, Method> numberHash32Methods = new TreeMap<>();

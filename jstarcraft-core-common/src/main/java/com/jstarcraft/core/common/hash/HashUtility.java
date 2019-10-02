@@ -764,6 +764,27 @@ public class HashUtility {
     }
 
     /**
+     * One By One哈希
+     * 
+     * @param data
+     * @return
+     */
+    public static int oneByOneStringHash32(String data) {
+        int size = data.length();
+        int hash = 0;
+        for (int index = 0; index < size; index++) {
+            hash += data.charAt(index);
+            hash += (hash << 10);
+            hash ^= (hash >> 6);
+        }
+        hash += (hash << 3);
+        hash ^= (hash >> 11);
+        hash += (hash << 15);
+        // return (hash & M_MASK);
+        return hash;
+    }
+
+    /**
      * <pre>
      * This hash algorithm is based on work by Peter J. Weinberger of AT&T Bell Labs. 
      * The book Compilers (Principles, Techniques and Tools) by Aho, Sethi and Ulman, recommends the use of hash functions that employ the hashing methodology found in this particular algorithm.
@@ -904,6 +925,52 @@ public class HashUtility {
         long hash = 0;
         for (int index = 0; index < size; index++) {
             hash = data.charAt(index) + (hash << 6) + (hash << 16) - hash;
+        }
+        return hash;
+    }
+
+    /**
+     * TianL哈希
+     * 
+     * @param data
+     * @return
+     */
+    public static long tianlStringHash64(String data) {
+        int size = data.length();
+        long hash = 0;
+        if (size == 0) {
+            return 0;
+        }
+
+        if (size <= 256) {
+            hash = 16777216L * (size - 1);
+        } else {
+            hash = 4278190080L;
+        }
+
+        int index;
+
+        char ucChar;
+
+        if (size <= 96) {
+            for (index = 1; index <= size; index++) {
+                ucChar = data.charAt(index - 1);
+                if (ucChar <= 'Z' && ucChar >= 'A') {
+                    ucChar = (char) (ucChar + 32);
+                }
+                hash += (3 * index * ucChar * ucChar + 5 * index * ucChar + 7 * index + 11 * ucChar) % 16777216;
+            }
+        } else {
+            for (index = 1; index <= 96; index++) {
+                ucChar = data.charAt(index + size - 96 - 1);
+                if (ucChar <= 'Z' && ucChar >= 'A') {
+                    ucChar = (char) (ucChar + 32);
+                }
+                hash += (3 * index * ucChar * ucChar + 5 * index * ucChar + 7 * index + 11 * ucChar) % 16777216;
+            }
+        }
+        if (hash < 0) {
+            hash *= -1;
         }
         return hash;
     }
