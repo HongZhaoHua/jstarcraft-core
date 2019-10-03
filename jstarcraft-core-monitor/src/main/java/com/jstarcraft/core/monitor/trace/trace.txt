@@ -6,3 +6,6 @@ https://www.jianshu.com/p/3dca4aeb6edd
 
 MDC日志跟踪:
 https://www.jianshu.com/p/8f6c74381dc3
+
+关于Java如何获取当前类名以及方法名的实例:
+https://www.php.cn/java-article-375199.html
