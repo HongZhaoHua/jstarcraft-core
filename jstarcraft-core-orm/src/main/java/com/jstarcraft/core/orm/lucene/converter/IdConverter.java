@@ -8,4 +8,19 @@ package com.jstarcraft.core.orm.lucene.converter;
  */
 public interface IdConverter {
 
+    /**
+     * 解码标识
+     * 
+     * @param data
+     * @return
+     */
+    Object decode(String data);
+
+    /**
+     * 编码标识
+     * 
+     * @param id
+     * @return
+     */
+    String encode(Object id);
 }
