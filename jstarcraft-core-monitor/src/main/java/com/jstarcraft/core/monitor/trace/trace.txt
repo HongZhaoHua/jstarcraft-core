@@ -1,2 +1,8 @@
 Transmittable ThreadLocal(TTL):
 https://github.com/alibaba/transmittable-thread-local
+
+基于SLF4J MDC机制实现日志的链路追踪:
+https://www.jianshu.com/p/3dca4aeb6edd
+
+MDC日志跟踪:
+https://www.jianshu.com/p/8f6c74381dc3
