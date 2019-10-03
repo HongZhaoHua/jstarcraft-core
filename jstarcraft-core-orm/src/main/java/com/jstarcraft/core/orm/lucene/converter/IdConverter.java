@@ -1,5 +1,7 @@
 package com.jstarcraft.core.orm.lucene.converter;
 
+import java.lang.reflect.Type;
+
 /**
  * 标识转换器
  * 
@@ -14,7 +16,7 @@ public interface IdConverter {
      * @param data
      * @return
      */
-    Object decode(String data);
+    Object decode(Type type, String data);
 
     /**
      * 编码标识
@@ -22,5 +24,5 @@ public interface IdConverter {
      * @param id
      * @return
      */
-    String encode(Object id);
+    String encode(Type type, Object id);
 }
