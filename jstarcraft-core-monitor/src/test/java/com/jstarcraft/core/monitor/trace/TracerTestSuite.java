@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-        SecurityTracerTestCase.class,
+        SecurityManagerTracerTestCase.class,
 
         ThreadStackTracerTestCase.class,
 
