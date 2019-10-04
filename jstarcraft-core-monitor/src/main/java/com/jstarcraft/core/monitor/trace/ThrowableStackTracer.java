@@ -24,17 +24,22 @@ public class ThrowableStackTracer implements Tracer {
     }
 
     @Override
-    public String getClass(int index) {
-        if (null != context && (offset + index) < context.length) {
-            return context[offset + index].getClassName();
+    public int getCallLevels() {
+        return context.length - offset;
+    }
+
+    @Override
+    public String getCallClass(int level) {
+        if (null != context && (offset + level) < context.length) {
+            return context[offset + level].getClassName();
         }
         return null;
     }
 
     @Override
-    public String getMethod(int index) {
-        if (null != context && (offset + index) < context.length) {
-            return context[offset + index].getMethodName();
+    public String getCallMethod(int level) {
+        if (null != context && (offset + level) < context.length) {
+            return context[offset + level].getMethodName();
         }
         return null;
     }

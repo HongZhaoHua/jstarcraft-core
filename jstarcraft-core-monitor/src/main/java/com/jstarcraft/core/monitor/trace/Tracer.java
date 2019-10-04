@@ -9,20 +9,27 @@ package com.jstarcraft.core.monitor.trace;
 public interface Tracer {
 
     /**
-     * 获取指定层类型
+     * 获取调用层数量
      * 
-     * @param index
      * @return
      */
-    String getClass(int index);
+    int getCallLevels();
 
     /**
-     * 获取指定层方法
+     * 获取指定层调用类型
      * 
-     * @param index
+     * @param level
      * @return
      */
-    String getMethod(int index);
+    String getCallClass(int level);
+
+    /**
+     * 获取指定层调用方法
+     * 
+     * @param level
+     * @return
+     */
+    String getCallMethod(int level);
 
     /**
      * 获取被叫者类型
@@ -30,7 +37,7 @@ public interface Tracer {
      * @return
      */
     default String getCalleeClass() {
-        return getClass(0);
+        return getCallClass(0);
     }
 
     /**
@@ -39,7 +46,7 @@ public interface Tracer {
      * @return
      */
     default String getCalleeMethod() {
-        return getMethod(0);
+        return getCallMethod(0);
     }
 
     /**
@@ -48,7 +55,7 @@ public interface Tracer {
      * @return
      */
     default String getCallerClass() {
-        return getClass(1);
+        return getCallClass(1);
     }
 
     /**
@@ -57,6 +64,6 @@ public interface Tracer {
      * @return
      */
     default String getCallerMethod() {
-        return getMethod(1);
+        return getCallMethod(1);
     }
 }

@@ -18,21 +18,26 @@ public class ThreadStackTracer implements Tracer {
         this(DEFAULT_OFFSET + 1);
     }
 
-    public ThreadStackTracer(int offset) {
+    public ThreadStackTracer(int level) {
         this.context = Thread.currentThread().getStackTrace();
-        this.offset = offset;
+        this.offset = level;
     }
 
     @Override
-    public String getClass(int index) {
-        if (null != context && (offset + index) < context.length) {
-            return context[offset + index].getClassName();
+    public int getCallLevels() {
+        return context.length - offset;
+    }
+
+    @Override
+    public String getCallClass(int level) {
+        if (null != context && (offset + level) < context.length) {
+            return context[offset + level].getClassName();
         }
         return null;
     }
 
     @Override
-    public String getMethod(int index) {
+    public String getCallMethod(int index) {
         if (null != context && (offset + index) < context.length) {
             return context[offset + index].getMethodName();
         }
