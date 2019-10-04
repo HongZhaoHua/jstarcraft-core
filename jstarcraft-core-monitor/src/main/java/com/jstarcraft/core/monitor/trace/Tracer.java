@@ -9,47 +9,54 @@ package com.jstarcraft.core.monitor.trace;
 public interface Tracer {
 
     /**
-     * 获取呼叫者类型
-     * 
-     * @return
-     */
-    String getCallerClass();
-
-    /**
-     * 获取呼叫者方法
-     * 
-     * @return
-     */
-    String getCallerMethod();
-
-    /**
-     * 获取呼叫者类型
+     * 获取指定层类型
      * 
      * @param index
      * @return
      */
-    String getCallerClass(int index);
+    String getClass(int index);
 
     /**
-     * 获取呼叫者方法
+     * 获取指定层方法
      * 
      * @param index
      * @return
      */
-    String getCallerMethod(int index);
+    String getMethod(int index);
 
     /**
      * 获取被叫者类型
      * 
      * @return
      */
-    String getCalleeClass();
+    default String getCalleeClass() {
+        return getClass(0);
+    }
 
     /**
      * 获取被叫者方法
      * 
      * @return
      */
-    String getCalleeMethod();
+    default String getCalleeMethod() {
+        return getMethod(0);
+    }
 
+    /**
+     * 获取呼叫者类型
+     * 
+     * @return
+     */
+    default String getCallerClass() {
+        return getClass(1);
+    }
+
+    /**
+     * 获取呼叫者方法
+     * 
+     * @return
+     */
+    default String getCallerMethod() {
+        return getMethod(1);
+    }
 }
