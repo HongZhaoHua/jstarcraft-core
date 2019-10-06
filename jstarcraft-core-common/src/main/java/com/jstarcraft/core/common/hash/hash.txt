@@ -1,3 +1,6 @@
+General purpose utilities and hash functions for Android and Java (aka java-common):
+https://github.com/greenrobot/essentials
+
 Hash function:
 https://www.cnblogs.com/zhangguoliang/archive/2014/05/29/3758468.html
 
