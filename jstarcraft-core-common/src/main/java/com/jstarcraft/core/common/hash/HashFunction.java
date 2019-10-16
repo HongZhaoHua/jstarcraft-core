@@ -6,8 +6,8 @@ package com.jstarcraft.core.common.hash;
  * @author Birdy
  *
  */
-public interface HashFunction {
+public interface HashFunction<T> {
 
-    int hash(String data);
+    int hash(T data);
 
 }
