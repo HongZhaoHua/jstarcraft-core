@@ -1,2 +1,5 @@
 Maven的继承以及import作用域:
 https://www.cnblogs.com/techroad4ca/p/6512591.html
+
+Maven实战-maven中的可选依赖(optional):
+https://blog.csdn.net/lovejj1994/article/details/80283240
