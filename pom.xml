@@ -238,7 +238,7 @@
             <dependency>
                 <groupId>com.hankcs</groupId>
                 <artifactId>hanlp</artifactId>
-                <version>portable-1.7.3</version>
+                <version>portable-1.7.5</version>
             </dependency>
 
             <!-- 脚本框架依赖 -->
