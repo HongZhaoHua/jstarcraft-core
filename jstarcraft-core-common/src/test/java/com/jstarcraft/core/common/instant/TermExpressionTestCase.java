@@ -8,9 +8,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.instant.TermExpression;
-import com.jstarcraft.core.common.instant.TermType;
-
 public class TermExpressionTestCase {
 
     private List<LocalDateTime> dateTimes = new ArrayList<>();
@@ -58,6 +55,22 @@ public class TermExpressionTestCase {
         {
             LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
             Assert.assertNull(dateTime);
+        }
+
+        {
+            // 测试连续跨年
+            expression = new TermExpression("0 0 0 XiaoHan *");
+            LocalDateTime dateTime = LocalDateTime.of(2020, 12, 31, 23, 59, 59);
+            dateTime = expression.getNextDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2021, 1, 5, 0, 0, 0), dateTime);
+        }
+
+        {
+            // 测试连续跨年
+            expression = new TermExpression("59 59 23 DongZhi *");
+            LocalDateTime dateTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
+            dateTime = expression.getPreviousDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2021, 12, 21, 23, 59, 59), dateTime);
         }
     }
 

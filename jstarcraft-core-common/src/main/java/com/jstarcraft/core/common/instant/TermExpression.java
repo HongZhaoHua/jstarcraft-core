@@ -187,7 +187,10 @@ public class TermExpression extends DateTimeExpression {
             minute = minutes.previousSetBit(59);
             hour = hours.previousSetBit(23);
             term = terms.previousSetBit(23);
-            year--;
+            // 防止连续跨年
+            if (year == nowDateTime.getYear()) {
+                year--;
+            }
         }
         year = years.previousSetBit(year - TermType.MINIMUM_YEAR);
         if (year == -1) {
@@ -242,7 +245,10 @@ public class TermExpression extends DateTimeExpression {
             minute = minutes.nextSetBit(0);
             hour = hours.nextSetBit(0);
             term = terms.nextSetBit(0);
-            year++;
+            // 防止连续跨年
+            if (year == nowDateTime.getYear()) {
+                year++;
+            }
         }
         year = years.nextSetBit(year - TermType.MINIMUM_YEAR);
         if (year == -1) {
