@@ -86,11 +86,6 @@
             <artifactId>lucene-highlighter</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.hankcs</groupId>
-            <artifactId>hanlp</artifactId>
-        </dependency>
-
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>

@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
@@ -36,8 +37,6 @@ import org.apache.lucene.util.QueryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.orm.lucene.analyzer.hanlp.HanlpIndexAnalyzer;
-import com.jstarcraft.core.orm.lucene.analyzer.hanlp.HanlpQueryAnalyzer;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class LuceneTestCase {
@@ -47,7 +46,7 @@ public class LuceneTestCase {
         Directory directory = new ByteBuffersDirectory();
 
         {
-            Analyzer analyzer = new HanlpIndexAnalyzer();
+            Analyzer analyzer = new EnglishAnalyzer();
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
             IndexWriter indexWriter = new IndexWriter(directory, config);
             File file = new File(this.getClass().getResource("movie.csv").toURI());
@@ -83,7 +82,7 @@ public class LuceneTestCase {
         }
 
         {
-            Analyzer analyzer = new HanlpQueryAnalyzer();
+            Analyzer analyzer = new EnglishAnalyzer();
             IndexReader indexReader = DirectoryReader.open(directory);
             IndexSearcher indexSearcher = new IndexSearcher(indexReader);
             QueryBuilder builder = new QueryBuilder(analyzer);
