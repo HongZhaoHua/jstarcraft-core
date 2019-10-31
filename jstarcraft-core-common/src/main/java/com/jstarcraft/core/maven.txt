@@ -3,3 +3,9 @@ https://www.cnblogs.com/techroad4ca/p/6512591.html
 
 Maven实战-maven中的可选依赖(optional):
 https://blog.csdn.net/lovejj1994/article/details/80283240
+
+清晰的教你如何将 Maven 项目上传至 中央仓库以及版本更新:
+https://www.cnblogs.com/aimqqroad-13/p/9645776.html
+
+如何将自己的开源项目发布到Maven中央仓库:
+https://blog.csdn.net/sinat_23290725/article/details/85018092
