@@ -4,6 +4,9 @@ https://www.cnblogs.com/techroad4ca/p/6512591.html
 Maven实战-maven中的可选依赖(optional):
 https://blog.csdn.net/lovejj1994/article/details/80283240
 
+maven打包不同jdk版本的包:
+https://www.cnblogs.com/woxingwoxue/p/9914910.html
+
 清晰的教你如何将 Maven 项目上传至 中央仓库以及版本更新:
 https://www.cnblogs.com/aimqqroad-13/p/9645776.html
 
