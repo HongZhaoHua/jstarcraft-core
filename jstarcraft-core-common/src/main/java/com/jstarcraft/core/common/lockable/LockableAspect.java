@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import com.jstarcraft.core.common.reflection.ReflectionUtility;
  * 
  * @author Birdy
  */
+@Aspect
 public class LockableAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LockableAspect.class);
