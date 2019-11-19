@@ -3,3 +3,15 @@ https://regexper.com/
 
 CommonRegex port for Java:(设计较为优秀)
 https://github.com/talyssonoc/CommonRegexJava
+
+Java Regex Tutorial:
+https://howtodoinjava.com/java-regular-expression-tutorials/
+
+常用正则表达式 - 收集一些在平时项目开发中经常用到的正则表达式:
+https://github.com/cdoco/common-regex
+
+常用正则表达式收集:
+https://github.com/limingziqiang/functions#%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%94%B6%E9%9B%86
+
+JAVA ISBN10 ISBN13 正则表达式
+https://www.jianshu.com/p/719566fc8374
