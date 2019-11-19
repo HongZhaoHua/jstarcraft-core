@@ -7,11 +7,23 @@ https://github.com/talyssonoc/CommonRegexJava
 Java Regex Tutorial:
 https://howtodoinjava.com/java-regular-expression-tutorials/
 
+Regex Hub:
+https://github.com/lukehaas/RegexHub
+
 常用正则表达式 - 收集一些在平时项目开发中经常用到的正则表达式:
 https://github.com/cdoco/common-regex
 
 常用正则表达式收集:
 https://github.com/limingziqiang/functions#%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%94%B6%E9%9B%86
 
-JAVA ISBN10 ISBN13 正则表达式
+JAVA ISBN10 ISBN13 正则表达式:
 https://www.jianshu.com/p/719566fc8374
+
+根据地址截取省市区,正则表达式:
+https://blog.csdn.net/qq389203946/article/details/80656604
+
+地址省市区的正则表达式:
+https://www.cnblogs.com/chenchangwen/archive/2012/10/17/2727022.html
+
+详细地址正则表达式:
+https://www.cnblogs.com/wenbuzhu/p/10038864.html
