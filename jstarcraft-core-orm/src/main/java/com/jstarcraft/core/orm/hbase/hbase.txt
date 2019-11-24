@@ -1,0 +1,7 @@
+HBase ORM:
+https://flipkart-incubator.github.io/hbase-orm/
+https://github.com/flipkart-incubator/hbase-orm
+
+Simplehbase is a lightweight ORM framework between java app and hbase:
+https://github.com/alibaba/simplehbase/wiki
+https://github.com/alibaba/simplehbase
