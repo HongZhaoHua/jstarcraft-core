@@ -241,12 +241,6 @@
                 <version>3.5.12</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.neo4j</groupId>
-                <artifactId>neo4j-kernel</artifactId>
-                <version>3.5.12</version>
-            </dependency>
-
             <!-- 脚本框架依赖 -->
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
