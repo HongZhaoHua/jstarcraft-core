@@ -67,8 +67,9 @@ JStarCraft Core框架各个模块之间的关系:
 * [6.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
     * 标识管理
     * 键值数据库(Berkeley DB)
-    * 关系型数据库(Hibernate/MyBatis)
-    * 文档型数据库(Lucene/Mongo DB)
+    * 文档数据库(Lucene/Mongo DB)
+    * 关系数据库(Hibernate/MyBatis)
+    * 图数据库(Neo4j)
 * 7.脚本(script)
     * Groovy
     * JS
