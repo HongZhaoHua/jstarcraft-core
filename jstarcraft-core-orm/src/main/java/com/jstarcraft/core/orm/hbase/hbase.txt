@@ -1,3 +1,6 @@
+五分钟轻松了解Hbase面向列的存储:
+https://www.cnblogs.com/lixinjie/p/five-minutes-glance-at-hbase.html
+
 HBase ORM:
 https://flipkart-incubator.github.io/hbase-orm/
 https://github.com/flipkart-incubator/hbase-orm
