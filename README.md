@@ -68,6 +68,7 @@ JStarCraft Core框架各个模块之间的关系:
     * 标识管理
     * 键值数据库(Berkeley DB)
     * 文档数据库(Lucene/Mongo DB)
+    * 列族数据库(HBase)
     * 关系数据库(Hibernate/MyBatis)
     * 图数据库(Neo4j)
 * 7.脚本(script)
