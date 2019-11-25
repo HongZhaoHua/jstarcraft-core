@@ -12,3 +12,9 @@ https://www.cnblogs.com/jpfss/p/11245019.html
 
 Neo4j官方文档:
 https://neo4j.com/docs/
+
+Spring Data Neo4J:
+https://spring.io/projects/spring-data-neo4j
+
+通过Spring Data Neo4J操作您的图形数据库:
+https://www.cnblogs.com/loveis715/p/5425790.html
