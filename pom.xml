@@ -241,6 +241,12 @@
                 <version>3.5.12</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-ogm-core</artifactId>
+                <version>3.2.2</version>
+            </dependency>
+
             <!-- 脚本框架依赖 -->
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
@@ -371,6 +377,12 @@
                 <groupId>de.flapdoodle.embed</groupId>
                 <artifactId>de.flapdoodle.embed.mongo</artifactId>
                 <version>2.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-ogm-embedded-driver</artifactId>
+                <version>3.2.2</version>
             </dependency>
 
             <dependency>

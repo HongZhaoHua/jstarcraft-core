@@ -91,6 +91,11 @@
             <artifactId>neo4j</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-core</artifactId>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>
@@ -125,6 +130,12 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-embedded-driver</artifactId>
             <scope>test</scope>
         </dependency>
 
