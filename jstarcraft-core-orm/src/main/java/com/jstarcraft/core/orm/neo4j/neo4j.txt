@@ -8,7 +8,7 @@ https://www.cnblogs.com/shangbingbing/p/5028764.html
 https://www.cnblogs.com/shangbingbing/p/5028791.html
 
 图形数据库 Neo4j 开发实战:
-https://www.cnblogs.com/jpfss/p/11245019.html
+https://www.ibm.com/developerworks/cn/java/j-lo-neo4j/
 
 Neo4j官方文档:
 https://neo4j.com/docs/
