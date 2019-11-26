@@ -19,6 +19,7 @@ import com.jstarcraft.core.cache.exception.CacheIdentityException;
 import com.jstarcraft.core.cache.persistence.PersistenceManager;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy;
 import com.jstarcraft.core.cache.proxy.JavassistEntityProxy;
+import com.jstarcraft.core.cache.proxy.ProxyManager;
 import com.jstarcraft.core.cache.proxy.ProxyTransformer;
 import com.jstarcraft.core.cache.transience.TransienceManager;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
@@ -32,7 +33,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  * @param <K>
  * @param <T>
  */
-public class EntityCacheManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> implements EntityManager<K, T> {
+public class EntityCacheManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> implements EntityManager<K, T>, ProxyManager<K, T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityCacheManager.class);
 

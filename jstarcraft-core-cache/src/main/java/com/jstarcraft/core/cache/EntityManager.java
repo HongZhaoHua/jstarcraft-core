@@ -21,7 +21,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  * @param <K>
  * @param <T>
  */
-public interface EntityManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> extends CacheManager<K, T>, ProxyManager<K, T> {
+public interface EntityManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> extends CacheManager<K, T> {
 
     /**
      * 获取指定主键的缓存
