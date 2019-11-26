@@ -58,7 +58,7 @@ public class CacheService implements CacheMonitor {
     /** 状态 */
     private AtomicReference<CacheState> state = new AtomicReference<>(null);
 
-    public CacheService(Set<Class<IdentityObject>> cacheClasses, OrmAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
+    public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, OrmAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
         if (cacheClasses == null || accessor == null) {
             throw new IllegalArgumentException();
         }

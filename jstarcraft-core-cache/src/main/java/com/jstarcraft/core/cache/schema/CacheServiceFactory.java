@@ -40,7 +40,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
     private ApplicationContext applicationContext;
 
     private OrmAccessor accessor;
-    private Set<Class<IdentityObject>> cacheClasses;
+    private Set<Class<? extends IdentityObject>> cacheClasses;
     private Map<String, TransienceConfiguration> transienceConfigurations;
     private Map<String, PersistenceConfiguration> persistenceConfigurations;
     private CacheService cacheService;
@@ -120,7 +120,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
         this.accessor = accessor;
     }
 
-    public void setCacheClasses(Set<Class<IdentityObject>> cacheClasses) {
+    public void setCacheClasses(Set<Class<? extends IdentityObject>> cacheClasses) {
         this.cacheClasses = cacheClasses;
     }
 
