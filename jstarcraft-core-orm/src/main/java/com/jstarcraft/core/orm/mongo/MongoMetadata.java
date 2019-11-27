@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.OrmMetadata;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * Mongo元信息
@@ -89,11 +90,16 @@ public class MongoMetadata implements OrmMetadata {
      * @param metadata
      */
     MongoMetadata(Class<?> clazz) {
-        if (!clazz.isAnnotationPresent(Document.class)) {
+        Document document = clazz.getAnnotation(Document.class);
+        if (document == null) {
             throw new IllegalArgumentException();
         }
+        ormName = document.collection();
+        if (StringUtility.isBlank(ormName)) {
+            ormName = clazz.getSimpleName();
+            ormName = ormName.substring(0, 1).toLowerCase() + ormName.substring(1, ormName.length());
+        }
         ormClass = clazz;
-        ormName = clazz.getName();
         ReflectionUtility.doWithFields(ormClass, (field) -> {
             if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
                 return;

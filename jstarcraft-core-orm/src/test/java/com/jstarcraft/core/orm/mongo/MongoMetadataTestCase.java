@@ -1,6 +1,5 @@
 package com.jstarcraft.core.orm.mongo;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,10 +13,11 @@ public class MongoMetadataTestCase {
             Assert.fail();
         } catch (IllegalArgumentException exception) {
         }
-        Assert.assertThat(metadata.getPrimaryName(), CoreMatchers.equalTo("id"));
-        Assert.assertThat(metadata.getIndexNames().size(), CoreMatchers.equalTo(1));
+        Assert.assertEquals("mockObject", metadata.getOrmName());
+        Assert.assertEquals("id", metadata.getPrimaryName());
+        Assert.assertEquals(1, metadata.getIndexNames().size());
         Assert.assertTrue(metadata.getIndexNames().contains("name"));
-        Assert.assertThat(metadata.getVersionName(), CoreMatchers.equalTo("version"));
+        Assert.assertEquals("version", metadata.getVersionName());
     }
 
 }
