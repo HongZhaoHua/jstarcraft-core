@@ -92,7 +92,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
     private Map<Class, String> minimumIdHqls = new ConcurrentHashMap<>();
 
     /** Hibernate元信息 */
-    protected Map<String, HibernateMetadata> hibernateMetadatas = new ConcurrentHashMap<>();
+    protected Map<String, HibernateMetadata> metadatas = new ConcurrentHashMap<>();
 
     public HibernateAccessor(EntityManagerFactory sessionFactory) {
         MetamodelImplementor metamodelImplementor = (MetamodelImplementor) sessionFactory.getMetamodel();
@@ -103,7 +103,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
                 try {
                     Class<?> ormClass = Class.forName(ormName);
                     HibernateMetadata hibernateMetadata = new HibernateMetadata(ormClass);
-                    hibernateMetadatas.put(ormName, hibernateMetadata);
+                    metadatas.put(ormName, hibernateMetadata);
                     String deleteHql = StringUtility.format(DELETE_HQL, ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
                     deleteHqls.put(ormClass, deleteHql);
 
@@ -124,7 +124,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
 
     @Override
     public Collection<? extends OrmMetadata> getAllMetadata() {
-        return hibernateMetadatas.values();
+        return metadatas.values();
     }
 
     @Override
@@ -265,7 +265,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
                     break;
                 }
                 String hql = buffer.toString();
-                HibernateMetadata hibernateMetadata = hibernateMetadatas.get(clazz.getName());
+                HibernateMetadata hibernateMetadata = metadatas.get(clazz.getName());
                 hql = StringUtility.format(hql, hibernateMetadata.getPrimaryName(), name, clazz.getSimpleName(), name);
                 Query<Object[]> query = session.createQuery(hql);
                 for (int index = 0; index < values.length; index++) {

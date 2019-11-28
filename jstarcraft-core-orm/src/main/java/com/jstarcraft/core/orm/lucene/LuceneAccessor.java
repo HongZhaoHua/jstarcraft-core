@@ -43,109 +43,109 @@ public class LuceneAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> objectType, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> objectType, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> objectType, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> objectType, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> objectType, K from, K to) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> objectType, K from, K to) {
+    public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> objectType, OrmCondition condition, String name, I... values) {
+    public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> objectType, OrmCondition condition, String name, I... values) {
+    public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, OrmCondition condition, String name, I... values) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> objectType, OrmPagination pagination) {
+    public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, OrmCondition condition, String name, I... values) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, OrmPagination pagination) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryIntersection(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> objectType) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryUnion(Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> objectType, Map<String, Object> condition) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countIntersection(Class<T> clazz, Map<String, Object> condition) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> objectType, Map<String, Object> condition) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countUnion(Class<T> clazz, Map<String, Object> condition) {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> objectType, OrmPagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> clazz, OrmPagination pagination) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> void iterateIntersection(OrmIterator<T> iterator, Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> objectType, Map<String, Object> condition, OrmPagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> void iterateUnion(OrmIterator<T> iterator, Class<T> clazz, Map<String, Object> condition, OrmPagination pagination) {
         // TODO Auto-generated method stub
 
     }
