@@ -22,7 +22,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metamodel.spi.MetamodelImplementor;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.query.Query;
@@ -98,19 +97,18 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
         MetamodelImplementor metamodelImplementor = (MetamodelImplementor) sessionFactory.getMetamodel();
         try {
             for (EntityPersister ormPersister : metamodelImplementor.entityPersisters().values()) {
-                ClassMetadata classMetadata = ormPersister.getClassMetadata();
-                String ormName = classMetadata.getEntityName();
+                String ormName = ormPersister.getClassMetadata().getEntityName();
                 try {
                     Class<?> ormClass = Class.forName(ormName);
-                    HibernateMetadata hibernateMetadata = new HibernateMetadata(ormClass);
-                    metadatas.put(ormName, hibernateMetadata);
-                    String deleteHql = StringUtility.format(DELETE_HQL, ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
+                    HibernateMetadata metadata = new HibernateMetadata(ormClass);
+                    metadatas.put(ormName, metadata);
+                    String deleteHql = StringUtility.format(DELETE_HQL, ormClass.getSimpleName(), metadata.getPrimaryName());
                     deleteHqls.put(ormClass, deleteHql);
 
-                    String maximumIdHql = StringUtility.format(MAXIMUM_ID, hibernateMetadata.getPrimaryName(), ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
+                    String maximumIdHql = StringUtility.format(MAXIMUM_ID, metadata.getPrimaryName(), ormClass.getSimpleName(), metadata.getPrimaryName());
                     maximumIdHqls.put(ormClass, maximumIdHql);
 
-                    String minimumIdHql = StringUtility.format(MINIMUM_ID, hibernateMetadata.getPrimaryName(), ormClass.getSimpleName(), hibernateMetadata.getPrimaryName());
+                    String minimumIdHql = StringUtility.format(MINIMUM_ID, metadata.getPrimaryName(), ormClass.getSimpleName(), metadata.getPrimaryName());
                     minimumIdHqls.put(ormClass, minimumIdHql);
                 } catch (ClassNotFoundException exception) {
                     throw new OrmException(exception);
@@ -265,8 +263,8 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
                     break;
                 }
                 String hql = buffer.toString();
-                HibernateMetadata hibernateMetadata = metadatas.get(clazz.getName());
-                hql = StringUtility.format(hql, hibernateMetadata.getPrimaryName(), name, clazz.getSimpleName(), name);
+                HibernateMetadata metadata = metadatas.get(clazz.getName());
+                hql = StringUtility.format(hql, metadata.getPrimaryName(), name, clazz.getSimpleName(), name);
                 Query<Object[]> query = session.createQuery(hql);
                 for (int index = 0; index < values.length; index++) {
                     query.setParameter(index, values[index]);
