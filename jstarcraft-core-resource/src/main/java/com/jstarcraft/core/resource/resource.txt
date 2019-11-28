@@ -14,3 +14,9 @@ http://www.xdemo.org/java-excel-poi-import-export-annotation-reflect/
 
 POI读写海量Excel:
 http://blog.csdn.net/goodkuang2012/article/details/7350985
+
+Java操作SVN(实现文件的解锁、检出、更新及提交)---SVNKit学习示例:
+https://www.cnblogs.com/powerwu/articles/9718325.html
+
+java操作git简单实现:
+https://www.cnblogs.com/wozijisun/p/10396660.html
