@@ -8,11 +8,12 @@ import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 
+import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.orm.hibernate.MockObject;
 import com.jstarcraft.core.utility.StringUtility;
 
 @RelationshipEntity
-public class MockRelation {
+public class MockRelation implements IdentityObject<Long> {
 
     @Id
     @GeneratedValue
@@ -36,12 +37,17 @@ public class MockRelation {
         this.to = to;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    void setName(String name) {
+        this.name = name;
     }
 
     public MockNode getFrom() {

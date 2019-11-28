@@ -44,7 +44,7 @@ public class MongoAccessorTestCase {
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
 
             // 修改对象并保存
-            object.setName("birdy" + 1);
+            object.setName("mickey");
             accessor.update(MockObject.class, object);
             instance = accessor.get(MockObject.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));

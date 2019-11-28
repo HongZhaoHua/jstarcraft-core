@@ -1,5 +1,6 @@
-package com.jstarcraft.core.orm.mybatis;
+package com.jstarcraft.core.orm.neo4j;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.ogm.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,106 +20,114 @@ import com.jstarcraft.core.orm.OrmPagination;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class MyBatisAccessorTestCase {
+public class Neo4jAccessorTestCase {
+
+    private static final String CLEAR = "MATCH (node)-[relation]-() DELETE node, relation";
 
     @Autowired
-    private MyBatisAccessor accessor;
+    private Session template;
+
+    @Autowired
+    private Neo4jAccessor accessor;
 
     @Test
-    public void testCRUD() throws Exception {
+    public void testCRUD() {
         int size = 100;
+        template.query(CLEAR, Collections.EMPTY_MAP);
 
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
-            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, MockEnumeration.RANDOM);
-            int id = accessor.create(MockObject.class, object);
+            MockNode object = new MockNode(index, "birdy", index, MockEnumeration.values()[index % MockEnumeration.values().length]);
+            int id = accessor.create(MockNode.class, object);
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较
-            MockObject instance = accessor.get(MockObject.class, id);
+            MockNode instance = accessor.get(MockNode.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
 
             // 修改对象并保存
             object.setName("mickey");
-            accessor.update(MockObject.class, object);
-            instance = accessor.get(MockObject.class, id);
+            accessor.update(MockNode.class, object);
+            instance = accessor.get(MockNode.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
         }
 
         // 查询对象的最大标识
-        int maximum = accessor.maximumIdentity(MockObject.class, -size, size);
+        int maximum = accessor.maximumIdentity(MockNode.class, -size, size);
         Assert.assertThat(maximum, CoreMatchers.equalTo(size - 1));
         // 查询对象的最小标识
-        int minimum = accessor.minimumIdentity(MockObject.class, -size, size);
+        int minimum = accessor.minimumIdentity(MockNode.class, -size, size);
         Assert.assertThat(minimum, CoreMatchers.equalTo(0));
 
         // 查询指定范围的主键与对象
-        Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.All, "money");
+        Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockNode.class, OrmCondition.All, "money");
         Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(size));
-        List<MockObject> objects = accessor.queryInstances(MockObject.class, OrmCondition.All, "money");
-        for (MockObject object : objects) {
+        List<MockNode> objects = accessor.queryInstances(MockNode.class, OrmCondition.All, "money");
+        for (MockNode object : objects) {
             Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
         }
 
-        id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.Equal, "money", 0);
+        id2Moneys = accessor.queryIdentities(MockNode.class, OrmCondition.Equal, "money", 0);
         Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(1));
-        objects = accessor.queryInstances(MockObject.class, OrmCondition.Equal, "money", 0);
-        for (MockObject object : objects) {
+        objects = accessor.queryInstances(MockNode.class, OrmCondition.Equal, "money", 0);
+        for (MockNode object : objects) {
             Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
         }
 
-        id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.Between, "money", 1, 50);
+        id2Moneys = accessor.queryIdentities(MockNode.class, OrmCondition.Between, "money", 1, 50);
         Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(50));
-        objects = accessor.queryInstances(MockObject.class, OrmCondition.Between, "money", 1, 50);
-        for (MockObject object : objects) {
+        objects = accessor.queryInstances(MockNode.class, OrmCondition.Between, "money", 1, 50);
+        for (MockNode object : objects) {
             Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
         }
 
-        id2Moneys = accessor.queryIdentities(MockObject.class, OrmCondition.In, "money", 25, 50, 75);
+        id2Moneys = accessor.queryIdentities(MockNode.class, OrmCondition.In, "money", 25, 50, 75);
         Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(3));
-        objects = accessor.queryInstances(MockObject.class, OrmCondition.In, "money", 25, 50, 75);
-        for (MockObject object : objects) {
+        objects = accessor.queryInstances(MockNode.class, OrmCondition.In, "money", 25, 50, 75);
+        for (MockNode object : objects) {
             Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
         }
 
         Map<String, Object> condition = new HashMap<>();
         condition.put("race", MockEnumeration.RANDOM);
-        condition.put("id", 0);
+        condition.put("id", 3);
 
         // 查询分页
         OrmPagination pagination = new OrmPagination(1, 15);
-        objects = accessor.query(MockObject.class, pagination);
+        objects = accessor.query(MockNode.class, pagination);
         Assert.assertTrue(objects.size() == 15);
         AtomicInteger times = new AtomicInteger();
         accessor.iterate((object) -> {
             times.incrementAndGet();
-        }, MockObject.class, pagination);
+        }, MockNode.class, pagination);
         Assert.assertTrue(times.get() == 15);
 
         pagination = new OrmPagination(7, 15);
-        objects = accessor.query(MockObject.class, pagination);
+        objects = accessor.query(MockNode.class, pagination);
         Assert.assertTrue(objects.size() == 10);
         times.set(0);
         accessor.iterate((object) -> {
             times.incrementAndGet();
-        }, MockObject.class, pagination);
+        }, MockNode.class, pagination);
         Assert.assertTrue(times.get() == 10);
 
         // 测试总数
-        long count = accessor.count(MockObject.class);
+        long count = accessor.count(MockNode.class);
         Assert.assertTrue(count == size);
-        objects = accessor.query(MockObject.class, null);
+        objects = accessor.query(MockNode.class, null);
         Assert.assertTrue(objects.size() == count);
 
-        count = accessor.countIntersection(MockObject.class, condition);
+        count = accessor.countIntersection(MockNode.class, condition);
         Assert.assertTrue(count == 1);
-        objects = accessor.queryIntersection(MockObject.class, condition, null);
+        objects = accessor.queryIntersection(MockNode.class, condition, null);
         Assert.assertTrue(objects.size() == count);
 
-        count = accessor.countUnion(MockObject.class, condition);
-        Assert.assertTrue(count == size);
-        objects = accessor.queryUnion(MockObject.class, condition, null);
-        Assert.assertTrue(objects.size() == count);
+        count = accessor.countUnion(MockNode.class, condition);
+        Assert.assertTrue(count == 25);
+        objects = accessor.queryUnion(MockNode.class, condition, null);
+        Assert.assertTrue(objects.size() == 25);
+
+        template.query(CLEAR, Collections.EMPTY_MAP);
     }
 
 }
