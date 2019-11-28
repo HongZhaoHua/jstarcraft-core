@@ -29,7 +29,7 @@ public class MyBatisAccessorTestCase {
 
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
-            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, MockEnumeration.TERRAN);
+            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, MockEnumeration.RANDOM);
             int id = accessor.create(MockObject.class, object);
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
@@ -81,7 +81,7 @@ public class MyBatisAccessorTestCase {
         }
 
         Map<String, Object> condition = new HashMap<>();
-        condition.put("race", MockEnumeration.TERRAN);
+        condition.put("race", MockEnumeration.RANDOM);
         condition.put("id", 0);
 
         // 查询分页

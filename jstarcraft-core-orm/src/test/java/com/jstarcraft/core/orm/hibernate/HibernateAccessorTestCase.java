@@ -1,6 +1,5 @@
 package com.jstarcraft.core.orm.hibernate;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,7 @@ public class HibernateAccessorTestCase {
 
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
-            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, LocalDateTime.now(), MockEnumeration.TERRAN);
+            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, LocalDateTime.now(), MockEnumeration.RANDOM);
             int id = accessor.create(MockObject.class, object);
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
@@ -83,7 +82,7 @@ public class HibernateAccessorTestCase {
         }
 
         Map<String, Object> condition = new HashMap<>();
-        condition.put("race", MockEnumeration.TERRAN);
+        condition.put("race", MockEnumeration.RANDOM);
         condition.put("id", 0);
 
         // 查询分页
@@ -127,7 +126,7 @@ public class HibernateAccessorTestCase {
         int size = 10;
 
         for (int index = 0; index < size; index++) {
-            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, LocalDateTime.now(), MockEnumeration.TERRAN);
+            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, LocalDateTime.now(), MockEnumeration.RANDOM);
             accessor.create(MockObject.class, object);
         }
 
