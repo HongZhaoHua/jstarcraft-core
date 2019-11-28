@@ -20,3 +20,9 @@ https://www.cnblogs.com/powerwu/articles/9718325.html
 
 java操作git简单实现:
 https://www.cnblogs.com/wozijisun/p/10396660.html
+
+FTP的Java操作全面实战:
+https://blog.csdn.net/haoranhaoshi/article/details/86922503
+
+使用javaAPI操作hdfs:
+https://www.cnblogs.com/yanghuabin/p/7628088.html
