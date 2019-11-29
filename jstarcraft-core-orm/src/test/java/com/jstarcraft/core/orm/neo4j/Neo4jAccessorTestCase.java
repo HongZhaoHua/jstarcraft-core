@@ -22,6 +22,7 @@ import com.jstarcraft.core.orm.OrmPagination;
 @ContextConfiguration
 public class Neo4jAccessorTestCase {
 
+    // 清理所有节点与关系
     private static final String CLEAR = "MATCH (node)-[relation]-() DELETE node, relation";
 
     @Autowired
