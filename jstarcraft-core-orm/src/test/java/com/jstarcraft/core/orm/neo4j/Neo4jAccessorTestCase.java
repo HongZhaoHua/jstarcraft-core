@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neo4j.ogm.session.Session;
+import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,13 +27,14 @@ public class Neo4jAccessorTestCase {
     private static final String CLEAR = "MATCH (node)-[relation]-() DELETE node, relation";
 
     @Autowired
-    private Session template;
+    private SessionFactory factory;
 
     @Autowired
     private Neo4jAccessor accessor;
 
     @Test
     public void testCRUD() {
+        Session template = factory.openSession();
         int size = 100;
         template.query(CLEAR, Collections.EMPTY_MAP);
 
