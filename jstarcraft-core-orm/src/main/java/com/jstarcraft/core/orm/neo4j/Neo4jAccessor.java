@@ -134,55 +134,81 @@ public class Neo4jAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
-        // TODO 注意:Neo4j-OGM对原始类型支持似乎有问题,必须使用包装类型,否则Session.load无法装载到指定对象.
-        return template.load(clazz, (Serializable) id);
+        try {
+            // TODO 注意:Neo4j-OGM对原始类型支持似乎有问题,必须使用包装类型,否则Session.load无法装载到指定对象.
+            return template.load(clazz, (Serializable) id);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
-        template.save(object);
-        return object.getId();
+        try {
+            template.save(object);
+            return object.getId();
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put(metadata.getPrimaryName(), id);
-        String cql = deleteCqls.get(clazz);
-        template.query(cql, parameters);
-        // TODO 不知道什么因素,template不执行clear,load会获取到已删除对象.
-        template.clear();
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put(metadata.getPrimaryName(), id);
+            String cql = deleteCqls.get(clazz);
+            template.query(cql, parameters);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
-        template.delete(object);
+        try {
+            template.delete(object);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
-        template.save(object);
+        try {
+            template.save(object);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("from", from);
-        parameters.put("to", to);
-        String cql = maximumIdCqls.get(clazz);
-        return template.queryForObject(metadata.getPrimaryClass(), cql, parameters);
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("from", from);
+            parameters.put("to", to);
+            String cql = maximumIdCqls.get(clazz);
+            return template.queryForObject(metadata.getPrimaryClass(), cql, parameters);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("from", from);
-        parameters.put("to", to);
-        String cql = minimumIdCqls.get(clazz);
-        return template.queryForObject(metadata.getPrimaryClass(), cql, parameters);
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("from", from);
+            parameters.put("to", to);
+            String cql = minimumIdCqls.get(clazz);
+            return template.queryForObject(metadata.getPrimaryClass(), cql, parameters);
+        } finally {
+            template.clear();
+        }
     }
 
     @Override
@@ -190,53 +216,57 @@ public class Neo4jAccessor implements OrmAccessor {
         if (!condition.checkValues(values)) {
             throw new OrmQueryException();
         }
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        StringBuilder buffer = new StringBuilder(INDEX_2_ID_MAP_BEGIN);
-        switch (condition) {
-        case All:
-            break;
-        case Between:
-            buffer.append(BETWEEN_CONDITION);
-            break;
-        case Equal:
-            buffer.append(EQUAL_CONDITION);
-            break;
-        case Higher:
-            buffer.append(HIGHER_CONDITION);
-            break;
-        case In:
-            StringBuilder string = new StringBuilder();
-            for (int index = 1, size = values.length - 1; index <= size; index++) {
-                string.append(", {");
-                string.append(index);
-                string.append("}");
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            StringBuilder buffer = new StringBuilder(INDEX_2_ID_MAP_BEGIN);
+            switch (condition) {
+            case All:
+                break;
+            case Between:
+                buffer.append(BETWEEN_CONDITION);
+                break;
+            case Equal:
+                buffer.append(EQUAL_CONDITION);
+                break;
+            case Higher:
+                buffer.append(HIGHER_CONDITION);
+                break;
+            case In:
+                StringBuilder string = new StringBuilder();
+                for (int index = 1, size = values.length - 1; index <= size; index++) {
+                    string.append(", {");
+                    string.append(index);
+                    string.append("}");
+                }
+                buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
+                break;
+            case Lower:
+                buffer.append(LOWER_CONDITION);
+                break;
+            case Unequal:
+                buffer.append(UNEQUAL_CONDITION);
+                break;
             }
-            buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
-            break;
-        case Lower:
-            buffer.append(LOWER_CONDITION);
-            break;
-        case Unequal:
-            buffer.append(UNEQUAL_CONDITION);
-            break;
+            buffer.append(StringUtility.format(INDEX_2_ID_MAP_END, metadata.getPrimaryName(), name));
+            String cql = buffer.toString();
+            cql = StringUtility.format(cql, metadata.getOrmName(), name, name);
+            for (int index = 0; index < values.length; index++) {
+                parameters.put(String.valueOf(index), values[index]);
+            }
+            Iterable<Map<String, Object>> keyValues = template.query(cql, parameters);
+            Map<K, I> map = new HashMap<>();
+            for (Map<String, Object> keyValue : keyValues) {
+                Object key = keyValue.get("key");
+                Object value = keyValue.get("value");
+                key = ConversionUtility.convert(key, metadata.getFields().get(metadata.getPrimaryName()));
+                value = ConversionUtility.convert(value, metadata.getFields().get(name));
+                map.put((K) key, (I) value);
+            }
+            return map;
+        } finally {
+            template.clear();
         }
-        buffer.append(StringUtility.format(INDEX_2_ID_MAP_END, metadata.getPrimaryName(), name));
-        String cql = buffer.toString();
-        cql = StringUtility.format(cql, metadata.getOrmName(), name, name);
-        for (int index = 0; index < values.length; index++) {
-            parameters.put(String.valueOf(index), values[index]);
-        }
-        Iterable<Map<String, Object>> keyValues = template.query(cql, parameters);
-        Map<K, I> map = new HashMap<>();
-        for (Map<String, Object> keyValue : keyValues) {
-            Object key = keyValue.get("key");
-            Object value = keyValue.get("value");
-            key = ConversionUtility.convert(key, metadata.getFields().get(metadata.getPrimaryName()));
-            value = ConversionUtility.convert(value, metadata.getFields().get(name));
-            map.put((K) key, (I) value);
-        }
-        return map;
     }
 
     @Override
@@ -244,87 +274,95 @@ public class Neo4jAccessor implements OrmAccessor {
         if (!condition.checkValues(values)) {
             throw new OrmQueryException();
         }
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        StringBuilder buffer = new StringBuilder(INDEX_2_OBJECT_SET_BEGIN);
-        switch (condition) {
-        case All:
-            break;
-        case Between:
-            buffer.append(BETWEEN_CONDITION);
-            break;
-        case Equal:
-            buffer.append(EQUAL_CONDITION);
-            break;
-        case Higher:
-            buffer.append(HIGHER_CONDITION);
-            break;
-        case In:
-            StringBuilder string = new StringBuilder();
-            for (int index = 1, size = values.length - 1; index <= size; index++) {
-                string.append(", {");
-                string.append(index);
-                string.append("}");
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            StringBuilder buffer = new StringBuilder(INDEX_2_OBJECT_SET_BEGIN);
+            switch (condition) {
+            case All:
+                break;
+            case Between:
+                buffer.append(BETWEEN_CONDITION);
+                break;
+            case Equal:
+                buffer.append(EQUAL_CONDITION);
+                break;
+            case Higher:
+                buffer.append(HIGHER_CONDITION);
+                break;
+            case In:
+                StringBuilder string = new StringBuilder();
+                for (int index = 1, size = values.length - 1; index <= size; index++) {
+                    string.append(", {");
+                    string.append(index);
+                    string.append("}");
+                }
+                buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
+                break;
+            case Lower:
+                buffer.append(LOWER_CONDITION);
+                break;
+            case Unequal:
+                buffer.append(UNEQUAL_CONDITION);
+                break;
             }
-            buffer.append(StringUtility.format(IN_CONDITION, name, string.toString()));
-            break;
-        case Lower:
-            buffer.append(LOWER_CONDITION);
-            break;
-        case Unequal:
-            buffer.append(UNEQUAL_CONDITION);
-            break;
+            buffer.append(INDEX_2_OBJECT_SET_END);
+            String cql = buffer.toString();
+            cql = StringUtility.format(cql, metadata.getOrmName(), name, name);
+            for (int index = 0; index < values.length; index++) {
+                parameters.put(String.valueOf(index), values[index]);
+            }
+            Iterable<T> keyValues = template.query(clazz, cql, parameters);
+            List<T> list = new ArrayList<>(BATCH_SIZE);
+            for (T keyValue : keyValues) {
+                list.add(keyValue);
+            }
+            return list;
+        } finally {
+            template.clear();
         }
-        buffer.append(INDEX_2_OBJECT_SET_END);
-        String cql = buffer.toString();
-        cql = StringUtility.format(cql, metadata.getOrmName(), name, name);
-        for (int index = 0; index < values.length; index++) {
-            parameters.put(String.valueOf(index), values[index]);
-        }
-        Iterable<T> keyValues = template.query(clazz, cql, parameters);
-        List<T> list = new ArrayList<>(BATCH_SIZE);
-        for (T keyValue : keyValues) {
-            list.add(keyValue);
-        }
-        return list;
     }
 
     private <K extends Comparable, T extends IdentityObject<K>> Iterable<T> iterate(Class<T> clazz, Operation operation, Map<String, Object> condition, OrmPagination pagination) {
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        StringBuilder buffer = new StringBuilder(StringUtility.format(ITERATE_BEGIN, metadata.getOrmName()));
-        if (condition != null) {
-            int index = 0;
-            final Iterator<Entry<String, Object>> iterator = condition.entrySet().iterator();
-            if (iterator.hasNext()) {
-                Entry<String, Object> entry = iterator.next();
-                buffer.append(StringUtility.format(EQUAL_CONDITION, entry.getKey()));
-                parameters.put(String.valueOf(index), entry.getValue());
-                index++;
-            }
-            while (iterator.hasNext()) {
-                Entry<String, Object> entry = iterator.next();
-                switch (operation) {
-                case AND:
-                    buffer.append(StringUtility.format(AND_CONDITION, entry.getKey(), index));
-                    break;
-                case OR:
-                    buffer.append(StringUtility.format(OR_CONDITION, entry.getKey(), index));
-                    break;
-                default:
-                    throw new UnsupportedOperationException();
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            StringBuilder buffer = new StringBuilder(StringUtility.format(ITERATE_BEGIN, metadata.getOrmName()));
+            if (condition != null) {
+                int index = 0;
+                final Iterator<Entry<String, Object>> iterator = condition.entrySet().iterator();
+                if (iterator.hasNext()) {
+                    Entry<String, Object> entry = iterator.next();
+                    buffer.append(StringUtility.format(EQUAL_CONDITION, entry.getKey()));
+                    parameters.put(String.valueOf(index), entry.getValue());
+                    index++;
                 }
-                parameters.put(String.valueOf(index), entry.getValue());
-                index++;
+                while (iterator.hasNext()) {
+                    Entry<String, Object> entry = iterator.next();
+                    switch (operation) {
+                    case AND:
+                        buffer.append(StringUtility.format(AND_CONDITION, entry.getKey(), index));
+                        break;
+                    case OR:
+                        buffer.append(StringUtility.format(OR_CONDITION, entry.getKey(), index));
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                    }
+                    parameters.put(String.valueOf(index), entry.getValue());
+                    index++;
+                }
             }
+            buffer.append(ITERATE_END);
+            if (pagination != null) {
+                buffer.append(StringUtility.format(PAGINATION_CONDITION, pagination.getFirst(), pagination.getSize()));
+            }
+            String cql = buffer.toString();
+            Iterable<T> iterable = template.query(clazz, cql, parameters);
+            return iterable;
+        } finally {
+            template.clear();
         }
-        buffer.append(ITERATE_END);
-        if (pagination != null) {
-            buffer.append(StringUtility.format(PAGINATION_CONDITION, pagination.getFirst(), pagination.getSize()));
-        }
-        String cql = buffer.toString();
-        Iterable<T> iterable = template.query(clazz, cql, parameters);
-        return iterable;
     }
 
     @Override
@@ -358,38 +396,42 @@ public class Neo4jAccessor implements OrmAccessor {
     }
 
     private <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz, Operation operation, Map<String, Object> condition) {
-        Neo4jMetadata metadata = metadatas.get(clazz);
-        HashMap<String, Object> parameters = new HashMap<>();
-        StringBuilder buffer = new StringBuilder(StringUtility.format(COUNT_BEGIN, metadata.getOrmName()));
-        if (condition != null) {
-            int index = 0;
-            final Iterator<Entry<String, Object>> iterator = condition.entrySet().iterator();
-            if (iterator.hasNext()) {
-                Entry<String, Object> entry = iterator.next();
-                buffer.append(StringUtility.format(EQUAL_CONDITION, entry.getKey()));
-                parameters.put(String.valueOf(index), entry.getValue());
-                index++;
-            }
-            while (iterator.hasNext()) {
-                Entry<String, Object> entry = iterator.next();
-                switch (operation) {
-                case AND:
-                    buffer.append(StringUtility.format(AND_CONDITION, entry.getKey(), index));
-                    break;
-                case OR:
-                    buffer.append(StringUtility.format(OR_CONDITION, entry.getKey(), index));
-                    break;
-                default:
-                    throw new UnsupportedOperationException();
+        try {
+            Neo4jMetadata metadata = metadatas.get(clazz);
+            HashMap<String, Object> parameters = new HashMap<>();
+            StringBuilder buffer = new StringBuilder(StringUtility.format(COUNT_BEGIN, metadata.getOrmName()));
+            if (condition != null) {
+                int index = 0;
+                final Iterator<Entry<String, Object>> iterator = condition.entrySet().iterator();
+                if (iterator.hasNext()) {
+                    Entry<String, Object> entry = iterator.next();
+                    buffer.append(StringUtility.format(EQUAL_CONDITION, entry.getKey()));
+                    parameters.put(String.valueOf(index), entry.getValue());
+                    index++;
                 }
-                parameters.put(String.valueOf(index), entry.getValue());
-                index++;
+                while (iterator.hasNext()) {
+                    Entry<String, Object> entry = iterator.next();
+                    switch (operation) {
+                    case AND:
+                        buffer.append(StringUtility.format(AND_CONDITION, entry.getKey(), index));
+                        break;
+                    case OR:
+                        buffer.append(StringUtility.format(OR_CONDITION, entry.getKey(), index));
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                    }
+                    parameters.put(String.valueOf(index), entry.getValue());
+                    index++;
+                }
             }
+            buffer.append(COUNT_END);
+            String cql = buffer.toString();
+            Long count = template.queryForObject(Long.class, cql, parameters);
+            return count;
+        } finally {
+            template.clear();
         }
-        buffer.append(COUNT_END);
-        String cql = buffer.toString();
-        Long count = template.queryForObject(Long.class, cql, parameters);
-        return count;
     }
 
     @Override
@@ -429,6 +471,10 @@ public class Neo4jAccessor implements OrmAccessor {
         for (T keyValue : iterable) {
             iterator.iterate(keyValue);
         }
+    }
+
+    void clear() {
+        template.clear();
     }
 
 }

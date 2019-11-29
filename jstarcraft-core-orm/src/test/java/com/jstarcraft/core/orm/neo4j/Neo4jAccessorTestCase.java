@@ -24,7 +24,7 @@ import com.jstarcraft.core.orm.OrmPagination;
 public class Neo4jAccessorTestCase {
 
     // 清理所有节点与关系
-    private static final String CLEAR = "MATCH (node)-[relation]-() DELETE node, relation";
+    private static final String CLEAR = "MATCH (node) OPTIONAL MATCH (node)-[relation]-() DELETE node, relation";
 
     @Autowired
     private SessionFactory factory;
@@ -33,10 +33,39 @@ public class Neo4jAccessorTestCase {
     private Neo4jAccessor accessor;
 
     @Test
+    public void testGraph() {
+        MockNode from = new MockNode(-1000, "from", -1000, MockEnumeration.RANDOM);
+        MockNode to = new MockNode(1000, "to", 1000, MockEnumeration.RANDOM);
+        MockRelation relation = new MockRelation("relation", from, to);
+
+        accessor.create(MockNode.class, from);
+        accessor.create(MockNode.class, to);
+        accessor.create(MockRelation.class, relation);
+        relation = accessor.get(MockRelation.class, relation.getId());
+        Assert.assertNotNull(relation);
+
+        try {
+            // 无法删除节点(受关系限制)
+            accessor.delete(MockNode.class, from.getId());
+            Assert.fail();
+        } catch (Exception exception) {
+        }
+
+        // 可以删除节点(将关系删除)
+        accessor.delete(MockNode.class, to);
+        relation = accessor.get(MockRelation.class, relation.getId());
+        Assert.assertNull(relation);
+        
+        from = accessor.get(MockNode.class, from.getId());
+        Assert.assertNotNull(from);
+    }
+
+    @Test
     public void testCRUD() {
         Session template = factory.openSession();
         int size = 100;
         template.query(CLEAR, Collections.EMPTY_MAP);
+        template.clear();
 
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
@@ -143,6 +172,7 @@ public class Neo4jAccessorTestCase {
         }
 
         template.query(CLEAR, Collections.EMPTY_MAP);
+        template.clear();
     }
 
 }
