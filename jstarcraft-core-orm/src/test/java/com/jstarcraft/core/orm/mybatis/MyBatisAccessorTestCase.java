@@ -118,6 +118,18 @@ public class MyBatisAccessorTestCase {
         Assert.assertTrue(count == size);
         objects = accessor.queryUnion(MockObject.class, condition, null);
         Assert.assertTrue(objects.size() == count);
+
+        // 删除对象并保存
+        for (MockObject object : accessor.queryIntersection(MockObject.class, condition, null)) {
+            accessor.delete(MockObject.class, object);
+            object = accessor.get(MockObject.class, object.getId());
+            Assert.assertNull(object);
+        }
+        for (MockObject object : accessor.queryUnion(MockObject.class, condition, null)) {
+            accessor.delete(MockObject.class, object.getId());
+            object = accessor.get(MockObject.class, object.getId());
+            Assert.assertNull(object);
+        }
     }
 
 }

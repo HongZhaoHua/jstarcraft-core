@@ -151,6 +151,8 @@ public class Neo4jAccessor implements OrmAccessor {
         parameters.put(metadata.getPrimaryName(), id);
         String cql = deleteCqls.get(clazz);
         template.query(cql, parameters);
+        // TODO 不知道什么因素,template不执行clear,load会获取到已删除对象.
+        template.clear();
     }
 
     @Override

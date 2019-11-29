@@ -128,6 +128,18 @@ public class Neo4jAccessorTestCase {
         objects = accessor.queryUnion(MockNode.class, condition, null);
         Assert.assertTrue(objects.size() == 25);
 
+        // 删除对象
+        for (MockNode object : accessor.queryIntersection(MockNode.class, condition, null)) {
+            accessor.delete(MockNode.class, object);
+            object = accessor.get(MockNode.class, object.getId());
+            Assert.assertNull(object);
+        }
+        for (MockNode object : accessor.queryUnion(MockNode.class, condition, null)) {
+            accessor.delete(MockNode.class, object.getId());
+            object = accessor.get(MockNode.class, object.getId());
+            Assert.assertNull(object);
+        }
+
         template.query(CLEAR, Collections.EMPTY_MAP);
     }
 
