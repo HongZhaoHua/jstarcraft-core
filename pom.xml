@@ -226,7 +226,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
-                <version>2.1.6.RELEASE</version>
+                <version>2.2.2.RELEASE</version>
             </dependency>
 
             <dependency>
