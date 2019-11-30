@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Transient;
+
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.exception.CacheException;
@@ -21,12 +22,10 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtConstructor;
 import javassist.CtField;
-import javassist.CtMethod;
 import javassist.NotFoundException;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ConstPool;
-import javassist.bytecode.Descriptor;
-import javassist.bytecode.MethodInfo;
+import javassist.bytecode.FieldInfo;
 
 /**
  * 代理转换器
@@ -211,13 +210,27 @@ abstract class JavassistProxy implements ProxyTransformer {
      * @throws Exception
      */
     private void proxyCacheFields(Class<?> clazz, CtClass proxyClass) throws Exception {
-        CtField managerField = new CtField(classPool.get(ProxyManager.class.getName()), FIELD_MANAGER, proxyClass);
-        managerField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
-        proxyClass.addField(managerField);
-
-        CtField informationField = new CtField(classPool.get(CacheInformation.class.getName()), FIELD_INFORMATION, proxyClass);
-        informationField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
-        proxyClass.addField(informationField);
+        ConstPool constPool = proxyClass.getClassFile2().getConstPool();
+        {
+            CtField managerField = new CtField(classPool.get(ProxyManager.class.getName()), FIELD_MANAGER, proxyClass);
+            managerField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
+            FieldInfo fieldInfo = managerField.getFieldInfo();
+            AnnotationsAttribute annotationsAttribute = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
+            javassist.bytecode.annotation.Annotation annotation = new javassist.bytecode.annotation.Annotation(Transient.class.getName(), constPool);
+            annotationsAttribute.addAnnotation(annotation);
+            fieldInfo.addAttribute(annotationsAttribute);
+            proxyClass.addField(managerField);
+        }
+        {
+            CtField informationField = new CtField(classPool.get(CacheInformation.class.getName()), FIELD_INFORMATION, proxyClass);
+            informationField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
+            FieldInfo fieldInfo = informationField.getFieldInfo();
+            AnnotationsAttribute annotationsAttribute = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
+            javassist.bytecode.annotation.Annotation annotation = new javassist.bytecode.annotation.Annotation(Transient.class.getName(), constPool);
+            annotationsAttribute.addAnnotation(annotation);
+            fieldInfo.addAttribute(annotationsAttribute);
+            proxyClass.addField(informationField);
+        }
     }
 
     /**
