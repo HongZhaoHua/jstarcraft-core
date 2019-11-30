@@ -36,7 +36,7 @@ import javassist.bytecode.annotation.Annotation;
 abstract class JavassistProxy implements ProxyTransformer {
 
     /** 类:代理后缀 */
-    protected final static String CLASS_SUFFIX = "$PROXY";
+    protected final static String CLASS_SUFFIX = "_PROXY";
 
     /** 字段:引用代理缓存管理 */
     protected final static String FIELD_MANAGER = "_manager";
