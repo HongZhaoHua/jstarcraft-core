@@ -212,11 +212,11 @@ abstract class JavassistProxy implements ProxyTransformer {
      */
     private void proxyCacheFields(Class<?> clazz, CtClass proxyClass) throws Exception {
         CtField managerField = new CtField(classPool.get(ProxyManager.class.getName()), FIELD_MANAGER, proxyClass);
-        managerField.setModifiers(Modifier.PRIVATE + Modifier.FINAL);
+        managerField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
         proxyClass.addField(managerField);
 
         CtField informationField = new CtField(classPool.get(CacheInformation.class.getName()), FIELD_INFORMATION, proxyClass);
-        informationField.setModifiers(Modifier.PRIVATE + Modifier.FINAL);
+        informationField.setModifiers(Modifier.PRIVATE + Modifier.FINAL + Modifier.TRANSIENT);
         proxyClass.addField(informationField);
     }
 
