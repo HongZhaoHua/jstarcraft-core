@@ -25,3 +25,6 @@ https://neo4j.com/docs/ogm-manual/current/
 
 通过Spring Data Neo4J操作您的图形数据库:
 https://www.cnblogs.com/loveis715/p/5425790.html
+
+GraphAware Neo4j Recommendation Engine:
+https://github.com/graphaware/neo4j-reco
