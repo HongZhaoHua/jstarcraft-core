@@ -23,7 +23,6 @@ import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
-import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.instant.SolarExpression;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
@@ -46,7 +45,15 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
     /** 类型 */
     private Class cacheClass;
 
-    private IdentityObject identityObject;
+    protected ThreadLocal<T> copyInstances = new ThreadLocal<T>() {
+
+        @Override
+        protected T initialValue() {
+            T instance = (T) information.getCacheInstance();
+            return instance;
+        }
+
+    };
 
     /** 此读写锁用于配合elementMap,保证在查询过程中不存在增删改 */
     private ReentrantReadWriteLock waitForLock = new ReentrantReadWriteLock();
@@ -81,7 +88,6 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
     SchedulePersistenceManager(String name, Class cacheClass, OrmAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, String cron) {
         this.name = name;
         this.cacheClass = cacheClass;
-        this.identityObject = information.getCacheInstance();
         this.accessor = accessor;
         this.information = information;
         this.state = state;
@@ -325,6 +331,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
                 Object cacheId = element.getCacheId();
                 try {
                     Object instance = element.getCacheObject();
+                    T copyInstance = copyInstances.get();
                     synchronized (instance == null ? Thread.currentThread() : instance) {
                         Lock writeLock = waitForLock.writeLock();
                         try {
@@ -336,7 +343,8 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 
                             switch (element.getOperation()) {
                             case CREATE:
-                                accessor.create(cacheClass, element.getCacheObject());
+                                ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
+                                accessor.create(cacheClass, copyInstance);
                                 createdCount.incrementAndGet();
                                 break;
                             case DELETE:
@@ -344,8 +352,8 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
                                 deletedCount.incrementAndGet();
                                 break;
                             case UPDATE:
-                                ReflectionUtility.copyInstance(element.getCacheObject(), identityObject);
-                                accessor.update(cacheClass, identityObject);
+                                ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
+                                accessor.update(cacheClass, copyInstance);
                                 updatedCount.incrementAndGet();
                                 break;
                             default:

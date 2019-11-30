@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
-import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.OrmAccessor;
@@ -34,6 +33,16 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
     private String name;
     /** 类型 */
     private Class cacheClass;
+
+    protected ThreadLocal<T> copyInstances = new ThreadLocal<T>() {
+
+        @Override
+        protected T initialValue() {
+            T instance = (T) information.getCacheInstance();
+            return instance;
+        }
+
+    };
 
     /** 读写锁 */
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -106,10 +115,12 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
         PersistenceElement element = new PersistenceElement(PersistenceOperation.CREATE, cacheObject.getId(), cacheObject);
         Exception exception = null;
         synchronized (cacheObject) {
+            T copyInstance = copyInstances.get();
+            ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
             Lock writeLock = lock.writeLock();
             try {
                 writeLock.lock();
-                accessor.create(cacheClass, element.getCacheObject());
+                accessor.create(cacheClass, copyInstance);
                 createdCount.incrementAndGet();
             } catch (Exception throwable) {
                 String message = StringUtility.format("立即策略[{}]处理元素[{}]时异常", new Object[] { name, element });
@@ -154,15 +165,15 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
 //		if (cacheObject instanceof ProxyObject) {
 //			cacheObject = ((ProxyObject) cacheObject).getInstance();
 //		}
-        IdentityObject identityObject = information.getCacheInstance();
         PersistenceElement element = new PersistenceElement(PersistenceOperation.UPDATE, cacheObject.getId(), cacheObject);
         Exception exception = null;
         synchronized (cacheObject) {
+            T copyInstance = copyInstances.get();
+            ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
             Lock writeLock = lock.writeLock();
             try {
                 writeLock.lock();
-                ReflectionUtility.copyInstance(element.getCacheObject(), identityObject);
-                accessor.update(cacheClass, identityObject);
+                accessor.update(cacheClass, copyInstance);
                 updatedCount.incrementAndGet();
             } catch (Exception throwable) {
                 String message = StringUtility.format("立即策略[{}]处理元素[{}]时异常", new Object[] { name, element });

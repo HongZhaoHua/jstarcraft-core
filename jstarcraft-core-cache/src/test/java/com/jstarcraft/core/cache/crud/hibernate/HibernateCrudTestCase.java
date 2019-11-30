@@ -16,13 +16,9 @@ import com.jstarcraft.core.cache.CacheIndex;
 import com.jstarcraft.core.cache.CacheObjectFactory;
 import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.EntityManager;
-import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.cache.MockRegionObject;
 import com.jstarcraft.core.cache.RegionManager;
 import com.jstarcraft.core.cache.annotation.CacheAccessor;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
-import com.jstarcraft.core.cache.crud.berkeley.BerkeleyEntityObject;
-import com.jstarcraft.core.cache.crud.berkeley.BerkeleyRegionObject;
 import com.jstarcraft.core.orm.OrmAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)

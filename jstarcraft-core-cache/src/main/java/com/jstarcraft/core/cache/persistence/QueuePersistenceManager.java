@@ -41,8 +41,17 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
     private String name;
     /** 类型 */
     private Class cacheClass;
+    
+    protected ThreadLocal<T> copyInstances = new ThreadLocal<T>() {
 
-    private IdentityObject identityObject;
+        @Override
+        protected T initialValue() {
+            T instance = (T) information.getCacheInstance();
+            return instance;
+        }
+
+    };
+
     /** 更新队列 */
     private BlockingQueue<PersistenceElement> elementQueue;
 
@@ -71,7 +80,6 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
     QueuePersistenceManager(String name, Class cacheClass, OrmAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, int size) {
         this.name = name;
         this.cacheClass = cacheClass;
-        this.identityObject = information.getCacheInstance();
         this.accessor = accessor;
         this.information = information;
         this.state = state;
@@ -291,6 +299,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
                 }
                 cacheId = element.getCacheId();
                 Object instance = element.getCacheObject();
+                T copyInstance = copyInstances.get();
                 synchronized (instance == null ? Thread.currentThread() : instance) {
                     Lock writeLock = waitForLock.writeLock();
                     try {
@@ -304,7 +313,8 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
 
                         switch (element.getOperation()) {
                         case CREATE:
-                            accessor.create(cacheClass, element.getCacheObject());
+                            ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
+                            accessor.create(cacheClass, copyInstance);
                             createdCount.incrementAndGet();
                             break;
                         case DELETE:
@@ -312,8 +322,8 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
                             deletedCount.incrementAndGet();
                             break;
                         case UPDATE:
-                            ReflectionUtility.copyInstance(element.getCacheObject(), identityObject);
-                            accessor.update(cacheClass, identityObject);
+                            ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
+                            accessor.update(cacheClass, copyInstance);
                             updatedCount.incrementAndGet();
                             break;
                         default:

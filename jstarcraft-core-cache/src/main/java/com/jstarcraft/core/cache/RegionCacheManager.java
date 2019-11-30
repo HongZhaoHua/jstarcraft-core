@@ -22,6 +22,7 @@ import com.jstarcraft.core.cache.persistence.PersistenceManager;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy;
 import com.jstarcraft.core.cache.proxy.JavassistRegionProxy;
 import com.jstarcraft.core.cache.proxy.ProxyManager;
+import com.jstarcraft.core.cache.proxy.ProxyTransformer;
 import com.jstarcraft.core.cache.transience.TransienceElement;
 import com.jstarcraft.core.cache.transience.TransienceManager;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
@@ -49,6 +50,8 @@ public class RegionCacheManager<K extends Comparable<K> & Serializable, T extend
     private TransienceStrategy transienceStrategy;
     /** 持久策略 */
     private PersistenceStrategy persistenceStrategy;
+    /** 转换器 */
+    private ProxyTransformer transformer;
 
     /** 内存 */
     private WeakElementManager<K, T> transience;
@@ -67,7 +70,7 @@ public class RegionCacheManager<K extends Comparable<K> & Serializable, T extend
         this.cacheClass = (Class<T>) information.getCacheClass();
         this.transienceStrategy = transienceStrategy;
         this.persistenceStrategy = persistenceStrategy;
-        JavassistRegionProxy transformer = new JavassistRegionProxy(this, this.cacheInformation);
+        this.transformer = new JavassistRegionProxy(this, this.cacheInformation);
         this.transience = new WeakElementManager<>(transformer);
         this.indexes = new ConcurrentHashMap<>(information.getIndexNames().size());
         for (String name : information.getIndexNames()) {
