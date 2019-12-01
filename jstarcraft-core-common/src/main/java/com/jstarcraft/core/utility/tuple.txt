@@ -1,0 +1,4 @@
+SOLO, DUET, TRIO, QUARTET, QUINTET, SEXTET, SEPTET, OCTET, NONET, DECTET.
+
+Java元组Tuple:
+https://blog.csdn.net/qq_35006663/article/details/100301416
