@@ -238,13 +238,13 @@
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j</artifactId>
-                <version>3.5.12</version>
+                <version>3.5.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-core</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.3</version>
             </dependency>
 
             <!-- 脚本框架依赖 -->
