@@ -49,9 +49,9 @@ public class JsonAdapterTestCase {
     @Autowired
     private MockSpringObject springObject;
     @Autowired
-    private ResourceStorage storageManager;
+    private ResourceStorage storage;
     @ResourceAccessor
-    private ResourceManager<Integer, Person> storage;
+    private ResourceManager<Integer, Person> manager;
     @ResourceAccessor("2")
     private Person person;
     @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
@@ -66,20 +66,20 @@ public class JsonAdapterTestCase {
     public void testAssemblage() {
         // 保证@StorageAccessor注解的接口与类型能被自动装配
         Assert.assertThat(springObject, CoreMatchers.notNullValue());
-        Assert.assertThat(storage, CoreMatchers.notNullValue());
+        Assert.assertThat(manager, CoreMatchers.notNullValue());
         Assert.assertThat(person, CoreMatchers.notNullValue());
 
         // 检查仓储访问
-        Assert.assertThat(storage.getAll().size(), CoreMatchers.equalTo(3));
-        Assert.assertThat(storage.getInstance(2, false), CoreMatchers.sameInstance(person));
+        Assert.assertThat(manager.getAll().size(), CoreMatchers.equalTo(3));
+        Assert.assertThat(manager.getInstance(2, false), CoreMatchers.sameInstance(person));
 
         // 检查实例访问
         Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
 
         // 检查引用访问
-        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(storage.getInstance(2, false)));
+        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(manager.getInstance(2, false)));
         Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
-        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(storage));
+        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(manager));
 
         // 检查属性访问
         Assert.assertTrue(sex);
@@ -91,11 +91,11 @@ public class JsonAdapterTestCase {
      */
     @Test
     public void testIndex() {
-        List<Person> ageIndex = storage.getMultiple(Person.INDEX_AGE, 32);
+        List<Person> ageIndex = manager.getMultiple(Person.INDEX_AGE, 32);
         Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-        Person birdy = storage.getSingle(Person.INDEX_NAME, "Birdy");
-        Assert.assertThat(birdy, CoreMatchers.equalTo(storage.getInstance(1, false)));
+        Person birdy = manager.getSingle(Person.INDEX_NAME, "Birdy");
+        Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 
     private static final String oldFileName = "Person-old.js";
@@ -109,8 +109,8 @@ public class JsonAdapterTestCase {
             HashSet<File> directories = new HashSet<>();
             HashMap<String, Class<?>> classes = new HashMap<>();
             HashMap<WatchKey, Path> paths = new HashMap<>();
-            for (Class<?> clazz : storageManager.getDefinitions().keySet()) {
-                Resource resource = storageManager.getResource(clazz);
+            for (Class<?> clazz : storage.getDefinitions().keySet()) {
+                Resource resource = storage.getResource(clazz);
                 File file = resource.getFile();
                 classes.put(file.getAbsolutePath(), clazz);
                 directories.add(file.getParentFile());
@@ -152,7 +152,7 @@ public class JsonAdapterTestCase {
                     try {
                         DelayElement<Class<?>> element = tasks.take();
                         Class<?> clazz = element.getContent();
-                        storageManager.loadManager(clazz);
+                        storage.loadManager(clazz);
                     } catch (InterruptedException exception) {
                         break;
                     }
@@ -181,7 +181,7 @@ public class JsonAdapterTestCase {
             FileUtils.copyFile(newFile, personFile);
             Thread.sleep(1000);
             // 验证索引是否修改
-            Collection<Person> persons = storage.getMultiple(Person.INDEX_AGE, 10);
+            Collection<Person> persons = manager.getMultiple(Person.INDEX_AGE, 10);
             Assert.assertThat(persons.size(), CoreMatchers.equalTo(3));
             // 验证访问器是否修改
             Assert.assertThat(person.getAge(), CoreMatchers.equalTo(10));

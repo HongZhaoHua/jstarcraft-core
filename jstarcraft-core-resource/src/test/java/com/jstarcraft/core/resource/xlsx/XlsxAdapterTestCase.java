@@ -22,7 +22,7 @@ import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 public class XlsxAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceManager<Integer, Biology> storage;
+    private ResourceManager<Integer, Biology> manager;
 
     @ResourceAccessor("1")
     private Biology cat;
@@ -40,7 +40,7 @@ public class XlsxAdapterTestCase {
 
     @Test
     public void testXlsx() {
-        Assert.assertThat(storage.getAll().size(), CoreMatchers.equalTo(4));
+        Assert.assertThat(manager.getAll().size(), CoreMatchers.equalTo(4));
 
         assertThat(cat, CoreMatchers.notNullValue());
         assertThat(cat.getId(), CoreMatchers.is(1));

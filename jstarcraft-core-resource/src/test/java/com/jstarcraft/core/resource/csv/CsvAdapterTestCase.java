@@ -30,9 +30,9 @@ public class CsvAdapterTestCase {
     @Autowired
     private MockSpringObject springObject;
     @Autowired
-    private ResourceStorage storageManager;
+    private ResourceStorage storage;
     @ResourceAccessor
-    private ResourceManager<Integer, Person> storage;
+    private ResourceManager<Integer, Person> manager;
     @ResourceAccessor("2")
     private Person person;
     @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
@@ -47,12 +47,12 @@ public class CsvAdapterTestCase {
     public void testAssemblage() {
         // 保证@StorageAccessor注解的接口与类型能被自动装配
         Assert.assertThat(springObject, CoreMatchers.notNullValue());
-        Assert.assertThat(storage, CoreMatchers.notNullValue());
+        Assert.assertThat(manager, CoreMatchers.notNullValue());
         Assert.assertThat(person, CoreMatchers.notNullValue());
 
         // 检查仓储访问
-        Assert.assertThat(storage.getAll().size(), CoreMatchers.equalTo(3));
-        Assert.assertThat(storage.getInstance(2, false), CoreMatchers.sameInstance(person));
+        Assert.assertThat(manager.getAll().size(), CoreMatchers.equalTo(3));
+        Assert.assertThat(manager.getInstance(2, false), CoreMatchers.sameInstance(person));
 
         // 检查实例访问
         Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
@@ -64,9 +64,9 @@ public class CsvAdapterTestCase {
         Assert.assertThat(person.getList().get(1), CoreMatchers.equalTo(keyValue));
 
         // 检查引用访问
-        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(storage.getInstance(2, false)));
+        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(manager.getInstance(2, false)));
         Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
-        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(storage));
+        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(manager));
 
         // 检查属性访问
         Assert.assertTrue(sex);
@@ -78,11 +78,11 @@ public class CsvAdapterTestCase {
      */
     @Test
     public void testIndex() {
-        List<Person> ageIndex = storage.getMultiple(Person.INDEX_AGE, 32);
+        List<Person> ageIndex = manager.getMultiple(Person.INDEX_AGE, 32);
         Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-        Person birdy = storage.getSingle(Person.INDEX_NAME, "Birdy");
-        Assert.assertThat(birdy, CoreMatchers.equalTo(storage.getInstance(1, false)));
+        Person birdy = manager.getSingle(Person.INDEX_NAME, "Birdy");
+        Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 
 }
