@@ -57,8 +57,14 @@ JStarCraft Core框架各个模块之间的关系:
 * 5.监控(monitor)
     * 追踪(trace)
         * 日志(log)
-            * Log4j 1
-            * Log4j 2
+            * Commons Logging
+            * Console
+            * JBoss Logging
+            * JDK Logging
+            * Log4j 1.x
+            * Log4j 2.x
+            * SLF4J
+            * tinylog
     * 统计(statistics)
     * 节流(throttle)
     * 路由(route)
