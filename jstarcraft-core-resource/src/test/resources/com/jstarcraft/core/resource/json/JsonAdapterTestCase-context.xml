@@ -23,7 +23,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
 		</property>
 	</bean>
 
-	<bean id="jsonAdapter" class="com.jstarcraft.core.resource.adapter.JsonAdapter">
+	<bean id="jsonAdapter" class="com.jstarcraft.core.resource.format.JsonAdapter">
 	</bean>
 
 	<context:component-scan base-package="com.jstarcraft.core.resource.json" />

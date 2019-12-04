@@ -23,7 +23,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
 		</property>
 	</bean>
 
-	<bean id="csvAdapter" class="com.jstarcraft.core.resource.adapter.CsvAdapter">
+	<bean id="csvAdapter" class="com.jstarcraft.core.resource.format.CsvAdapter">
 		<constructor-arg value="," />
 	</bean>
 

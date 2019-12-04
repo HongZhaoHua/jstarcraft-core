@@ -23,7 +23,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
 		</property>
 	</bean>
 
-	<bean id="propertyAdapter" class="com.jstarcraft.core.resource.adapter.PropertyAdapter">
+	<bean id="propertyAdapter" class="com.jstarcraft.core.resource.format.PropertyAdapter">
 	</bean>
 
 	<context:component-scan base-package="com.jstarcraft.core.resource.property" />

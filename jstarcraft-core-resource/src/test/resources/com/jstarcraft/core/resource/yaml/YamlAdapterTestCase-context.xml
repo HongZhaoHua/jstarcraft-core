@@ -23,7 +23,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
 		</property>
 	</bean>
 
-	<bean id="yamlAdapter" class="com.jstarcraft.core.resource.adapter.YamlAdapter">
+	<bean id="yamlAdapter" class="com.jstarcraft.core.resource.format.YamlAdapter">
 	</bean>
 
 	<context:component-scan base-package="com.jstarcraft.core.resource.yaml" />

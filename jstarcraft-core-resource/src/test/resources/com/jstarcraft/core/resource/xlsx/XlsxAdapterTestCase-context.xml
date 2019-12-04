@@ -14,7 +14,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/resource
 http://www.jstarcraft.com/core/resource/resource.xsd">
 
-	<bean id="xlsxAdapter" class="com.jstarcraft.core.resource.adapter.XlsxAdapter">
+	<bean id="xlsxAdapter" class="com.jstarcraft.core.resource.format.XlsxAdapter">
 	</bean>
 
 	<!-- 仓储管理器配置 -->
