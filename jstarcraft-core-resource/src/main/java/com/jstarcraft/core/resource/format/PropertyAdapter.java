@@ -1,4 +1,4 @@
-package com.jstarcraft.core.resource.adapter;
+package com.jstarcraft.core.resource.format;
 
 import java.io.InputStream;
 import java.lang.reflect.Array;

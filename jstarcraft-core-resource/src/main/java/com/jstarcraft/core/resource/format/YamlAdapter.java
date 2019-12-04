@@ -1,4 +1,4 @@
-package com.jstarcraft.core.resource.adapter;
+package com.jstarcraft.core.resource.format;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -8,21 +8,21 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.resource.exception.StorageException;
 
 /**
- * JSON适配器
+ * YAML适配器
  * 
  * @author Birdy
  */
-public class JsonAdapter implements FormatAdapter {
+public class YamlAdapter implements FormatAdapter {
 
     /** 类型转换器(基于Jackson) */
-    private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
+    private static final YAMLMapper TYPE_CONVERTER = new YAMLMapper();
 
     static {
         TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -37,7 +37,7 @@ public class JsonAdapter implements FormatAdapter {
             List<E> list = TYPE_CONVERTER.readValue(stream, type);
             return list.iterator();
         } catch (Exception exception) {
-            throw new StorageException("遍历JSON异常", exception);
+            throw new StorageException("遍历YAML异常", exception);
         }
     }
 

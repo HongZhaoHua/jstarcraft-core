@@ -3,7 +3,7 @@ package com.jstarcraft.core.resource.definition;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.jstarcraft.core.resource.adapter.FormatAdapter;
+import com.jstarcraft.core.resource.format.FormatAdapter;
 
 /**
  * 格式定义

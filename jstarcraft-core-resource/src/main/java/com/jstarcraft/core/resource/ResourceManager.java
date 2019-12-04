@@ -21,10 +21,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.resource.adapter.FormatAdapter;
 import com.jstarcraft.core.resource.definition.PropertyAccessor;
 import com.jstarcraft.core.resource.definition.ResourceDefinition;
 import com.jstarcraft.core.resource.exception.StorageException;
+import com.jstarcraft.core.resource.format.FormatAdapter;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
