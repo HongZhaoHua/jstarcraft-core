@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.ResourceManager;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 
 /**
@@ -22,7 +22,7 @@ import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 public class XlsxAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceStorage<Integer, Biology> storage;
+    private ResourceManager<Integer, Biology> storage;
 
     @ResourceAccessor("1")
     private Biology cat;

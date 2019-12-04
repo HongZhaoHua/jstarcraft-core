@@ -9,7 +9,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.definition.FormatDefinition;
 
 /**
@@ -17,7 +17,7 @@ import com.jstarcraft.core.resource.definition.FormatDefinition;
  * 
  * @author Birdy
  */
-public class StorageManagerFactory extends DefaultListableBeanFactory implements ApplicationContextAware, FactoryBean<ResourceManager> {
+public class StorageManagerFactory extends DefaultListableBeanFactory implements ApplicationContextAware, FactoryBean<ResourceStorage> {
 
     public static final String DEFINITIONS = "definitions";
 
@@ -26,7 +26,7 @@ public class StorageManagerFactory extends DefaultListableBeanFactory implements
     /** 仓储定义列表 */
     private Map<Class<?>, FormatDefinition> definitions;
 
-    private ResourceManager storageManager;
+    private ResourceStorage storageManager;
 
     public void setDefinitions(Map<Class<?>, FormatDefinition> definitions) {
         this.definitions = definitions;
@@ -45,16 +45,16 @@ public class StorageManagerFactory extends DefaultListableBeanFactory implements
     }
 
     @Override
-    public synchronized ResourceManager getObject() throws Exception {
+    public synchronized ResourceStorage getObject() throws Exception {
         if (storageManager == null) {
-            storageManager = ResourceManager.instanceOf(this.definitions, this);
+            storageManager = ResourceStorage.instanceOf(this.definitions, this);
         }
         return storageManager;
     }
 
     @Override
-    public Class<ResourceManager> getObjectType() {
-        return ResourceManager.class;
+    public Class<ResourceStorage> getObjectType() {
+        return ResourceStorage.class;
     }
 
     @Override

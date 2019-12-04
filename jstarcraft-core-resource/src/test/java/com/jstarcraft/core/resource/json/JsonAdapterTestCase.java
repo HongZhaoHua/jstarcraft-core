@@ -25,8 +25,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.DelayElement;
@@ -49,9 +49,9 @@ public class JsonAdapterTestCase {
     @Autowired
     private MockSpringObject springObject;
     @Autowired
-    private ResourceManager storageManager;
+    private ResourceStorage storageManager;
     @ResourceAccessor
-    private ResourceStorage<Integer, Person> storage;
+    private ResourceManager<Integer, Person> storage;
     @ResourceAccessor("2")
     private Person person;
     @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
@@ -152,7 +152,7 @@ public class JsonAdapterTestCase {
                     try {
                         DelayElement<Class<?>> element = tasks.take();
                         Class<?> clazz = element.getContent();
-                        storageManager.loadStorage(clazz);
+                        storageManager.loadManager(clazz);
                     } catch (InterruptedException exception) {
                         break;
                     }

@@ -10,23 +10,23 @@ import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 仓储定义
+ * 资源定义
  * 
  * @author Birdy
  */
-public class StorageDefinition {
+public class ResourceDefinition {
 
     public static final String FILE_PATH = File.separator;
 
     public static final String FILE_DOT = ".";
 
-    /** 仓储类型 */
+    /** 资源类型 */
     private final Class<?> clazz;
-    /** 仓储路径 */
+    /** 资源路径 */
     private final String path;
-    /** 仓储格式信息 */
+    /** 资源格式信息 */
     private final FormatDefinition format;
-    /** 仓储引用信息 */
+    /** 资源引用信息 */
     private final Collection<ReferenceDefinition> references;
 
     /**
@@ -35,7 +35,7 @@ public class StorageDefinition {
      * @param format
      * @param factory
      */
-    public StorageDefinition(Class<?> clazz, FormatDefinition format, Collection<ReferenceDefinition> references, String path) {
+    public ResourceDefinition(Class<?> clazz, FormatDefinition format, Collection<ReferenceDefinition> references, String path) {
         this.clazz = clazz;
         this.format = format;
         this.references = references;

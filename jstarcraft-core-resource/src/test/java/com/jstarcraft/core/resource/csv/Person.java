@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
-import com.jstarcraft.core.resource.ResourceStorage;
+import com.jstarcraft.core.resource.ResourceManager;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.annotation.ResourceIndex;
@@ -47,7 +47,7 @@ public class Person {
     private transient MockSpringObject reference;
 
     @ResourceReference
-    private transient ResourceStorage<Integer, Person> storage;
+    private transient ResourceManager<Integer, Person> storage;
 
     public Integer getId() {
         return id;
@@ -93,7 +93,7 @@ public class Person {
         return reference;
     }
 
-    public ResourceStorage<Integer, Person> getStorage() {
+    public ResourceManager<Integer, Person> getStorage() {
         return storage;
     }
 

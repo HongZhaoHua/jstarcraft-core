@@ -28,9 +28,9 @@ public class ResourceMonitor implements Observer {
     /** 访问字段 */
     private final Field field;
 
-    /** 仓储类型 */
+    /** 资源类型 */
     private final Class<?> clazz;
-    /** 仓储主键 */
+    /** 资源主键 */
     private final Object key;
 
     /** 是否必须 */
@@ -67,7 +67,7 @@ public class ResourceMonitor implements Observer {
         field.set(object, value);
     }
 
-    private void updateStorage(ResourceStorage storage) throws Exception {
+    private void updateStorage(ResourceManager storage) throws Exception {
         Object instance = storage.getInstance(key, false);
         if (necessary && instance == null) {
             String message = StringUtility.format("仓储[{}]不存在指定的实例[{}]", clazz, key);
@@ -98,9 +98,9 @@ public class ResourceMonitor implements Observer {
 
     /** 更新通知 */
     @Override
-    public void update(Observable storage, Object argument) {
+    public void update(Observable manager, Object argument) {
         try {
-            updateStorage(ResourceStorage.class.cast(storage));
+            updateStorage(ResourceManager.class.cast(manager));
         } catch (Exception exception) {
             String message = StringUtility.format("仓储[{}]更新异常", clazz);
             logger.error(message);

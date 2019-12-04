@@ -12,8 +12,8 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.ResourceManager;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.ResourceMonitor;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
@@ -31,7 +31,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
     private static final Logger logger = LoggerFactory.getLogger(StorageAccessorProcessor.class);
 
     @Autowired
-    private ResourceManager manager;
+    private ResourceStorage storage;
 
     /**
      * 装配实例
@@ -67,12 +67,12 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
         }
 
         // 设置监听器
-        ResourceStorage storage = manager.getStorage(clazz);
+        ResourceManager manager = storage.getManager(clazz);
         ResourceMonitor monitor = new ResourceMonitor(annotation, object, field, clazz, key);
-        storage.addObserver(monitor);
+        manager.addObserver(monitor);
 
         // 触发改动
-        monitor.update(storage, null);
+        monitor.update(manager, null);
     }
 
     /**
@@ -102,14 +102,14 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
             throw new StorageException(message);
         }
 
-        ResourceStorage storage = manager.getStorage(clazz);
-        if (annotation.necessary() && storage == null) {
+        ResourceManager manager = storage.getManager(clazz);
+        if (annotation.necessary() && manager == null) {
             String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
             logger.error(message);
             throw new StorageException(message);
         }
         ReflectionUtility.makeAccessible(field);
-        field.set(object, storage);
+        field.set(object, manager);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcesso
             if (annotation == null) {
                 return;
             }
-            if (ResourceStorage.class.isAssignableFrom(field.getType())) {
+            if (ResourceManager.class.isAssignableFrom(field.getType())) {
                 // 装配仓储
                 assembleStorage(object, field, annotation);
             } else {
