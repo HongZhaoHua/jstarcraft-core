@@ -1,4 +1,4 @@
-# JStarCraft RNS Search教程
+# JStarCraft Core ORM Lucene教程
 
 ****
 
@@ -27,14 +27,13 @@
 
 ## 介绍
 
-JStarCraft RNS Search是一款基于Lucene的检索工具,兼容JStarCraft ORM模块.
-目标是**自动化管理**Lucene引擎,降低研发人员使用Lucene的难度.
+JStarCraft Core ORM Lucene目标是**自动化管理**Lucene引擎,降低研发人员使用Lucene的难度.
 
 ****
 
 ## 特性
 
-JStarCraft RNS Search具有如下特点:
+JStarCraft Core ORM Lucene具有如下特点:
 1. 支持对象与文档的自动转换;
 2. 能够根据配置同步或异步的自动更新;
 
@@ -47,7 +46,7 @@ JStarCraft RNS Search具有如下特点:
 ```maven
 <dependency>
     <groupId>com.jstarcraft</groupId>
-    <artifactId>rns</artifactId>
+    <artifactId>core</artifactId>
     <version>1.0</version>
 </dependency>
 ```
@@ -55,7 +54,7 @@ JStarCraft RNS Search具有如下特点:
 #### Gradle依赖
 
 ```gradle
-compile group: 'com.jstarcraft', name: 'rns', version: '1.0'
+compile group: 'com.jstarcraft', name: 'core', version: '1.0'
 ```
 
 ****
