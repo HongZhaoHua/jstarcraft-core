@@ -28,7 +28,7 @@ import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 仓储
+ * 资源仓储
  * 
  * @author Birdy
  */
