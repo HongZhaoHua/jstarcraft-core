@@ -1,7 +1,5 @@
 package com.jstarcraft.core.resource.annotation;
 
-import java.util.List;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,8 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.resource.ResourceManager;
 import com.jstarcraft.core.resource.ResourceStorage;
-import com.jstarcraft.core.resource.annotation.ResourceAccessor;
-import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 仓储注解测试
