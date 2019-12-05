@@ -128,6 +128,11 @@ public class HibernateCrudTestCase {
         Assert.assertThat(entityManager.getInstanceCount(), CoreMatchers.equalTo(SIZE));
         Assert.assertThat(regionManager.getInstanceCount(), CoreMatchers.equalTo(SIZE * SIZE));
 
+        for (int index = 1; index <= SIZE; index++) {
+            entityManager.deleteInstance(-index);
+            Assert.assertNull(entityManager.getInstance(-index));
+        }
+
         cacheService.stop();
     }
 

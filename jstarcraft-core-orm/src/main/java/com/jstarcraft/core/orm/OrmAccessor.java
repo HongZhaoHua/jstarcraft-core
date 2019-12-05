@@ -39,6 +39,7 @@ public interface OrmAccessor {
      * @param object
      * @return
      */
+    // TODO 准备支持判断
     <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object);
 
     /**
@@ -47,6 +48,7 @@ public interface OrmAccessor {
      * @param clazz
      * @param id
      */
+    // TODO 准备支持判断
     <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id);
 
     /**
@@ -55,6 +57,7 @@ public interface OrmAccessor {
      * @param clazz
      * @param object
      */
+    // TODO 准备支持判断
     <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object);
 
     /**
@@ -64,6 +67,7 @@ public interface OrmAccessor {
      * @param object
      * @return
      */
+    // TODO 准备支持判断
     <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object);
 
     /**

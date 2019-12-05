@@ -25,6 +25,7 @@ import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
+import com.jstarcraft.core.orm.berkeley.exception.BerkeleyOperationException;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyStateException;
 import com.jstarcraft.core.orm.berkeley.exception.BerkeleyVersionException;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
@@ -260,7 +261,11 @@ public class BerkeleyAccessor implements OrmAccessor {
     public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
-        return (K) manager.create(transactor, object);
+        if (manager.create(transactor, object)) {
+            return object.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -268,7 +273,6 @@ public class BerkeleyAccessor implements OrmAccessor {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         manager.delete(transactor, id);
-
     }
 
     @Override

@@ -168,7 +168,9 @@ public class EntityCacheManager<K extends Comparable<K> & Serializable, T extend
             if (object != null) {
                 return object;
             }
-            object = persistence.getInstance(id);
+            if (persistence != null) {
+                object = persistence.getInstance(id);
+            }
             if (object != null) {
                 object = transformer.transform(object);
                 transience.createInstance(id, object);
@@ -187,7 +189,7 @@ public class EntityCacheManager<K extends Comparable<K> & Serializable, T extend
             if (object != null) {
                 return object;
             }
-            if (persistenceStrategy != null) {
+            if (persistence != null) {
                 object = persistence.getInstance(id);
             }
             if (object == null) {
@@ -266,9 +268,9 @@ public class EntityCacheManager<K extends Comparable<K> & Serializable, T extend
                         }
                     }
                 }
-                if (persistence != null) {
-                    persistence.deleteInstance(id);
-                }
+            }
+            if (persistence != null) {
+                persistence.deleteInstance(id);
             }
             return object;
         } finally {

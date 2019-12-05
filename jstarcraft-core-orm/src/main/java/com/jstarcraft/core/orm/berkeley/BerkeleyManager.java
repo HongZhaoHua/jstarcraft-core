@@ -94,46 +94,44 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         return primaryIndex.contains(transaction, id, lockMode);
     }
 
-    public K create(BerkeleyTransactor transactor, T instance) {
+    public boolean create(BerkeleyTransactor transactor, T instance) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         if (primaryIndex.putNoOverwrite(transaction, instance)) {
-            try {
-                return instance.getId();
-            } catch (Exception exception) {
-                String message = StringUtility.format("获取实例[{}]的主键[{}]时异常", metadata.getOrmName(), metadata.getPrimaryName());
-                logger.error(message);
-                throw new BerkeleyOperationException(message, exception);
-            }
+            return true;
         } else {
             String message = StringUtility.format("创建的实例[{}:{}]已存在", metadata.getOrmName(), instance.getId());
             if (logger.isDebugEnabled()) {
                 logger.debug(message);
             }
-            throw new BerkeleyOperationException(message);
+            return false;
         }
     }
 
-    public void delete(BerkeleyTransactor transactor, K id) {
+    public boolean delete(BerkeleyTransactor transactor, K id) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
-        if (!primaryIndex.delete(transaction, id)) {
+        if (primaryIndex.delete(transaction, id)) {
+            return true;
+        } else {
             String message = StringUtility.format("删除的实例[{}:{}]不存在", metadata.getOrmName(), id);
             if (logger.isDebugEnabled()) {
                 logger.debug(message);
             }
-            throw new BerkeleyOperationException(message);
+            return false;
         }
     }
 
-    public void update(BerkeleyTransactor transactor, T instance) {
+    public boolean update(BerkeleyTransactor transactor, T instance) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
-        if (primaryIndex.put(transaction, instance) == null) {
+        if (primaryIndex.put(transaction, instance) != null) {
+            return true;
+        } else {
             // TODO 删除保存的实例
             delete(transactor, instance.getId());
             String message = StringUtility.format("修改的实例[{}:{}]不存在", metadata.getOrmName(), instance.getId());
             if (logger.isDebugEnabled()) {
                 logger.debug(message);
             }
-            throw new BerkeleyOperationException(message);
+            return false;
         }
     }
 
