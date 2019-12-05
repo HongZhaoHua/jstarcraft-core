@@ -19,7 +19,7 @@ import com.jstarcraft.core.resource.exception.StorageException;
  * 
  * @author Birdy
  */
-public class YamlAdapter implements FormatAdapter {
+public class YamlFormatAdapter implements FormatAdapter {
 
     /** 类型转换器(基于Jackson) */
     private static final YAMLMapper TYPE_CONVERTER = new YAMLMapper();

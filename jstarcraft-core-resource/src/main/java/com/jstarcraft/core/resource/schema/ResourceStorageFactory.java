@@ -1,5 +1,6 @@
 package com.jstarcraft.core.resource.schema;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.beans.BeansException;
@@ -10,26 +11,39 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import com.jstarcraft.core.resource.ResourceStorage;
-import com.jstarcraft.core.resource.definition.FormatDefinition;
+import com.jstarcraft.core.resource.format.FormatAdapter;
+import com.jstarcraft.core.resource.path.PathAdapter;
 
 /**
  * 仓储管理器工厂
  * 
  * @author Birdy
  */
-public class StorageManagerFactory extends DefaultListableBeanFactory implements ApplicationContextAware, FactoryBean<ResourceStorage> {
+public class ResourceStorageFactory extends DefaultListableBeanFactory implements ApplicationContextAware, FactoryBean<ResourceStorage> {
 
     public static final String DEFINITIONS = "definitions";
 
     private ApplicationContext applicationContext;
 
     /** 仓储定义列表 */
-    private Map<Class<?>, FormatDefinition> definitions;
+    private Collection<Class<?>> definitions;
 
-    private ResourceStorage storageManager;
+    private FormatAdapter format;
 
-    public void setDefinitions(Map<Class<?>, FormatDefinition> definitions) {
+    private PathAdapter path;
+
+    private ResourceStorage storage;
+
+    public void setDefinitions(Collection<Class<?>> definitions) {
         this.definitions = definitions;
+    }
+
+    public void setFormat(FormatAdapter format) {
+        this.format = format;
+    }
+
+    public void setPath(PathAdapter path) {
+        this.path = path;
     }
 
     @Override
@@ -46,10 +60,10 @@ public class StorageManagerFactory extends DefaultListableBeanFactory implements
 
     @Override
     public synchronized ResourceStorage getObject() throws Exception {
-        if (storageManager == null) {
-            storageManager = ResourceStorage.instanceOf(this.definitions, this);
+        if (storage == null) {
+            storage = ResourceStorage.instanceOf(definitions, format, path);
         }
-        return storageManager;
+        return storage;
     }
 
     @Override

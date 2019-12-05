@@ -20,7 +20,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -47,8 +46,6 @@ public class JsonAdapterTestCase {
     private static final long FIX_TIME = 1000;
 
     @Autowired
-    private MockSpringObject springObject;
-    @Autowired
     private ResourceStorage storage;
     @ResourceAccessor
     private ResourceManager<Integer, Person> manager;
@@ -65,7 +62,6 @@ public class JsonAdapterTestCase {
     @Test
     public void testAssemblage() {
         // 保证@StorageAccessor注解的接口与类型能被自动装配
-        Assert.assertThat(springObject, CoreMatchers.notNullValue());
         Assert.assertThat(manager, CoreMatchers.notNullValue());
         Assert.assertThat(person, CoreMatchers.notNullValue());
 
@@ -75,11 +71,6 @@ public class JsonAdapterTestCase {
 
         // 检查实例访问
         Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
-
-        // 检查引用访问
-        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(manager.getInstance(2, false)));
-        Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
-        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(manager));
 
         // 检查属性访问
         Assert.assertTrue(sex);
@@ -109,10 +100,9 @@ public class JsonAdapterTestCase {
             HashSet<File> directories = new HashSet<>();
             HashMap<String, Class<?>> classes = new HashMap<>();
             HashMap<WatchKey, Path> paths = new HashMap<>();
-            for (Class<?> clazz : storage.getDefinitions().keySet()) {
-                Resource resource = storage.getResource(clazz);
-                File file = resource.getFile();
-                classes.put(file.getAbsolutePath(), clazz);
+            {
+                File file = new File(this.getClass().getResource(personFileName).toURI());
+                classes.put(file.getAbsolutePath(), Person.class);
                 directories.add(file.getParentFile());
             }
 

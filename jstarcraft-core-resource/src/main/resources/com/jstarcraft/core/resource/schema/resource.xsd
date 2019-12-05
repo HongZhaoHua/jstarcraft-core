@@ -4,23 +4,13 @@
 	<xsd:element name="configuration">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:choice minOccurs="1" maxOccurs="unbounded">
-					<xsd:element name="format" type="format" />
-				</xsd:choice>
 				<xsd:element name="scan" type="scan" />
 			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:string" use="required" />
 			<xsd:attribute name="format" type="xsd:string" use="required" />
+            <xsd:attribute name="path" type="xsd:string" use="required" />
 		</xsd:complexType>
 	</xsd:element>
-
-	<!-- format -->
-	<xsd:complexType name="format">
-		<xsd:attribute name="name" type="xsd:string" use="required" />
-		<xsd:attribute name="adapter" type="xsd:string" use="required" />
-		<xsd:attribute name="path" type="xsd:string" use="required" />
-		<xsd:attribute name="suffix" type="xsd:string" use="required" />
-	</xsd:complexType>
 
 	<!-- scan -->
 	<xsd:complexType name="scan">

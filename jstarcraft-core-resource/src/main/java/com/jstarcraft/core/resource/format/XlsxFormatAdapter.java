@@ -35,9 +35,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class XlsxAdapter implements FormatAdapter {
+public class XlsxFormatAdapter implements FormatAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(XlsxAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(XlsxFormatAdapter.class);
 
     /** 属性标识 */
     private final static String ATTRIBUTE = "ATTRIBUTE";
@@ -53,11 +53,11 @@ public class XlsxAdapter implements FormatAdapter {
     /** 忽略标记 */
     private final Collection<String> ignoreMarks;
 
-    public XlsxAdapter() {
+    public XlsxFormatAdapter() {
         this(ATTRIBUTE, COMPLETE, new HashSet<>());
     }
 
-    public XlsxAdapter(String startMark, String stopMark, Collection<String> ignoreMarks) {
+    public XlsxFormatAdapter(String startMark, String stopMark, Collection<String> ignoreMarks) {
         this.startMark = startMark;
         this.stopMark = stopMark;
         this.ignoreMarks = new HashSet<>(ignoreMarks);

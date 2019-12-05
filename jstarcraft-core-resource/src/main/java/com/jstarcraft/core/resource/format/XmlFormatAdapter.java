@@ -17,7 +17,7 @@ import com.jstarcraft.core.resource.exception.StorageException;
  * @author Birdy
  *
  */
-public class XmlAdapter implements FormatAdapter {
+public class XmlFormatAdapter implements FormatAdapter {
 
     @Override
     public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {

@@ -3,7 +3,7 @@ package com.jstarcraft.core.resource.xlsx;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 
-@ResourceConfiguration
+@ResourceConfiguration(prefix = "xlsx/", suffix = ".xlsx")
 public class Biology {
 
     @ResourceId

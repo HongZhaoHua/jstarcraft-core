@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 
-@ResourceConfiguration
+@ResourceConfiguration(prefix = "xml/", suffix = ".xml")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Biology {

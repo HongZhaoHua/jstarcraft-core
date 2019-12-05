@@ -194,7 +194,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
         /** 类定义元素(属性name) */
         CLASS("class"),
 
-        /** 访问器定义元素(属性reference) */
+        /** 访问器定义元素(属性accessor) */
         ACCESSOR("accessor"),
 
         /** 内存配置定义元素(属性name,type,parameters) */

@@ -35,9 +35,9 @@ import com.jstarcraft.core.resource.exception.StorageException;
  * @author Birdy
  *
  */
-public class PropertyAdapter implements FormatAdapter {
+public class PropertyFormatAdapter implements FormatAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(PropertyAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(PropertyFormatAdapter.class);
 
     private final static String dot = "\\.";
 

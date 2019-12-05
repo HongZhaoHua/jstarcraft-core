@@ -28,8 +28,6 @@ import com.jstarcraft.core.utility.KeyValue;
 public class PropertyAdapterTestCase {
 
     @Autowired
-    private MockSpringObject springObject;
-    @Autowired
     private ResourceStorage storage;
     @ResourceAccessor
     private ResourceManager<Integer, Person> manager;
@@ -46,7 +44,6 @@ public class PropertyAdapterTestCase {
     @Test
     public void testAssemblage() {
         // 保证@StorageAccessor注解的接口与类型能被自动装配
-        Assert.assertThat(springObject, CoreMatchers.notNullValue());
         Assert.assertThat(manager, CoreMatchers.notNullValue());
         Assert.assertThat(person, CoreMatchers.notNullValue());
 
@@ -62,11 +59,6 @@ public class PropertyAdapterTestCase {
         Assert.assertThat(person.getArray()[1], CoreMatchers.equalTo(keyValue));
         Assert.assertThat(person.getMap().get("1"), CoreMatchers.equalTo(keyValue));
         Assert.assertThat(person.getList().get(1), CoreMatchers.equalTo(keyValue));
-
-        // 检查引用访问
-        Assert.assertThat(person.getChild(), CoreMatchers.sameInstance(manager.getInstance(2, false)));
-        Assert.assertThat(person.getReference(), CoreMatchers.sameInstance(springObject));
-        Assert.assertThat(person.getStorage(), CoreMatchers.sameInstance(manager));
 
         // 检查属性访问
         Assert.assertTrue(sex);

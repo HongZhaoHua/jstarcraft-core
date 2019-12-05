@@ -26,9 +26,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * 
  * @author Birdy
  */
-public class StorageAccessorProcessor extends InstantiationAwareBeanPostProcessorAdapter {
+public class ResourceAccessorProcessor extends InstantiationAwareBeanPostProcessorAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(StorageAccessorProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResourceAccessorProcessor.class);
 
     @Autowired
     private ResourceStorage storage;

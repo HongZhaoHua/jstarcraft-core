@@ -19,7 +19,7 @@ import com.jstarcraft.core.resource.exception.StorageException;
  * 
  * @author Birdy
  */
-public class JsonAdapter implements FormatAdapter {
+public class JsonFormatAdapter implements FormatAdapter {
 
     /** 类型转换器(基于Jackson) */
     private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();

@@ -1,5 +1,6 @@
 package com.jstarcraft.core.resource;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,14 +22,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.definition.PropertyAccessor;
-import com.jstarcraft.core.resource.definition.ResourceDefinition;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.resource.format.FormatAdapter;
+import com.jstarcraft.core.resource.path.PathAdapter;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 资源仓储
+ * 资源管理
  * 
  * @author Birdy
  */
@@ -36,20 +38,24 @@ public class ResourceManager<K, V> extends Observable {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
+    private final Class<?> clazz;
+
+    private final String address;
+    /** 格式适配器 */
+    private final FormatAdapter formatAdapter;
+    /** 路径适配器 */
+    private final PathAdapter pathAdapter;
+
     /** 主键空间 */
     private Map<K, V> instances = new LinkedHashMap<>();
     /** 单值索引空间 */
     private Map<String, Map<Object, V>> singles = new HashMap<String, Map<Object, V>>();
     /** 多值索引空间 */
     private Map<String, Map<Object, List<V>>> multiples = new HashMap<String, Map<Object, List<V>>>();
-    /** 格式适配器 */
-    private final FormatAdapter adapter;
     /** 标识获取器 */
     private final PropertyAccessor idAccessor;
     /** 索引获取器集合 */
     private final Map<String, PropertyAccessor> indexAccessors;
-    /** 资源定义 */
-    private final ResourceDefinition definition;
     /** 读取锁 */
     private final ReadLock readLock;
     /** 写入锁 */
@@ -57,12 +63,20 @@ public class ResourceManager<K, V> extends Observable {
     /** 状态 */
     private final AtomicBoolean state = new AtomicBoolean(false);
 
-    public ResourceManager(ResourceDefinition definition, FormatAdapter adapter) {
+    public ResourceManager(Class<?> clazz, FormatAdapter formatAdapter, PathAdapter pathAdapter) {
         // 获取资源信息
-        this.definition = definition;
-        this.adapter = adapter;
-        this.idAccessor = PropertyAccessor.getIdAccessor(definition.getClazz());
-        this.indexAccessors = PropertyAccessor.getIndexAccessors(definition.getClazz());
+        this.clazz = clazz;
+        ResourceConfiguration annotation = clazz.getAnnotation(ResourceConfiguration.class);
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(File.separator);
+        buffer.append(annotation.prefix());
+        buffer.append(clazz.getSimpleName());
+        buffer.append(annotation.suffix());
+        this.address = buffer.toString();
+        this.formatAdapter = formatAdapter;
+        this.pathAdapter = pathAdapter;
+        this.idAccessor = PropertyAccessor.getIdAccessor(clazz);
+        this.indexAccessors = PropertyAccessor.getIndexAccessors(clazz);
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
         readLock = lock.readLock();
         writeLock = lock.writeLock();
@@ -90,7 +104,7 @@ public class ResourceManager<K, V> extends Observable {
             checkState();
             V value = instances.get(key);
             if (isThrow && value == null) {
-                String message = StringUtility.format("仓储[{}]指定主键[{}]的实例不存在", definition.getClazz(), key);
+                String message = StringUtility.format("仓储[{}]指定主键[{}]的实例不存在", clazz, key);
                 logger.error(message);
                 throw new StorageException(message);
             }
@@ -182,12 +196,12 @@ public class ResourceManager<K, V> extends Observable {
         // 标识处理
         K key = (K) idAccessor.getValue(instance);
         if (key == null) {
-            String message = StringUtility.format("仓储[{}]的实例[{}]主键不存在", definition.getClazz(), instance);
+            String message = StringUtility.format("仓储[{}]的实例[{}]主键不存在", clazz, instance);
             logger.error(message);
             throw new StorageException(message);
         }
         if (instances.containsKey(key)) {
-            String message = StringUtility.format("仓储[{}]的实例[{}]主键存在冲突", definition.getClazz(), instance);
+            String message = StringUtility.format("仓储[{}]的实例[{}]主键存在冲突", clazz, instance);
             logger.error(message);
             throw new StorageException(message);
         }
@@ -201,7 +215,7 @@ public class ResourceManager<K, V> extends Observable {
             if (indexAccessor.isUnique()) {
                 Map<Object, V> map = getSingleMap(name);
                 if (map.put(index, instance) != null) {
-                    String message = StringUtility.format("仓储[{}]的实例[{}]索引[{}]存在冲突", definition.getClazz(), instance, index);
+                    String message = StringUtility.format("仓储[{}]的实例[{}]索引[{}]存在冲突", clazz, instance, index);
                     logger.error(message);
                     throw new StorageException(message);
                 }
@@ -235,12 +249,13 @@ public class ResourceManager<K, V> extends Observable {
         return list;
     }
 
-    void load(InputStream stream) {
+    void load() {
         try {
             writeLock.lock();
             state.set(false);
             LinkedList<V> objects = new LinkedList<>();
-            Iterator<V> iterator = adapter.iterator((Class) definition.getClazz(), stream);
+            InputStream stream = pathAdapter.getStream(address);
+            Iterator<V> iterator = formatAdapter.iterator((Class) clazz, stream);
             while (iterator.hasNext()) {
                 V object = iterator.next();
                 objects.add(object);
@@ -292,7 +307,7 @@ public class ResourceManager<K, V> extends Observable {
             this.setChanged();
             this.notifyObservers();
         } catch (Exception exception) {
-            String message = StringUtility.format("仓储[{}]装载异常", definition.getClazz());
+            String message = StringUtility.format("仓储[{}]装载异常", clazz);
             logger.error(message);
             throw new StorageException(message, exception);
         } finally {

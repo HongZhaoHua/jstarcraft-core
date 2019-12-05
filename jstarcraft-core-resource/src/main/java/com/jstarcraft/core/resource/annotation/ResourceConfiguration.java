@@ -18,10 +18,10 @@ import com.jstarcraft.core.utility.StringUtility;
 @Target(ElementType.TYPE)
 public @interface ResourceConfiguration {
 
-    /** 资源格式 */
-    String format() default StringUtility.EMPTY;
+    /** 资源前缀 */
+    String prefix() default StringUtility.EMPTY;
 
-    /** 资源位置 */
-    String path() default StringUtility.EMPTY;
+    /** 资源后缀 */
+    String suffix() default StringUtility.EMPTY;
 
 }

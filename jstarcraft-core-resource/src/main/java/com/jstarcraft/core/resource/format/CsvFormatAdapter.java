@@ -15,12 +15,12 @@ import com.jstarcraft.core.resource.exception.StorageException;
  * 
  * @author Birdy
  */
-public class CsvAdapter implements FormatAdapter {
+public class CsvFormatAdapter implements FormatAdapter {
 
     /** 分隔符 */
     protected char delimiter;
 
-    public CsvAdapter(char delimiter) {
+    public CsvFormatAdapter(char delimiter) {
         this.delimiter = delimiter;
     }
 

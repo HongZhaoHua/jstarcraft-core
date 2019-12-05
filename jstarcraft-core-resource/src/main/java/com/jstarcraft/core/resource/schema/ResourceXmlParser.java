@@ -3,16 +3,13 @@ package com.jstarcraft.core.resource.schema;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.core.io.Resource;
@@ -31,7 +28,6 @@ import org.w3c.dom.NodeList;
 
 import com.jstarcraft.core.common.conversion.xml.XmlUtility;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
-import com.jstarcraft.core.resource.definition.FormatDefinition;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -40,9 +36,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * 
  * @author Birdy
  */
-public class StorageXmlParser extends AbstractBeanDefinitionParser {
+public class ResourceXmlParser extends AbstractBeanDefinitionParser {
 
-    private static final Logger logger = LoggerFactory.getLogger(StorageXmlParser.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResourceXmlParser.class);
     /** 资源匹配符 */
     private static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
 
@@ -82,8 +78,8 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 
     private void assembleProcessor(ParserContext parserContext) {
         BeanDefinitionRegistry registry = parserContext.getRegistry();
-        String name = StringUtility.uncapitalize(StorageAccessorProcessor.class.getSimpleName());
-        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageAccessorProcessor.class);
+        String name = StringUtility.uncapitalize(ResourceAccessorProcessor.class.getSimpleName());
+        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(ResourceAccessorProcessor.class);
         registry.registerBeanDefinition(name, factory.getBeanDefinition());
     }
 
@@ -92,29 +88,15 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
         assembleProcessor(parserContext);
 
         // 仓储管理器工厂
-        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(StorageManagerFactory.class);
-
+        BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(ResourceStorageFactory.class);
         String formatName = element.getAttribute(AttributeDefinition.FORMAT.getName());
+        factory.addPropertyReference(AttributeDefinition.FORMAT.getName(), formatName);
 
-        // 设置仓储格式映射
-        Map<String, BeanDefinition> formats = new ManagedMap<>();
-        Collection<Element> formatElements = XmlUtility.getChildElementsByTagName(element, ElementDefinition.FORMAT.getName());
-        for (Element formatElement : formatElements) {
-            String adapter = formatElement.getAttribute(AttributeDefinition.ADAPTER.getName());
-            String name = formatElement.getAttribute(AttributeDefinition.NAME.getName());
-            String path = formatElement.getAttribute(AttributeDefinition.PATH.getName());
-            String suffix = formatElement.getAttribute(AttributeDefinition.SUFFIX.getName());
-            BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FormatDefinition.class);
-            builder.addConstructorArgReference(adapter);
-            builder.addConstructorArgValue(name);
-            builder.addConstructorArgValue(path);
-            builder.addConstructorArgValue(suffix);
-            BeanDefinition format = builder.getBeanDefinition();
-            formats.put(name, format);
-        }
+        String pathName = element.getAttribute(AttributeDefinition.PATH.getName());
+        factory.addPropertyReference(AttributeDefinition.PATH.getName(), pathName);
 
         // 设置仓储定义映射
-        Map<Class<?>, BeanDefinition> definitions = new ManagedMap<>();
+        Collection<Class<?>> definitions = new HashSet<>();
         NodeList scanNodes = XmlUtility.getChildElementByTagName(element, ElementDefinition.SCAN.getName()).getChildNodes();
         for (int index = 0; index < scanNodes.getLength(); index++) {
             Node node = scanNodes.item(index);
@@ -130,19 +112,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
                     Class<?> clazz = null;
                     try {
                         clazz = (Class<?>) Class.forName(className);
-                        BeanDefinition format = null;
-                        ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
-                        if (StringUtility.isNoneBlank(configuration.format())) {
-                            format = formats.get(configuration.format());
-                        } else {
-                            format = formats.get(formatName);
-                        }
-                        if (format == null) {
-                            String message = StringUtility.format("无法获取格式[{}]", format);
-                            logger.error(message);
-                            throw new StorageException(message);
-                        }
-                        definitions.put(clazz, format);
+                        definitions.add(clazz);
                     } catch (ClassNotFoundException exception) {
                         String message = StringUtility.format("无法获取类型[{}]", className);
                         logger.error(message);
@@ -157,19 +127,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
                 Class<?> clazz = null;
                 try {
                     clazz = (Class<?>) Class.forName(className);
-                    BeanDefinition format = null;
-                    ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
-                    if (StringUtility.isNoneBlank(configuration.format())) {
-                        format = formats.get(configuration.format());
-                    } else {
-                        format = formats.get(formatName);
-                    }
-                    if (format == null) {
-                        String message = StringUtility.format("无法获取格式[{}]", format);
-                        logger.error(message);
-                        throw new StorageException(message);
-                    }
-                    definitions.put(clazz, format);
+                    definitions.add(clazz);
                 } catch (ClassNotFoundException exception) {
                     String message = StringUtility.format("无法获取类型[{}]", className);
                     logger.error(message);
@@ -177,7 +135,7 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
                 }
             }
         }
-        factory.addPropertyValue(StorageManagerFactory.DEFINITIONS, definitions);
+        factory.addPropertyValue(ResourceStorageFactory.DEFINITIONS, definitions);
 
         return factory.getBeanDefinition();
     }
@@ -191,9 +149,6 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
 
         /** 根配置元素(属性id,format) */
         CONFIGURATION("configuration"),
-
-        /** 格式定义元素(属性name,adapter,path,suffix) */
-        FORMAT("format"),
 
         /** 扫描定义元素 */
         SCAN("scan"),
@@ -227,17 +182,11 @@ public class StorageXmlParser extends AbstractBeanDefinitionParser {
         /** 格式 */
         FORMAT("format"),
 
-        /** 适配器 */
-        ADAPTER("adapter"),
-
-        /** 名称 */
-        NAME("name"),
-
         /** 路径 */
         PATH("path"),
 
-        /** 后缀 */
-        SUFFIX("suffix");
+        /** 名称 */
+        NAME("name");
 
         private String name;
 
