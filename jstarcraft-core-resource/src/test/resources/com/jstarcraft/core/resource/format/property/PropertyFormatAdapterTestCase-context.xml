@@ -22,7 +22,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
     </bean>
 
     <!-- 仓储管理器配置 -->
-    <resource:configuration id="storageManager" format="formatAdapter" path="pathAdapter">
+    <resource:configuration id="resourceStorage" format="formatAdapter" path="pathAdapter">
         <resource:scan>
             <resource:package name="com.jstarcraft.core.resource.format.property" />
         </resource:scan>

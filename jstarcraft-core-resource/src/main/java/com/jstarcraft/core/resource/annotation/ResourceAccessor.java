@@ -23,6 +23,13 @@ public @interface ResourceAccessor {
     Class<?> clazz() default Void.class;
 
     /**
+     * 仓储
+     * 
+     * @return
+     */
+    String storage() default "resourceStorage";
+
+    /**
      * 标识
      * 
      * @return

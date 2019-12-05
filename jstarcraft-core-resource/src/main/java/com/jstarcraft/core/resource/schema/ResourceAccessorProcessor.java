@@ -3,18 +3,20 @@ package com.jstarcraft.core.resource.schema;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.resource.ResourceManager;
-import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.ResourceMonitor;
+import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
@@ -26,12 +28,16 @@ import com.jstarcraft.core.utility.StringUtility;
  * 
  * @author Birdy
  */
-public class ResourceAccessorProcessor extends InstantiationAwareBeanPostProcessorAdapter {
+public class ResourceAccessorProcessor extends InstantiationAwareBeanPostProcessorAdapter implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceAccessorProcessor.class);
 
-    @Autowired
-    private ResourceStorage storage;
+    private Map<String, ResourceStorage> storages;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        storages = applicationContext.getBeansOfType(ResourceStorage.class);
+    }
 
     /**
      * 装配实例
@@ -53,6 +59,14 @@ public class ResourceAccessorProcessor extends InstantiationAwareBeanPostProcess
         ResourceConfiguration configuration = clazz.getAnnotation(ResourceConfiguration.class);
         if (configuration == null) {
             String message = StringUtility.format("仓储[{}]的配置不存在", clazz);
+            logger.error(message);
+            throw new StorageException(message);
+        }
+
+        // 获取仓储
+        ResourceStorage storage = storages.get(annotation.storage());
+        if (storage == null) {
+            String message = StringUtility.format("仓储[{}]的实例不存在", annotation.storage());
             logger.error(message);
             throw new StorageException(message);
         }
@@ -83,6 +97,14 @@ public class ResourceAccessorProcessor extends InstantiationAwareBeanPostProcess
      * @param annotation
      */
     private void assembleStorage(Object object, Field field, ResourceAccessor annotation) throws IllegalArgumentException, IllegalAccessException {
+        // 获取仓储
+        ResourceStorage storage = storages.get(annotation.storage());
+        if (storage == null) {
+            String message = StringUtility.format("仓储[{}]的实例不存在", annotation.storage());
+            logger.error(message);
+            throw new StorageException(message);
+        }
+
         Type type = field.getGenericType();
         if (!(type instanceof ParameterizedType)) {
             String message = StringUtility.format("字段[{}]的类型非法,无法装配", field);
