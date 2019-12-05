@@ -12,6 +12,9 @@ http://www.xdemo.org/java-file-watchservice/
 Java基于注解和反射导入导出Excel(Bean转Excel,Excel转Bean):
 http://www.xdemo.org/java-excel-poi-import-export-annotation-reflect/
 
+POI读写大数据量excel,解决超过几万行而导致内存溢出的问题:
+https://www.cnblogs.com/swordfall/p/8298386.html
+
 POI读写海量Excel:
 http://blog.csdn.net/goodkuang2012/article/details/7350985
 
