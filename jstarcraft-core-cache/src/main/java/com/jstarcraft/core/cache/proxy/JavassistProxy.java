@@ -17,6 +17,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtConstructor;
@@ -165,6 +166,7 @@ abstract class JavassistProxy implements ProxyTransformer {
      * @throws Exception
      */
     private CtClass proxyClass(Class<?> clazz) throws Exception {
+        classPool.insertClassPath(new ClassClassPath(clazz));
         CtClass source = classPool.get(clazz.getName());
         CtClass result = classPool.makeClass(clazz.getCanonicalName() + CLASS_SUFFIX);
         result.setSuperclass(source);
