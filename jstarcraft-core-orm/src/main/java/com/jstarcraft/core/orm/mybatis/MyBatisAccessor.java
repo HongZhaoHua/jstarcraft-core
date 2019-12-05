@@ -107,32 +107,31 @@ public class MyBatisAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
-        mapper.insert(object);
-        return object.getId();
+        return mapper.insert(object) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
-        mapper.deleteById((Serializable) id);
+        return mapper.deleteById((Serializable) id) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
-        mapper.deleteById((Serializable) object.getId());
+        return mapper.deleteById((Serializable) object.getId()) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
-        mapper.updateById(object);
+        return mapper.updateById(object) > 0;
     }
 
     @SuppressWarnings("unchecked")

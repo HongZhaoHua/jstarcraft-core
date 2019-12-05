@@ -143,41 +143,52 @@ public class Neo4jAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         try {
             template.save(object);
-            return object.getId();
+            return true;
+        } catch (Exception exception) {
+            return false;
         } finally {
             template.clear();
         }
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         try {
             Neo4jMetadata metadata = metadatas.get(clazz);
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put(metadata.getPrimaryName(), id);
             String cql = deleteCqls.get(clazz);
             template.query(cql, parameters);
+            return true;
+        } catch (Exception exception) {
+            return false;
         } finally {
             template.clear();
         }
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         try {
             template.delete(object);
+            return true;
+        } catch (Exception exception) {
+            return false;
         } finally {
             template.clear();
         }
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
         try {
             template.save(object);
+            return true;
+        } catch (Exception exception) {
+            return false;
         } finally {
             template.clear();
         }

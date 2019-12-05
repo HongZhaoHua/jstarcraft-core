@@ -39,8 +39,7 @@ public interface OrmAccessor {
      * @param object
      * @return
      */
-    // TODO 准备支持判断
-    <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object);
 
     /**
      * 根据主键,删除指定的对象
@@ -48,8 +47,7 @@ public interface OrmAccessor {
      * @param clazz
      * @param id
      */
-    // TODO 准备支持判断
-    <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id);
+    <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id);
 
     /**
      * 删除指定的对象
@@ -57,8 +55,7 @@ public interface OrmAccessor {
      * @param clazz
      * @param object
      */
-    // TODO 准备支持判断
-    <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object);
 
     /**
      * 更新指定的对象
@@ -67,8 +64,7 @@ public interface OrmAccessor {
      * @param object
      * @return
      */
-    // TODO 准备支持判断
-    <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object);
 
     /**
      * 查询指定范围的最大主键标识

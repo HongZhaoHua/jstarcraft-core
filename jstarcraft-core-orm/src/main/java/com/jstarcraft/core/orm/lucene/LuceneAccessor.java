@@ -49,27 +49,27 @@ public class LuceneAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
-        return null;
+        return false;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         // TODO Auto-generated method stub
-
+        return false;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
-
+        return false;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
         // TODO Auto-generated method stub
-
+        return false;
     }
 
     @Override

@@ -30,7 +30,8 @@ public class MyBatisAccessorTestCase {
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
             MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, MockEnumeration.RANDOM);
-            int id = accessor.create(MockObject.class, object);
+            accessor.create(MockObject.class, object);
+            int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较

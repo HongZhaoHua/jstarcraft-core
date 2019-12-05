@@ -24,6 +24,7 @@ import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.exception.OrmQueryException;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 /**
@@ -60,28 +61,39 @@ public class MongoAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
-        template.insert(object, metadata.getOrmName());
-        return object.getId();
+        try {
+            template.insert(object, metadata.getOrmName());
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         MongoMetadata metadata = metadatas.get(clazz);
-        template.remove(Query.query(Criteria.where(MongoMetadata.mongoId).is(id)), metadata.getOrmName());
+        DeleteResult state = template.remove(Query.query(Criteria.where(MongoMetadata.mongoId).is(id)), metadata.getOrmName());
+        return state.getDeletedCount() > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
-        template.remove(object, metadata.getOrmName());
+        DeleteResult state = template.remove(object, metadata.getOrmName());
+        return state.getDeletedCount() > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
-        template.save(object, metadata.getOrmName());
+        try {
+            template.save(object, metadata.getOrmName());
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override

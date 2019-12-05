@@ -44,18 +44,14 @@ public class Neo4jAccessorTestCase {
         relation = accessor.get(MockRelation.class, relation.getId());
         Assert.assertNotNull(relation);
 
-        try {
-            // 无法删除节点(受关系限制)
-            accessor.delete(MockNode.class, from.getId());
-            Assert.fail();
-        } catch (Exception exception) {
-        }
+        // 无法删除节点(受关系限制)
+        Assert.assertFalse(accessor.delete(MockNode.class, from.getId()));
 
         // 可以删除节点(将关系删除)
-        accessor.delete(MockNode.class, to);
+        Assert.assertTrue(accessor.delete(MockNode.class, to));
         relation = accessor.get(MockRelation.class, relation.getId());
         Assert.assertNull(relation);
-        
+
         from = accessor.get(MockNode.class, from.getId());
         Assert.assertNotNull(from);
     }
@@ -70,7 +66,8 @@ public class Neo4jAccessorTestCase {
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
             MockNode object = new MockNode(index, "birdy", index, MockEnumeration.values()[index % MockEnumeration.values().length]);
-            int id = accessor.create(MockNode.class, object);
+            accessor.create(MockNode.class, object);
+            int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较

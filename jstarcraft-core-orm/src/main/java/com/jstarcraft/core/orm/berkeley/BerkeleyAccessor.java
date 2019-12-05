@@ -258,33 +258,29 @@ public class BerkeleyAccessor implements OrmAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
-        if (manager.create(transactor, object)) {
-            return object.getId();
-        } else {
-            return null;
-        }
+        return manager.create(transactor, object);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
-        manager.delete(transactor, id);
+        return manager.delete(transactor, id);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         K id = (K) manager.getMetadata().getPrimaryValue(object);
-        manager.delete(transactor, id);
+        return manager.delete(transactor, id);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         BerkeleyMetadata metadata = manager.getMetadata();
@@ -293,7 +289,7 @@ public class BerkeleyAccessor implements OrmAccessor {
             BerkeleyVersion version = new BerkeleyVersion(metadata, object);
             checkVersions(transactor == null, transactor, version);
         }
-        manager.update(transactor, object);
+        return manager.update(transactor, object);
     }
 
     @Override

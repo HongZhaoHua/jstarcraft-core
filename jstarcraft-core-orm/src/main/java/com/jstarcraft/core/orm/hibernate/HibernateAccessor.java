@@ -139,55 +139,66 @@ public class HibernateAccessor extends HibernateDaoSupport implements OrmAccesso
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> K create(Class<T> clazz, T object) {
-        K value = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<K>() {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
-            public K doInHibernate(Session session) throws HibernateException {
-                return (K) session.save(object);
+            public Boolean doInHibernate(Session session) throws HibernateException {
+                try {
+                    session.save(object);
+                    return true;
+                } catch (Exception exception) {
+                    return false;
+                }
             }
 
         });
-        return value;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, K id) {
-        getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
-            public Void doInHibernate(Session session) throws HibernateException {
+            public Boolean doInHibernate(Session session) throws HibernateException {
                 String hql = deleteHqls.get(clazz);
                 Query<?> query = session.createQuery(hql);
                 query.setParameter(0, id);
-                query.executeUpdate();
-                return null;
+                return query.executeUpdate() > 0;
             }
 
         });
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void delete(Class<T> clazz, T object) {
-        getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
-            public Void doInHibernate(Session session) throws HibernateException {
-                session.delete(object);
-                return null;
+            public Boolean doInHibernate(Session session) throws HibernateException {
+                try {
+                    session.delete(object);
+                    return true;
+                } catch (Exception exception) {
+                    return false;
+                }
             }
 
         });
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> void update(Class<T> clazz, T object) {
-        getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Void>() {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+        return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
-            public Void doInHibernate(Session session) throws HibernateException {
-                session.update(object);
-                return null;
+            public Boolean doInHibernate(Session session) throws HibernateException {
+                try {
+                    session.update(object);
+                    return true;
+                } catch (Exception exception) {
+                    return false;
+                }
             }
 
         });

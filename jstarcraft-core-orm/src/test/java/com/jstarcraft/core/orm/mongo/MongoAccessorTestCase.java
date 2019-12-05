@@ -36,7 +36,8 @@ public class MongoAccessorTestCase {
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
             MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, Instant.now(), MockEnumeration.values()[index % MockEnumeration.values().length]);
-            int id = accessor.create(MockObject.class, object);
+            accessor.create(MockObject.class, object);
+            int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较

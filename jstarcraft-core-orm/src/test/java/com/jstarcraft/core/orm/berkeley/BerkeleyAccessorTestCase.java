@@ -31,11 +31,11 @@ public class BerkeleyAccessorTestCase {
     @Test
     public void testCRUD() {
         Person birdy = new Person(1L, "Birdy");
-        Assert.assertNotNull(accessor.create(Person.class, birdy));
+        Assert.assertTrue(accessor.create(Person.class, birdy));
 
         // 标识冲突
         birdy = new Person(1L, "Mickey");
-        Assert.assertNull(accessor.create(Person.class, birdy));
+        Assert.assertFalse(accessor.create(Person.class, birdy));
 
         try {
             // 索引冲突
@@ -84,12 +84,7 @@ public class BerkeleyAccessorTestCase {
             accessor.delete(Pack.class, index);
         }
 
-        try {
-            // 操作冲突
-            accessor.delete(Person.class, 1L);
-//            Assert.fail();
-        } catch (BerkeleyOperationException exception) {
-        }
+        Assert.assertFalse(accessor.delete(Person.class, 1L));
     }
 
     private void testAbortTransactor(Pack pack, BerkeleyIsolation isolation) {
