@@ -117,17 +117,17 @@ public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTest
         Assert.assertThat(manager.getWaitSize(), is(1));
         manager.deleteInstance(id);
         Assert.assertThat(manager.getWaitSize(), is(1));
-        Assert.assertThat(manager.getExceptionCount(), is(3L));
+        Assert.assertThat(manager.getExceptionCount(), is(2L));
 
         // DELETE, UPDATE(会导致异常)
         manager.updateInstance(MockEntityObject.instanceOf(id, "wolfy" + id, "xiao", id * id, id * id));
         Assert.assertThat(manager.getWaitSize(), is(1));
-        Assert.assertThat(manager.getExceptionCount(), is(4L));
+        Assert.assertThat(manager.getExceptionCount(), is(3L));
 
         // DELETE, CREATE
         manager.createInstance(MockEntityObject.instanceOf(id, "mickey" + id, "hong", id, id));
         Assert.assertThat(manager.getWaitSize(), is(1));
-        Assert.assertThat(manager.getExceptionCount(), is(4L));
+        Assert.assertThat(manager.getExceptionCount(), is(3L));
 
         while (true) {
             if (manager.getWaitSize() == 0) {

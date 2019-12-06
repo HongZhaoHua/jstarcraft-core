@@ -122,8 +122,10 @@ public class PersistenceElement {
                 LOGGER.error("元素操作异常,缓存对象[{}]旧操作[{}]新操作[{}]", new Object[] { cacheId, operation, element.getOperation() });
                 throw new CacheOperationException();
             case DELETE:
-                LOGGER.error("元素操作异常,缓存对象[{}]旧操作[{}]新操作[{}]", new Object[] { cacheId, operation, element.getOperation() });
-                throw new CacheOperationException();
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("元素操作修改,缓存对象[{}]旧操作[{}]新操作[{}]现在操作[{}]是否保留元素[{}]", new Object[] { cacheId, PersistenceOperation.DELETE, PersistenceOperation.DELETE, operation, true });
+                }
+                break;
             }
             break;
         }

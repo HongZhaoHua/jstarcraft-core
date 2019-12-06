@@ -123,12 +123,8 @@ public class PersistenceElementTestCase {
 
         {
             PersistenceElement element = new PersistenceElement(PersistenceOperation.DELETE, cacheId, cacheObject);
-            try {
-                PersistenceElement delete = new PersistenceElement(PersistenceOperation.DELETE, cacheId, cacheObject);
-                element.modify(delete);
-                Assert.fail();
-            } catch (CacheOperationException exception) {
-            }
+            PersistenceElement delete = new PersistenceElement(PersistenceOperation.DELETE, cacheId, cacheObject);
+            element.modify(delete);
             Assert.assertFalse(element.isIgnore());
             Assert.assertThat(element.getOperation(), CoreMatchers.equalTo(PersistenceOperation.DELETE));
         }
