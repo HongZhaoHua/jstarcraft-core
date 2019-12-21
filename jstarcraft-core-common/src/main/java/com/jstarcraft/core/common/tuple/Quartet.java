@@ -8,15 +8,12 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Quartet<A, B, C, D> extends Triplet<A, B, C> {
 
-    public Quartet(A a, B b, C c, D d) {
-        this.datas = new Object[] { a, b, c, d };
+    protected Quartet(Object... datas) {
+        super(datas);
     }
 
-    public Quartet(Object... datas) {
-        if (datas.length != 4) {
-            throw new IllegalArgumentException();
-        }
-        this.datas = datas;
+    public Quartet(A a, B b, C c, D d) {
+        this(new Object[] { a, b, c, d });
     }
 
     public D getD() {

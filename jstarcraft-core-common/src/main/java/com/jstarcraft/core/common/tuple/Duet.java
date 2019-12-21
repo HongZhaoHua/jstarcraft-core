@@ -8,15 +8,12 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Duet<A, B> extends Unit<A> {
 
-    public Duet(A a, B b) {
-        this.datas = new Object[] { a, b };
+    protected Duet(Object... datas) {
+        super(datas);
     }
 
-    public Duet(Object... datas) {
-        if (datas.length != 2) {
-            throw new IllegalArgumentException();
-        }
-        this.datas = datas;
+    public Duet(A a, B b) {
+        this(new Object[] { a, b });
     }
 
     public B getB() {

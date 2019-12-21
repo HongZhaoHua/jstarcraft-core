@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.tuple;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * 元组
@@ -8,12 +9,15 @@ import java.util.Arrays;
  * @author Birdy
  *
  */
-public class Tuple {
+public class Tuple implements Iterable<Object> {
 
     protected Object[] datas;
 
+    protected Iterator<Object> iterator;
+
     protected Tuple(Object... datas) {
         this.datas = datas;
+        this.iterator = Arrays.asList(datas).iterator();
     }
 
     public Object getData(int index) {
@@ -22,6 +26,11 @@ public class Tuple {
 
     public void setData(int index, Object data) {
         datas[index] = data;
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        return iterator;
     }
 
     @Override

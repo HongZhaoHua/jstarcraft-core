@@ -8,15 +8,12 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Nonet<A, B, C, D, E, F, G, H, I> extends Octet<A, B, C, D, E, F, G, H> {
 
-    public Nonet(A a, B b, C c, D d, E e, F f, G g, H h, I i) {
-        this.datas = new Object[] { a, b, c, d, e, f, g, h, i };
+    protected Nonet(Object... datas) {
+        super(datas);
     }
 
-    public Nonet(Object... datas) {
-        if (datas.length != 9) {
-            throw new IllegalArgumentException();
-        }
-        this.datas = datas;
+    public Nonet(A a, B b, C c, D d, E e, F f, G g, H h, I i) {
+        this(new Object[] { a, b, c, d, e, f, g, h, i });
     }
 
     public I getI() {

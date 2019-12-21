@@ -7,16 +7,13 @@ package com.jstarcraft.core.common.tuple;
  *
  */
 public class Quintet<A, B, C, D, E> extends Quartet<A, B, C, D> {
-
-    public Quintet(A a, B b, C c, D d, E e) {
-        this.datas = new Object[] { a, b, c, d, e };
+    
+    protected Quintet(Object... datas) {
+        super(datas);
     }
 
-    public Quintet(Object... datas) {
-        if (datas.length != 5) {
-            throw new IllegalArgumentException();
-        }
-        this.datas = datas;
+    public Quintet(A a, B b, C c, D d, E e) {
+        this(new Object[] { a, b, c, d, e });
     }
 
     public E getE() {
