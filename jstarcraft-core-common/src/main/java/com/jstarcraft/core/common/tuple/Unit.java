@@ -8,6 +8,10 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Unit<A> extends Tuple {
 
+    public Unit(A a) {
+        this.datas = new Object[] { a };
+    }
+
     public Unit(Object... datas) {
         if (datas.length != 1) {
             throw new IllegalArgumentException();

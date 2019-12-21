@@ -8,6 +8,10 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Sextet<A, B, C, D, E, F> extends Quintet<A, B, C, D, E> {
 
+    public Sextet(A a, B b, C c, D d, E e, F f) {
+        this.datas = new Object[] { a, b, c, d, e, f };
+    }
+
     public Sextet(Object... datas) {
         if (datas.length != 6) {
             throw new IllegalArgumentException();

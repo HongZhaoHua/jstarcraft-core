@@ -8,6 +8,10 @@ package com.jstarcraft.core.common.tuple;
  */
 public class Triplet<A, B, C> extends Duet<A, B> {
 
+    public Triplet(A a, B b, C c) {
+        this.datas = new Object[] { a, b, c };
+    }
+
     public Triplet(Object... datas) {
         if (datas.length != 3) {
             throw new IllegalArgumentException();
