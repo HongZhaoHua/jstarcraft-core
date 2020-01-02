@@ -14,7 +14,6 @@ import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
-import org.redisson.client.codec.StringCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,8 +60,6 @@ public class GlobalEventBus implements EventBus {
         buffer.append("    redis.call('hincrby', topic, ARGV[3], 1);");
         buffer.append("end;");
         buffer.append("return true;");
-//        buffer.append("topics = redis.call('lrange', monitor, 0, -1);");
-//        buffer.append("return #topics;");
         registerLua = buffer.toString();
 
         // 注销脚本
