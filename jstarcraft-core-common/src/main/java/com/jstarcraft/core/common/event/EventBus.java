@@ -15,6 +15,7 @@ public interface EventBus {
      * 
      * @param monitor
      * @param topics
+     * @return
      */
     boolean registerMonitor(EventMonitor monitor, Set<Class<?>> topics);
 
@@ -22,6 +23,7 @@ public interface EventBus {
      * 注销事件监控者
      * 
      * @param monitor
+     * @return
      */
     boolean unregisterMonitor(EventMonitor monitor);
 
