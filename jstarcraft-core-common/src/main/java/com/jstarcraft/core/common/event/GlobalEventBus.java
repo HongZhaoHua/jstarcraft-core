@@ -202,7 +202,7 @@ public class GlobalEventBus implements EventBus {
     }
 
     @Override
-    public synchronized void registerMonitor(EventMonitor monitor, Set<Class<?>> topics) {
+    public synchronized boolean registerMonitor(EventMonitor monitor, Set<Class<?>> topics) {
         if (!threads.containsKey(monitor.getClass())) {
             Collection<String> values = new TreeSet<>();
             for (Class<?> topic : topics) {
@@ -221,11 +221,13 @@ public class GlobalEventBus implements EventBus {
                 thread.start();
                 threads.put(monitor.getClass(), thread);
             }
+            return register;
         }
+        return false;
     }
 
     @Override
-    public synchronized void unregisterMonitor(EventMonitor monitor) {
+    public synchronized boolean unregisterMonitor(EventMonitor monitor) {
         if (threads.containsKey(monitor.getClass())) {
             LinkedList<String> arguments = new LinkedList<>();
             arguments.add(name + monitorPrefix);
@@ -236,7 +238,9 @@ public class GlobalEventBus implements EventBus {
                 EventThread thread = threads.remove(monitor.getClass());
                 thread.interrupt();
             }
+            return unregister;
         }
+        return false;
     }
 
     @Override

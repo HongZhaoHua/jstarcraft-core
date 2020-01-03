@@ -16,14 +16,14 @@ public interface EventBus {
      * @param monitor
      * @param topics
      */
-    void registerMonitor(EventMonitor monitor, Set<Class<?>> topics);
+    boolean registerMonitor(EventMonitor monitor, Set<Class<?>> topics);
 
     /**
      * 注销事件监控者
      * 
      * @param monitor
      */
-    void unregisterMonitor(EventMonitor monitor);
+    boolean unregisterMonitor(EventMonitor monitor);
 
     /**
      * 触发事件

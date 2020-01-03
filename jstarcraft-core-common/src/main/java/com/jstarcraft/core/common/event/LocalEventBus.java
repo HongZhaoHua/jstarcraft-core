@@ -21,7 +21,7 @@ public abstract class LocalEventBus implements EventBus {
     }
 
     @Override
-    public synchronized void registerMonitor(EventMonitor monitor, Set<Class<?>> topics) {
+    public synchronized boolean registerMonitor(EventMonitor monitor, Set<Class<?>> topics) {
         if (this.monitor2Topics.putIfAbsent(monitor, new HashSet<>(topics)) == null) {
             for (Class<?> topic : topics) {
                 Set<EventMonitor> monitors = this.topic2Monitors.get(topic);
@@ -31,11 +31,13 @@ public abstract class LocalEventBus implements EventBus {
                 }
                 monitors.add(monitor);
             }
+            return true;
         }
+        return false;
     }
 
     @Override
-    public synchronized void unregisterMonitor(EventMonitor monitor) {
+    public synchronized boolean unregisterMonitor(EventMonitor monitor) {
         Set<Class<?>> topics = this.monitor2Topics.remove(monitor);
         if (topics != null) {
             for (Class<?> topic : topics) {
@@ -47,7 +49,9 @@ public abstract class LocalEventBus implements EventBus {
                     }
                 }
             }
+            return true;
         }
+        return false;
     }
 
 }

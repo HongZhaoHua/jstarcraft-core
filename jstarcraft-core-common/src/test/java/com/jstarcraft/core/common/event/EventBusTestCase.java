@@ -17,13 +17,15 @@ public abstract class EventBusTestCase {
         Set<Class<?>> topics = new HashSet<>();
         topics.add(MockEvent.class);
         EventBus bus = getEventBus();
-        bus.registerMonitor(monitor, topics);
+        boolean register = bus.registerMonitor(monitor, topics);
+        Assert.assertTrue(register);
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }
         monitor.awaitLatch();
         Assert.assertEquals(10, monitor.getCount());
-        bus.unregisterMonitor(monitor);
+        boolean unregister = bus.unregisterMonitor(monitor);
+        Assert.assertTrue(unregister);
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }
