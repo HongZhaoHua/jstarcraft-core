@@ -19,6 +19,7 @@ public abstract class EventBusTestCase {
         EventBus bus = getEventBus();
         boolean register = bus.registerMonitor(monitor, topics);
         Assert.assertTrue(register);
+        Assert.assertTrue(bus.getMonitors().contains(monitor));
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }
@@ -26,6 +27,7 @@ public abstract class EventBusTestCase {
         Assert.assertEquals(10, monitor.getCount());
         boolean unregister = bus.unregisterMonitor(monitor);
         Assert.assertTrue(unregister);
+        Assert.assertFalse(bus.getMonitors().contains(monitor));
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }

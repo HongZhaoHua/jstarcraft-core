@@ -54,4 +54,9 @@ public abstract class LocalEventBus implements EventBus {
         return false;
     }
 
+    @Override
+    public synchronized Collection<EventMonitor> getMonitors() {
+        return monitor2Topics.keySet();
+    }
+
 }

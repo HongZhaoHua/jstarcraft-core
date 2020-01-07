@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.event;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -26,6 +27,13 @@ public interface EventBus {
      * @return
      */
     boolean unregisterMonitor(EventMonitor monitor);
+
+    /**
+     * 获取所有事件监控者
+     * 
+     * @return
+     */
+    Collection<EventMonitor> getMonitors();
 
     /**
      * 触发事件

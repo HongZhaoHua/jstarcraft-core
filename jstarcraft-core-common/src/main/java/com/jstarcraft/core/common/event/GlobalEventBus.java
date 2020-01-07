@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.event;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class GlobalEventBus implements EventBus {
@@ -106,7 +108,7 @@ public class GlobalEventBus implements EventBus {
 
     private String triggerSignature;
 
-    private Map<Class<? extends EventMonitor>, EventThread> threads;
+    private Map<Class<? extends EventMonitor>, KeyValue<EventMonitor, EventThread>> threads;
 
     private static class EventData {
 
@@ -219,7 +221,8 @@ public class GlobalEventBus implements EventBus {
                 RBlockingQueue<String> queue = redisson.getBlockingQueue(name + eventPrefix + monitor.getClass().getName());
                 EventThread thread = new EventThread(monitor, queue);
                 thread.start();
-                threads.put(monitor.getClass(), thread);
+                KeyValue<EventMonitor, EventThread> keyValue = new KeyValue<>(monitor, thread);
+                threads.put(monitor.getClass(), keyValue);
             }
             return register;
         }
@@ -235,12 +238,22 @@ public class GlobalEventBus implements EventBus {
             arguments.add(monitor.getClass().getName());
             boolean unregister = script.evalSha(Mode.READ_WRITE, unregisterSignature, ReturnType.BOOLEAN, keys, arguments.toArray());
             if (unregister) {
-                EventThread thread = threads.remove(monitor.getClass());
+                KeyValue<EventMonitor, EventThread> keyValue = threads.remove(monitor.getClass());
+                EventThread thread = keyValue.getValue();
                 thread.interrupt();
             }
             return unregister;
         }
         return false;
+    }
+
+    @Override
+    public synchronized Collection<EventMonitor> getMonitors() {
+        List<EventMonitor> monitors = new ArrayList<>(threads.size());
+        for (KeyValue<EventMonitor, EventThread> keyValue : threads.values()) {
+            monitors.add(keyValue.getKey());
+        }
+        return monitors;
     }
 
     @Override
