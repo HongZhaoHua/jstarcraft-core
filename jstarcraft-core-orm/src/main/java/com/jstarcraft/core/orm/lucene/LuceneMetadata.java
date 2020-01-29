@@ -61,23 +61,24 @@ public class LuceneMetadata implements OrmMetadata {
      * 
      * @param metadata
      */
-    LuceneMetadata(Class<?> clazz) {
-        ormClass = clazz;
-        ormName = clazz.getName();
-        ReflectionUtility.doWithFields(ormClass, (field) -> {
+    LuceneMetadata(Class<?> clazz, LuceneContext context) {
+        this.ormClass = clazz;
+        this.ormName = clazz.getName();
+        ReflectionUtility.doWithFields(this.ormClass, (field) -> {
             if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
                 return;
             }
             Class<?> type = field.getType();
-            fields.put(field.getName(), type);
+            this.fields.put(field.getName(), type);
             if (field.isAnnotationPresent(LuceneId.class)) {
-                primaryName = field.getName();
-                primaryClass = type;
+                this.primaryName = field.getName();
+                this.primaryClass = type;
             }
             if (field.isAnnotationPresent(LuceneIndex.class)) {
-                indexNames.add(field.getName());
+                this.indexNames.add(field.getName());
             }
         });
+        this.context = context;
     }
 
     @Override
