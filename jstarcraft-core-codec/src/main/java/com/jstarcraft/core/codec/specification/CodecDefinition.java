@@ -163,7 +163,7 @@ public class CodecDefinition {
         }
     }
 
-    public static CodecDefinition instanceOf(Collection<Type> types) {
+    public static CodecDefinition instanceOf(Collection<? extends Type> types) {
         CodecDefinition definition = new CodecDefinition();
         // 遍历与排序所有依赖的类型
         TreeSet<Class<?>> classes = new TreeSet<>(typeComparator);
