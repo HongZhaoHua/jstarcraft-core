@@ -1,25 +1,45 @@
 package com.jstarcraft.core.orm.lucene;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.apache.lucene.document.BinaryDocValuesField;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.NumericDocValuesField;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.util.BytesRef;
 
+import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.OrmMetadata;
+import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneId;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
+import com.jstarcraft.core.orm.lucene.converter.IdConverter;
+import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
+import com.jstarcraft.core.orm.lucene.converter.SortConverter;
+import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
+import com.jstarcraft.core.utility.KeyValue;
 
 public class LuceneMetadata implements OrmMetadata {
 
-    public static final String luceneId = "_id";
+    public static final String LUCENE_ID = "_id";
 
-    public static final String luceneVersion = "_version";
+    public static final String LUCENE_VERSION = "_version";
 
     /** 实体名称 */
     private String ormName;
@@ -34,15 +54,14 @@ public class LuceneMetadata implements OrmMetadata {
     /** 索引域名 */
     private Collection<String> indexNames = new HashSet<>();
 
+    private LuceneContext context;
+
     /**
      * 构造方法
      * 
      * @param metadata
      */
     LuceneMetadata(Class<?> clazz) {
-        if (!clazz.isAnnotationPresent(Document.class)) {
-            throw new IllegalArgumentException();
-        }
         ormClass = clazz;
         ormName = clazz.getName();
         ReflectionUtility.doWithFields(ormClass, (field) -> {
@@ -95,7 +114,7 @@ public class LuceneMetadata implements OrmMetadata {
 
     @Override
     public String getVersionName() {
-        return luceneVersion;
+        return LUCENE_VERSION;
     }
 
 }

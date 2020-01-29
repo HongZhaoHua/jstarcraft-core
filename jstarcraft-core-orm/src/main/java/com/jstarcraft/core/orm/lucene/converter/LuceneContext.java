@@ -14,9 +14,19 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneId;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
+import com.jstarcraft.core.orm.lucene.converter.id.ArrayIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.BooleanIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.CollectionIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.EnumerationIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.InstantIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.MapIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.NumberIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.ObjectIdConverter;
+import com.jstarcraft.core.orm.lucene.converter.id.StringIdConverter;
 import com.jstarcraft.core.orm.lucene.converter.index.ArrayIndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.index.BooleanIndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.index.CollectionIndexConverter;
@@ -54,11 +64,25 @@ import com.jstarcraft.core.utility.KeyValue;
  */
 public class LuceneContext {
 
+    public static final EnumMap<Specification, IdConverter> ID_CONVERTERS = new EnumMap<>(Specification.class);
+
     public static final EnumMap<Specification, IndexConverter> INDEX_CONVERTERS = new EnumMap<>(Specification.class);
 
     public static final EnumMap<Specification, SortConverter> SORT_CONVERTERS = new EnumMap<>(Specification.class);
 
     public static final EnumMap<Specification, StoreConverter> STORE_CONVERTERS = new EnumMap<>(Specification.class);
+
+    static {
+        ID_CONVERTERS.put(Specification.ARRAY, new ArrayIdConverter());
+        ID_CONVERTERS.put(Specification.BOOLEAN, new BooleanIdConverter());
+        ID_CONVERTERS.put(Specification.COLLECTION, new CollectionIdConverter());
+        ID_CONVERTERS.put(Specification.ENUMERATION, new EnumerationIdConverter());
+        ID_CONVERTERS.put(Specification.INSTANT, new InstantIdConverter());
+        ID_CONVERTERS.put(Specification.MAP, new MapIdConverter());
+        ID_CONVERTERS.put(Specification.NUMBER, new NumberIdConverter());
+        ID_CONVERTERS.put(Specification.OBJECT, new ObjectIdConverter());
+        ID_CONVERTERS.put(Specification.STRING, new StringIdConverter());
+    }
 
     static {
         INDEX_CONVERTERS.put(Specification.ARRAY, new ArrayIndexConverter());
@@ -98,6 +122,8 @@ public class LuceneContext {
 
     private Map<Class<?>, ClassDefinition> classDefinitions;
 
+    private Map<Class<?>, KeyValue<Field, IdConverter>> idKeyValues;
+
     private Map<Class<?>, List<KeyValue<Field, IndexConverter>>> indexKeyValues;
 
     private Map<Class<?>, List<KeyValue<Field, SortConverter>>> sortKeyValues;
@@ -116,6 +142,12 @@ public class LuceneContext {
             Specification specification = Specification.getSpecification(type);
 
             try {
+                LuceneId id = field.getAnnotation(LuceneId.class);
+                if (id != null) {
+                    IdConverter converter = ID_CONVERTERS.get(specification);
+                    idKeyValues.put(definition.getType(), new KeyValue<>(field, converter));
+                }
+
                 LuceneIndex index = field.getAnnotation(LuceneIndex.class);
                 if (index != null) {
                     Class<? extends IndexConverter> clazz = index.clazz();
@@ -163,6 +195,7 @@ public class LuceneContext {
 
     public LuceneContext(CodecDefinition... definitions) {
         this.classDefinitions = new HashMap<>();
+        this.idKeyValues = new HashMap<>();
         this.indexKeyValues = new HashMap<>();
         this.sortKeyValues = new HashMap<>();
         this.storeKeyValues = new HashMap<>();
@@ -186,6 +219,16 @@ public class LuceneContext {
      */
     public <T> T getInstance(Class<T> clazz) throws Exception {
         return (T) classDefinitions.get(clazz).getInstance();
+    }
+
+    /**
+     * 根据规范获取标识转换器
+     * 
+     * @param specification
+     * @return
+     */
+    public IdConverter getIdConverter(Specification specification) {
+        return ID_CONVERTERS.get(specification);
     }
 
     /**
@@ -216,6 +259,16 @@ public class LuceneContext {
      */
     public StoreConverter getStoreConverter(Specification specification) {
         return STORE_CONVERTERS.get(specification);
+    }
+
+    /**
+     * 根据类型获取标识转换器
+     * 
+     * @param clazz
+     * @return
+     */
+    public KeyValue<Field, IdConverter> getIdKeyValue(Class<?> clazz) {
+        return this.idKeyValues.get(clazz);
     }
 
     /**

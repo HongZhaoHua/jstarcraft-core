@@ -5,15 +5,22 @@ import java.lang.reflect.Type;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import org.apache.lucene.document.BinaryDocValuesField;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.NumericDocValuesField;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.util.BytesRef;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneId;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
+import com.jstarcraft.core.orm.lucene.converter.IdConverter;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
@@ -29,6 +36,10 @@ import com.jstarcraft.core.utility.KeyValue;
  */
 // TODO 以后会整合到Searcher
 public class LuceneCodec<S, L> {
+
+    static final String ID = "_id";
+
+    static final String VERSION = "_version";
 
     private LuceneContext context;
 
@@ -59,6 +70,18 @@ public class LuceneCodec<S, L> {
                 indexables.put(indexable.name(), indexable);
             }
             L instance = (L) loadDefinition.getInstance();
+            {
+                KeyValue<Field, IdConverter> keyValue = this.context.getIdKeyValue(this.saveDefinition.getType());
+                if (keyValue != null) {
+                    Field field = keyValue.getKey();
+                    IdConverter converter = keyValue.getValue();
+                    LuceneId annotation = field.getAnnotation(LuceneId.class);
+                    Type type = field.getGenericType();
+                    IndexableField indexable = indexables.get(ID);
+                    Object data = converter.decode(type, indexable.stringValue());
+                    field.set(instance, data);
+                }
+            }
             for (KeyValue<Field, StoreConverter> keyValue : this.context.getStoreKeyValues(this.loadDefinition.getType())) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
@@ -85,6 +108,25 @@ public class LuceneCodec<S, L> {
     public Document encode(S object) {
         try {
             Document document = new Document();
+            {
+                KeyValue<Field, IdConverter> keyValue = this.context.getIdKeyValue(this.saveDefinition.getType());
+                if (keyValue != null) {
+                    Field field = keyValue.getKey();
+                    IdConverter converter = keyValue.getValue();
+                    LuceneId annotation = field.getAnnotation(LuceneId.class);
+                    Type type = field.getGenericType();
+                    Object data = field.get(object);
+                    String id = converter.encode(type, data);
+                    IndexableField indexable = null;
+                    indexable = new StringField(ID, id, Store.YES);
+                    document.add(indexable);
+                    indexable = new BinaryDocValuesField(ID, new BytesRef(id));
+                    document.add(indexable);
+                    long version = System.currentTimeMillis();
+                    indexable = new NumericDocValuesField(VERSION, version);
+                    document.add(indexable);
+                }
+            }
             for (KeyValue<Field, IndexConverter> keyValue : this.context.getIndexKeyValues(this.saveDefinition.getType())) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
