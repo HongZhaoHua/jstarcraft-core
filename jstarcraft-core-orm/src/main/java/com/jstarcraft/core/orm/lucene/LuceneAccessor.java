@@ -48,6 +48,7 @@ public class LuceneAccessor implements OrmAccessor {
             this.metadatas.put(ormClass, metadata);
         }
 
+        // 使用CodecDefinition分析依赖关系.
         CodecDefinition definition = CodecDefinition.instanceOf(classes);
         this.context = new LuceneContext(definition);
     }
@@ -59,6 +60,14 @@ public class LuceneAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+        KeyValue<Field, IdConverter> keyValue = context.getIdKeyValue(clazz);
+        Field field = keyValue.getKey();
+        IdConverter converter = keyValue.getValue();
+        String data = converter.encode(id.getClass(), id);
+        Query query = new TermQuery(new Term("_id", data));
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 1);
+        List<Document> documents = retrieve.getKey();
+        Document document = documents.get(0);
         return null;
     }
 
