@@ -20,7 +20,8 @@ import org.apache.lucene.store.Directory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.orm.lucene.LuceneCodec;
+import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.MockComplexObject;
 import com.jstarcraft.core.orm.lucene.converter.MockEnumeration;
 
@@ -33,7 +34,8 @@ public class LuceneCodecTestCase {
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         IndexWriter indexWriter = new IndexWriter(directory, config);
 
-        LuceneCodec<MockComplexObject, MockComplexObject> codec = new LuceneCodec<>(MockComplexObject.class, MockComplexObject.class);
+        LuceneContext context = new LuceneContext(CodecDefinition.instanceOf(MockComplexObject.class));
+        LuceneMetadata codec = new LuceneMetadata(MockComplexObject.class, context);
         Instant now = Instant.now();
         MockComplexObject protoss = MockComplexObject.instanceOf(-1, "protoss", "jstarcraft", -1, now, MockEnumeration.PROTOSS);
         MockComplexObject terran = MockComplexObject.instanceOf(0, "terran", "jstarcraft", 0, now, MockEnumeration.TERRAN);
