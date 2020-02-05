@@ -27,51 +27,51 @@ public class LuceneEngineTestCase {
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        LuceneEngine searcher = new LuceneEngine(config, path);
+        LuceneEngine engine = new LuceneEngine(config, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
             Document document = new Document();
-            Field field = new StringField("title", data, Store.NO);
+            Field field = new StringField("title", data, Store.YES);
             document.add(field);
-            searcher.createDocument(data, document);
+            engine.createDocument(data, document);
         }
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(1, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(0, searcher.countDocuments(new TermQuery(new Term("title", "1000"))));
-        searcher.mergeManager();
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(1, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(0, searcher.countDocuments(new TermQuery(new Term("title", "1000"))));
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(1, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(0, engine.countDocuments(new TermQuery(new Term("title", "1000"))));
+        engine.mergeManager();
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(1, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(0, engine.countDocuments(new TermQuery(new Term("title", "1000"))));
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index % 2);
             Document document = new Document();
-            Field field = new StringField("title", data, Store.NO);
+            Field field = new StringField("title", data, Store.YES);
             document.add(field);
-            searcher.updateDocument(String.valueOf(index), document);
+            engine.updateDocument(String.valueOf(index), document);
         }
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(500, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(500, searcher.countDocuments(new TermQuery(new Term("title", "1"))));
-        searcher.mergeManager();
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(500, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(500, searcher.countDocuments(new TermQuery(new Term("title", "1"))));
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "1"))));
+        engine.mergeManager();
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "1"))));
 
         for (int index = 0; index < 500; index++) {
-            searcher.deleteDocument(String.valueOf(index));
+            engine.deleteDocument(String.valueOf(index));
         }
 
-        Assert.assertEquals(500, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(250, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(250, searcher.countDocuments(new TermQuery(new Term("title", "1"))));
-        searcher.mergeManager();
-        Assert.assertEquals(500, searcher.countDocuments(new MatchAllDocsQuery()));
-        Assert.assertEquals(250, searcher.countDocuments(new TermQuery(new Term("title", "0"))));
-        Assert.assertEquals(250, searcher.countDocuments(new TermQuery(new Term("title", "1"))));
+        Assert.assertEquals(500, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(250, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(250, engine.countDocuments(new TermQuery(new Term("title", "1"))));
+        engine.mergeManager();
+        Assert.assertEquals(500, engine.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(250, engine.countDocuments(new TermQuery(new Term("title", "0"))));
+        Assert.assertEquals(250, engine.countDocuments(new TermQuery(new Term("title", "1"))));
 
-        searcher.close();
+        engine.close();
         FileUtils.deleteDirectory(file);
     }
 
@@ -82,17 +82,17 @@ public class LuceneEngineTestCase {
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        LuceneEngine searcher = new LuceneEngine(config, path);
+        LuceneEngine engine = new LuceneEngine(config, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
             Document document = new Document();
-            Field field = new StringField("title", data, Store.NO);
+            Field field = new StringField("title", data, Store.YES);
             document.add(field);
-            searcher.createDocument(data, document);
+            engine.createDocument(data, document);
         }
-        searcher.mergeManager();
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
+        engine.mergeManager();
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
 
         AtomicBoolean state = new AtomicBoolean(true);
         AtomicInteger readExceptions = new AtomicInteger();
@@ -105,7 +105,7 @@ public class LuceneEngineTestCase {
                 public void run() {
                     try {
                         while (state.get()) {
-                            Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
+                            Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
                             Thread.sleep(1L);
                         }
                     } catch (Exception exception) {
@@ -126,9 +126,9 @@ public class LuceneEngineTestCase {
                         while (state.get()) {
                             String data = String.valueOf(0);
                             Document document = new Document();
-                            Field field = new StringField("title", data, Store.NO);
+                            Field field = new StringField("title", data, Store.YES);
                             document.add(field);
-                            searcher.updateDocument(data, document);
+                            engine.updateDocument(data, document);
                             Thread.sleep(1L);
                         }
                     } catch (Exception exception) {
@@ -144,16 +144,16 @@ public class LuceneEngineTestCase {
 
         for (int index = 0; index < 10; index++) {
             // 不断触发合并
-            searcher.mergeManager();
+            engine.mergeManager();
             Thread.sleep(1000L);
         }
 
         state.set(false);
         Assert.assertEquals(0, readExceptions.get());
         Assert.assertEquals(0, writeExceptions.get());
-        Assert.assertEquals(1000, searcher.countDocuments(new MatchAllDocsQuery()));
+        Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
 
-        searcher.close();
+        engine.close();
         FileUtils.deleteDirectory(file);
     }
 

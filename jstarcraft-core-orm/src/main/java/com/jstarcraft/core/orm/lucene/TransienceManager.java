@@ -104,7 +104,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     void createDocument(String id, Document document) {
         try {
             IndexableField field = null;
-            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.YES);
+            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.NO);
             document.add(field);
             field = new BinaryDocValuesField(LuceneMetadata.LUCENE_ID, new BytesRef(id));
             document.add(field);
@@ -129,7 +129,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     void updateDocument(String id, Document document) {
         try {
             IndexableField field = null;
-            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.YES);
+            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.NO);
             document.add(field);
             field = new BinaryDocValuesField(LuceneMetadata.LUCENE_ID, new BytesRef(id));
             document.add(field);
