@@ -37,10 +37,6 @@ import com.jstarcraft.core.utility.KeyValue;
 // TODO 以后会整合到Searcher
 public class LuceneCodec<S, L> {
 
-    static final String ID = "_id";
-
-    static final String VERSION = "_version";
-
     private LuceneContext context;
 
     private ClassDefinition saveDefinition;
@@ -77,7 +73,7 @@ public class LuceneCodec<S, L> {
                     IdConverter converter = keyValue.getValue();
                     LuceneId annotation = field.getAnnotation(LuceneId.class);
                     Type type = field.getGenericType();
-                    IndexableField indexable = indexables.get(ID);
+                    IndexableField indexable = indexables.get(LuceneMetadata.LUCENE_ID);
                     Object data = converter.decode(type, indexable.stringValue());
                     field.set(instance, data);
                 }
@@ -118,12 +114,12 @@ public class LuceneCodec<S, L> {
                     Object data = field.get(object);
                     String id = converter.encode(type, data);
                     IndexableField indexable = null;
-                    indexable = new StringField(ID, id, Store.YES);
+                    indexable = new StringField(LuceneMetadata.LUCENE_ID, id, Store.YES);
                     document.add(indexable);
-                    indexable = new BinaryDocValuesField(ID, new BytesRef(id));
+                    indexable = new BinaryDocValuesField(LuceneMetadata.LUCENE_ID, new BytesRef(id));
                     document.add(indexable);
                     long version = System.currentTimeMillis();
-                    indexable = new NumericDocValuesField(VERSION, version);
+                    indexable = new NumericDocValuesField(LuceneMetadata.LUCENE_VERSION, version);
                     document.add(indexable);
                 }
             }
