@@ -14,12 +14,7 @@ import com.jstarcraft.core.orm.lucene.converter.IdConverter;
 public class JsonIdConverter implements IdConverter {
 
     @Override
-    public Object decode(Type type, String data) {
-        return JsonUtility.string2Object(data, type);
-    }
-
-    @Override
-    public String encode(Type type, Object id) {
+    public String convert(Type type, Object id) {
         return JsonUtility.object2String(id);
     }
 

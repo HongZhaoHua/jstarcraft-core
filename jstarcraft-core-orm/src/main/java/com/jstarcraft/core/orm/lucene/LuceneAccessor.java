@@ -1,6 +1,5 @@
 package com.jstarcraft.core.orm.lucene;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.Map;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.Query;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 
 import com.jstarcraft.core.codec.specification.CodecDefinition;
@@ -35,12 +34,16 @@ public class LuceneAccessor implements OrmAccessor {
     /** 元数据集合 */
     private HashMap<Class<?>, LuceneMetadata> metadatas = new HashMap<>();
 
-    private LuceneEngine engine;
+    /** 标识转换器 */
+    private IdConverter converter;
 
     /** 编解码器映射 */
     private LuceneContext context;
 
-    public LuceneAccessor(Collection<Class<?>> classes, LuceneEngine engine) {
+    private LuceneEngine engine;
+
+    public LuceneAccessor(Collection<Class<?>> classes, IdConverter converter, LuceneEngine engine) {
+        this.converter = converter;
         // 使用CodecDefinition分析依赖关系.
         CodecDefinition definition = CodecDefinition.instanceOf(classes);
         this.context = new LuceneContext(definition);
@@ -58,24 +61,30 @@ public class LuceneAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+        String identity = converter.convert(id.getClass(), id);
+        Term term = new Term(LuceneMetadata.LUCENE_ID, identity);
+        TermQuery query = new TermQuery(term);
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 1);
         return null;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
-        // TODO Auto-generated method stub
+        K id = object.getId();
+        String identity = converter.convert(id.getClass(), id);
         return false;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
-        // TODO Auto-generated method stub
+        String identity = converter.convert(id.getClass(), id);
         return false;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
-        // TODO Auto-generated method stub
+        K id = object.getId();
+        String identity = converter.convert(id.getClass(), id);
         return false;
     }
 
@@ -87,13 +96,15 @@ public class LuceneAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
-        // TODO Auto-generated method stub
+        // TODO 此处用字符串排序估计会有问题.
+        SortField field = new SortField(LuceneMetadata.LUCENE_ID, SortField.Type.STRING, false);
         return null;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
-        // TODO Auto-generated method stub
+        // TODO 此处用字符串排序估计会有问题.
+        SortField field = new SortField(LuceneMetadata.LUCENE_ID, SortField.Type.STRING, true);
         return null;
     }
 

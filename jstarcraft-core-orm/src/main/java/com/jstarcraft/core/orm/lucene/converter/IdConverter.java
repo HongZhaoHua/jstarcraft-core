@@ -11,18 +11,11 @@ import java.lang.reflect.Type;
 public interface IdConverter {
 
     /**
-     * 解码标识
+     * 转换标识
      * 
-     * @param data
-     * @return
-     */
-    Object decode(Type type, String data);
-
-    /**
-     * 编码标识
-     * 
+     * @param type
      * @param id
      * @return
      */
-    String encode(Type type, Object id);
+    String convert(Type type, Object id);
 }
