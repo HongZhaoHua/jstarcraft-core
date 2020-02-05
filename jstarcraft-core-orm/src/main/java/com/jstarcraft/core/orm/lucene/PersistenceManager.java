@@ -81,10 +81,10 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
             Term[] terms = new Term[this.transienceManager.getUpdatedIds().size() + this.transienceManager.getDeletedIds().size()];
             int index = 0;
             for (String id : this.transienceManager.getUpdatedIds().keySet()) {
-                terms[index++] = new Term(ID, id);
+                terms[index++] = new Term(LuceneMetadata.LUCENE_ID, id);
             }
             for (String id : this.transienceManager.getDeletedIds()) {
-                terms[index++] = new Term(ID, id);
+                terms[index++] = new Term(LuceneMetadata.LUCENE_ID, id);
             }
             this.writer.deleteDocuments(terms);
             this.writer.addIndexes(this.transienceManager.getDirectory());
@@ -105,9 +105,10 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
         }
 
         LeafReader reader = context.reader();
-        BinaryDocValues ids = DocValues.getBinary(reader, TransienceManager.ID);
-        NumericDocValues versions = DocValues.getNumeric(reader, TransienceManager.VERSION);
+        BinaryDocValues ids = DocValues.getBinary(reader, LuceneMetadata.LUCENE_ID);
+        NumericDocValues versions = DocValues.getNumeric(reader, LuceneMetadata.LUCENE_VERSION);
 
+        Object2LongMap<String> createdIds = this.transienceManager.getCreatedIds();
         Object2LongMap<String> updatedIds = this.transienceManager.getUpdatedIds();
         Set<String> deletedIds = this.transienceManager.getDeletedIds();
 
@@ -130,6 +131,14 @@ class PersistenceManager implements LuceneManager, AutoCloseable {
                     versions.advanceExact(index);
                     long version = versions.longValue();
                     if (updated > version) {
+                        return;
+                    }
+                }
+                long created = createdIds.getLong(id);
+                if (created != 0) {
+                    versions.advanceExact(index);
+                    long version = versions.longValue();
+                    if (created > version) {
                         return;
                     }
                 }

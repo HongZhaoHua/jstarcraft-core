@@ -2,7 +2,6 @@ package com.jstarcraft.core.orm.lucene;
 
 import java.io.IOException;
 
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.LeafReaderContext;
@@ -20,14 +19,6 @@ import org.apache.lucene.store.Directory;
  *
  */
 public interface LuceneManager {
-
-    static final String ID = "_id";
-
-    static final String VERSION = "_version";
-
-    default String getId(Document document) {
-        return document.get(ID);
-    }
 
     /**
      * 是否变更

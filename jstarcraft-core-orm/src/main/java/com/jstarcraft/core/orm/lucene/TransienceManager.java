@@ -56,7 +56,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     private AtomicBoolean changed = new AtomicBoolean(false);
 
     /** 创建标识 */
-    private Set<String> createdIds;
+    private Object2LongMap<String> createdIds;
 
     /** 更新标识 */
     private Object2LongMap<String> updatedIds;
@@ -70,7 +70,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
 
     public TransienceManager(IndexWriterConfig config, Directory directory) {
         try {
-            this.createdIds = new HashSet<>();
+            this.createdIds = new Object2LongOpenHashMap<>();
             this.updatedIds = new Object2LongOpenHashMap<>();
             this.deletedIds = new HashSet<>();
 
@@ -89,7 +89,7 @@ class TransienceManager implements LuceneManager, AutoCloseable {
         }
     }
 
-    Set<String> getCreatedIds() {
+    Object2LongMap<String> getCreatedIds() {
         return createdIds;
     }
 
@@ -104,19 +104,19 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     void createDocument(String id, Document document) {
         try {
             IndexableField field = null;
-            field = new StringField(ID, id, Store.YES);
+            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.YES);
             document.add(field);
-            field = new BinaryDocValuesField(ID, new BytesRef(id));
+            field = new BinaryDocValuesField(LuceneMetadata.LUCENE_ID, new BytesRef(id));
             document.add(field);
             long version = System.currentTimeMillis();
-            field = new NumericDocValuesField(VERSION, version);
+            field = new NumericDocValuesField(LuceneMetadata.LUCENE_VERSION, version);
             document.add(field);
             HashLockable lockable = lockables[Math.abs(id.hashCode() % size)];
             lockable.open();
             if (this.deletedIds.remove(id)) {
                 this.updatedIds.put(id, version);
             } else {
-                this.createdIds.add(id);
+                this.createdIds.put(id, version);
             }
             this.writer.addDocument(document);
             lockable.close();
@@ -129,19 +129,19 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     void updateDocument(String id, Document document) {
         try {
             IndexableField field = null;
-            field = new StringField(ID, id, Store.YES);
+            field = new StringField(LuceneMetadata.LUCENE_ID, id, Store.YES);
             document.add(field);
-            field = new BinaryDocValuesField(ID, new BytesRef(id));
+            field = new BinaryDocValuesField(LuceneMetadata.LUCENE_ID, new BytesRef(id));
             document.add(field);
             long version = System.currentTimeMillis();
-            field = new NumericDocValuesField(VERSION, version);
+            field = new NumericDocValuesField(LuceneMetadata.LUCENE_VERSION, version);
             document.add(field);
             HashLockable lockable = lockables[Math.abs(id.hashCode() % size)];
             lockable.open();
-            if (!this.createdIds.contains(id)) {
+            if (!this.createdIds.containsKey(id)) {
                 this.updatedIds.put(id, version);
             }
-            Term term = new Term(ID, id);
+            Term term = new Term(LuceneMetadata.LUCENE_ID, id);
             this.writer.updateDocument(term, document);
             lockable.close();
             changed.set(true);
@@ -154,8 +154,8 @@ class TransienceManager implements LuceneManager, AutoCloseable {
         try {
             HashLockable lockable = lockables[Math.abs(id.hashCode() % size)];
             lockable.open();
-            if (this.createdIds.remove(id)) {
-                Term term = new Term(ID, id);
+            if (this.createdIds.removeLong(id) != 0) {
+                Term term = new Term(LuceneMetadata.LUCENE_ID, id);
                 this.writer.deleteDocuments(term);
             } else {
                 this.deletedIds.add(id);
@@ -175,8 +175,8 @@ class TransienceManager implements LuceneManager, AutoCloseable {
     @Override
     public LeafCollector getCollector(LeafReaderContext context, LeafCollector collector) throws IOException {
         LeafReader reader = context.reader();
-        BinaryDocValues ids = DocValues.getBinary(reader, TransienceManager.ID);
-        NumericDocValues versions = DocValues.getNumeric(reader, TransienceManager.VERSION);
+        BinaryDocValues ids = DocValues.getBinary(reader, LuceneMetadata.LUCENE_ID);
+        NumericDocValues versions = DocValues.getNumeric(reader, LuceneMetadata.LUCENE_VERSION);
 
         return new LeafCollector() {
 
@@ -197,6 +197,14 @@ class TransienceManager implements LuceneManager, AutoCloseable {
                     versions.advanceExact(index);
                     long version = versions.longValue();
                     if (updated > version) {
+                        return;
+                    }
+                }
+                long created = TransienceManager.this.createdIds.getLong(id);
+                if (created != 0) {
+                    versions.advanceExact(index);
+                    long version = versions.longValue();
+                    if (created > version) {
                         return;
                     }
                 }
