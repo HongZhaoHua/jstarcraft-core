@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -28,7 +29,6 @@ import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
-import com.jstarcraft.core.utility.KeyValue;
 
 public class LuceneMetadata implements OrmMetadata {
 
@@ -50,6 +50,12 @@ public class LuceneMetadata implements OrmMetadata {
     private Collection<String> indexNames = new HashSet<>();
 
     private LuceneContext context;
+
+    private Map<String, IndexConverter> indexKeyValues;
+
+    private Map<String, SortConverter> sortKeyValues;
+
+    private Map<String, StoreConverter> storeKeyValues;
 
     /**
      * 构造方法
@@ -119,14 +125,14 @@ public class LuceneMetadata implements OrmMetadata {
      * @param document
      * @return
      */
-    public Object decode(Document document) {
+    public Object decodeDocument(Document document) {
         try {
             NavigableMap<String, IndexableField> indexables = new TreeMap<>();
             for (IndexableField indexable : document) {
                 indexables.put(indexable.name(), indexable);
             }
             Object instance = this.context.getInstance(ormClass);
-            for (KeyValue<Field, StoreConverter> keyValue : this.context.getStoreKeyValues(ormClass)) {
+            for (Entry<Field, StoreConverter> keyValue : this.context.getStoreKeyValues(ormClass).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
@@ -149,10 +155,10 @@ public class LuceneMetadata implements OrmMetadata {
      * @param object
      * @return
      */
-    public Document encode(Object object) {
+    public Document encodeDocument(Object object) {
         try {
             Document document = new Document();
-            for (KeyValue<Field, IndexConverter> keyValue : this.context.getIndexKeyValues(ormClass)) {
+            for (Entry<Field, IndexConverter> keyValue : this.context.getIndexKeyValues(ormClass).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 IndexConverter converter = keyValue.getValue();
@@ -164,7 +170,7 @@ public class LuceneMetadata implements OrmMetadata {
                     document.add(indexable);
                 }
             }
-            for (KeyValue<Field, SortConverter> keyValue : this.context.getSortKeyValues(ormClass)) {
+            for (Entry<Field, SortConverter> keyValue : this.context.getSortKeyValues(ormClass).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 SortConverter converter = keyValue.getValue();
@@ -176,7 +182,7 @@ public class LuceneMetadata implements OrmMetadata {
                     document.add(indexable);
                 }
             }
-            for (KeyValue<Field, StoreConverter> keyValue : this.context.getStoreKeyValues(ormClass)) {
+            for (Entry<Field, StoreConverter> keyValue : this.context.getStoreKeyValues(ormClass).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 Field field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
@@ -193,6 +199,18 @@ public class LuceneMetadata implements OrmMetadata {
             // TODO
             throw new OrmException(exception);
         }
+    }
+
+    public IndexConverter getIndexConverter(String field) {
+        return indexKeyValues.get(field);
+    }
+
+    public SortConverter getSortConverter(String field) {
+        return sortKeyValues.get(field);
+    }
+
+    public StoreConverter getStoreConverter(String field) {
+        return storeKeyValues.get(field);
     }
 
 }

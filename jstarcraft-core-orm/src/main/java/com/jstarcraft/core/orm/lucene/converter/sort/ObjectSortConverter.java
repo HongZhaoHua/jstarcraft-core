@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import org.apache.lucene.index.IndexableField;
 
@@ -12,7 +13,6 @@ import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
-import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 对象排序转换器
@@ -29,7 +29,7 @@ public class ObjectSortConverter implements SortConverter {
 
         try {
             // TODO 此处需要代码重构
-            for (KeyValue<Field, SortConverter> keyValue : context.getSortKeyValues(clazz)) {
+            for (Entry<Field, SortConverter> keyValue : context.getSortKeyValues(clazz).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 SortConverter converter = keyValue.getValue();

@@ -2,11 +2,8 @@ package com.jstarcraft.core.orm.lucene.converter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
@@ -44,7 +41,6 @@ import com.jstarcraft.core.orm.lucene.converter.store.MapStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.NumberStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.ObjectStoreConverter;
 import com.jstarcraft.core.orm.lucene.converter.store.StringStoreConverter;
-import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 搜索上下文
@@ -98,17 +94,17 @@ public class LuceneContext {
 
     private Map<Class<?>, ClassDefinition> classDefinitions;
 
-    private Map<Class<?>, List<KeyValue<Field, IndexConverter>>> indexKeyValues;
+    private Map<Class<?>, Map<Field, IndexConverter>> indexKeyValues;
 
-    private Map<Class<?>, List<KeyValue<Field, SortConverter>>> sortKeyValues;
+    private Map<Class<?>, Map<Field, SortConverter>> sortKeyValues;
 
-    private Map<Class<?>, List<KeyValue<Field, StoreConverter>>> storeKeyValues;
+    private Map<Class<?>, Map<Field, StoreConverter>> storeKeyValues;
 
     private void parse(ClassDefinition definition) {
         this.classDefinitions.put(definition.getType(), definition);
-        List<KeyValue<Field, IndexConverter>> indexKeyValues = new LinkedList<>();
-        List<KeyValue<Field, SortConverter>> sortKeyValues = new LinkedList<>();
-        List<KeyValue<Field, StoreConverter>> storeKeyValues = new LinkedList<>();
+        Map<Field, IndexConverter> indexKeyValues = new HashMap<>();
+        Map<Field, SortConverter> sortKeyValues = new HashMap<>();
+        Map<Field, StoreConverter> storeKeyValues = new HashMap<>();
 
         ReflectionUtility.doWithFields(definition.getType(), (field) -> {
             ReflectionUtility.makeAccessible(field);
@@ -121,10 +117,10 @@ public class LuceneContext {
                     Class<? extends IndexConverter> clazz = index.clazz();
                     if (IndexConverter.class == clazz) {
                         IndexConverter converter = INDEX_CONVERTERS.get(specification);
-                        indexKeyValues.add(new KeyValue<>(field, converter));
+                        indexKeyValues.put(field, converter);
                     } else {
                         IndexConverter converter = clazz.newInstance();
-                        indexKeyValues.add(new KeyValue<>(field, converter));
+                        indexKeyValues.put(field, converter);
                     }
                 }
 
@@ -133,10 +129,10 @@ public class LuceneContext {
                     Class<? extends SortConverter> clazz = sort.clazz();
                     if (SortConverter.class == clazz) {
                         SortConverter converter = SORT_CONVERTERS.get(specification);
-                        sortKeyValues.add(new KeyValue<>(field, converter));
+                        sortKeyValues.put(field, converter);
                     } else {
                         SortConverter converter = clazz.newInstance();
-                        sortKeyValues.add(new KeyValue<>(field, converter));
+                        sortKeyValues.put(field, converter);
                     }
                 }
 
@@ -145,10 +141,10 @@ public class LuceneContext {
                     Class<? extends StoreConverter> clazz = store.clazz();
                     if (StoreConverter.class == clazz) {
                         StoreConverter converter = STORE_CONVERTERS.get(specification);
-                        storeKeyValues.add(new KeyValue<>(field, converter));
+                        storeKeyValues.put(field, converter);
                     } else {
                         StoreConverter converter = clazz.newInstance();
-                        storeKeyValues.add(new KeyValue<>(field, converter));
+                        storeKeyValues.put(field, converter);
                     }
                 }
             } catch (Exception exception) {
@@ -156,9 +152,9 @@ public class LuceneContext {
             }
         });
 
-        this.indexKeyValues.put(definition.getType(), new ArrayList<>(indexKeyValues));
-        this.sortKeyValues.put(definition.getType(), new ArrayList<>(sortKeyValues));
-        this.storeKeyValues.put(definition.getType(), new ArrayList<>(storeKeyValues));
+        this.indexKeyValues.put(definition.getType(), indexKeyValues);
+        this.sortKeyValues.put(definition.getType(), sortKeyValues);
+        this.storeKeyValues.put(definition.getType(), storeKeyValues);
     }
 
     public LuceneContext(CodecDefinition... definitions) {
@@ -224,7 +220,7 @@ public class LuceneContext {
      * @param clazz
      * @return
      */
-    public List<KeyValue<Field, IndexConverter>> getIndexKeyValues(Class<?> clazz) {
+    public Map<Field, IndexConverter> getIndexKeyValues(Class<?> clazz) {
         return this.indexKeyValues.get(clazz);
     }
 
@@ -234,7 +230,7 @@ public class LuceneContext {
      * @param clazz
      * @return
      */
-    public List<KeyValue<Field, SortConverter>> getSortKeyValues(Class<?> clazz) {
+    public Map<Field, SortConverter> getSortKeyValues(Class<?> clazz) {
         return this.sortKeyValues.get(clazz);
     }
 
@@ -244,7 +240,7 @@ public class LuceneContext {
      * @param clazz
      * @return
      */
-    public List<KeyValue<Field, StoreConverter>> getStoreKeyValues(Class<?> clazz) {
+    public Map<Field, StoreConverter> getStoreKeyValues(Class<?> clazz) {
         return this.storeKeyValues.get(clazz);
     }
 

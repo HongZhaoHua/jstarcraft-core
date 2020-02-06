@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import org.apache.lucene.index.IndexableField;
 
@@ -12,7 +13,6 @@ import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
-import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 对象索引转换器
@@ -29,7 +29,7 @@ public class ObjectIndexConverter implements IndexConverter {
 
         try {
             // TODO 此处需要代码重构
-            for (KeyValue<Field, IndexConverter> keyValue : context.getIndexKeyValues(clazz)) {
+            for (Entry<Field, IndexConverter> keyValue : context.getIndexKeyValues(clazz).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 IndexConverter converter = keyValue.getValue();

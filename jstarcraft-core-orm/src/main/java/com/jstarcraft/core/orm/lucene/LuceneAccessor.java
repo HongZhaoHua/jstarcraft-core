@@ -1,5 +1,6 @@
 package com.jstarcraft.core.orm.lucene;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,9 @@ import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
 import com.jstarcraft.core.orm.lucene.converter.IdConverter;
+import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
+import com.jstarcraft.core.orm.neo4j.Neo4jMetadata;
 import com.jstarcraft.core.utility.KeyValue;
 
 import it.unimi.dsi.fastutil.floats.FloatList;
@@ -61,6 +64,8 @@ public class LuceneAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+        LuceneMetadata metadata = metadatas.get(clazz);
+        Map<Field, IndexConverter> converters = this.context.getIndexKeyValues(clazz);
         String identity = converter.convert(id.getClass(), id);
         Term term = new Term(LuceneMetadata.LUCENE_ID, identity);
         TermQuery query = new TermQuery(term);
@@ -70,6 +75,7 @@ public class LuceneAccessor implements OrmAccessor {
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+        LuceneMetadata metadata = metadatas.get(clazz);
         K id = object.getId();
         String identity = converter.convert(id.getClass(), id);
         return false;

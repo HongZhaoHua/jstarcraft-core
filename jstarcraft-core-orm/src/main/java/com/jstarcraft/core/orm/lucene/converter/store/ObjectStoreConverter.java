@@ -2,6 +2,7 @@ package com.jstarcraft.core.orm.lucene.converter.store;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -12,7 +13,6 @@ import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
-import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 对象存储转换器
@@ -34,7 +34,7 @@ public class ObjectStoreConverter implements StoreConverter {
         try {
             // TODO 此处需要代码重构
             Object instance = context.getInstance(clazz);
-            for (KeyValue<Field, StoreConverter> keyValue : context.getStoreKeyValues(clazz)) {
+            for (Entry<Field, StoreConverter> keyValue : context.getStoreKeyValues(clazz).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();
@@ -58,7 +58,7 @@ public class ObjectStoreConverter implements StoreConverter {
 
         try {
             // TODO 此处需要代码重构
-            for (KeyValue<Field, StoreConverter> keyValue : context.getStoreKeyValues(clazz)) {
+            for (Entry<Field, StoreConverter> keyValue : context.getStoreKeyValues(clazz).entrySet()) {
                 // TODO 此处代码可以优反射次数.
                 field = keyValue.getKey();
                 StoreConverter converter = keyValue.getValue();

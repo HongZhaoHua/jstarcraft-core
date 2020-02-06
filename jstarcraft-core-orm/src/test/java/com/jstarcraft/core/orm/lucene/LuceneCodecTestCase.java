@@ -42,9 +42,9 @@ public class LuceneCodecTestCase {
         MockComplexObject zerg = MockComplexObject.instanceOf(1, "zerg", "jstarcraft", 1, now, MockEnumeration.ZERG);
         MockComplexObject[] objects = new MockComplexObject[] { protoss, terran, zerg };
 
-        indexWriter.addDocument(codec.encode(protoss));
-        indexWriter.addDocument(codec.encode(terran));
-        indexWriter.addDocument(codec.encode(zerg));
+        indexWriter.addDocument(codec.encodeDocument(protoss));
+        indexWriter.addDocument(codec.encodeDocument(terran));
+        indexWriter.addDocument(codec.encodeDocument(zerg));
 
         IndexReader indexReader = DirectoryReader.open(indexWriter);
 
@@ -55,7 +55,7 @@ public class LuceneCodecTestCase {
             int index = 0;
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(objects[index++], codec.decode(document));
+                Assert.assertEquals(objects[index++], codec.decodeDocument(document));
             }
         }
 
@@ -65,7 +65,7 @@ public class LuceneCodecTestCase {
             int index = 0;
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(objects[index++], codec.decode(document));
+                Assert.assertEquals(objects[index++], codec.decodeDocument(document));
             }
         }
 
@@ -75,83 +75,83 @@ public class LuceneCodecTestCase {
             int index = 0;
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(objects[index++], codec.decode(document));
+                Assert.assertEquals(objects[index++], codec.decodeDocument(document));
             }
 
             search = indexSearcher.search(new TermQuery(new Term("names", "protoss")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(protoss, codec.decode(document));
+                Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("names", "terran")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(terran, codec.decode(document));
+                Assert.assertEquals(terran, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("names", "zerg")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(zerg, codec.decode(document));
+                Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
 
             search = indexSearcher.search(new TermQuery(new Term("object.name", "protoss")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(protoss, codec.decode(document));
+                Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("object.name", "terran")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(terran, codec.decode(document));
+                Assert.assertEquals(terran, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("object.name", "zerg")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(zerg, codec.decode(document));
+                Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
 
             search = indexSearcher.search(new TermQuery(new Term("list[0].name", "protoss")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(protoss, codec.decode(document));
+                Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("list[0].name", "terran")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(terran, codec.decode(document));
+                Assert.assertEquals(terran, codec.decodeDocument(document));
             }
             search = indexSearcher.search(new TermQuery(new Term("list[0].name", "zerg")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(zerg, codec.decode(document));
+                Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
 
             search = indexSearcher.search(IntPoint.newExactQuery("map[0]", -1), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(protoss, codec.decode(document));
+                Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
             search = indexSearcher.search(IntPoint.newExactQuery("map[0]", 0), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(terran, codec.decode(document));
+                Assert.assertEquals(terran, codec.decodeDocument(document));
             }
             search = indexSearcher.search(IntPoint.newExactQuery("map[0]", 1), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(zerg, codec.decode(document));
+                Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
         }
 
