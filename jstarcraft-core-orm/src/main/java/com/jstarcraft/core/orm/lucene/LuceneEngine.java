@@ -207,11 +207,11 @@ public class LuceneEngine implements AutoCloseable {
      * 
      * @param query
      * @param sort
+     * @param offset
      * @param size
      * @return
-     * @throws Exception
      */
-    public KeyValue<List<Document>, FloatList> retrieveDocuments(Query query, Sort sort, int size) {
+    public KeyValue<List<Document>, FloatList> retrieveDocuments(Query query, Sort sort, int offset, int size) {
         try {
             readLock.lock();
             lockRead();
@@ -221,14 +221,18 @@ public class LuceneEngine implements AutoCloseable {
                 }
             }
             ScoreDoc[] search = null;
+            int begin = offset;
+            int end = offset + size;
             if (sort == null) {
-                search = this.searcher.search(query, size).scoreDocs;
+                search = this.searcher.search(query, end).scoreDocs;
             } else {
-                search = this.searcher.search(query, size, sort).scoreDocs;
+                search = this.searcher.search(query, end, sort).scoreDocs;
             }
-            ArrayList<Document> documents = new ArrayList<>(search.length);
-            FloatList scores = new FloatArrayList(search.length);
-            for (ScoreDoc score : search) {
+            end = search.length;
+            ArrayList<Document> documents = new ArrayList<>(size);
+            FloatList scores = new FloatArrayList(size);
+            for (int index = begin; index < end; index++) {
+                ScoreDoc score = search[index];
                 Document document = this.searcher.doc(score.doc);
                 documents.add(document);
                 scores.add(score.score);

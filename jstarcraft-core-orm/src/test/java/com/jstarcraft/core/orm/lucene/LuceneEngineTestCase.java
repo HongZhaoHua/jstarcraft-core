@@ -3,6 +3,7 @@ package com.jstarcraft.core.orm.lucene;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,6 +18,10 @@ import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.jstarcraft.core.utility.KeyValue;
+
+import it.unimi.dsi.fastutil.floats.FloatList;
 
 public class LuceneEngineTestCase {
 
@@ -51,13 +56,18 @@ public class LuceneEngineTestCase {
             document.add(field);
             engine.updateDocument(String.valueOf(index), document);
         }
+
         Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
         Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "0"))));
         Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "1"))));
+        Assert.assertEquals(500, engine.retrieveDocuments(new MatchAllDocsQuery(), null, 500, 500).getKey().size());
+        Assert.assertEquals(0, engine.retrieveDocuments(new MatchAllDocsQuery(), null, 1000, 500).getKey().size());
         engine.mergeManager();
         Assert.assertEquals(1000, engine.countDocuments(new MatchAllDocsQuery()));
         Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "0"))));
         Assert.assertEquals(500, engine.countDocuments(new TermQuery(new Term("title", "1"))));
+        Assert.assertEquals(500, engine.retrieveDocuments(new MatchAllDocsQuery(), null, 500, 500).getKey().size());
+        Assert.assertEquals(0, engine.retrieveDocuments(new MatchAllDocsQuery(), null, 1000, 500).getKey().size());
 
         for (int index = 0; index < 500; index++) {
             engine.deleteDocument(String.valueOf(index));
