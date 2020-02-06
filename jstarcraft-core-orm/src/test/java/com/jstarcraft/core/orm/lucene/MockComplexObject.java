@@ -1,8 +1,10 @@
-package com.jstarcraft.core.orm.lucene.converter;
+package com.jstarcraft.core.orm.lucene;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import javax.persistence.Id;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,6 +22,7 @@ import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
  */
 public class MockComplexObject {
 
+    @Id
     @LuceneIndex
     @LuceneSort
     @LuceneStore

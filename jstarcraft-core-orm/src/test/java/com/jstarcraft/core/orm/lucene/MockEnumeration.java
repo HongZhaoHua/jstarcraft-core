@@ -1,4 +1,4 @@
-package com.jstarcraft.core.orm.lucene.converter;
+package com.jstarcraft.core.orm.lucene;
 
 public enum MockEnumeration {
 

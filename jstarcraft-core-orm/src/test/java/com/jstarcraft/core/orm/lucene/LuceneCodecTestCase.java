@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
-import com.jstarcraft.core.orm.lucene.converter.MockComplexObject;
-import com.jstarcraft.core.orm.lucene.converter.MockEnumeration;
 
 public class LuceneCodecTestCase {
 
