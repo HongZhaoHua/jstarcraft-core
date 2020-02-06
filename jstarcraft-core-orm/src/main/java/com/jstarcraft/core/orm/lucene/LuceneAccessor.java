@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
 
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.identification.IdentityObject;
@@ -18,10 +20,14 @@ import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.orm.lucene.converter.IdConverter;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
-import com.jstarcraft.core.orm.neo4j.Neo4jMetadata;
+import com.jstarcraft.core.orm.lucene.converter.SortConverter;
+import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
 import com.jstarcraft.core.utility.KeyValue;
 
 import it.unimi.dsi.fastutil.floats.FloatList;
@@ -65,53 +71,123 @@ public class LuceneAccessor implements OrmAccessor {
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
         LuceneMetadata metadata = metadatas.get(clazz);
-        Map<Field, IndexConverter> converters = this.context.getIndexKeyValues(clazz);
-        String identity = converter.convert(id.getClass(), id);
-        Term term = new Term(LuceneMetadata.LUCENE_ID, identity);
-        TermQuery query = new TermQuery(term);
-        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 1);
+        KeyValue<Field, IndexConverter> keyValue = metadata.getIndexKeyValue(metadata.getPrimaryName());
+        Field key = keyValue.getKey();
+        IndexConverter value = keyValue.getValue();
+        Query query = value.query(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneIndex.class), key.getGenericType(), OrmCondition.Equal, id);
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 0, 1);
         return null;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
-        K id = object.getId();
-        String identity = converter.convert(id.getClass(), id);
-        return false;
+        try {
+            K id = object.getId();
+            String key = converter.convert(id.getClass(), id);
+            Document value = metadata.encodeDocument(object);
+            engine.createDocument(key, value);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
-        String identity = converter.convert(id.getClass(), id);
-        return false;
+        LuceneMetadata metadata = metadatas.get(clazz);
+        try {
+            String key = converter.convert(id.getClass(), id);
+            engine.deleteDocument(key);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
-        K id = object.getId();
-        String identity = converter.convert(id.getClass(), id);
-        return false;
+        LuceneMetadata metadata = metadatas.get(clazz);
+        try {
+            K id = object.getId();
+            String key = converter.convert(id.getClass(), id);
+            engine.deleteDocument(key);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
-        // TODO Auto-generated method stub
-        return false;
+        LuceneMetadata metadata = metadatas.get(clazz);
+        try {
+            K id = object.getId();
+            String key = converter.convert(id.getClass(), id);
+            Document value = metadata.encodeDocument(object);
+            engine.updateDocument(key, value);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K maximumIdentity(Class<T> clazz, K from, K to) {
-        // TODO 此处用字符串排序估计会有问题.
-        SortField field = new SortField(LuceneMetadata.LUCENE_ID, SortField.Type.STRING, false);
-        return null;
+        LuceneMetadata metadata = metadatas.get(clazz);
+        Query query;
+        {
+            KeyValue<Field, IndexConverter> keyValue = metadata.getIndexKeyValue(metadata.getPrimaryName());
+            Field key = keyValue.getKey();
+            IndexConverter value = keyValue.getValue();
+            query = value.query(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneIndex.class), key.getGenericType(), OrmCondition.Between, from, to);
+        }
+        Sort sort;
+        {
+            KeyValue<Field, SortConverter> keyValue = metadata.getSortKeyValue(metadata.getPrimaryName());
+            Field key = keyValue.getKey();
+            SortConverter value = keyValue.getValue();
+            sort = value.sort(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneSort.class), key.getGenericType(), false);
+        }
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, sort, 0, 1);
+        List<Document> documents = retrieve.getKey();
+        NavigableMap<String, IndexableField> indexables = new TreeMap<>();
+        for (IndexableField indexable : documents.get(0).getFields(metadata.getPrimaryName())) {
+            indexables.put(indexable.name(), indexable);
+        }
+        KeyValue<Field, StoreConverter> keyValue = metadata.getStoreKeyValue(metadata.getPrimaryName());
+        Field key = keyValue.getKey();
+        StoreConverter value = keyValue.getValue();
+        return (K) value.decode(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneStore.class), key.getGenericType(), indexables);
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> K minimumIdentity(Class<T> clazz, K from, K to) {
-        // TODO 此处用字符串排序估计会有问题.
-        SortField field = new SortField(LuceneMetadata.LUCENE_ID, SortField.Type.STRING, true);
-        return null;
+        LuceneMetadata metadata = metadatas.get(clazz);
+        Query query;
+        {
+            KeyValue<Field, IndexConverter> keyValue = metadata.getIndexKeyValue(metadata.getPrimaryName());
+            Field key = keyValue.getKey();
+            IndexConverter value = keyValue.getValue();
+            query = value.query(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneIndex.class), key.getGenericType(), OrmCondition.Between, from, to);
+        }
+        Sort sort;
+        {
+            KeyValue<Field, SortConverter> keyValue = metadata.getSortKeyValue(metadata.getPrimaryName());
+            Field key = keyValue.getKey();
+            SortConverter value = keyValue.getValue();
+            sort = value.sort(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneSort.class), key.getGenericType(), true);
+        }
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, sort, 0, 1);
+        List<Document> documents = retrieve.getKey();
+        NavigableMap<String, IndexableField> indexables = new TreeMap<>();
+        for (IndexableField indexable : documents.get(0).getFields(metadata.getPrimaryName())) {
+            indexables.put(indexable.name(), indexable);
+        }
+        KeyValue<Field, StoreConverter> keyValue = metadata.getStoreKeyValue(metadata.getPrimaryName());
+        Field key = keyValue.getKey();
+        StoreConverter value = keyValue.getValue();
+        return (K) value.decode(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneStore.class), key.getGenericType(), indexables);
     }
 
     @Override

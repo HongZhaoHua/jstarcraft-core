@@ -29,6 +29,7 @@ import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;
 import com.jstarcraft.core.orm.lucene.converter.SortConverter;
 import com.jstarcraft.core.orm.lucene.converter.StoreConverter;
+import com.jstarcraft.core.utility.KeyValue;
 
 public class LuceneMetadata implements OrmMetadata {
 
@@ -51,11 +52,11 @@ public class LuceneMetadata implements OrmMetadata {
 
     private LuceneContext context;
 
-    private Map<String, IndexConverter> indexKeyValues;
+    private Map<String, KeyValue<Field, IndexConverter>> indexKeyValues;
 
-    private Map<String, SortConverter> sortKeyValues;
+    private Map<String, KeyValue<Field, SortConverter>> sortKeyValues;
 
-    private Map<String, StoreConverter> storeKeyValues;
+    private Map<String, KeyValue<Field, StoreConverter>> storeKeyValues;
 
     /**
      * 构造方法
@@ -79,6 +80,9 @@ public class LuceneMetadata implements OrmMetadata {
                 this.indexNames.add(field.getName());
             }
         });
+        if (primaryClass == null) {
+            throw new IllegalArgumentException();
+        }
         this.context = context;
     }
 
@@ -201,15 +205,15 @@ public class LuceneMetadata implements OrmMetadata {
         }
     }
 
-    public IndexConverter getIndexConverter(String field) {
+    public KeyValue<Field, IndexConverter> getIndexKeyValue(String field) {
         return indexKeyValues.get(field);
     }
 
-    public SortConverter getSortConverter(String field) {
+    public KeyValue<Field, SortConverter> getSortKeyValue(String field) {
         return sortKeyValues.get(field);
     }
 
-    public StoreConverter getStoreConverter(String field) {
+    public KeyValue<Field, StoreConverter> getStoreKeyValue(String field) {
         return storeKeyValues.get(field);
     }
 
