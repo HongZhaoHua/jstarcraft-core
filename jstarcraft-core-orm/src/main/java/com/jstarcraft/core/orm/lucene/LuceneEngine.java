@@ -18,6 +18,7 @@ import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.exception.OrmException;
 import com.jstarcraft.core.utility.KeyValue;
 
@@ -238,6 +239,46 @@ public class LuceneEngine implements AutoCloseable {
                 scores.add(score.score);
             }
             return new KeyValue<>(documents, scores);
+        } catch (Exception exception) {
+            throw new OrmException(exception);
+        } finally {
+            unlockRead();
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * 遍历文档
+     * 
+     * @param iterator
+     * @param query
+     * @param sort
+     * @param offset
+     * @param size
+     */
+    public void iterateDocuments(OrmIterator<Document> iterator, Query query, Sort sort, int offset, int size) {
+        try {
+            readLock.lock();
+            lockRead();
+            synchronized (this.semaphore) {
+                if (this.transienceManager.isChanged() || this.persistenceManager.isChanged()) {
+                    this.searcher = new LuceneSearcher(this.transienceManager, this.persistenceManager);
+                }
+            }
+            ScoreDoc[] search = null;
+            int begin = offset;
+            int end = offset + size;
+            if (sort == null) {
+                search = this.searcher.search(query, end).scoreDocs;
+            } else {
+                search = this.searcher.search(query, end, sort).scoreDocs;
+            }
+            end = search.length;
+            for (int index = begin; index < end; index++) {
+                ScoreDoc score = search[index];
+                Document document = this.searcher.doc(score.doc);
+                iterator.iterate(document);
+            }
         } catch (Exception exception) {
             throw new OrmException(exception);
         } finally {

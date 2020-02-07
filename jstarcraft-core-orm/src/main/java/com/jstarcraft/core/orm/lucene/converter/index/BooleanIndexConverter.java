@@ -6,11 +6,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.lucene.document.DoublePoint;
+import org.apache.lucene.document.FloatPoint;
 import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.BooleanClause.Occur;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
+import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.exception.OrmQueryException;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.converter.IndexConverter;
 import com.jstarcraft.core.orm.lucene.converter.LuceneContext;

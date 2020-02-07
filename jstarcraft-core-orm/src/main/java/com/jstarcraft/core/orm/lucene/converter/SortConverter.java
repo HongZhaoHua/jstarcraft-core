@@ -28,7 +28,7 @@ public interface SortConverter {
      */
     Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data);
 
-    default Sort sort(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, boolean sort) {
+    default Sort sort(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, boolean scend) {
         throw new UnsupportedOperationException();
     }
 
