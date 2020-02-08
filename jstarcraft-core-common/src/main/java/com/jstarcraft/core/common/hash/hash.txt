@@ -22,7 +22,7 @@ http://www.partow.net/programming/hashfunctions/
 https://www.cnblogs.com/napoleon_liu/archive/2010/12/29/1920839.html
 http://burtleburtle.net/bob/hash/integer.html
 
-redis中几种哈希函数的研究:
+Redis中几种哈希函数的研究:
 https://blog.csdn.net/jasper_xulei/article/details/18364313
 
 常见的哈希Hash算法 & MD5 & 对称非对称加密 & 海明码:
