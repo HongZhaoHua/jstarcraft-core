@@ -230,6 +230,8 @@ public class LuceneEngine implements AutoCloseable {
                 search = this.searcher.search(query, end, sort).scoreDocs;
             }
             end = search.length;
+            size = end - begin;
+            size = size < 0 ? 0 : size;
             ArrayList<Document> documents = new ArrayList<>(size);
             FloatList scores = new FloatArrayList(size);
             for (int index = begin; index < end; index++) {
