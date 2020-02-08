@@ -39,10 +39,10 @@ import org.junit.Test;
 
 import com.jstarcraft.core.utility.StringUtility;
 
-public class LuceneTestCase {
+public class LuceneIndexTestCase {
 
     @Test
-    public void test() throws Exception {
+    public void testIndex() throws Exception {
         Directory directory = new ByteBuffersDirectory();
 
         {
