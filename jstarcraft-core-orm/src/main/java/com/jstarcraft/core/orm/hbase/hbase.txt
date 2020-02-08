@@ -1,3 +1,6 @@
+HBase - 安装(Windows):
+https://www.cnblogs.com/yangfansaily/p/12254743.html
+
 五分钟轻松了解Hbase面向列的存储:
 https://www.cnblogs.com/lixinjie/p/five-minutes-glance-at-hbase.html
 
