@@ -32,7 +32,7 @@ public class StringSortConverter implements SortConverter {
 
     @Override
     public Sort sort(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, boolean scend) {
-        Sort sort = new Sort(new SortField(path, SortField.Type.STRING, scend));
+        Sort sort = new Sort(new SortField(path, SortField.Type.STRING, !scend));
         return sort;
     }
 

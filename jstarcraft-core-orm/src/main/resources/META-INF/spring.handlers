@@ -1,3 +1,4 @@
 http\://www.jstarcraft.com/core/orm/berkeley=com.jstarcraft.core.orm.berkeley.schema.BerkeleyXmlHandler
+http\://www.jstarcraft.com/core/orm/lucene=com.jstarcraft.core.orm.lucene.schema.LuceneXmlHandler
 http\://www.jstarcraft.com/core/orm/mongo=com.jstarcraft.core.orm.mongo.schema.MongoXmlHandler
 http\://www.jstarcraft.com/core/orm/mybatis=com.jstarcraft.core.orm.mybatis.schema.MyBatisXmlHandler

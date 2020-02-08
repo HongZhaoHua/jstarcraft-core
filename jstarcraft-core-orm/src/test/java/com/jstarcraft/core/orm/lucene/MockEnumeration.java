@@ -6,6 +6,8 @@ public enum MockEnumeration {
 
     TERRAN,
 
-    ZERG;
+    ZERG,
+    
+    RANDOM;
 
 }

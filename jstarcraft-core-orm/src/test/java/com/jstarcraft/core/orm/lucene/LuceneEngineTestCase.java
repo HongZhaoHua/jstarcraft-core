@@ -3,7 +3,6 @@ package com.jstarcraft.core.orm.lucene;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,10 +17,6 @@ import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.jstarcraft.core.utility.KeyValue;
-
-import it.unimi.dsi.fastutil.floats.FloatList;
 
 public class LuceneEngineTestCase {
 

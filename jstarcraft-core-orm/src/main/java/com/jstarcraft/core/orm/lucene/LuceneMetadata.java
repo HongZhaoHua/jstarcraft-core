@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Id;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexableField;
 
@@ -22,6 +19,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.exception.OrmException;
+import com.jstarcraft.core.orm.lucene.annotation.LuceneConfiguration;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
@@ -66,24 +64,40 @@ public class LuceneMetadata implements OrmMetadata {
     public LuceneMetadata(Class<?> clazz, LuceneContext context) {
         this.ormClass = clazz;
         this.ormName = clazz.getName();
+        LuceneConfiguration configuration = clazz.getAnnotation(LuceneConfiguration.class);
+        if (configuration != null) {
+            Field field = ReflectionUtility.getField(this.ormClass, configuration.id());
+            primaryName = field.getName();
+            primaryClass = field.getType();
+        } else {
+            throw new IllegalArgumentException();
+        }
         ReflectionUtility.doWithFields(this.ormClass, (field) -> {
             if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
                 return;
             }
             Class<?> type = field.getType();
             this.fields.put(field.getName(), type);
-            if (field.isAnnotationPresent(Id.class) || field.isAnnotationPresent(EmbeddedId.class)) {
-                primaryName = field.getName();
-                primaryClass = type;
-            }
             if (field.isAnnotationPresent(LuceneIndex.class)) {
                 this.indexNames.add(field.getName());
             }
         });
-        if (primaryClass == null) {
-            throw new IllegalArgumentException();
-        }
         this.context = context;
+        this.indexKeyValues = new HashMap<>();
+        for (Entry<Field, IndexConverter> term : this.context.getIndexKeyValues(this.ormClass).entrySet()) {
+            KeyValue<Field, IndexConverter> keyVaule = new KeyValue<>(term);
+            this.indexKeyValues.put(term.getKey().getName(), keyVaule);
+        }
+        this.sortKeyValues = new HashMap<>();
+        for (Entry<Field, SortConverter> term : this.context.getSortKeyValues(this.ormClass).entrySet()) {
+            KeyValue<Field, SortConverter> keyVaule = new KeyValue<>(term);
+            this.sortKeyValues.put(term.getKey().getName(), keyVaule);
+        }
+        this.storeKeyValues = new HashMap<>();
+        for (Entry<Field, StoreConverter> term : this.context.getStoreKeyValues(this.ormClass).entrySet()) {
+            KeyValue<Field, StoreConverter> keyVaule = new KeyValue<>(term);
+            this.storeKeyValues.put(term.getKey().getName(), keyVaule);
+        }
     }
 
     @Override

@@ -14,6 +14,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
@@ -27,6 +29,7 @@ import com.jstarcraft.core.orm.OrmCondition;
 import com.jstarcraft.core.orm.OrmIterator;
 import com.jstarcraft.core.orm.OrmMetadata;
 import com.jstarcraft.core.orm.OrmPagination;
+import com.jstarcraft.core.orm.berkeley.schema.BerkeleyAccessorFactory;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
@@ -46,6 +49,8 @@ import it.unimi.dsi.fastutil.floats.FloatList;
  *
  */
 public class LuceneAccessor implements OrmAccessor {
+
+    private static final Logger logger = LoggerFactory.getLogger(BerkeleyAccessorFactory.class);
 
     private static final int BATCH_SIZE = 1000;
 
@@ -84,7 +89,7 @@ public class LuceneAccessor implements OrmAccessor {
         Field key = keyValue.getKey();
         IndexConverter value = keyValue.getValue();
         Query query = value.query(context, metadata.getPrimaryName(), key, key.getAnnotation(LuceneIndex.class), key.getGenericType(), OrmCondition.Equal, id);
-        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 0, 1);
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, 0, 100);
         List<Document> documents = retrieve.getKey();
         if (documents.size() > 0) {
             return (T) metadata.decodeDocument(documents.get(0));
@@ -96,40 +101,28 @@ public class LuceneAccessor implements OrmAccessor {
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
-        try {
-            K id = object.getId();
-            String key = converter.convert(id.getClass(), id);
-            Document value = metadata.encodeDocument(object);
-            engine.createDocument(key, value);
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
+        K id = object.getId();
+        String key = converter.convert(id.getClass(), id);
+        Document value = metadata.encodeDocument(object);
+        engine.createDocument(key, value);
+        return true;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
         LuceneMetadata metadata = metadatas.get(clazz);
-        try {
-            String key = converter.convert(id.getClass(), id);
-            engine.deleteDocument(key);
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
+        String key = converter.convert(id.getClass(), id);
+        engine.deleteDocument(key);
+        return true;
     }
 
     @Override
     public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
-        try {
-            K id = object.getId();
-            String key = converter.convert(id.getClass(), id);
-            engine.deleteDocument(key);
-            return true;
-        } catch (Exception exception) {
-            return false;
-        }
+        K id = object.getId();
+        String key = converter.convert(id.getClass(), id);
+        engine.deleteDocument(key);
+        return true;
     }
 
     @Override
@@ -266,7 +259,9 @@ public class LuceneAccessor implements OrmAccessor {
     public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, OrmPagination pagination) {
         LuceneMetadata metadata = metadatas.get(clazz);
         Query query = new MatchAllDocsQuery();
-        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, pagination.getFirst(), pagination.getSize());
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, offset, size);
         List<Document> documents = retrieve.getKey();
         List<T> list = new ArrayList<>(BATCH_SIZE);
         for (Document document : documents) {
@@ -288,7 +283,9 @@ public class LuceneAccessor implements OrmAccessor {
             buffer.add(query, Occur.MUST);
         }
         query = buffer.build();
-        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, pagination.getFirst(), pagination.getSize());
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, offset, size);
         List<Document> documents = retrieve.getKey();
         List<T> list = new ArrayList<>(BATCH_SIZE);
         for (Document document : documents) {
@@ -310,7 +307,9 @@ public class LuceneAccessor implements OrmAccessor {
             buffer.add(query, Occur.SHOULD);
         }
         query = buffer.build();
-        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, pagination.getFirst(), pagination.getSize());
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
+        KeyValue<List<Document>, FloatList> retrieve = engine.retrieveDocuments(query, null, offset, size);
         List<Document> documents = retrieve.getKey();
         List<T> list = new ArrayList<>(BATCH_SIZE);
         for (Document document : documents) {
@@ -361,9 +360,11 @@ public class LuceneAccessor implements OrmAccessor {
     public <K extends Comparable, T extends IdentityObject<K>> void iterate(OrmIterator<T> iterator, Class<T> clazz, OrmPagination pagination) {
         LuceneMetadata metadata = metadatas.get(clazz);
         Query query = new MatchAllDocsQuery();
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
         engine.iterateDocuments((document) -> {
             iterator.iterate((T) metadata.decodeDocument(document));
-        }, query, null, pagination.getFirst(), pagination.getSize());
+        }, query, null, offset, size);
     }
 
     @Override
@@ -379,9 +380,11 @@ public class LuceneAccessor implements OrmAccessor {
             buffer.add(query, Occur.MUST);
         }
         query = buffer.build();
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
         engine.iterateDocuments((document) -> {
             iterator.iterate((T) metadata.decodeDocument(document));
-        }, query, null, pagination.getFirst(), pagination.getSize());
+        }, query, null, offset, size);
     }
 
     @Override
@@ -397,9 +400,11 @@ public class LuceneAccessor implements OrmAccessor {
             buffer.add(query, Occur.SHOULD);
         }
         query = buffer.build();
+        int offset = pagination == null ? 0 : pagination.getFirst();
+        int size = pagination == null ? Integer.MAX_VALUE : pagination.getSize();
         engine.iterateDocuments((document) -> {
             iterator.iterate((T) metadata.decodeDocument(document));
-        }, query, null, pagination.getFirst(), pagination.getSize());
+        }, query, null, offset, size);
     }
 
 }

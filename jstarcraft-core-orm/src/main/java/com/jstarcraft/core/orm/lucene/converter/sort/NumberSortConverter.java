@@ -6,10 +6,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.apache.lucene.document.DoubleDocValuesField;
-import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.document.FloatDocValuesField;
-import org.apache.lucene.document.FloatPoint;
-import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.search.Sort;
@@ -68,13 +65,13 @@ public class NumberSortConverter implements SortConverter {
         clazz = ClassUtility.primitiveToWrapper(clazz);
         Sort sort = null;
         if (Long.class.isAssignableFrom(clazz)) {
-            sort = new Sort(new SortField(path, SortField.Type.LONG, scend));
+            sort = new Sort(new SortField(path, SortField.Type.LONG, !scend));
         } else if (Float.class.isAssignableFrom(clazz)) {
-            sort = new Sort(new SortField(path, SortField.Type.FLOAT, scend));
+            sort = new Sort(new SortField(path, SortField.Type.FLOAT, !scend));
         } else if (Double.class.isAssignableFrom(clazz)) {
-            sort = new Sort(new SortField(path, SortField.Type.DOUBLE, scend));
+            sort = new Sort(new SortField(path, SortField.Type.DOUBLE, !scend));
         } else {
-            sort = new Sort(new SortField(path, SortField.Type.INT, scend));
+            sort = new Sort(new SortField(path, SortField.Type.INT, !scend));
         }
         return sort;
     }

@@ -12,6 +12,7 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -73,6 +74,7 @@ public class NumberIndexConverter implements IndexConverter {
         Query query = null;
         switch (condition) {
         case All:
+            query = new MatchAllDocsQuery();
             break;
         case Between:
             if (Long.class.isAssignableFrom(clazz)) {

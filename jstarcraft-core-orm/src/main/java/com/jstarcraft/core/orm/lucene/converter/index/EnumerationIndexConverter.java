@@ -11,6 +11,7 @@ import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
@@ -44,6 +45,7 @@ public class EnumerationIndexConverter implements IndexConverter {
         Query query = null;
         switch (condition) {
         case All:
+            query = new MatchAllDocsQuery();
             break;
         case Between:
             query = TermRangeQuery.newStringRange(path, data[0].toString(), data[1].toString(), true, true);

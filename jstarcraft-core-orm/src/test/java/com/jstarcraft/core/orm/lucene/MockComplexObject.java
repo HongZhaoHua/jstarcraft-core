@@ -4,12 +4,11 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import javax.persistence.Id;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.jstarcraft.core.orm.lucene.annotation.LuceneConfiguration;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
@@ -20,9 +19,9 @@ import com.jstarcraft.core.orm.lucene.annotation.LuceneStore;
  * @author Birdy
  *
  */
+@LuceneConfiguration(id = "id")
 public class MockComplexObject {
 
-    @Id
     @LuceneIndex
     @LuceneSort
     @LuceneStore
