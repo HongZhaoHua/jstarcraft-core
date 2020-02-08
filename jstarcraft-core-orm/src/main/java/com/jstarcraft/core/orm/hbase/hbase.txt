@@ -11,3 +11,9 @@ https://github.com/flipkart-incubator/hbase-orm
 Simplehbase is a lightweight ORM framework between java app and hbase:
 https://github.com/alibaba/simplehbase/wiki
 https://github.com/alibaba/simplehbase
+
+使用Kundera JPA操作HBase:
+https://blog.csdn.net/weixin_41122339/article/details/82114722
+
+Spring Boot项目中使用最新版HBase Java API操作HBase 2.x详解:
+https://www.zifangsky.cn/1286.html
