@@ -4,6 +4,9 @@ https://www.cnblogs.com/yangfansaily/p/12254743.html
 五分钟轻松了解Hbase面向列的存储:
 https://www.cnblogs.com/lixinjie/p/five-minutes-glance-at-hbase.html
 
+Spring Boot项目中使用最新版HBase Java API操作HBase 2.x详解:
+https://www.zifangsky.cn/1286.html
+
 HBase ORM:
 https://flipkart-incubator.github.io/hbase-orm/
 https://github.com/flipkart-incubator/hbase-orm
@@ -14,6 +17,3 @@ https://github.com/alibaba/simplehbase
 
 使用Kundera JPA操作HBase:
 https://blog.csdn.net/weixin_41122339/article/details/82114722
-
-Spring Boot项目中使用最新版HBase Java API操作HBase 2.x详解:
-https://www.zifangsky.cn/1286.html
