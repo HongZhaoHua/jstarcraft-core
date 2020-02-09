@@ -7,6 +7,9 @@ https://www.cnblogs.com/lixinjie/p/five-minutes-glance-at-hbase.html
 Spring Boot项目中使用最新版HBase Java API操作HBase 2.x详解:
 https://www.zifangsky.cn/1286.html
 
+HBase Java API: hbase-client:
+https://blog.csdn.net/vbirdbest/article/details/88410954
+
 HBase ORM:
 https://flipkart-incubator.github.io/hbase-orm/
 https://github.com/flipkart-incubator/hbase-orm
