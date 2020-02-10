@@ -123,7 +123,9 @@ public class Address {
 构建编解码器
 
 ```java
-SearchCodec<Mock, Mock> codec = new SearchCodec<>(Mock.class, Mock.class);
+CodecDefinition definition = CodecDefinition.instanceOf(Mock.class);
+LuceneContext context = new LuceneContext(definition);
+LuceneMetadata codec = new LuceneMetadata(Mock.class, context);
 ```
 
 将对象转换为文档
@@ -188,9 +190,9 @@ IndexableField longitude = document.getField("coordinate[1]");
 
 ## 示例
 
-[编解码示例](https://github.com/HongZhaoHua/jstarcraft-rns/blob/master/src/test/java/com/jstarcraft/rns/search/converter/ConverterTestCase.java)
+[编解码示例](https://github.com/HongZhaoHua/jstarcraft-core/blob/master/jstarcraft-core-orm/src/test/java/com/jstarcraft/core/orm/lucene/LuceneMetadataTestCase.java)
 
-[实时搜索示例](https://github.com/HongZhaoHua/jstarcraft-rns/blob/master/src/test/java/com/jstarcraft/rns/search/SearcherTestCase.java)
+[实时搜索示例](https://github.com/HongZhaoHua/jstarcraft-core/blob/master/jstarcraft-core-orm/src/test/java/com/jstarcraft/core/orm/lucene/LuceneEngineTestCase.java)
 
 ****
 
