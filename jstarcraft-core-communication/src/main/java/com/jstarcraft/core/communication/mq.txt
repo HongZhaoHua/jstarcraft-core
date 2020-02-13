@@ -1,3 +1,6 @@
+深入理解AMQP协议:
+https://blog.csdn.net/weixin_37641832/article/details/83270778
+
 JMS、AMQP和MQTT主要特性:
 https://www.cnblogs.com/zhangyu1024/p/6138166.html
 
