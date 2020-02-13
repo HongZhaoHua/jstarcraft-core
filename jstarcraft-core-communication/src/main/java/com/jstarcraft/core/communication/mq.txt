@@ -9,3 +9,9 @@ https://www.cnblogs.com/saryli/p/9742709.html
 
 Spring AMQP的使用:
 https://www.jianshu.com/p/69388fb6c8ec
+
+The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
+https://github.com/moscajs/ascoltatori
+
+Node.js globbing for amqp-like topics:
+https://github.com/davedoesdev/qlobber
