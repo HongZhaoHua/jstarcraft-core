@@ -1,6 +1,15 @@
 深入理解AMQP协议:
 https://blog.csdn.net/weixin_37641832/article/details/83270778
 
+A message-oriented middleware message broker written in Java that stores, routes, and forwards messages using AMQP.
+https://github.com/apache/qpid-broker-j
+
+The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
+https://github.com/moscajs/ascoltatori
+
+Node.js globbing for amqp-like topics:
+https://github.com/davedoesdev/qlobber
+
 JMS、AMQP和MQTT主要特性:
 https://www.cnblogs.com/zhangyu1024/p/6138166.html
 
@@ -12,9 +21,3 @@ https://www.cnblogs.com/saryli/p/9742709.html
 
 Spring AMQP的使用:
 https://www.jianshu.com/p/69388fb6c8ec
-
-The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
-https://github.com/moscajs/ascoltatori
-
-Node.js globbing for amqp-like topics:
-https://github.com/davedoesdev/qlobber
