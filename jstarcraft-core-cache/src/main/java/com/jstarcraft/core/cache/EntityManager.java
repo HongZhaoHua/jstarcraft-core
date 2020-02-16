@@ -1,9 +1,7 @@
 package com.jstarcraft.core.cache;
 
-import java.io.Serializable;
 import java.util.Collection;
 
-import com.jstarcraft.core.cache.proxy.ProxyManager;
 import com.jstarcraft.core.common.identification.IdentityObject;
 
 /**
@@ -21,7 +19,7 @@ import com.jstarcraft.core.common.identification.IdentityObject;
  * @param <K>
  * @param <T>
  */
-public interface EntityManager<K extends Comparable<K> & Serializable, T extends IdentityObject<K>> extends CacheManager<K, T> {
+public interface EntityManager<K extends Comparable<K>, T extends IdentityObject<K>> extends CacheManager<K, T> {
 
     /**
      * 获取指定主键的缓存
