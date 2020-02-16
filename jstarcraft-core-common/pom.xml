@@ -22,6 +22,13 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>jdk.tools</groupId>
+            <artifactId>jdk.tools</artifactId>
+        </dependency>
+
+        <!-- JStarCraft框架依赖 -->
 
         <!-- 切面框架依赖 -->
         <dependency>
