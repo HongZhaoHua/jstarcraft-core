@@ -4,6 +4,12 @@ https://blog.csdn.net/weixin_37641832/article/details/83270778
 MQTT协议中文版:
 https://github.com/mcxiaoke/mqtt
 
+MQTT 服务器 Apache ActiveMQ Artemis 搭建:
+https://blog.csdn.net/richiezhu/article/details/82288495
+
+Windows下安装Apache ActiveMQ Artemis消息队列, 搭建MQTT服务器:
+https://www.jianshu.com/p/b2734268aaaf
+
 A message-oriented middleware message broker written in Java that stores, routes, and forwards messages using AMQP.
 https://github.com/apache/qpid-broker-j
 
