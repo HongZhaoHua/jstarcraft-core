@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -7,6 +7,9 @@ import org.redisson.api.RKeys;
 import org.redisson.client.codec.Codec;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
+
+import com.jstarcraft.core.event.EventBus;
+import com.jstarcraft.core.event.GlobalEventBus;
 
 public class GlobalEventBusTestCase extends EventBusTestCase {
 

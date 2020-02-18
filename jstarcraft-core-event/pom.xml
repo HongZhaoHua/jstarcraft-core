@@ -8,21 +8,21 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>jstarcraft-core-communication</artifactId>
+    <artifactId>jstarcraft-core-event</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- JStarCraft框架依赖 -->
         <dependency>
             <groupId>com.jstarcraft</groupId>
-            <artifactId>jstarcraft-core-codec</artifactId>
+            <artifactId>jstarcraft-core-common</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!-- 通讯框架依赖 -->
+        <!-- 事件框架依赖 -->
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-broker-core</artifactId>
         </dependency>
 
         <!-- 测试框架依赖 -->

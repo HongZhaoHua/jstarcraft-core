@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 /**
  * 事件监控器

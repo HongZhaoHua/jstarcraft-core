@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 public class MockEvent {
 

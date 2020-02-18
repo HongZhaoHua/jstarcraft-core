@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;

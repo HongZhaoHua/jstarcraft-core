@@ -1,4 +1,7 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
+
+import com.jstarcraft.core.event.EventBus;
+import com.jstarcraft.core.event.SynchronousEventBus;
 
 public class SynchronousEventBusTestCase extends EventBusTestCase {
 

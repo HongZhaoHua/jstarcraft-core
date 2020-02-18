@@ -12,6 +12,7 @@
         <module>jstarcraft-core-codec</module>
         <module>jstarcraft-core-common</module>
         <module>jstarcraft-core-communication</module>
+        <module>jstarcraft-core-event</module>
         <module>jstarcraft-core-monitor</module>
         <module>jstarcraft-core-orm</module>
         <module>jstarcraft-core-resource</module>
@@ -129,36 +130,12 @@
                 <artifactId>netty-all</artifactId>
                 <version>4.1.44.Final</version>
             </dependency>
-
+            
+            <!-- 事件框架依赖 -->
             <dependency>
                 <groupId>org.apache.qpid</groupId>
                 <artifactId>qpid-broker-core</artifactId>
                 <version>7.1.8</version>
-            </dependency>
-
-            <!-- 事务框架依赖 -->
-            <dependency>
-                <groupId>com.hazelcast</groupId>
-                <artifactId>hazelcast</artifactId>
-                <version>3.11.2</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson</artifactId>
-                <version>3.10.7</version>
-            </dependency>
-
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-framework</artifactId>
-                <version>4.2.0</version>
             </dependency>
 
             <!-- 监控框架依赖 -->
@@ -273,6 +250,19 @@
                 <version>3.2.3</version>
             </dependency>
 
+            <!-- 资源框架依赖 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>4.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>4.0.1</version>
+            </dependency>
+
             <!-- 脚本框架依赖 -->
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
@@ -297,18 +287,30 @@
                 <artifactId>jython-standalone</artifactId>
                 <version>2.7.1</version>
             </dependency>
-
-            <!-- 仓储框架依赖 -->
+            
+            <!-- 事务框架依赖 -->
             <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>4.0.1</version>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>3.11.2</version>
             </dependency>
 
             <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>4.0.1</version>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>3.10.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>4.2.0</version>
             </dependency>
 
             <!-- 工具框架依赖 -->

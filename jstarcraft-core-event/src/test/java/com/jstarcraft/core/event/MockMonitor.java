@@ -1,7 +1,9 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.jstarcraft.core.event.EventMonitor;
 
 public class MockMonitor implements EventMonitor {
 

@@ -11,7 +11,7 @@
 
 **JStarCraft Core是一个面向对象的轻量级框架,遵循Apache 2.0协议.**
 
-JStarCraft Core是一个基于Java语言的核心编程工具包,涵盖了缓存,编解码,通讯,监控,对象关系映射,配置,脚本和事务8个方面.
+JStarCraft Core是一个基于Java语言的核心编程工具包,涵盖了缓存,编解码,通讯,事件,监控,对象关系映射,配置,脚本和事务9个方面.
 
 目标是作为搭建其它框架或者项目的基础.
 
@@ -54,7 +54,12 @@ JStarCraft Core框架各个模块之间的关系:
 * 4.通讯(communication)
     * TCP
     * UDP
-* 5.监控(monitor)
+* 5.事件(event)
+    * AMQP
+    * MQTT
+    * OpenWire
+    * STOMP
+* 6.监控(monitor)
     * 追踪(trace)
         * 日志(log)
             * Commons Logging
@@ -70,19 +75,12 @@ JStarCraft Core框架各个模块之间的关系:
     * 路由(route)
         * 数据路由
         * 一致性哈希
-* [6.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
+* [7.对象关系映射(orm)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
     * 标识管理
     * 键值数据库(Berkeley DB)
     * 文档数据库(Lucene/Mongo DB)
-    * 列族数据库(HBase)
     * 关系数据库(Hibernate/MyBatis)
     * 图数据库(Neo4j)
-* 7.脚本(script)
-    * Groovy
-    * JS
-    * Lua
-    * MVEL
-    * Python
 * 8.资源仓储(resource)
     * 格式
         * CSV
@@ -99,7 +97,13 @@ JStarCraft Core框架各个模块之间的关系:
         * HTTP
         * SVN
         * ZooKeeper
- * 9.事务(transaction)
+* 9.脚本(script)
+    * Groovy
+    * JS
+    * Lua
+    * MVEL
+    * Python
+* 10.事务(transaction)
     * 分布式锁
         * Hazelcast
         * Hibernate

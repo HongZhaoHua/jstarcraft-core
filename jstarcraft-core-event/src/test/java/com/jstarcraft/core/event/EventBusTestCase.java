@@ -1,10 +1,12 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.jstarcraft.core.event.EventBus;
 
 public abstract class EventBusTestCase {
 

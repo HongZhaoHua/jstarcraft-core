@@ -1,7 +1,10 @@
-package com.jstarcraft.core.common.event;
+package com.jstarcraft.core.event;
 
 import org.junit.After;
 import org.junit.Before;
+
+import com.jstarcraft.core.event.AsynchronousEventBus;
+import com.jstarcraft.core.event.EventBus;
 
 public class AsynchronousEventBusTestCase extends EventBusTestCase {
 
