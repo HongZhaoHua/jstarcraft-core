@@ -1,6 +1,9 @@
 深入理解AMQP协议:
 https://blog.csdn.net/weixin_37641832/article/details/83270778
 
+MQTT协议中文版:
+https://github.com/mcxiaoke/mqtt
+
 A message-oriented middleware message broker written in Java that stores, routes, and forwards messages using AMQP.
 https://github.com/apache/qpid-broker-j
 
@@ -9,6 +12,9 @@ https://github.com/moscajs/ascoltatori
 
 Node.js globbing for amqp-like topics:
 https://github.com/davedoesdev/qlobber
+
+MQTT---HiveMQ源码详解:
+https://blog.csdn.net/pipinet123
 
 JMS、AMQP和MQTT主要特性:
 https://www.cnblogs.com/zhangyu1024/p/6138166.html
