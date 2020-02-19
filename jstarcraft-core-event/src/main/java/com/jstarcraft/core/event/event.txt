@@ -15,6 +15,9 @@ https://github.com/mcxiaoke/mqtt
 
 ----- ActiveMQ -----
 
+ActiveMQ的详细说明,queue/topic的区别(精选):
+https://www.cnblogs.com/lemon-flm/p/7676047.html
+
 Spring消息之JMS:
 https://www.cnblogs.com/jmcui/p/8906803.html
 
