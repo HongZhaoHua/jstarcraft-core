@@ -55,6 +55,10 @@ JMS 和QPID:
 https://blog.csdn.net/u013789656/article/details/80940328
 https://blog.csdn.net/u013789656/article/details/80940530
 
+----- RabbitMQ -----
+java操作RabbitMQ(原生java客户端amqp-client):
+https://blog.csdn.net/u010904188/article/details/81066040
+
 ----- 整合各种消息 -----
 
 The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
