@@ -57,7 +57,6 @@ JStarCraft Core框架各个模块之间的关系:
 * 5.事件(event)
     * AMQP
     * MQTT
-    * OpenWire
     * STOMP
 * 6.监控(monitor)
     * 追踪(trace)
