@@ -48,14 +48,16 @@ Windows下安装Apache ActiveMQ Artemis消息队列, 搭建MQTT服务器:
 https://www.jianshu.com/p/b2734268aaaf
 
 ----- Qpid -----
+
 A message-oriented middleware message broker written in Java that stores, routes, and forwards messages using AMQP.
 https://github.com/apache/qpid-broker-j
 
-JMS 和QPID:
+JMS和QPID:
 https://blog.csdn.net/u013789656/article/details/80940328
 https://blog.csdn.net/u013789656/article/details/80940530
 
 ----- RabbitMQ -----
+
 理解RabbitMQ中的AMQP-0-9-1模型:
 https://www.cnblogs.com/throwable/p/12275645.html
 
