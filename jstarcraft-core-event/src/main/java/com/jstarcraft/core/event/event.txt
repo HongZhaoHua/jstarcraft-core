@@ -16,6 +16,18 @@ https://github.com/mcxiaoke/mqtt
 STOMP协议详解:
 https://www.cnblogs.com/my_life/articles/7002138.html
 
+----- VertX -----
+
+https://vertx.io/docs/#messaging
+https://vertx.io/docs/#mqtt
+https://github.com/vert-x3/vertx-examples
+https://github.com/vert-x3/vertx-guide-for-java-devs
+
+Java API 版本的Vert.x Core 手册:
+https://github.com/quanke/vert-x-core-manual-for-java
+
+
+
 ----- ActiveMQ -----
 
 ActiveMQ的详细说明,queue/topic的区别(精选):
