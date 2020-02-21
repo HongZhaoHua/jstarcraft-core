@@ -26,8 +26,6 @@ https://github.com/vert-x3/vertx-guide-for-java-devs
 Java API 版本的Vert.x Core 手册:
 https://github.com/quanke/vert-x-core-manual-for-java
 
-
-
 ----- ActiveMQ -----
 
 ActiveMQ的详细说明,queue/topic的区别(精选):
