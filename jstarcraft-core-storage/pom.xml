@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>jstarcraft-core-orm</artifactId>
+    <artifactId>jstarcraft-core-storage</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

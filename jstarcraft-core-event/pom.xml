@@ -25,6 +25,34 @@
             <artifactId>qpid-broker-core</artifactId>
         </dependency>
 
+        <!-- <dependency> <groupId>org.apache.qpid</groupId> <artifactId>qpid-client</artifactId> <version>6.3.4</version> </dependency> -->
+
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+            <version>0.48.0</version>
+        </dependency>
+
+        <!-- <dependency> <groupId>com.rabbitmq</groupId> <artifactId>amqp-client</artifactId> <version>5.8.0</version> </dependency> -->
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-client</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fusesource.mqtt-client</groupId>
+            <artifactId>mqtt-client</artifactId>
+            <version>1.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fusesource.stompjms</groupId>
+            <artifactId>stompjms-client</artifactId>
+            <version>1.19</version>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>
