@@ -20,6 +20,9 @@ https://blog.csdn.net/wtyvhreal/article/details/43562077
 Redis的事务和watch:
 https://www.cnblogs.com/liuchuanfeng/p/7190654.html
 
+Redis设计与实现:
+https://redisbook.readthedocs.io/en/latest/index.html
+
 Lua: 给 Redis 用户的入门指导:
 https://www.oschina.net/translate/intro-to-lua-for-redis-programmers
 表是Lua中的表达式，与很多流行语言不同。KEYS中的第一个元素是KEYS[1]，第二个是KEYS[2]（译注：不是0开始）
@@ -27,4 +30,4 @@ nil是表的结束符，[1,2,nil,3]将自动变为[1,2]，因此在表中不要�
 redis.call会触发Lua中的异常，redis.pcall将自动捕获所有能检测到的错误并以表的形式返回错误内容。
 Lua数字都将被转换为整数，发给Redis的小数点会丢失，返回前把它们转换成字符串类型。
 确保在Lua中使用的所有KEY都在KEY表中，否则在将来的Redis版中你的脚本都有不能被很好支持的危险。
-Lua脚本和其它Redis操作一样，在脚本执行时，其它的一切都不能运行。考虑用脚本来护展Redis服务器能力，但要保持短小和有用
+Lua脚本和其它Redis操作一样，在脚本执行时，其它的一切都不能运行。考虑用脚本来护展Redis服务器能力，但要保持短小和有用。
