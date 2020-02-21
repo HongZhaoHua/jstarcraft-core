@@ -26,6 +26,9 @@ https://github.com/vert-x3/vertx-guide-for-java-devs
 Java API 版本的Vert.x Core 手册:
 https://github.com/quanke/vert-x-core-manual-for-java
 
+Vert.x 官方文档中文翻译:
+https://github.com/VertxChina/vertx-translation-chinese
+
 Vert.x Java开发指南:
 https://blog.csdn.net/elinespace/article/details/80373294
 https://blog.csdn.net/elinespace/article/details/80377709
