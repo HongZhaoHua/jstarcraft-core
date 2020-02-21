@@ -21,7 +21,7 @@ import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
  * 缓存服务工厂
@@ -39,7 +39,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
     @Autowired(required = true)
     private ApplicationContext applicationContext;
 
-    private OrmAccessor accessor;
+    private StorageAccessor accessor;
     private Set<Class<? extends IdentityObject>> cacheClasses;
     private Map<String, TransienceConfiguration> transienceConfigurations;
     private Map<String, PersistenceConfiguration> persistenceConfigurations;
@@ -116,7 +116,7 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
         }
     }
 
-    public void setAccessor(OrmAccessor accessor) {
+    public void setAccessor(StorageAccessor accessor) {
         this.accessor = accessor;
     }
 

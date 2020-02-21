@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.MockEntityObject;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.utility.StringUtility;
 
 @RunWith(SpringJUnit4ClassRunner.class)

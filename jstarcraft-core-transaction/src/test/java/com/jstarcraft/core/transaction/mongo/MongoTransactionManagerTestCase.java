@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.jstarcraft.core.orm.mongo.MongoAccessor;
+import com.jstarcraft.core.storage.mongo.MongoAccessor;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 import com.jstarcraft.core.transaction.mongo.MongoTransactionDefinition;

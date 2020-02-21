@@ -23,8 +23,8 @@ import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOper
 import com.jstarcraft.core.cache.proxy.ProxyObject;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.orm.OrmAccessor;
-import com.jstarcraft.core.orm.OrmCondition;
+import com.jstarcraft.core.storage.StorageAccessor;
+import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -61,7 +61,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
     private ConcurrentHashMap<Object, PersistenceElement> elements = new ConcurrentHashMap<>();
 
     /** ORM访问器 */
-    private OrmAccessor accessor;
+    private StorageAccessor accessor;
     /** 缓存类型信息 */
     private CacheInformation information;
     /** 状态 */
@@ -77,7 +77,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
     /** 异常统计 */
     private final AtomicLong exceptionCount = new AtomicLong();
 
-    QueuePersistenceManager(String name, Class cacheClass, OrmAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, int size) {
+    QueuePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, int size) {
         this.name = name;
         this.cacheClass = cacheClass;
         this.accessor = accessor;
@@ -115,7 +115,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
         Lock readLock = waitForLock.readLock();
         try {
             readLock.lock();
-            Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
+            Map<K, Object> values = accessor.queryIdentities(cacheClass, StorageCondition.Equal, indexName, indexValue);
             for (PersistenceElement element : elements.values()) {
                 if (element.getOperation().equals(PersistenceOperation.CREATE)) {
                     Object value = information.getIndexValue(element.getCacheObject(), indexName);
@@ -144,7 +144,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
         Lock readLock = waitForLock.readLock();
         try {
             readLock.lock();
-            List<T> values = accessor.queryInstances(cacheClass, OrmCondition.Equal, indexName, indexValue);
+            List<T> values = accessor.queryInstances(cacheClass, StorageCondition.Equal, indexName, indexValue);
 
             Map<K, T> instances = new HashMap<>();
             for (T value : values) {

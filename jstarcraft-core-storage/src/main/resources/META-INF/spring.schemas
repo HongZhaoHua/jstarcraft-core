@@ -1,4 +1,4 @@
-http\://www.jstarcraft.com/core/orm/berkeley/berkeley.xsd=com/jstarcraft/core/orm/berkeley/schema/berkeley.xsd
-http\://www.jstarcraft.com/core/orm/lucene/lucene.xsd=com/jstarcraft/core/orm/lucene/schema/lucene.xsd
-http\://www.jstarcraft.com/core/orm/mongo/mongo.xsd=com/jstarcraft/core/orm/mongo/schema/mongo.xsd
-http\://www.jstarcraft.com/core/orm/mybatis/mybatis.xsd=com/jstarcraft/core/orm/mybatis/schema/mybatis.xsd
+http\://www.jstarcraft.com/core/storage/berkeley/berkeley.xsd=com/jstarcraft/core/storage/berkeley/schema/berkeley.xsd
+http\://www.jstarcraft.com/core/storage/lucene/lucene.xsd=com/jstarcraft/core/storage/lucene/schema/lucene.xsd
+http\://www.jstarcraft.com/core/storage/mongo/mongo.xsd=com/jstarcraft/core/storage/mongo/schema/mongo.xsd
+http\://www.jstarcraft.com/core/storage/mybatis/mybatis.xsd=com/jstarcraft/core/storage/mybatis/schema/mybatis.xsd

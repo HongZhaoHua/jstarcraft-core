@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
  * 立即持久策略
@@ -26,7 +26,7 @@ public class PromptPersistenceStrategy implements PersistenceStrategy {
     /** 名称 */
     private String name;
     /** ORM访问器 */
-    private OrmAccessor accessor;
+    private StorageAccessor accessor;
     /** 缓存类型信息 */
     private Map<Class<?>, CacheInformation> informations;
     /** 状态 */
@@ -35,7 +35,7 @@ public class PromptPersistenceStrategy implements PersistenceStrategy {
     private Map<Class, PromptPersistenceManager> managers = new HashMap<>();
 
     @Override
-    public synchronized void start(OrmAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration) {
+    public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration) {
         if (!state.compareAndSet(null, CacheState.STARTED)) {
             throw new CacheConfigurationException();
         }

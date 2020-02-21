@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class PersistenceStrategyTestCase {
@@ -21,7 +21,7 @@ public abstract class PersistenceStrategyTestCase {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    protected OrmAccessor accessor;
+    protected StorageAccessor accessor;
 
     protected Map<Class<?>, CacheInformation> cacheInformations = new HashMap<>();
 

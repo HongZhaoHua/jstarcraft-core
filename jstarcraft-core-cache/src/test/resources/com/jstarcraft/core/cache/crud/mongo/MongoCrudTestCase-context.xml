@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.jstarcraft.com/core/cache" xmlns:mongo="http://www.jstarcraft.com/core/orm/mongo"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.jstarcraft.com/core/cache" xmlns:mongo="http://www.jstarcraft.com/core/storage/mongo"
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -13,8 +13,8 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/cache
 http://www.jstarcraft.com/core/cache/cache.xsd
-http://www.jstarcraft.com/core/orm/mongo
-http://www.jstarcraft.com/core/orm/mongo/mongo.xsd">
+http://www.jstarcraft.com/core/storage/mongo
+http://www.jstarcraft.com/core/storage/mongo/mongo.xsd">
 
     <!-- 注解配置 -->
     <context:annotation-config />

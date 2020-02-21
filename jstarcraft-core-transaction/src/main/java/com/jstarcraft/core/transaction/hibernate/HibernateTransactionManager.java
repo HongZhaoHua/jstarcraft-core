@@ -3,7 +3,7 @@ package com.jstarcraft.core.transaction.hibernate;
 import java.time.Instant;
 import java.util.HashMap;
 
-import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
+import com.jstarcraft.core.storage.hibernate.HibernateAccessor;
 import com.jstarcraft.core.transaction.TransactionDefinition;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;

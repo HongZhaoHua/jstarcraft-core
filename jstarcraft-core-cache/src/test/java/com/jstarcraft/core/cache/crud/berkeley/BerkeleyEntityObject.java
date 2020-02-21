@@ -7,7 +7,7 @@ import com.jstarcraft.core.cache.annotation.CacheChange;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
 import com.jstarcraft.core.common.identification.IdentityObject;
-import com.jstarcraft.core.orm.berkeley.annotation.BerkeleyConfiguration;
+import com.jstarcraft.core.storage.berkeley.annotation.BerkeleyConfiguration;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 import com.sleepycat.persist.model.Relationship;

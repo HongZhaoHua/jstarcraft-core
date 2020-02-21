@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.jstarcraft.core.orm.mongo.MongoAccessor;
-import com.jstarcraft.core.orm.mongo.MongoMetadata;
+import com.jstarcraft.core.storage.mongo.MongoAccessor;
+import com.jstarcraft.core.storage.mongo.MongoMetadata;
 import com.jstarcraft.core.transaction.TransactionDefinition;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;

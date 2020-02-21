@@ -61,7 +61,7 @@ http://www.jstarcraft.com/core/cache/cache.xsd">
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- 访问器配置 -->
-	<bean id="accessor" class="com.jstarcraft.core.orm.hibernate.HibernateAccessor">
+	<bean id="accessor" class="com.jstarcraft.core.storage.hibernate.HibernateAccessor">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 

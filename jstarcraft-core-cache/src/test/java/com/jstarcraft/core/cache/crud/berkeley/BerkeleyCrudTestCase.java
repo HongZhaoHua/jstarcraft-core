@@ -19,14 +19,14 @@ import com.jstarcraft.core.cache.EntityManager;
 import com.jstarcraft.core.cache.RegionManager;
 import com.jstarcraft.core.cache.annotation.CacheAccessor;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class BerkeleyCrudTestCase {
 
     @Autowired
-    private OrmAccessor accessor;
+    private StorageAccessor accessor;
 
     @Autowired
     private CacheService cacheService;

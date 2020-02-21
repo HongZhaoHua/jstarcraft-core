@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.jstarcraft.com/core/storage/berkeley" xmlns="http://www.jstarcraft.com/core/storage/berkeley" elementFormDefault="qualified">
+	<!-- berkeley -->
+	<xsd:element name="configuration">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="scan" type="scan" />
+			</xsd:sequence>
+			<xsd:attribute name="directory" type="xsd:string" use="required" />
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+			<xsd:attribute name="properties" type="xsd:string" use="required" />
+			<xsd:attribute name="readOnly" type="xsd:boolean" default="false" />
+			<xsd:attribute name="temporary" type="xsd:boolean" default="false" />
+			<xsd:attribute name="versionKeep" type="xsd:integer" use="required" />
+			<xsd:attribute name="writeDelay" type="xsd:boolean" default="false" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- scan -->
+	<xsd:complexType name="scan">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="package" type="package" />
+			</xsd:choice>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="class" type="class" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- package -->
+	<xsd:complexType name="package">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<!-- class -->
+	<xsd:complexType name="class">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+	</xsd:complexType>
+</xsd:schema>

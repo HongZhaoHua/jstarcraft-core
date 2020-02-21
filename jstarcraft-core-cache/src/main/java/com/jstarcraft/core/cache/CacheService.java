@@ -24,7 +24,7 @@ import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.cache.transience.UserDefinedTransienceStrategy;
 import com.jstarcraft.core.common.identification.IdentityObject;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
  * 缓存服务
@@ -37,7 +37,7 @@ public class CacheService implements CacheMonitor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheService.class);
 
     /** 访问器 */
-    private final OrmAccessor accessor;
+    private final StorageAccessor accessor;
 
     /** 缓存类型信息 */
     private final Map<Class<?>, CacheInformation> cacheInformations = new HashMap<>();
@@ -58,7 +58,7 @@ public class CacheService implements CacheMonitor {
     /** 状态 */
     private AtomicReference<CacheState> state = new AtomicReference<>(null);
 
-    public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, OrmAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
+    public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, StorageAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
         if (cacheClasses == null || accessor == null) {
             throw new IllegalArgumentException();
         }
@@ -166,7 +166,7 @@ public class CacheService implements CacheMonitor {
      * 
      * @return
      */
-    public OrmAccessor getAccessor() {
+    public StorageAccessor getAccessor() {
         return this.accessor;
     }
 

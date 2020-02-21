@@ -3,7 +3,7 @@ package com.jstarcraft.core.cache.persistence;
 import java.util.Map;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.orm.OrmAccessor;
+import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
  * 持久策略
@@ -51,7 +51,7 @@ public interface PersistenceStrategy {
      * @param accessor
      * @param configuration
      */
-    void start(OrmAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration);
+    void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration);
 
     /**
      * 停止策略

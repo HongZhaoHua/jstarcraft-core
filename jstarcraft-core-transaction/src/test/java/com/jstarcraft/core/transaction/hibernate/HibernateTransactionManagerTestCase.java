@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.orm.hibernate.HibernateAccessor;
+import com.jstarcraft.core.storage.hibernate.HibernateAccessor;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 import com.jstarcraft.core.transaction.hibernate.HibernateTransactionManager;

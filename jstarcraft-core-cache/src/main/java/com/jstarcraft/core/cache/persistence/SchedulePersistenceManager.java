@@ -26,8 +26,8 @@ import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOper
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.instant.SolarExpression;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.orm.OrmAccessor;
-import com.jstarcraft.core.orm.OrmCondition;
+import com.jstarcraft.core.storage.StorageAccessor;
+import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -62,7 +62,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
     private ConcurrentHashMap<Object, PersistenceElement> newElements = new ConcurrentHashMap<>();
 
     /** ORM访问器 */
-    private OrmAccessor accessor;
+    private StorageAccessor accessor;
     /** 缓存类型信息 */
     private CacheInformation information;
     /** 状态 */
@@ -85,7 +85,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
     /** 异常统计 */
     private final AtomicInteger exceptionCount = new AtomicInteger();
 
-    SchedulePersistenceManager(String name, Class cacheClass, OrmAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, String cron) {
+    SchedulePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, String cron) {
         this.name = name;
         this.cacheClass = cacheClass;
         this.accessor = accessor;
@@ -120,7 +120,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
         Lock readLock = waitForLock.readLock();
         try {
             readLock.lock();
-            Map<K, Object> values = accessor.queryIdentities(cacheClass, OrmCondition.Equal, indexName, indexValue);
+            Map<K, Object> values = accessor.queryIdentities(cacheClass, StorageCondition.Equal, indexName, indexValue);
             for (PersistenceElement element : oldElements.values()) {
                 if (element.getOperation().equals(PersistenceOperation.CREATE)) {
                     Object value = information.getIndexValue(element.getCacheObject(), indexName);
@@ -166,7 +166,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
         Lock readLock = waitForLock.readLock();
         try {
             readLock.lock();
-            List<T> values = accessor.queryInstances(cacheClass, OrmCondition.Equal, indexName, indexValue);
+            List<T> values = accessor.queryInstances(cacheClass, StorageCondition.Equal, indexName, indexValue);
 
             Map<K, T> instances = new HashMap<>();
             for (T value : values) {
