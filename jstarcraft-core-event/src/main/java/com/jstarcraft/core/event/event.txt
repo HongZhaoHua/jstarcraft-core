@@ -45,6 +45,13 @@ https://blog.csdn.net/elinespace/article/details/80785654
 https://blog.csdn.net/elinespace/article/details/80793365
 https://blog.csdn.net/elinespace/article/details/82531072
 
+Vert.x系列:
+https://my.oschina.net/u/2382040/blog/1926203
+https://my.oschina.net/u/2382040/blog/3024868
+https://my.oschina.net/u/2382040/blog/3029310
+https://my.oschina.net/u/2382040/blog/3026728
+https://my.oschina.net/u/2382040/blog/3030394
+
 ----- ActiveMQ -----
 
 ActiveMQ的详细说明,queue/topic的区别(精选):
