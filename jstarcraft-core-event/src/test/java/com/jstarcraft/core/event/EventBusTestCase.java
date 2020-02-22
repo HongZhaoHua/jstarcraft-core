@@ -2,38 +2,118 @@ package com.jstarcraft.core.event;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.jstarcraft.core.event.EventBus;
+import com.jstarcraft.core.event.EventMode;
 
 public abstract class EventBusTestCase {
 
-    protected abstract EventBus getEventBus();
+    protected abstract EventBus getEventBus(EventMode mode);
 
     @Test(timeout = 5000)
-    public void testTriggerEvent() throws Exception {
+    public void testTriggerEventByQueue() throws Exception {
         int size = 10;
-        MockMonitor monitor = new MockMonitor(size);
-        Set<Class<?>> topics = new HashSet<>();
-        topics.add(MockEvent.class);
-        EventBus bus = getEventBus();
-        boolean register = bus.registerMonitor(monitor, topics);
-        Assert.assertTrue(register);
-        Assert.assertTrue(bus.getMonitors().contains(monitor));
+        Set<Class<?>> addresses = new HashSet<>();
+        addresses.add(MockEvent.class);
+        EventBus bus = getEventBus(EventMode.QUEUE);
+        CountDownLatch latch = new CountDownLatch(size);
+        MockMonitor[] monitors = new MockMonitor[size];
+        for (int index = 0; index < size; index++) {
+            monitors[index] = new MockMonitor(index, latch);
+        }
+
+        // 注册监控器
+        for (int index = 0; index < size; index++) {
+            MockMonitor monitor = monitors[index];
+            bus.registerMonitor(addresses, monitor);
+            Assert.assertTrue(bus.getMonitors(MockEvent.class).contains(monitor));
+        }
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }
-        monitor.awaitLatch();
-        Assert.assertEquals(10, monitor.getCount());
-        boolean unregister = bus.unregisterMonitor(monitor);
-        Assert.assertTrue(unregister);
-        Assert.assertFalse(bus.getMonitors().contains(monitor));
+        {
+            latch.await();
+            int count = 0;
+            for (int index = 0; index < size; index++) {
+                MockMonitor monitor = monitors[index];
+                count += monitor.getCount();
+            }
+            Assert.assertEquals(10, count);
+        }
+
+        // 注销监控器
+        for (int index = 0; index < size; index++) {
+            MockMonitor monitor = monitors[index];
+            bus.unregisterMonitor(addresses, monitor);
+            Assert.assertFalse(bus.getMonitors(MockEvent.class).contains(monitor));
+        }
         for (int index = 0; index < size; index++) {
             bus.triggerEvent(new MockEvent(index));
         }
-        Assert.assertEquals(10, monitor.getCount());
+        {
+            latch.await();
+            int count = 0;
+            for (int index = 0; index < size; index++) {
+                MockMonitor monitor = monitors[index];
+                count += monitor.getCount();
+            }
+            Assert.assertEquals(10, count);
+        }
+    }
+    
+    @Test(timeout = 5000)
+    public void testTriggerEventByTopic() throws Exception {
+        int size = 10;
+        Set<Class<?>> addresses = new HashSet<>();
+        addresses.add(MockEvent.class);
+        EventBus bus = getEventBus(EventMode.TOPIC);
+        CountDownLatch latch = new CountDownLatch(size * size);
+        MockMonitor[] monitors = new MockMonitor[size];
+        for (int index = 0; index < size; index++) {
+            monitors[index] = new MockMonitor(index, latch);
+        }
+
+        // 注册监控器
+        for (int index = 0; index < size; index++) {
+            MockMonitor monitor = monitors[index];
+            bus.registerMonitor(addresses, monitor);
+            Assert.assertTrue(bus.getMonitors(MockEvent.class).contains(monitor));
+        }
+        for (int index = 0; index < size; index++) {
+            bus.triggerEvent(new MockEvent(index));
+        }
+        {
+            latch.await();
+            int count = 0;
+            for (int index = 0; index < size; index++) {
+                MockMonitor monitor = monitors[index];
+                count += monitor.getCount();
+            }
+            Assert.assertEquals(100, count);
+        }
+
+        // 注销监控器
+        for (int index = 0; index < size; index++) {
+            MockMonitor monitor = monitors[index];
+            bus.unregisterMonitor(addresses, monitor);
+            Assert.assertFalse(bus.getMonitors(MockEvent.class).contains(monitor));
+        }
+        for (int index = 0; index < size; index++) {
+            bus.triggerEvent(new MockEvent(index));
+        }
+        {
+            latch.await();
+            int count = 0;
+            for (int index = 0; index < size; index++) {
+                MockMonitor monitor = monitors[index];
+                count += monitor.getCount();
+            }
+            Assert.assertEquals(100, count);
+        }
     }
 
 }

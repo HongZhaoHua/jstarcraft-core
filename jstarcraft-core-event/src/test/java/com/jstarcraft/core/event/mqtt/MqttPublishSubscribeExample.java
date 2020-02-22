@@ -1,4 +1,4 @@
-package com.jstarcraft.core.message.mqtt;
+package com.jstarcraft.core.event.mqtt;
 
 import java.util.concurrent.TimeUnit;
 

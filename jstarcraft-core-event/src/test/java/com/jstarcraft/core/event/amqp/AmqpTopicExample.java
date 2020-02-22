@@ -1,4 +1,4 @@
-package com.jstarcraft.core.message.amqp;
+package com.jstarcraft.core.event.amqp;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.message.stomp;
+package com.jstarcraft.core.event.stomp;
 
 import org.junit.Test;
 
