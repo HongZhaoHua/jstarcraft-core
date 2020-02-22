@@ -19,6 +19,10 @@ https://www.cnblogs.com/my_life/articles/7002138.html
 JMS2.0规范中文版:
 https://github.com/kimmking/JMS2CN
 
+JMS2.0中的新内容:
+https://www.oracle.com/technetwork/cn/articles/java/jms20-1947669-zhs.html
+https://www.oracle.com/technetwork/cn/articles/java/jms2messaging-1954190-zhs.html
+
 JAVA消息服务JMS规范及原理详解:
 https://www.cnblogs.com/molao-doing/articles/6557305.html
 
