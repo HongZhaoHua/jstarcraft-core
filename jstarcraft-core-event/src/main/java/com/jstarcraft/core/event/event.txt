@@ -109,6 +109,14 @@ https://blog.csdn.net/u010904188/article/details/81066040
 RabbitMQ Java客户端API指南:
 https://blog.csdn.net/qq_34446485/article/details/81327789
 
+----- Redis -----
+
+Redis实现消息队列的4种方案:
+https://www.jianshu.com/p/d32b16f12f09
+
+Lua的字符串匹配与正则表达式:
+https://www.cnblogs.com/meamin9/p/4502461.html
+
 ----- 整合各种消息 -----
 
 The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
