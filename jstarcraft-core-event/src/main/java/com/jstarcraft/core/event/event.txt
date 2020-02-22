@@ -16,6 +16,12 @@ https://github.com/mcxiaoke/mqtt
 STOMP协议详解:
 https://www.cnblogs.com/my_life/articles/7002138.html
 
+JMS2.0规范中文版:
+https://github.com/kimmking/JMS2CN
+
+JAVA消息服务JMS规范及原理详解:
+https://www.cnblogs.com/molao-doing/articles/6557305.html
+
 ----- VertX -----
 
 https://vertx.io/docs/#messaging
