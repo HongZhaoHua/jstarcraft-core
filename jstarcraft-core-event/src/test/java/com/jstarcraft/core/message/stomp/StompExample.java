@@ -1,4 +1,4 @@
-package com.jstarcraft.core.event.stomp;
+package com.jstarcraft.core.message.stomp;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +15,7 @@ import javax.naming.InitialContext;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 
-public class Stomp12Example {
+public class StompExample {
 
     private static final String END_OF_FRAME = "\u0000";
 

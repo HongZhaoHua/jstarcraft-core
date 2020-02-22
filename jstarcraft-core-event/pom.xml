@@ -25,22 +25,26 @@
             <artifactId>qpid-broker-core</artifactId>
         </dependency>
 
-        <!-- <dependency> <groupId>org.apache.qpid</groupId> <artifactId>qpid-client</artifactId> <version>6.3.4</version> </dependency> -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>3.8.5</version>
+        </dependency>
 
+        <!-- AMQP框架依赖 -->
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
             <version>0.48.0</version>
         </dependency>
 
-        <!-- <dependency> <groupId>com.rabbitmq</groupId> <artifactId>amqp-client</artifactId> <version>5.8.0</version> </dependency> -->
-
         <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>artemis-jms-client</artifactId>
-            <version>2.11.0</version>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-amqp-client</artifactId>
+            <version>3.8.5</version>
         </dependency>
 
+        <!-- MQTT框架依赖 -->
         <dependency>
             <groupId>org.fusesource.mqtt-client</groupId>
             <artifactId>mqtt-client</artifactId>
@@ -48,9 +52,22 @@
         </dependency>
 
         <dependency>
-            <groupId>org.fusesource.stompjms</groupId>
-            <artifactId>stompjms-client</artifactId>
-            <version>1.19</version>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mqtt</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+
+        <!-- STOMP框架依赖 -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-client</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-stomp</artifactId>
+            <version>3.8.5</version>
         </dependency>
 
         <!-- 测试框架依赖 -->
