@@ -24,7 +24,7 @@ public class StompExample {
 
         try {
             // Step 1. Create a TCP socket to connect to the Stomp port
-            Socket socket = new Socket("localhost", 61616);
+            Socket socket = new Socket("localhost", 61613);
 
             // Step 2. Send a CONNECT frame to connect to the server
             String connectFrame = "CONNECT\n" + "accept-version:1.2\n" + "host:localhost\n" + "request-id:1\n" + "\n" + END_OF_FRAME;
