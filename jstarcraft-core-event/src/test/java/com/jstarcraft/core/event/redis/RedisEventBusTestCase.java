@@ -15,34 +15,11 @@ import com.jstarcraft.core.event.EventBus;
 import com.jstarcraft.core.event.EventBusTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.MockEvent;
-import com.jstarcraft.core.event.redis.RedisQueueEventBus;
-import com.jstarcraft.core.event.redis.RedisTopicEventBus;
 
 public class RedisEventBusTestCase extends EventBusTestCase {
 
     private static Redisson redisson;
     private static RKeys keys;
-
-    @Override
-    protected EventBus getEventBus(EventMode mode) {
-        switch (mode) {
-        case QUEUE: {
-            CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
-            ContentCodec codec = new JsonContentCodec(definition);
-            RedisQueueEventBus bus = new RedisQueueEventBus("redis", redisson, codec);
-            return bus;
-        }
-        case TOPIC: {
-            CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
-            ContentCodec codec = new JsonContentCodec(definition);
-            RedisTopicEventBus bus = new RedisTopicEventBus("redis", redisson, codec);
-            return bus;
-        }
-        default: {
-            return null;
-        }
-        }
-    }
 
     @BeforeClass
     public static void start() {
@@ -61,6 +38,25 @@ public class RedisEventBusTestCase extends EventBusTestCase {
     public static void stop() {
         keys.flushdb();
         redisson.shutdown();
+    }
+
+    @Override
+    protected EventBus getEventBus(EventMode mode) {
+        CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+        ContentCodec codec = new JsonContentCodec(definition);
+        switch (mode) {
+        case QUEUE: {
+            RedisQueueEventBus bus = new RedisQueueEventBus("redis", redisson, codec);
+            return bus;
+        }
+        case TOPIC: {
+            RedisTopicEventBus bus = new RedisTopicEventBus("redis", redisson, codec);
+            return bus;
+        }
+        default: {
+            return null;
+        }
+        }
     }
 
 }

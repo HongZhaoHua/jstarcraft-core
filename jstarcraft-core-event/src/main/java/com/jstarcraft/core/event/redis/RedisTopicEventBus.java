@@ -27,35 +27,35 @@ public class RedisTopicEventBus extends AbstractEventBus {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class<?>, EventHandler> address2Handlers = new ConcurrentHashMap<>();
+    private ConcurrentMap<Class<?>, EventHandler> address2Handlers;
 
     private class EventHandler implements MessageListener<byte[]> {
 
         private Class<?> clazz;
 
-        private EventManager monitors;
+        private EventManager manager;
 
-        private EventHandler(Class<?> clazz, EventManager monitors) {
+        private EventHandler(Class<?> clazz, EventManager manager) {
             this.clazz = clazz;
-            this.monitors = monitors;
+            this.manager = manager;
         }
 
         @Override
-        public void onMessage(CharSequence channel, byte[] bytes) {
+        public void onMessage(CharSequence channel, byte[] data) {
             try {
-                Object event = codec.decode(clazz, bytes);
-                for (EventMonitor monitor : monitors) {
+                Object event = codec.decode(clazz, data);
+                for (EventMonitor monitor : manager) {
                     try {
                         monitor.onEvent(event);
                     } catch (Exception exception) {
                         // 记录日志
-                        String message = StringUtility.format("监控器[{}]处理Redis事件[{}]时异常", monitor.getClass(), bytes);
+                        String message = StringUtility.format("监控器[{}]处理Redis事件[{}]时异常", monitor.getClass(), data);
                         logger.error(message, exception);
                     }
                 }
             } catch (Exception exception) {
                 // 记录日志
-                String message = StringUtility.format("编解码器[{}]处理Redis事件[{}]时异常", codec.getClass(), bytes);
+                String message = StringUtility.format("编解码器[{}]处理Redis事件[{}]时异常", codec.getClass(), data);
                 logger.error(message, exception);
             }
         }
@@ -67,6 +67,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
         this.name = name;
         this.redisson = redisson;
         this.codec = codec;
+        this.address2Handlers = new ConcurrentHashMap<>();
     }
 
     @Override

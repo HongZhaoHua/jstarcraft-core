@@ -27,7 +27,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class<?>, EventThread> address2Threads = new ConcurrentHashMap<>();
+    private ConcurrentMap<Class<?>, EventThread> address2Threads;
 
     private class EventThread extends Thread {
 
@@ -76,6 +76,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
         this.name = name;
         this.redisson = redisson;
         this.codec = codec;
+        this.address2Threads = new ConcurrentHashMap<>();
     }
 
     @Override

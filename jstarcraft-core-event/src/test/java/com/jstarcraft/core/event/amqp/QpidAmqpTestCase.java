@@ -21,13 +21,13 @@ public class QpidAmqpTestCase {
     @Test
     public void testQueue() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        try (JMSContext cotenxt = factory.createContext()) {
-            Queue queue = cotenxt.createQueue("queue.amqp");
+        try (JMSContext context = factory.createContext()) {
+            Queue queue = context.createQueue("queue.amqp");
 
-            JMSProducer producer = cotenxt.createProducer();
+            JMSProducer producer = context.createProducer();
             producer.send(queue, content);
 
-            JMSConsumer consumer = cotenxt.createConsumer(queue);
+            JMSConsumer consumer = context.createConsumer(queue);
             Message message = consumer.receive(5000);
 
             Assert.assertEquals(queue, message.getJMSDestination());
@@ -38,12 +38,12 @@ public class QpidAmqpTestCase {
     @Test
     public void testTopic() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        try (JMSContext cotenxt = factory.createContext()) {
-            Topic topic = cotenxt.createTopic("topic.amqp.#");
+        try (JMSContext context = factory.createContext()) {
+            Topic topic = context.createTopic("topic.amqp.#");
 
             CountDownLatch latch = new CountDownLatch(100);
             for (int index = 0; index < 10; index++) {
-                JMSConsumer consumer = cotenxt.createConsumer(topic);
+                JMSConsumer consumer = context.createConsumer(topic);
                 consumer.setMessageListener((message) -> {
                     try {
                         Topic destination = (Topic) message.getJMSDestination();
@@ -56,9 +56,9 @@ public class QpidAmqpTestCase {
                 });
             }
 
-            JMSProducer producer = cotenxt.createProducer();
+            JMSProducer producer = context.createProducer();
             for (int index = 0; index < 10; index++) {
-                Topic destination = cotenxt.createTopic("topic.amqp.test." + index);
+                Topic destination = context.createTopic("topic.amqp.test." + index);
                 producer.send(destination, content);
             }
 

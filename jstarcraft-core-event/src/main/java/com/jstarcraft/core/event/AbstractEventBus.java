@@ -15,10 +15,11 @@ public abstract class AbstractEventBus implements EventBus {
 
     protected final EventMode mode;
 
-    protected ConcurrentMap<Class<?>, EventManager> address2Managers = new ConcurrentHashMap<>();
+    protected ConcurrentMap<Class<?>, EventManager> address2Managers;
 
     protected AbstractEventBus(EventMode mode) {
         this.mode = mode;
+        this.address2Managers = new ConcurrentHashMap<>();
     }
 
     @Override
