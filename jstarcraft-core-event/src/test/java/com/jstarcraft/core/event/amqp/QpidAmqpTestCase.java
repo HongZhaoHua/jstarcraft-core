@@ -25,7 +25,7 @@ public class QpidAmqpTestCase {
     @Test
     public void testQueue() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        // 注意:Qpid的JMS 2.0 API似乎有些问题.无法使用d队列
+        // 注意:Qpid的JMS 2.0 API似乎有些问题.无法使用队列
 //        try (JMSContext context = factory.createContext()) {
 //            Queue queue = context.createQueue("queue.amqp");
 //
