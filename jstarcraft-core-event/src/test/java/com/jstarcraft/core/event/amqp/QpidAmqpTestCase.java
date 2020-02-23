@@ -2,12 +2,16 @@ package com.jstarcraft.core.event.amqp;
 
 import java.util.concurrent.CountDownLatch;
 
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.jms.Queue;
+import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -20,18 +24,37 @@ public class QpidAmqpTestCase {
 
     @Test
     public void testQueue() throws Exception {
+
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        try (JMSContext context = factory.createContext()) {
-            Queue queue = context.createQueue("queue.amqp");
+        // 注意:Qpid的JMS 2.0 API似乎有些问题.无法构建队列.改为使用JMS 1.0 API.
+//        try (JMSContext context = factory.createContext()) {
+//            Queue queue = context.createQueue("queue.amqp");
+//
+//            JMSProducer producer = context.createProducer();
+//            producer.send(queue, content);
+//
+//            JMSConsumer consumer = context.createConsumer(queue);
+//            Message message = consumer.receive(5000);
+//
+//            Assert.assertEquals(queue, message.getJMSDestination());
+//            Assert.assertEquals(content, message.getBody(String.class));
+//        }
+        Connection connection = factory.createConnection();
+        connection.start();
+        try {
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Queue queue = session.createQueue("queue.amqp");
 
-            JMSProducer producer = context.createProducer();
-            producer.send(queue, content);
+            MessageProducer producer = session.createProducer(queue);
+            producer.send(session.createTextMessage(content));
 
-            JMSConsumer consumer = context.createConsumer(queue);
+            MessageConsumer consumer = session.createConsumer(queue);
             Message message = consumer.receive(5000);
 
             Assert.assertEquals(queue, message.getJMSDestination());
             Assert.assertEquals(content, message.getBody(String.class));
+        } finally {
+            connection.close();
         }
     }
 
