@@ -7,7 +7,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.stomp.StompClient;
 import io.vertx.ext.stomp.StompClientConnection;
 
-public class VertStompExample {
+public class VertxStompExample {
 
     @Test
     public void testQueue() throws Exception {
