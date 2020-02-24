@@ -63,7 +63,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
     };
 
     public RedisTopicEventBus(String name, Redisson redisson, ContentCodec codec) {
-        super(EventMode.QUEUE);
+        super(EventMode.TOPIC);
         this.name = name;
         this.redisson = redisson;
         this.codec = codec;

@@ -21,6 +21,7 @@ public abstract class EventBusTestCase {
         Set<Class<?>> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
         EventBus bus = getEventBus(EventMode.QUEUE);
+        Assert.assertEquals(EventMode.QUEUE, bus.getMode());
         CountDownLatch latch = new CountDownLatch(size);
         MockMonitor[] monitors = new MockMonitor[size];
         for (int index = 0; index < size; index++) {
@@ -72,6 +73,7 @@ public abstract class EventBusTestCase {
         Set<Class<?>> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
         EventBus bus = getEventBus(EventMode.TOPIC);
+        Assert.assertEquals(EventMode.TOPIC, bus.getMode());
         CountDownLatch latch = new CountDownLatch(size * size);
         MockMonitor[] monitors = new MockMonitor[size];
         for (int index = 0; index < size; index++) {
