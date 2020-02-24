@@ -16,7 +16,7 @@ public abstract class EventBusTestCase {
     protected abstract EventBus getEventBus(EventMode mode);
 
     @Test
-    public void testTriggerEventByQueue() throws Exception {
+    public void testTriggerQueueEvent() throws Exception {
         int size = 10;
         Set<Class<?>> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
@@ -67,7 +67,7 @@ public abstract class EventBusTestCase {
     }
 
     @Test
-    public void testTriggerEventByTopic() throws Exception {
+    public void testTriggerTopicEvent() throws Exception {
         int size = 10;
         Set<Class<?>> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
