@@ -1,7 +1,7 @@
 package com.jstarcraft.core.event.redis;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.redisson.Redisson;
 import org.redisson.api.RKeys;
 import org.redisson.client.codec.ByteArrayCodec;
@@ -18,11 +18,11 @@ import com.jstarcraft.core.event.MockEvent;
 
 public class RedisEventBusTestCase extends EventBusTestCase {
 
-    private static Redisson redisson;
-    private static RKeys keys;
+    private Redisson redisson;
+    private RKeys keys;
 
-    @BeforeClass
-    public static void start() {
+    @Before
+    public void start() {
         // 注意此处的编解码器
         Codec codec = new ByteArrayCodec();
         Config configuration = new Config();
@@ -34,8 +34,8 @@ public class RedisEventBusTestCase extends EventBusTestCase {
         keys.flushdb();
     }
 
-    @AfterClass
-    public static void stop() {
+    @After
+    public void stop() {
         keys.flushdb();
         redisson.shutdown();
     }
