@@ -77,6 +77,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
             if (manager == null) {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
+                // TODO 需要防止路径冲突
                 RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
                 EventHandler handler = new EventHandler(address, manager);
                 topic.addListener(byte[].class, handler);
@@ -94,6 +95,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
                     address2Managers.remove(address);
+                    // TODO 需要防止路径冲突
                     RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
                     EventHandler handler = address2Handlers.remove(address);
                     topic.removeListener(handler);
@@ -105,6 +107,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
     @Override
     public void triggerEvent(Object event) {
         Class<?> address = event.getClass();
+        // TODO 需要防止路径冲突
         RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
         byte[] bytes = codec.encode(address, event);
         topic.publish(bytes);

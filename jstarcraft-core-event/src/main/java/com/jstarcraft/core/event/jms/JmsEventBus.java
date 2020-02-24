@@ -101,10 +101,12 @@ public class JmsEventBus extends AbstractEventBus {
                 Destination destination = null;
                 switch (mode) {
                 case QUEUE: {
+                    // TODO 需要防止路径冲突
                     destination = context.createQueue(address.getName());
                     break;
                 }
                 case TOPIC: {
+                    // TODO 需要防止路径冲突
                     destination = context.createTopic(address.getName());
                     break;
                 }
@@ -139,10 +141,12 @@ public class JmsEventBus extends AbstractEventBus {
         Destination destination = null;
         switch (mode) {
         case QUEUE: {
+            // TODO 需要防止路径冲突
             destination = context.createQueue(address.getName());
             break;
         }
         case TOPIC: {
+            // TODO 需要防止路径冲突
             destination = context.createTopic(address.getName());
             break;
         }

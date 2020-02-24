@@ -86,6 +86,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
             if (manager == null) {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
+                // TODO 需要防止路径冲突
                 RBlockingQueue<byte[]> queue = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
                 EventThread thread = new EventThread(address, manager, queue);
                 thread.start();
@@ -113,6 +114,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
     @Override
     public void triggerEvent(Object event) {
         Class<?> address = event.getClass();
+        // TODO 需要防止路径冲突
         RBlockingQueue<byte[]> queue = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
         byte[] bytes = codec.encode(address, event);
         queue.add(bytes);

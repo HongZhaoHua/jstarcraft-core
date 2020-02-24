@@ -107,10 +107,12 @@ public class AmqpEventBus extends AbstractEventBus {
                     Destination destination = null;
                     switch (mode) {
                     case QUEUE: {
+                        // TODO 需要防止路径冲突
                         destination = session.createQueue(mode + address.getName());
                         break;
                     }
                     case TOPIC: {
+                        // TODO 需要防止路径冲突
                         destination = session.createTopic(mode + address.getName());
                         break;
                     }
@@ -156,10 +158,12 @@ public class AmqpEventBus extends AbstractEventBus {
                 Destination destination = null;
                 switch (mode) {
                 case QUEUE: {
+                    // TODO 需要防止路径冲突
                     destination = session.createQueue(mode + address.getName());
                     break;
                 }
                 case TOPIC: {
+                    // TODO 需要防止路径冲突
                     destination = session.createTopic(mode + address.getName());
                     break;
                 }
