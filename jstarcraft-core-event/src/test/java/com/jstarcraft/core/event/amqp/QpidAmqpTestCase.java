@@ -4,9 +4,6 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
-import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
@@ -25,7 +22,7 @@ public class QpidAmqpTestCase {
     @Test
     public void testQueue() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        // 注意:Qpid的JMS 2.0 API似乎有些问题.无法使用队列
+        // Qpid的JMS 2.0 API(似乎有些问题.无法使用队列)
 //        try (JMSContext context = factory.createContext()) {
 //            Queue queue = context.createQueue("queue.amqp");
 //
@@ -38,6 +35,7 @@ public class QpidAmqpTestCase {
 //            Assert.assertEquals(queue, message.getJMSDestination());
 //            Assert.assertEquals(content, message.getBody(String.class));
 //        }
+        // Qpid的JMS 1.0 API
         Connection connection = factory.createConnection();
         connection.start();
         try {
@@ -60,12 +58,43 @@ public class QpidAmqpTestCase {
     @Test
     public void testTopic() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        try (JMSContext context = factory.createContext()) {
-            Topic topic = context.createTopic("topic.amqp.#");
+        // Qpid的JMS 1.0 API
+//        try (JMSContext context = factory.createContext()) {
+//            Topic topic = context.createTopic("topic.amqp.#");
+//
+//            CountDownLatch latch = new CountDownLatch(100);
+//            for (int index = 0; index < 10; index++) {
+//                JMSConsumer consumer = context.createConsumer(topic);
+//                consumer.setMessageListener((message) -> {
+//                    try {
+//                        Topic destination = (Topic) message.getJMSDestination();
+//                        Assert.assertTrue(destination.getTopicName().startsWith("topic.amqp"));
+//                        Assert.assertEquals(content, message.getBody(String.class));
+//                        latch.countDown();
+//                    } catch (Exception exception) {
+//                        Assert.fail();
+//                    }
+//                });
+//            }
+//
+//            JMSProducer producer = context.createProducer();
+//            for (int index = 0; index < 10; index++) {
+//                Topic destination = context.createTopic("topic.amqp.test." + index);
+//                producer.send(destination, content);
+//            }
+//
+//            latch.await();
+//        }
+        // Qpid的JMS 2.0 API
+        Connection connection = factory.createConnection();
+        connection.start();
+        try {
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Topic topic = session.createTopic("topic.amqp.#");
 
             CountDownLatch latch = new CountDownLatch(100);
             for (int index = 0; index < 10; index++) {
-                JMSConsumer consumer = context.createConsumer(topic);
+                MessageConsumer consumer = session.createConsumer(topic);
                 consumer.setMessageListener((message) -> {
                     try {
                         Topic destination = (Topic) message.getJMSDestination();
@@ -78,13 +107,15 @@ public class QpidAmqpTestCase {
                 });
             }
 
-            JMSProducer producer = context.createProducer();
             for (int index = 0; index < 10; index++) {
-                Topic destination = context.createTopic("topic.amqp.test." + index);
-                producer.send(destination, content);
+                Topic destination = session.createTopic("topic.amqp.test." + index);
+                MessageProducer producer = session.createProducer(destination);
+                producer.send(session.createTextMessage(content));
             }
 
             latch.await();
+        } finally {
+            connection.close();
         }
     }
 
