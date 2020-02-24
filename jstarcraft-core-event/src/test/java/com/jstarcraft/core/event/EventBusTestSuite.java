@@ -11,6 +11,7 @@ import com.jstarcraft.core.event.memory.SynchronousEventBusTestCase;
 import com.jstarcraft.core.event.mqtt.MqttEventBusTestCase;
 import com.jstarcraft.core.event.redis.RedisEventBusTestCase;
 import com.jstarcraft.core.event.stomp.StompEventBusTestCase;
+import com.jstarcraft.core.event.vertx.VertxEventBusTestCase;
 
 @RunWith(Suite.class)
 @SuiteClasses({
@@ -28,6 +29,8 @@ import com.jstarcraft.core.event.stomp.StompEventBusTestCase;
         RedisEventBusTestCase.class,
 
         StompEventBusTestCase.class,
+
+        VertxEventBusTestCase.class,
 
 })
 public class EventBusTestSuite {
