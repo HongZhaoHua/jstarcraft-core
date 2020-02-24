@@ -36,7 +36,7 @@ https://www.jianshu.com/p/07dd326eb7d0
 JAVA消息服务JMS规范及原理详解:
 https://www.cnblogs.com/molao-doing/articles/6557305.html
 
------ VertX -----
+----- Vert.x -----
 
 https://vertx.io/docs/#messaging
 https://vertx.io/docs/#mqtt
