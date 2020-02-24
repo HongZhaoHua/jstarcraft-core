@@ -1,3 +1,6 @@
+消息队列的两种模式:
+https://www.cnblogs.com/jackytang/p/9011051.html
+
 JMS、AMQP和MQTT主要特性:
 https://www.cnblogs.com/zhangyu1024/p/6138166.html
 
