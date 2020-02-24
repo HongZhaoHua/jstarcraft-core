@@ -6,8 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.jstarcraft.core.event.amqp.AmqpEventBusTestCase;
 import com.jstarcraft.core.event.jms.JmsEventBusTestCase;
-import com.jstarcraft.core.event.memory.AsynchronousEventBusTestCase;
-import com.jstarcraft.core.event.memory.SynchronousEventBusTestCase;
+import com.jstarcraft.core.event.memory.MemoryEventBusTestCase;
 import com.jstarcraft.core.event.mqtt.MqttEventBusTestCase;
 import com.jstarcraft.core.event.redis.RedisEventBusTestCase;
 import com.jstarcraft.core.event.stomp.StompEventBusTestCase;
@@ -20,9 +19,7 @@ import com.jstarcraft.core.event.vertx.VertxEventBusTestCase;
 
         JmsEventBusTestCase.class,
 
-        AsynchronousEventBusTestCase.class,
-
-        SynchronousEventBusTestCase.class,
+        MemoryEventBusTestCase.class,
 
         MqttEventBusTestCase.class,
 
