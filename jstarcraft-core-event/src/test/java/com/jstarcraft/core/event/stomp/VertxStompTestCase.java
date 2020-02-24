@@ -1,5 +1,8 @@
 package com.jstarcraft.core.event.stomp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,12 +24,16 @@ public class VertxStompTestCase {
             if (connect.succeeded()) {
                 StompClientConnection connection = connect.result();
                 connection.subscribe("/queue/stomp", (frame) -> {
+                    System.out.println(frame.getDestination());
                     Assert.assertEquals("/queue/stomp", frame.getDestination());
                     Assert.assertEquals(content, frame.getBodyAsString());
                     connection.disconnect();
                 });
-
-                connection.send("/queue/stomp", Buffer.buffer(content));
+                Map<String, String> headers = new HashMap<>();
+                headers.put("destination", "/queue/stomp");
+                headers.put("destination-type", "ANYCAST");
+                connection.send(headers, Buffer.buffer(content));
+                connection.send(headers, Buffer.buffer(content));
             } else {
                 Assert.fail();
             }
@@ -47,12 +54,16 @@ public class VertxStompTestCase {
             if (connect.succeeded()) {
                 StompClientConnection connection = connect.result();
                 connection.subscribe("/topic/stomp.#", (frame) -> {
+                    System.out.println(frame.getDestination());
                     Assert.assertEquals("/topic/stomp.test", frame.getDestination());
                     Assert.assertEquals(content, frame.getBodyAsString());
                     connection.disconnect();
                 });
-
-                connection.send("/topic/stomp.test", Buffer.buffer(content));
+                Map<String, String> headers = new HashMap<>();
+                headers.put("destination", "/topic/stomp.test");
+                headers.put("destination-type", "MULTICAST");
+                connection.send(headers, Buffer.buffer(content));
+                connection.send(headers, Buffer.buffer(content));
             } else {
                 Assert.fail();
             }

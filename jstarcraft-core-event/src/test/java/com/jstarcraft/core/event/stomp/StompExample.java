@@ -11,7 +11,6 @@ import javax.jms.MessageConsumer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import javax.naming.InitialContext;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 

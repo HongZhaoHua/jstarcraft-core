@@ -1,5 +1,7 @@
 package com.jstarcraft.core.event.stomp;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.jstarcraft.core.codec.ContentCodec;
@@ -89,10 +91,24 @@ public class StompEventBus extends AbstractEventBus {
                 if (manager == null) {
                     manager = new EventManager();
                     address2Managers.put(address, manager);
+                    Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
                     String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+                    metadatas.put("destination", destination);
+                    switch (mode) {
+                    case QUEUE: {
+                        // Artemis特定的协议
+                        metadatas.put("destination-type", "ANYCAST");
+                        break;
+                    }
+                    case TOPIC: {
+                        // Artemis特定的协议
+                        metadatas.put("destination-type", "MULTICAST");
+                        break;
+                    }
+                    }
                     EventHandler handler = new EventHandler(address, manager);
-                    session.subscribe(destination, handler);
+                    session.subscribe(destination, metadatas, handler);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -110,9 +126,23 @@ public class StompEventBus extends AbstractEventBus {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
                         address2Managers.remove(address);
+                        Map<String, String> metadatas = new HashMap<>();
                         // TODO 需要防止路径冲突
                         String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
-                        session.unsubscribe(destination);
+                        metadatas.put("destination", destination);
+                        switch (mode) {
+                        case QUEUE: {
+                            // Artemis特定的协议
+                            metadatas.put("destination-type", "ANYCAST");
+                            break;
+                        }
+                        case TOPIC: {
+                            // Artemis特定的协议
+                            metadatas.put("destination-type", "MULTICAST");
+                            break;
+                        }
+                        }
+                        session.unsubscribe(destination, metadatas);
                     }
                 }
             }
@@ -125,9 +155,24 @@ public class StompEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         try {
             Class<?> address = event.getClass();
-            String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
             byte[] bytes = codec.encode(address, event);
-            session.send(destination, Buffer.buffer(bytes));
+            Map<String, String> metadatas = new HashMap<>();
+            // TODO 需要防止路径冲突
+            String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+            metadatas.put("destination", destination);
+            switch (mode) {
+            case QUEUE: {
+                // Artemis特定的协议
+                metadatas.put("destination-type", "ANYCAST");
+                break;
+            }
+            case TOPIC: {
+                // Artemis特定的协议
+                metadatas.put("destination-type", "MULTICAST");
+                break;
+            }
+            }
+            session.send(metadatas, Buffer.buffer(bytes));
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
