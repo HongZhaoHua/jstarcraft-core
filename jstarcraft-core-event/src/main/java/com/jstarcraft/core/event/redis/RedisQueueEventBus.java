@@ -35,19 +35,19 @@ public class RedisQueueEventBus extends AbstractEventBus {
 
         private EventManager manager;
 
-        private RBlockingQueue<byte[]> queue;
+        private RBlockingQueue<byte[]> events;
 
-        private EventThread(Class<?> clazz, EventManager manager, RBlockingQueue<byte[]> queue) {
+        private EventThread(Class<?> clazz, EventManager manager, RBlockingQueue<byte[]> events) {
             this.clazz = clazz;
             this.manager = manager;
-            this.queue = queue;
+            this.events = events;
         }
 
         @Override
         public void run() {
             try {
                 while (true) {
-                    byte[] bytes = queue.take();
+                    byte[] bytes = events.take();
                     try {
                         Object event = codec.decode(clazz, bytes);
                         int size = manager.getSize();
@@ -87,8 +87,8 @@ public class RedisQueueEventBus extends AbstractEventBus {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
                 // TODO 需要防止路径冲突
-                RBlockingQueue<byte[]> queue = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
-                EventThread thread = new EventThread(address, manager, queue);
+                RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
+                EventThread thread = new EventThread(address, manager, events);
                 thread.start();
                 address2Threads.put(address, thread);
             }
@@ -115,9 +115,9 @@ public class RedisQueueEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         Class<?> address = event.getClass();
         // TODO 需要防止路径冲突
-        RBlockingQueue<byte[]> queue = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
+        RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
         byte[] bytes = codec.encode(address, event);
-        queue.add(bytes);
+        events.add(bytes);
     }
 
 }
