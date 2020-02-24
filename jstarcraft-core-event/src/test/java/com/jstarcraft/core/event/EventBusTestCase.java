@@ -6,11 +6,12 @@ import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.jstarcraft.core.event.EventBus;
-import com.jstarcraft.core.event.EventMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class EventBusTestCase {
+
+    protected static final Logger logger = LoggerFactory.getLogger(EventBusTestCase.class);
 
     protected abstract EventBus getEventBus(EventMode mode);
 
@@ -64,7 +65,7 @@ public abstract class EventBusTestCase {
             Assert.assertEquals(10, count);
         }
     }
-    
+
     @Test(timeout = 5000)
     public void testTriggerEventByTopic() throws Exception {
         int size = 10;
