@@ -15,7 +15,7 @@ public abstract class EventBusTestCase {
 
     protected abstract EventBus getEventBus(EventMode mode);
 
-    @Test(timeout = 5000)
+    @Test
     public void testTriggerEventByQueue() throws Exception {
         int size = 10;
         Set<Class<?>> addresses = new HashSet<>();
@@ -66,7 +66,7 @@ public abstract class EventBusTestCase {
         }
     }
 
-    @Test(timeout = 5000)
+    @Test
     public void testTriggerEventByTopic() throws Exception {
         int size = 10;
         Set<Class<?>> addresses = new HashSet<>();
