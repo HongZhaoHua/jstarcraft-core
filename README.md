@@ -55,9 +55,16 @@ JStarCraft Core框架各个模块之间的关系:
     * TCP
     * UDP
 * 5.事件(event)
-    * AMQP
-    * MQTT
-    * STOMP
+    * 模式
+       * 队列(queue)
+       * 主题(topic)
+    * 协议
+        * AMQP
+        * JMS
+        * Memory
+        * MQTT
+        * STOMP
+        * Vert.x
 * 6.监控(monitor)
     * 追踪(trace)
         * 日志(log)
