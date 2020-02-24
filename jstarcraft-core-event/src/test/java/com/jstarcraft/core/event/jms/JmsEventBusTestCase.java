@@ -7,8 +7,8 @@ import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
@@ -21,15 +21,15 @@ import com.jstarcraft.core.utility.StringUtility;
 
 public class JmsEventBusTestCase extends EventBusTestCase {
 
-    private static ActiveMQConnectionFactory factory;
+    private ActiveMQConnectionFactory factory;
 
-    @BeforeClass
-    public static void start() {
+    @Before
+    public void start() {
         factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
     }
 
-    @AfterClass
-    public static void stop() throws Exception {
+    @After
+    public void stop() throws Exception {
         JMSContext context = factory.createContext();
         Destination destination = context.createQueue(MockEvent.class.getName());
         JMSConsumer consumer = context.createConsumer(destination);
