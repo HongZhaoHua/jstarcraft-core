@@ -22,7 +22,7 @@ import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.StorageMetadata;
 import com.jstarcraft.core.storage.StoragePagination;
-import com.jstarcraft.core.storage.exception.OrmQueryException;
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -119,7 +119,7 @@ public class MongoAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         MongoMetadata metadata = metadatas.get(clazz);
         if (metadata.getPrimaryName().equals(name)) {
@@ -164,7 +164,7 @@ public class MongoAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         MongoMetadata metadata = metadatas.get(clazz);
         if (metadata.getPrimaryName().equals(name)) {
@@ -319,7 +319,7 @@ public class MongoAccessor implements StorageAccessor {
                     final T object = stream.next();
                     iterator.iterate(object);
                 } catch (Throwable throwable) {
-                    throw new OrmQueryException(throwable);
+                    throw new StorageQueryException(throwable);
                 }
             }
         }
@@ -353,7 +353,7 @@ public class MongoAccessor implements StorageAccessor {
                     final T object = stream.next();
                     iterator.iterate(object);
                 } catch (Throwable throwable) {
-                    throw new OrmQueryException(throwable);
+                    throw new StorageQueryException(throwable);
                 }
             }
         }
@@ -387,7 +387,7 @@ public class MongoAccessor implements StorageAccessor {
                     final T object = stream.next();
                     iterator.iterate(object);
                 } catch (Throwable throwable) {
-                    throw new OrmQueryException(throwable);
+                    throw new StorageQueryException(throwable);
                 }
             }
         }

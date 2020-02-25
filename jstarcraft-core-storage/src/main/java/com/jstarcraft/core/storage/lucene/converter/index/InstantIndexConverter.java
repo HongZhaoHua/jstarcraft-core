@@ -16,7 +16,7 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.converter.IndexConverter;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
@@ -58,7 +58,7 @@ public class InstantIndexConverter implements IndexConverter {
         if (ZoneOffset.class.isAssignableFrom(clazz)) {
 
         }
-        throw new OrmException();
+        throw new StorageException();
     }
 
 }

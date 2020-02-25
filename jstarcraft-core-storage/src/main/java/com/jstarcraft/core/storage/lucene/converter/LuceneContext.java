@@ -10,7 +10,7 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneStore;
@@ -148,7 +148,7 @@ public class LuceneContext {
                     }
                 }
             } catch (Exception exception) {
-                throw new OrmException(exception);
+                throw new StorageException(exception);
             }
         });
 

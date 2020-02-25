@@ -19,7 +19,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import com.jstarcraft.core.storage.StorageIterator;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.utility.KeyValue;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
@@ -67,7 +67,7 @@ public class LuceneEngine implements AutoCloseable {
             this.readLock = lock.readLock();
             this.writeLock = lock.writeLock();
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 
@@ -163,7 +163,7 @@ public class LuceneEngine implements AutoCloseable {
             lockWrite();
             this.transienceManager.createDocument(id, document);
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockWrite();
         }
@@ -180,7 +180,7 @@ public class LuceneEngine implements AutoCloseable {
             lockWrite();
             this.transienceManager.updateDocument(id, document);
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockWrite();
         }
@@ -197,7 +197,7 @@ public class LuceneEngine implements AutoCloseable {
             lockWrite();
             this.transienceManager.deleteDocument(id);
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockWrite();
         }
@@ -242,7 +242,7 @@ public class LuceneEngine implements AutoCloseable {
             }
             return new KeyValue<>(documents, scores);
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockRead();
             readLock.unlock();
@@ -282,7 +282,7 @@ public class LuceneEngine implements AutoCloseable {
                 iterator.iterate(document);
             }
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockRead();
             readLock.unlock();
@@ -308,7 +308,7 @@ public class LuceneEngine implements AutoCloseable {
             int count = this.searcher.count(query);
             return count;
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         } finally {
             unlockRead();
             readLock.unlock();
@@ -322,7 +322,7 @@ public class LuceneEngine implements AutoCloseable {
             this.transienceManager.close();
             this.persistenceManager.close();
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 

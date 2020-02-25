@@ -13,7 +13,7 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
 import com.jstarcraft.core.storage.lucene.converter.SortConverter;
@@ -56,7 +56,7 @@ public class NumberSortConverter implements SortConverter {
             indexables.add(new DoubleDocValuesField(path, (double) data));
             return indexables;
         }
-        throw new OrmException();
+        throw new StorageException();
     }
 
     @Override

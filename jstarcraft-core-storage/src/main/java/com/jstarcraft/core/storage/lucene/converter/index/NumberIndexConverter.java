@@ -17,8 +17,8 @@ import org.apache.lucene.search.Query;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.storage.StorageCondition;
-import com.jstarcraft.core.storage.exception.OrmException;
-import com.jstarcraft.core.storage.exception.OrmQueryException;
+import com.jstarcraft.core.storage.exception.StorageException;
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.converter.IndexConverter;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
@@ -61,13 +61,13 @@ public class NumberIndexConverter implements IndexConverter {
             indexables.add(new DoublePoint(path, (double) data));
             return indexables;
         }
-        throw new OrmException();
+        throw new StorageException();
     }
 
     @Override
     public Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, StorageCondition condition, Object... data) {
         if (!condition.checkValues(data)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = ClassUtility.primitiveToWrapper(clazz);

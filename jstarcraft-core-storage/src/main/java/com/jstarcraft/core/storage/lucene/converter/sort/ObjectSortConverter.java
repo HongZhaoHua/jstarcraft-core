@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
 import com.jstarcraft.core.storage.lucene.converter.SortConverter;
@@ -42,7 +42,7 @@ public class ObjectSortConverter implements SortConverter {
             return indexables;
         } catch (Exception exception) {
             // TODO
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 

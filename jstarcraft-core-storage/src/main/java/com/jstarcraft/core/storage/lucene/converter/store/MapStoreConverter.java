@@ -13,7 +13,7 @@ import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
 import com.jstarcraft.core.storage.lucene.converter.StoreConverter;
@@ -61,7 +61,7 @@ public class MapStoreConverter implements StoreConverter {
             return map;
         } catch (Exception exception) {
             // TODO
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 
@@ -99,7 +99,7 @@ public class MapStoreConverter implements StoreConverter {
             return indexables;
         } catch (Exception exception) {
             // TODO
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 

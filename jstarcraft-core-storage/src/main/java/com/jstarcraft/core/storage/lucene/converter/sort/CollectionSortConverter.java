@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 import org.apache.lucene.index.IndexableField;
 
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneSort;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
 import com.jstarcraft.core.storage.lucene.converter.SortConverter;
@@ -26,7 +26,7 @@ public class CollectionSortConverter implements SortConverter {
         Collection<IndexableField> indexables = new LinkedList<>();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
-        throw new OrmException();
+        throw new StorageException();
     }
 
 }

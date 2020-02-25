@@ -18,7 +18,7 @@ import org.apache.lucene.index.IndexableField;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.StorageMetadata;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneConfiguration;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneSort;
@@ -163,7 +163,7 @@ public class LuceneMetadata implements StorageMetadata {
             return instance;
         } catch (Exception exception) {
             // TODO
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 
@@ -215,7 +215,7 @@ public class LuceneMetadata implements StorageMetadata {
             return document;
         } catch (Exception exception) {
             // TODO
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 

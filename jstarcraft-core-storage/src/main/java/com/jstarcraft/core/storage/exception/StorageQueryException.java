@@ -5,23 +5,23 @@ package com.jstarcraft.core.storage.exception;
  * 
  * @author Birdy
  */
-public class OrmQueryException extends OrmException {
+public class StorageQueryException extends StorageException {
 
     private static final long serialVersionUID = -1710027252202582783L;
 
-    public OrmQueryException() {
+    public StorageQueryException() {
         super();
     }
 
-    public OrmQueryException(String message, Throwable cause) {
+    public StorageQueryException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public OrmQueryException(String message) {
+    public StorageQueryException(String message) {
         super(message);
     }
 
-    public OrmQueryException(Throwable cause) {
+    public StorageQueryException(Throwable cause) {
         super(cause);
     }
 

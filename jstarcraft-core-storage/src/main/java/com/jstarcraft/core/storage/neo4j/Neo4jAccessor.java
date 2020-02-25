@@ -24,7 +24,7 @@ import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.StorageMetadata;
 import com.jstarcraft.core.storage.StoragePagination;
-import com.jstarcraft.core.storage.exception.OrmQueryException;
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -225,7 +225,7 @@ public class Neo4jAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         try {
             Neo4jMetadata metadata = metadatas.get(clazz);
@@ -283,7 +283,7 @@ public class Neo4jAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         try {
             Neo4jMetadata metadata = metadatas.get(clazz);

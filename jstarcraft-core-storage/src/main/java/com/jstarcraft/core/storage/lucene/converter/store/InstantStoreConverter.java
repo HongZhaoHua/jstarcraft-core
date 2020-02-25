@@ -16,7 +16,7 @@ import org.apache.lucene.document.StoredField;
 import org.apache.lucene.index.IndexableField;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneStore;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
 import com.jstarcraft.core.storage.lucene.converter.StoreConverter;
@@ -62,7 +62,7 @@ public class InstantStoreConverter implements StoreConverter {
         if (ZoneOffset.class.isAssignableFrom(clazz)) {
 
         }
-        throw new OrmException();
+        throw new StorageException();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class InstantStoreConverter implements StoreConverter {
         if (ZoneOffset.class.isAssignableFrom(clazz)) {
 
         }
-        throw new OrmException();
+        throw new StorageException();
     }
 
 }

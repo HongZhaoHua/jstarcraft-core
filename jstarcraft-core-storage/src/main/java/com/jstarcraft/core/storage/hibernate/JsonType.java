@@ -19,7 +19,7 @@ import org.hibernate.usertype.UserType;
 
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.storage.exception.OrmAccessException;
+import com.jstarcraft.core.storage.exception.StorageAccessException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -72,7 +72,7 @@ public class JsonType implements UserType {
         try {
             type = ReflectionUtility.findField(object.getClass(), fieldName).getGenericType();
         } catch (Exception exception) {
-            throw new OrmAccessException(exception);
+            throw new StorageAccessException(exception);
         }
         Object value = JsonUtility.string2Object(json, type);
         return value;
@@ -152,7 +152,7 @@ public class JsonType implements UserType {
             }
         }
         String message = StringUtility.format("数据列{}对应字段的不存在", columnName);
-        throw new OrmAccessException(message);
+        throw new StorageAccessException(message);
     }
 
     private static String getColumnName(ResultSet resultSet, String fieldName) throws SQLException {
@@ -166,7 +166,7 @@ public class JsonType implements UserType {
             }
         }
         String message = StringUtility.format("字段{}对应的数据列不存在", fieldName);
-        throw new OrmAccessException(message);
+        throw new StorageAccessException(message);
     }
 
 }

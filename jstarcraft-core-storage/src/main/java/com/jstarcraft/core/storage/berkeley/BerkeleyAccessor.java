@@ -28,7 +28,7 @@ import com.jstarcraft.core.storage.StoragePagination;
 import com.jstarcraft.core.storage.berkeley.exception.BerkeleyOperationException;
 import com.jstarcraft.core.storage.berkeley.exception.BerkeleyStateException;
 import com.jstarcraft.core.storage.berkeley.exception.BerkeleyVersionException;
-import com.jstarcraft.core.storage.exception.OrmQueryException;
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.utility.DelayElement;
 import com.jstarcraft.core.utility.SensitivityQueue;
 import com.jstarcraft.core.utility.StringUtility;
@@ -309,7 +309,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
@@ -319,7 +319,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();

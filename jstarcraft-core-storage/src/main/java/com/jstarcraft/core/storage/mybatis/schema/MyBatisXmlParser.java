@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jstarcraft.core.common.conversion.xml.XmlUtility;
-import com.jstarcraft.core.storage.exception.OrmConfigurationException;
+import com.jstarcraft.core.storage.exception.StorageConfigurationException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -66,7 +66,7 @@ public class MyBatisXmlParser extends AbstractBeanDefinitionParser {
         } catch (IOException exception) {
             String message = "无法获取资源";
             LOGGER.error(message, exception);
-            throw new OrmConfigurationException(message, exception);
+            throw new StorageConfigurationException(message, exception);
         }
     }
 
@@ -100,7 +100,7 @@ public class MyBatisXmlParser extends AbstractBeanDefinitionParser {
                     } catch (ClassNotFoundException exception) {
                         String message = StringUtility.format("无法获取类型[{}]", className);
                         LOGGER.error(message);
-                        throw new OrmConfigurationException(message, exception);
+                        throw new StorageConfigurationException(message, exception);
                     }
                 }
             }
@@ -117,7 +117,7 @@ public class MyBatisXmlParser extends AbstractBeanDefinitionParser {
                 } catch (ClassNotFoundException exception) {
                     String message = StringUtility.format("无法获取类型[{}]", className);
                     LOGGER.error(message);
-                    throw new OrmConfigurationException(message, exception);
+                    throw new StorageConfigurationException(message, exception);
                 }
             }
         }

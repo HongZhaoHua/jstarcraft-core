@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.jstarcraft.core.common.conversion.xml.XmlUtility;
-import com.jstarcraft.core.storage.exception.OrmConfigurationException;
+import com.jstarcraft.core.storage.exception.StorageConfigurationException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneConfiguration;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -72,7 +72,7 @@ public class LuceneXmlParser extends AbstractBeanDefinitionParser {
         } catch (IOException exception) {
             String message = "无法获取资源";
             LOGGER.error(message, exception);
-            throw new OrmConfigurationException(message, exception);
+            throw new StorageConfigurationException(message, exception);
         }
     }
 
@@ -109,7 +109,7 @@ public class LuceneXmlParser extends AbstractBeanDefinitionParser {
                     } catch (ClassNotFoundException exception) {
                         String message = StringUtility.format("无法获取类型[{}]", className);
                         LOGGER.error(message);
-                        throw new OrmConfigurationException(message, exception);
+                        throw new StorageConfigurationException(message, exception);
                     }
                 }
             }
@@ -126,7 +126,7 @@ public class LuceneXmlParser extends AbstractBeanDefinitionParser {
                 } catch (ClassNotFoundException exception) {
                     String message = StringUtility.format("无法获取类型[{}]", className);
                     LOGGER.error(message);
-                    throw new OrmConfigurationException(message, exception);
+                    throw new StorageConfigurationException(message, exception);
                 }
             }
         }

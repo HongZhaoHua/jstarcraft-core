@@ -1,6 +1,6 @@
 package com.jstarcraft.core.storage.berkeley.exception;
 
-import com.jstarcraft.core.storage.exception.OrmException;
+import com.jstarcraft.core.storage.exception.StorageException;
 
 /**
  * Berkeley迁移异常
@@ -8,7 +8,7 @@ import com.jstarcraft.core.storage.exception.OrmException;
  * @author Birdy
  *
  */
-public class BerkeleyMigrationException extends OrmException {
+public class BerkeleyMigrationException extends StorageException {
 
     private static final long serialVersionUID = 9130426400020103627L;
 

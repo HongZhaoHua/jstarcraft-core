@@ -24,8 +24,8 @@ import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.StorageMetadata;
 import com.jstarcraft.core.storage.StoragePagination;
-import com.jstarcraft.core.storage.exception.OrmException;
-import com.jstarcraft.core.storage.exception.OrmQueryException;
+import com.jstarcraft.core.storage.exception.StorageException;
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -70,7 +70,7 @@ public class MyBatisAccessor implements StorageAccessor {
             }
             return caseStrategy;
         } catch (Exception exception) {
-            throw new OrmException(exception);
+            throw new StorageException(exception);
         }
     }
 
@@ -160,7 +160,7 @@ public class MyBatisAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
@@ -211,7 +211,7 @@ public class MyBatisAccessor implements StorageAccessor {
     @Override
     public <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StorageCondition condition, String name, I... values) {
         if (!condition.checkValues(values)) {
-            throw new OrmQueryException();
+            throw new StorageQueryException();
         }
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
