@@ -1,0 +1,21 @@
+消息队列 RocketMQ:
+https://help.aliyun.com/product/29530.html
+
+RocketMQ消费模式:
+https://www.jianshu.com/p/84ab3a7e4b91
+
+消息中间件—RocketMQ的RPC通信:
+https://www.jianshu.com/p/d5da161efc33
+https://www.jianshu.com/p/8418af81a815
+
+消息中间件—RocketMQ消息发送:
+http://www.uml.org.cn/zjjs/201901083.asp
+
+消息中间件—RocketMQ消息消费:
+https://www.jianshu.com/p/f071d5069059
+https://www.jianshu.com/p/fac642f3c1af
+https://www.jianshu.com/p/5843cdcd02aa
+
+消息中间件—RocketMQ消息存储:
+https://www.jianshu.com/p/b73fdd893f98
+https://www.jianshu.com/p/6d0c118c17de
