@@ -1,6 +1,9 @@
 消息队列的两种模式:
 https://www.cnblogs.com/jackytang/p/9011051.html
 
+ActiveMQ的详细说明,queue/topic的区别(精选):
+https://www.cnblogs.com/lemon-flm/p/7676047.html
+
 JMS、AMQP和MQTT主要特性:
 https://www.cnblogs.com/zhangyu1024/p/6138166.html
 
@@ -10,134 +13,10 @@ https://www.eefocus.com/communication/393583
 物联网通信协议——比较-MQTT、 DDS、 AMQP、XMPP、 JMS、 REST、 CoAP:
 https://www.cnblogs.com/saryli/p/9742709.html
 
-深入理解AMQP协议:
-https://blog.csdn.net/weixin_37641832/article/details/83270778
-
-MQTT协议中文版:
-https://github.com/mcxiaoke/mqtt
-
-STOMP协议详解:
-https://www.cnblogs.com/my_life/articles/7002138.html
-
-JMS2.0规范中文版:
-https://github.com/kimmking/JMS2CN
-
-JMS2.0中的新内容:
-https://www.oracle.com/technetwork/cn/articles/java/jms20-1947669-zhs.html
-https://www.oracle.com/technetwork/cn/articles/java/jms2messaging-1954190-zhs.html
-
-JMS系列:
-https://www.jianshu.com/p/4cf35814fd9b
-https://www.jianshu.com/p/a7449f5e7ced
-https://www.jianshu.com/p/0c0a7b21df29
-https://www.jianshu.com/p/92a8f6f402df
-https://www.jianshu.com/p/07dd326eb7d0
-
-JAVA消息服务JMS规范及原理详解:
-https://www.cnblogs.com/molao-doing/articles/6557305.html
-
------ Vert.x -----
-
-https://vertx.io/docs/#messaging
-https://vertx.io/docs/#mqtt
-https://github.com/vert-x3/vertx-examples
-https://github.com/vert-x3/vertx-guide-for-java-devs
-
-Java API 版本的Vert.x Core 手册:
-https://github.com/quanke/vert-x-core-manual-for-java
-
-Vert.x 官方文档中文翻译:
-https://github.com/VertxChina/vertx-translation-chinese
-
-Vert.x Java开发指南:
-https://blog.csdn.net/elinespace/article/details/80373294
-https://blog.csdn.net/elinespace/article/details/80377709
-https://blog.csdn.net/elinespace/article/details/80381261
-https://blog.csdn.net/elinespace/article/details/80470153
-https://blog.csdn.net/elinespace/article/details/80470846
-https://blog.csdn.net/elinespace/article/details/80558824
-https://blog.csdn.net/elinespace/article/details/80559368
-https://blog.csdn.net/elinespace/article/details/80663688
-https://blog.csdn.net/elinespace/article/details/80675371
-https://blog.csdn.net/elinespace/article/details/80711513
-https://blog.csdn.net/elinespace/article/details/80717135
-https://blog.csdn.net/elinespace/article/details/80781526
-
-在Java中构建响应式微服务系统:
-https://blog.csdn.net/elinespace/article/details/80785654
-https://blog.csdn.net/elinespace/article/details/80793365
-https://blog.csdn.net/elinespace/article/details/82531072
-
-Vert.x系列:
-https://my.oschina.net/u/2382040/blog/1926203
-https://my.oschina.net/u/2382040/blog/3024868
-https://my.oschina.net/u/2382040/blog/3029310
-https://my.oschina.net/u/2382040/blog/3026728
-https://my.oschina.net/u/2382040/blog/3030394
-
------ ActiveMQ -----
-
-ActiveMQ的详细说明,queue/topic的区别(精选):
-https://www.cnblogs.com/lemon-flm/p/7676047.html
-
-Spring消息之JMS:
-https://www.cnblogs.com/jmcui/p/8906803.html
-
-最简单的Spring整合JMS学习:
-https://blog.csdn.net/luo609630199/article/details/82684721
-
-Spring AMQP ActiveMQ教程:
-https://blog.csdn.net/Aria_Miazzy/article/details/88382141
-
-SpringMVC+Spring+Mybatis框架整合MQTT通信协议+ActiveMQ作为中间件进行消息的发布与订阅:
-https://blog.csdn.net/qq_34178998/article/details/93158429
-
------ Artemis -----
-
-Artemis教程:
-https://blog.csdn.net/guiliguiwang
-
-Apache ActiveMQ Artemis实战:
-http://www.lanxinbase.com/?p=2308
+----- 整合各种消息 -----
 
 Artemis AMQP/MQTT/OpenWire/STOMP 示例:
 https://github.com/apache/activemq-artemis/tree/master/examples/protocols
-
-MQTT 服务器 Apache ActiveMQ Artemis 搭建:
-https://blog.csdn.net/richiezhu/article/details/82288495
-
-Windows下安装Apache ActiveMQ Artemis消息队列, 搭建MQTT服务器:
-https://www.jianshu.com/p/b2734268aaaf
-
------ Qpid -----
-
-A message-oriented middleware message broker written in Java that stores, routes, and forwards messages using AMQP.
-https://github.com/apache/qpid-broker-j
-
-JMS和QPID:
-https://blog.csdn.net/u013789656/article/details/80940328
-https://blog.csdn.net/u013789656/article/details/80940530
-
------ RabbitMQ -----
-
-理解RabbitMQ中的AMQP-0-9-1模型:
-https://www.cnblogs.com/throwable/p/12275645.html
-
-java操作RabbitMQ(原生java客户端amqp-client):
-https://blog.csdn.net/u010904188/article/details/81066040
-
-RabbitMQ Java客户端API指南:
-https://blog.csdn.net/qq_34446485/article/details/81327789
-
------ Redis -----
-
-Redis实现消息队列的4种方案:
-https://www.jianshu.com/p/d32b16f12f09
-
-Lua的字符串匹配与正则表达式:
-https://www.cnblogs.com/meamin9/p/4502461.html
-
------ 整合各种消息 -----
 
 The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
 https://github.com/moscajs/ascoltatori

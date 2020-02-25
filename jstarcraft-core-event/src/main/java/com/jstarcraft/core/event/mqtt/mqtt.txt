@@ -1,0 +1,8 @@
+MQTT协议中文版:
+https://github.com/mcxiaoke/mqtt
+
+Vert.x MQTT:
+https://vertx.io/docs/vertx-mqtt/java/
+
+SpringMVC+Spring+Mybatis框架整合MQTT通信协议+ActiveMQ作为中间件进行消息的发布与订阅:
+https://blog.csdn.net/qq_34178998/article/details/93158429

@@ -1,0 +1,5 @@
+STOMP协议详解:
+https://www.cnblogs.com/my_life/articles/7002138.html
+
+Vert.x STOMP:
+https://vertx.io/docs/vertx-stomp/java/
