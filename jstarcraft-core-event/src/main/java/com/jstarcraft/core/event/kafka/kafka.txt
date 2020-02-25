@@ -1,3 +1,10 @@
+Kafka核心设计与实践原理总结:
+https://blog.csdn.net/wk52525/article/details/96985534
+https://blog.csdn.net/wk52525/article/details/98070770
+
+Kafka从入门到实践:
+https://mp.weixin.qq.com/s?__biz=MzIxMjY0NzA0Mg==&mid=2247484049&idx=1&sn=466e9993a069dabc35b02f2ca23b5d8f
+
 Kafka中文教程:
 https://www.orchome.com/kafka/index
 
