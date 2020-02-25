@@ -2,7 +2,7 @@
 https://help.aliyun.com/product/29530.html
 
 RocketMQ消费模式:
-https://www.jianshu.com/p/84ab3a7e4b91
+https://mp.weixin.qq.com/s/QdNQFG6ohhPpNppScEXdUQ
 
 消息中间件—RocketMQ的RPC通信:
 https://www.jianshu.com/p/d5da161efc33
