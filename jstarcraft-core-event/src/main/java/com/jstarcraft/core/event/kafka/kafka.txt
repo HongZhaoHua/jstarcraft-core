@@ -1,0 +1,36 @@
+Kafka中文教程:
+https://www.orchome.com/kafka/index
+
+Apache Kafka 教程:
+https://www.w3cschool.cn/apache_kafka/
+
+Kafka入门教程轻松学:
+https://blog.csdn.net/liyiming2017/article/details/82790040
+https://blog.csdn.net/liyiming2017/article/details/82790574
+https://blog.csdn.net/liyiming2017/article/details/82805479
+https://blog.csdn.net/liyiming2017/article/details/82843036
+https://blog.csdn.net/liyiming2017/article/details/82867765
+https://blog.csdn.net/liyiming2017/article/details/82968550
+https://blog.csdn.net/liyiming2017/article/details/82984638
+https://blog.csdn.net/liyiming2017/article/details/82986606
+
+Kafka 新版生产者 API:
+https://www.jianshu.com/p/6e6c8ea297ca
+
+Kafka 新版消费者 API:
+https://www.jianshu.com/p/48eddba198fa
+https://www.jianshu.com/p/6c7055b84de7
+https://www.jianshu.com/p/a4c1d281b66a
+https://www.jianshu.com/p/6e89db47c116
+
+Kafka 主题管理 API:
+https://www.jianshu.com/p/0d319bc8c4e3
+
+Kafka 自定义分区器:
+https://www.jianshu.com/p/9e213cdd21a5
+
+Kafka 自定义序列化器和反序列化器:
+https://www.jianshu.com/p/45d56cd39572
+
+Kafka下的生产消费者模式与订阅发布模式:
+https://blog.csdn.net/zwgdft/article/details/54633105
