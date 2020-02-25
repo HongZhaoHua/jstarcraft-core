@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
@@ -20,6 +21,8 @@ import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class JmsEventBus extends AbstractEventBus {
+
+    private ConnectionFactory factory;
 
     private JMSContext context;
 
@@ -83,9 +86,10 @@ public class JmsEventBus extends AbstractEventBus {
 
     };
 
-    public JmsEventBus(EventMode mode, JMSContext context, ContentCodec codec) {
+    public JmsEventBus(EventMode mode, ConnectionFactory factory, ContentCodec codec) {
         super(mode);
-        this.context = context;
+        this.factory = factory;
+        this.context = factory.createContext();
         this.codec = codec;
         this.producer = context.createProducer();
         this.address2Consumers = new ConcurrentHashMap<>();
@@ -111,6 +115,8 @@ public class JmsEventBus extends AbstractEventBus {
                     break;
                 }
                 }
+                // 注意:JMSContext不能共享.
+                JMSContext context = factory.createContext();
                 JMSConsumer consumer = context.createConsumer(destination);
                 EventHandler handler = new EventHandler(address, manager);
                 consumer.setMessageListener(handler);
