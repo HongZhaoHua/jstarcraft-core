@@ -130,12 +130,46 @@
                 <artifactId>netty-all</artifactId>
                 <version>4.1.44.Final</version>
             </dependency>
-            
+
             <!-- 事件框架依赖 -->
             <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-core</artifactId>
+                <version>3.8.5</version>
+            </dependency>
+
+            <!-- AMQP框架依赖 -->
+            <dependency>
                 <groupId>org.apache.qpid</groupId>
-                <artifactId>qpid-broker-core</artifactId>
-                <version>7.1.8</version>
+                <artifactId>qpid-jms-client</artifactId>
+                <version>0.48.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-amqp-client</artifactId>
+                <version>3.8.5</version>
+            </dependency>
+
+            <!-- JMS框架依赖 -->
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-jms-client</artifactId>
+                <version>2.11.0</version>
+            </dependency>
+
+            <!-- MQTT框架依赖 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-mqtt</artifactId>
+                <version>3.8.5</version>
+            </dependency>
+
+            <!-- STOMP框架依赖 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-stomp</artifactId>
+                <version>3.8.5</version>
             </dependency>
 
             <!-- 监控框架依赖 -->
@@ -287,7 +321,7 @@
                 <artifactId>jython-standalone</artifactId>
                 <version>2.7.1</version>
             </dependency>
-            
+
             <!-- 事务框架依赖 -->
             <dependency>
                 <groupId>com.hazelcast</groupId>
