@@ -23,14 +23,16 @@ public class JmsEventBusTestCase extends EventBusTestCase {
 
     private ActiveMQConnectionFactory factory;
 
+    private JMSContext context;
+
     @Before
     public void start() {
         factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        context = factory.createContext();
     }
 
     @After
     public void stop() throws Exception {
-        JMSContext context = factory.createContext();
         Destination destination = context.createQueue(MockEvent.class.getName());
         JMSConsumer consumer = context.createConsumer(destination);
         // 清理测试消息
@@ -42,12 +44,12 @@ public class JmsEventBusTestCase extends EventBusTestCase {
         });
         Thread.sleep(1000L);
         logger.info("清理JMS测试消息结束");
+        context.close();
         factory.close();
     }
 
     @Override
     protected EventBus getEventBus(EventMode mode) {
-        JMSContext context = factory.createContext();
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
         return new JmsEventBus(mode, context, codec);

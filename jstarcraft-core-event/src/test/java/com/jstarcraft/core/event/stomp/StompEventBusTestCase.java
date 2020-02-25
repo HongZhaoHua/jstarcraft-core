@@ -39,7 +39,11 @@ public class StompEventBusTestCase extends EventBusTestCase {
 
     @After
     public void stop() throws Exception {
-        connection.close();
+        CountDownLatch latch = new CountDownLatch(1);
+        connection.disconnect((disconnect) -> {
+            latch.countDown();
+        });
+        latch.await();
         session.close();
         vertx.close();
     }
