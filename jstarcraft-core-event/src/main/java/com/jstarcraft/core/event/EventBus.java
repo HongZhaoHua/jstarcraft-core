@@ -28,7 +28,7 @@ public interface EventBus {
      * @param address
      * @return
      */
-    Collection<EventMonitor> getMonitors(Class<?> address);
+    Collection<EventMonitor> getMonitors(Class address);
 
     /**
      * 注册事件监控者
@@ -37,7 +37,7 @@ public interface EventBus {
      * @param monitor
      * @return
      */
-    void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor);
+    void registerMonitor(Set<Class> addresses, EventMonitor monitor);
 
     /**
      * 注销事件监控者
@@ -46,7 +46,7 @@ public interface EventBus {
      * @param monitor
      * @return
      */
-    void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor);
+    void unregisterMonitor(Set<Class> addresses, EventMonitor monitor);
 
     /**
      * 触发事件

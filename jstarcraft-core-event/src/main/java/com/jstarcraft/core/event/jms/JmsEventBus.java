@@ -30,15 +30,15 @@ public class JmsEventBus extends AbstractEventBus {
 
     private JMSProducer producer;
 
-    private ConcurrentMap<Class<?>, JMSConsumer> address2Consumers;
+    private ConcurrentMap<Class, JMSConsumer> address2Consumers;
 
     private class EventHandler implements MessageListener {
 
-        private Class<?> clazz;
+        private Class clazz;
 
         private EventManager manager;
 
-        private EventHandler(Class<?> clazz, EventManager manager) {
+        private EventHandler(Class clazz, EventManager manager) {
             this.clazz = clazz;
             this.manager = manager;
         }
@@ -96,8 +96,8 @@ public class JmsEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager == null) {
                 manager = new EventManager();
@@ -127,8 +127,8 @@ public class JmsEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager != null) {
                 manager.detachMonitor(monitor);
@@ -143,7 +143,7 @@ public class JmsEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class<?> address = event.getClass();
+        Class address = event.getClass();
         Destination destination = null;
         switch (mode) {
         case QUEUE: {

@@ -67,9 +67,9 @@ public class MqttTopicEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager == null) {
                     manager = new EventManager();
@@ -89,9 +89,9 @@ public class MqttTopicEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
@@ -114,7 +114,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class<?> address = event.getClass();
+            Class address = event.getClass();
             byte[] bytes = codec.encode(address, event);
             // TODO 需要防止路径冲突
             session.publish(mode + address.getName(), Buffer.buffer(bytes), MqttQoS.AT_MOST_ONCE, false, false);

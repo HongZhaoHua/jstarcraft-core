@@ -18,7 +18,7 @@ public abstract class EventBusTestCase {
     @Test
     public void testTriggerQueueEvent() throws Exception {
         int size = 10;
-        Set<Class<?>> addresses = new HashSet<>();
+        Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
         EventBus bus = getEventBus(EventMode.QUEUE);
         Assert.assertEquals(EventMode.QUEUE, bus.getMode());
@@ -70,7 +70,7 @@ public abstract class EventBusTestCase {
     @Test
     public void testTriggerTopicEvent() throws Exception {
         int size = 10;
-        Set<Class<?>> addresses = new HashSet<>();
+        Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
         EventBus bus = getEventBus(EventMode.TOPIC);
         Assert.assertEquals(EventMode.TOPIC, bus.getMode());

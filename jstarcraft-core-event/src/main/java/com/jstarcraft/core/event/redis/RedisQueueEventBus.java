@@ -27,17 +27,17 @@ public class RedisQueueEventBus extends AbstractEventBus {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class<?>, EventThread> address2Threads;
+    private ConcurrentMap<Class, EventThread> address2Threads;
 
     private class EventThread extends Thread {
 
-        private Class<?> clazz;
+        private Class clazz;
 
         private EventManager manager;
 
         private RBlockingQueue<byte[]> events;
 
-        private EventThread(Class<?> clazz, EventManager manager, RBlockingQueue<byte[]> events) {
+        private EventThread(Class clazz, EventManager manager, RBlockingQueue<byte[]> events) {
             this.clazz = clazz;
             this.manager = manager;
             this.events = events;
@@ -80,8 +80,8 @@ public class RedisQueueEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager == null) {
                 manager = new EventManager();
@@ -97,8 +97,8 @@ public class RedisQueueEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager != null) {
                 manager.detachMonitor(monitor);
@@ -113,7 +113,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class<?> address = event.getClass();
+        Class address = event.getClass();
         // TODO 需要防止路径冲突
         RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
         byte[] bytes = codec.encode(address, event);

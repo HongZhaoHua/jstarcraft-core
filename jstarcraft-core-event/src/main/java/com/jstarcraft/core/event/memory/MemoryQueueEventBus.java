@@ -22,9 +22,9 @@ public class MemoryQueueEventBus extends AbstractEventBus {
 
     private int size;
 
-    private ConcurrentMap<Class<?>, BlockingQueue<Object>> address2Events;
+    private ConcurrentMap<Class, BlockingQueue<Object>> address2Events;
 
-    private ConcurrentMap<Class<?>, EventThread> address2Threads;
+    private ConcurrentMap<Class, EventThread> address2Threads;
 
     private class EventThread extends Thread {
 
@@ -68,7 +68,7 @@ public class MemoryQueueEventBus extends AbstractEventBus {
         this.address2Threads = new ConcurrentHashMap<>();
     }
 
-    private BlockingQueue<Object> getEvents(Class<?> address) {
+    private BlockingQueue<Object> getEvents(Class address) {
         BlockingQueue<Object> events = address2Events.get(address);
         if (events == null) {
             events = new ArrayBlockingQueue<>(size);
@@ -78,8 +78,8 @@ public class MemoryQueueEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager == null) {
                 manager = new EventManager();
@@ -94,8 +94,8 @@ public class MemoryQueueEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager != null) {
                 manager.detachMonitor(monitor);
@@ -110,7 +110,7 @@ public class MemoryQueueEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class<?> address = event.getClass();
+        Class address = event.getClass();
         BlockingQueue<Object> events = getEvents(address);
         events.offer(event);
     }

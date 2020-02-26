@@ -29,15 +29,15 @@ public class VertxEventBus extends AbstractEventBus {
 
     private JMSProducer producer;
 
-    private ConcurrentMap<Class<?>, MessageConsumer<byte[]>> address2Consumers;
+    private ConcurrentMap<Class, MessageConsumer<byte[]>> address2Consumers;
 
     private class EventHandler implements Handler<Message<byte[]>> {
 
-        private Class<?> clazz;
+        private Class clazz;
 
         private EventManager manager;
 
-        private EventHandler(Class<?> clazz, EventManager manager) {
+        private EventHandler(Class clazz, EventManager manager) {
             this.clazz = clazz;
             this.manager = manager;
         }
@@ -93,9 +93,9 @@ public class VertxEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager == null) {
                     manager = new EventManager();
@@ -118,9 +118,9 @@ public class VertxEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
@@ -142,7 +142,7 @@ public class VertxEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class<?> address = event.getClass();
+        Class address = event.getClass();
         byte[] bytes = codec.encode(address, event);
         switch (mode) {
         case QUEUE: {

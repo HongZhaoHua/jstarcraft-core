@@ -27,17 +27,17 @@ public class AmqpEventBus extends AbstractEventBus {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class<?>, MessageProducer> address2Producers;
+    private ConcurrentMap<Class, MessageProducer> address2Producers;
 
-    private ConcurrentMap<Class<?>, MessageConsumer> address2Consumers;
+    private ConcurrentMap<Class, MessageConsumer> address2Consumers;
 
     private class EventHandler implements MessageListener {
 
-        private Class<?> clazz;
+        private Class clazz;
 
         private EventManager manager;
 
-        private EventHandler(Class<?> clazz, EventManager manager) {
+        private EventHandler(Class clazz, EventManager manager) {
             this.clazz = clazz;
             this.manager = manager;
         }
@@ -89,7 +89,7 @@ public class AmqpEventBus extends AbstractEventBus {
         super(mode);
         this.session = session;
         this.codec = codec;
-        Builder<Class<?>, MessageProducer> builder = new Builder<>();
+        Builder<Class, MessageProducer> builder = new Builder<>();
         builder.initialCapacity(1000);
         builder.maximumWeightedCapacity(1000);
         this.address2Producers = builder.build();
@@ -97,9 +97,9 @@ public class AmqpEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager == null) {
                     manager = new EventManager();
@@ -130,9 +130,9 @@ public class AmqpEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
         try {
-            for (Class<?> address : addresses) {
+            for (Class address : addresses) {
                 EventManager manager = address2Managers.get(address);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
@@ -151,7 +151,7 @@ public class AmqpEventBus extends AbstractEventBus {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class<?> address = event.getClass();
+            Class address = event.getClass();
             MessageProducer producer = null;
             synchronized (address2Producers) {
                 producer = address2Producers.get(address);

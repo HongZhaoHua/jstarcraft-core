@@ -15,7 +15,7 @@ public abstract class AbstractEventBus implements EventBus {
 
     protected final EventMode mode;
 
-    protected ConcurrentMap<Class<?>, EventManager> address2Managers;
+    protected ConcurrentMap<Class, EventManager> address2Managers;
 
     protected AbstractEventBus(EventMode mode) {
         this.mode = mode;
@@ -28,8 +28,8 @@ public abstract class AbstractEventBus implements EventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager == null) {
                 manager = new EventManager();
@@ -40,8 +40,8 @@ public abstract class AbstractEventBus implements EventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager != null) {
                 manager.detachMonitor(monitor);
@@ -53,7 +53,7 @@ public abstract class AbstractEventBus implements EventBus {
     }
 
     @Override
-    public Collection<EventMonitor> getMonitors(Class<?> address) {
+    public Collection<EventMonitor> getMonitors(Class address) {
         EventManager manager = address2Managers.get(address);
         return manager == null ? Collections.EMPTY_SET : manager.getMonitors();
     }

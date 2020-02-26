@@ -27,15 +27,15 @@ public class RedisTopicEventBus extends AbstractEventBus {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class<?>, EventHandler> address2Handlers;
+    private ConcurrentMap<Class, EventHandler> address2Handlers;
 
     private class EventHandler implements MessageListener<byte[]> {
 
-        private Class<?> clazz;
+        private Class clazz;
 
         private EventManager manager;
 
-        private EventHandler(Class<?> clazz, EventManager manager) {
+        private EventHandler(Class clazz, EventManager manager) {
             this.clazz = clazz;
             this.manager = manager;
         }
@@ -71,8 +71,8 @@ public class RedisTopicEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void registerMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager == null) {
                 manager = new EventManager();
@@ -88,8 +88,8 @@ public class RedisTopicEventBus extends AbstractEventBus {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class<?>> addresses, EventMonitor monitor) {
-        for (Class<?> address : addresses) {
+    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+        for (Class address : addresses) {
             EventManager manager = address2Managers.get(address);
             if (manager != null) {
                 manager.detachMonitor(monitor);
@@ -106,7 +106,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class<?> address = event.getClass();
+        Class address = event.getClass();
         // TODO 需要防止路径冲突
         RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
         byte[] bytes = codec.encode(address, event);
