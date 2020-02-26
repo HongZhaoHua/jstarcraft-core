@@ -6,13 +6,13 @@ package com.jstarcraft.core.event;
  * @author Birdy
  *
  */
-public interface EventMonitor {
+public interface EventMonitor<T> {
 
     /**
      * 处理事件
      * 
      * @param event
      */
-    void onEvent(Object event);
+    void onEvent(T event);
 
 }
