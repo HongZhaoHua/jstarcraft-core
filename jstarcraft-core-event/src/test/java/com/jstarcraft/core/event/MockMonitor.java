@@ -3,9 +3,7 @@ package com.jstarcraft.core.event;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.jstarcraft.core.event.EventMonitor;
-
-public class MockMonitor implements EventMonitor {
+public class MockMonitor implements EventMonitor<MockEvent> {
 
     private int index;
 
@@ -20,7 +18,7 @@ public class MockMonitor implements EventMonitor {
     }
 
     @Override
-    public void onEvent(Object event) {
+    public void onEvent(MockEvent event) {
         count.incrementAndGet();
         latch.countDown();
     }
