@@ -43,8 +43,8 @@ public class ArtemisJmsTestCase {
                 JMSConsumer consumer = context.createConsumer(topic);
                 consumer.setMessageListener((message) -> {
                     try {
-                        Topic destination = (Topic) message.getJMSDestination();
-                        Assert.assertTrue(destination.getTopicName().startsWith("topic.jms"));
+                        Topic channel = (Topic) message.getJMSDestination();
+                        Assert.assertTrue(channel.getTopicName().startsWith("topic.jms"));
                         Assert.assertEquals(content, message.getBody(String.class));
                         latch.countDown();
                     } catch (Exception exception) {
@@ -55,8 +55,8 @@ public class ArtemisJmsTestCase {
 
             JMSProducer producer = context.createProducer();
             for (int index = 0; index < 10; index++) {
-                Topic destination = context.createTopic("topic.jms.test." + index);
-                producer.send(destination, content);
+                Topic channel = context.createTopic("topic.jms.test." + index);
+                producer.send(channel, content);
             }
 
             latch.await();

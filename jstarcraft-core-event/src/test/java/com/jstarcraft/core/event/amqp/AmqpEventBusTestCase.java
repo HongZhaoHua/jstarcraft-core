@@ -36,8 +36,8 @@ public class AmqpEventBusTestCase extends EventBusTestCase {
     @After
     public void stop() throws Exception {
         Session session = connection.createSession();
-        Destination destination = session.createQueue(EventMode.QUEUE + MockEvent.class.getName());
-        MessageConsumer consumer = session.createConsumer(destination);
+        Destination channel = session.createQueue(EventMode.QUEUE + MockEvent.class.getName());
+        MessageConsumer consumer = session.createConsumer(channel);
         // 清理测试消息
         logger.error("清理AMQP测试消息开始");
         AtomicInteger count = new AtomicInteger();

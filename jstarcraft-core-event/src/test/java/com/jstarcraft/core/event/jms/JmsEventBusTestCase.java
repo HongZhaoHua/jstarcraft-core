@@ -31,8 +31,8 @@ public class JmsEventBusTestCase extends EventBusTestCase {
     @After
     public void stop() throws Exception {
         JMSContext context = factory.createContext();
-        Destination destination = context.createQueue(MockEvent.class.getName());
-        JMSConsumer consumer = context.createConsumer(destination);
+        Destination channel = context.createQueue(MockEvent.class.getName());
+        JMSConsumer consumer = context.createConsumer(channel);
         // 清理测试消息
         logger.info("清理JMS测试消息开始");
         AtomicInteger count = new AtomicInteger();

@@ -93,8 +93,8 @@ public class StompEventBus extends AbstractEventBus {
                     address2Managers.put(address, manager);
                     Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
-                    String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
-                    metadatas.put("destination", destination);
+                    String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+                    metadatas.put("destination", channel);
                     switch (mode) {
                     case QUEUE: {
                         // Artemis特定的协议
@@ -108,7 +108,7 @@ public class StompEventBus extends AbstractEventBus {
                     }
                     }
                     EventHandler handler = new EventHandler(address, manager);
-                    session.subscribe(destination, metadatas, handler);
+                    session.subscribe(channel, metadatas, handler);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -128,8 +128,8 @@ public class StompEventBus extends AbstractEventBus {
                         address2Managers.remove(address);
                         Map<String, String> metadatas = new HashMap<>();
                         // TODO 需要防止路径冲突
-                        String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
-                        metadatas.put("destination", destination);
+                        String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+                        metadatas.put("destination", channel);
                         switch (mode) {
                         case QUEUE: {
                             // Artemis特定的协议
@@ -142,7 +142,7 @@ public class StompEventBus extends AbstractEventBus {
                             break;
                         }
                         }
-                        session.unsubscribe(destination, metadatas);
+                        session.unsubscribe(channel, metadatas);
                     }
                 }
             }
@@ -158,8 +158,8 @@ public class StompEventBus extends AbstractEventBus {
             byte[] bytes = codec.encode(address, event);
             Map<String, String> metadatas = new HashMap<>();
             // TODO 需要防止路径冲突
-            String destination = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
-            metadatas.put("destination", destination);
+            String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+            metadatas.put("destination", channel);
             switch (mode) {
             case QUEUE: {
                 // Artemis特定的协议

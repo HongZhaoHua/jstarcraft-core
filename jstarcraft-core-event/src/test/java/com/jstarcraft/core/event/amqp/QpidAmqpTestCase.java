@@ -4,6 +4,9 @@ import java.util.concurrent.CountDownLatch;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
@@ -58,7 +61,7 @@ public class QpidAmqpTestCase {
     @Test
     public void testTopic() throws Exception {
         ConnectionFactory factory = new JmsConnectionFactory("amqp://localhost:5672");
-        // Qpid的JMS 1.0 API
+        // Qpid的JMS 2.0 API
 //        try (JMSContext context = factory.createContext()) {
 //            Topic topic = context.createTopic("topic.amqp.#");
 //
@@ -67,8 +70,8 @@ public class QpidAmqpTestCase {
 //                JMSConsumer consumer = context.createConsumer(topic);
 //                consumer.setMessageListener((message) -> {
 //                    try {
-//                        Topic destination = (Topic) message.getJMSDestination();
-//                        Assert.assertTrue(destination.getTopicName().startsWith("topic.amqp"));
+//                        Topic channel = (Topic) message.getJMSDestination();
+//                        Assert.assertTrue(channel.getTopicName().startsWith("topic.amqp"));
 //                        Assert.assertEquals(content, message.getBody(String.class));
 //                        latch.countDown();
 //                    } catch (Exception exception) {
@@ -79,13 +82,13 @@ public class QpidAmqpTestCase {
 //
 //            JMSProducer producer = context.createProducer();
 //            for (int index = 0; index < 10; index++) {
-//                Topic destination = context.createTopic("topic.amqp.test." + index);
-//                producer.send(destination, content);
+//                Topic channel = context.createTopic("topic.amqp.test." + index);
+//                producer.send(channel, content);
 //            }
 //
 //            latch.await();
 //        }
-        // Qpid的JMS 2.0 API
+        // Qpid的JMS 1.0 API
         Connection connection = factory.createConnection();
         connection.start();
         try {
@@ -97,8 +100,8 @@ public class QpidAmqpTestCase {
                 MessageConsumer consumer = session.createConsumer(topic);
                 consumer.setMessageListener((message) -> {
                     try {
-                        Topic destination = (Topic) message.getJMSDestination();
-                        Assert.assertTrue(destination.getTopicName().startsWith("topic.amqp"));
+                        Topic channel = (Topic) message.getJMSDestination();
+                        Assert.assertTrue(channel.getTopicName().startsWith("topic.amqp"));
                         Assert.assertEquals(content, message.getBody(String.class));
                         latch.countDown();
                     } catch (Exception exception) {
@@ -108,8 +111,8 @@ public class QpidAmqpTestCase {
             }
 
             for (int index = 0; index < 10; index++) {
-                Topic destination = session.createTopic("topic.amqp.test." + index);
-                MessageProducer producer = session.createProducer(destination);
+                Topic channel = session.createTopic("topic.amqp.test." + index);
+                MessageProducer producer = session.createProducer(channel);
                 producer.send(session.createTextMessage(content));
             }
 

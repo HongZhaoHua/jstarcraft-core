@@ -104,20 +104,20 @@ public class AmqpEventBus extends AbstractEventBus {
                 if (manager == null) {
                     manager = new EventManager();
                     address2Managers.put(address, manager);
-                    Destination destination = null;
+                    Destination channel = null;
                     switch (mode) {
                     case QUEUE: {
                         // TODO 需要防止路径冲突
-                        destination = session.createQueue(mode + address.getName());
+                        channel = session.createQueue(mode + address.getName());
                         break;
                     }
                     case TOPIC: {
                         // TODO 需要防止路径冲突
-                        destination = session.createTopic(mode + address.getName());
+                        channel = session.createTopic(mode + address.getName());
                         break;
                     }
                     }
-                    MessageConsumer consumer = session.createConsumer(destination);
+                    MessageConsumer consumer = session.createConsumer(channel);
                     EventHandler handler = new EventHandler(address, manager);
                     consumer.setMessageListener(handler);
                     address2Consumers.put(address, consumer);
@@ -155,20 +155,20 @@ public class AmqpEventBus extends AbstractEventBus {
             MessageProducer producer = null;
             synchronized (address2Producers) {
                 producer = address2Producers.get(address);
-                Destination destination = null;
+                Destination channel = null;
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    destination = session.createQueue(mode + address.getName());
+                    channel = session.createQueue(mode + address.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    destination = session.createTopic(mode + address.getName());
+                    channel = session.createTopic(mode + address.getName());
                     break;
                 }
                 }
-                producer = session.createProducer(destination);
+                producer = session.createProducer(channel);
                 address2Producers.put(address, producer);
             }
             byte[] bytes = codec.encode(address, event);

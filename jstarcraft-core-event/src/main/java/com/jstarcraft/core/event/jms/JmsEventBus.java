@@ -102,22 +102,22 @@ public class JmsEventBus extends AbstractEventBus {
             if (manager == null) {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
-                Destination destination = null;
+                Destination channel = null;
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    destination = context.createQueue(address.getName());
+                    channel = context.createQueue(address.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    destination = context.createTopic(address.getName());
+                    channel = context.createTopic(address.getName());
                     break;
                 }
                 }
                 // 注意:JMSContext不能共享.
                 JMSContext context = factory.createContext();
-                JMSConsumer consumer = context.createConsumer(destination);
+                JMSConsumer consumer = context.createConsumer(channel);
                 EventHandler handler = new EventHandler(address, manager);
                 consumer.setMessageListener(handler);
                 address2Consumers.put(address, consumer);
@@ -144,21 +144,21 @@ public class JmsEventBus extends AbstractEventBus {
     @Override
     public void triggerEvent(Object event) {
         Class address = event.getClass();
-        Destination destination = null;
+        Destination channel = null;
         switch (mode) {
         case QUEUE: {
             // TODO 需要防止路径冲突
-            destination = context.createQueue(address.getName());
+            channel = context.createQueue(address.getName());
             break;
         }
         case TOPIC: {
             // TODO 需要防止路径冲突
-            destination = context.createTopic(address.getName());
+            channel = context.createTopic(address.getName());
             break;
         }
         }
         byte[] bytes = codec.encode(address, event);
-        producer.send(destination, bytes);
+        producer.send(channel, bytes);
     }
 
 }
