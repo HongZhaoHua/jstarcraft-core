@@ -88,7 +88,8 @@ public class PackageUtility {
                     continue;
                 }
                 try {
-                    final Class<?> clazz = Class.forName(className);
+                    // Class.forName会触发static代码块
+                    final Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
                     clazzCollection.add(clazz);
                 } catch (ClassNotFoundException exception) {
                     LOGGER.error("无法加载类[{}]", className, exception);
@@ -138,7 +139,8 @@ public class PackageUtility {
                     continue;
                 }
                 try {
-                    final Class<?> clazz = Class.forName(className);
+                    // Class.forName会触发static代码块
+                    final Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
                     clazzCollection.add(clazz);
                 } catch (ClassNotFoundException exception) {
                     LOGGER.error("无法加载类[{}]", className, exception);
