@@ -13,14 +13,22 @@ import java.util.Set;
  * @author Birdy
  *
  */
+// TODO 考虑改名为EventChannel
 public interface EventBus {
 
     /**
-     * 获取事件模式
+     * 获取通道模式
      * 
      * @return
      */
     EventMode getMode();
+
+//    /**
+//     * 获取通道名称
+//     * 
+//     * @return
+//     */
+//    String getName();
 
     /**
      * 获取指定地址的事件监控者
