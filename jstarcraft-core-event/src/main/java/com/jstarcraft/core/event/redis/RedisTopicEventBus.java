@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.redisson.Redisson;
 import org.redisson.api.RTopic;
 import org.redisson.api.listener.MessageListener;
+import org.redisson.client.codec.ByteArrayCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,8 @@ public class RedisTopicEventBus extends AbstractEventBus {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisTopicEventBus.class);
 
+    private static final ByteArrayCodec byteCodec = new ByteArrayCodec();
+    
     private String name;
 
     private Redisson redisson;
@@ -78,7 +81,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
                 // TODO 需要防止路径冲突
-                RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
+                RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName(), byteCodec);
                 EventHandler handler = new EventHandler(address, manager);
                 topic.addListener(byte[].class, handler);
                 address2Handlers.put(address, handler);
@@ -96,7 +99,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
                 if (manager.getSize() == 0) {
                     address2Managers.remove(address);
                     // TODO 需要防止路径冲突
-                    RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
+                    RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName(), byteCodec);
                     EventHandler handler = address2Handlers.remove(address);
                     topic.removeListener(handler);
                 }
@@ -108,7 +111,7 @@ public class RedisTopicEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         Class address = event.getClass();
         // TODO 需要防止路径冲突
-        RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName());
+        RTopic topic = redisson.getTopic(name + StringUtility.DOT + address.getName(), byteCodec);
         byte[] bytes = codec.encode(address, event);
         topic.publish(bytes);
     }

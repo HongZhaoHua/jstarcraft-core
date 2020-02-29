@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
+import org.redisson.client.codec.ByteArrayCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,8 @@ import com.jstarcraft.core.utility.StringUtility;
 public class RedisQueueEventBus extends AbstractEventBus {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisQueueEventBus.class);
+    
+    private static final ByteArrayCodec byteCodec = new ByteArrayCodec();
 
     private String name;
 
@@ -87,7 +90,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
                 // TODO 需要防止路径冲突
-                RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
+                RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName(), byteCodec);
                 EventThread thread = new EventThread(address, manager, events);
                 thread.start();
                 address2Threads.put(address, thread);
@@ -115,7 +118,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         Class address = event.getClass();
         // TODO 需要防止路径冲突
-        RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName());
+        RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName(), byteCodec);
         byte[] bytes = codec.encode(address, event);
         events.add(bytes);
     }
