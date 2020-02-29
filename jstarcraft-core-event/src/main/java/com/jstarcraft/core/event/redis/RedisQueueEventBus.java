@@ -6,31 +6,20 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
-import org.redisson.client.codec.ByteArrayCodec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.redisson.api.RQueue;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class RedisQueueEventBus extends AbstractEventBus {
-
-    private static final Logger logger = LoggerFactory.getLogger(RedisQueueEventBus.class);
-    
-    private static final ByteArrayCodec byteCodec = new ByteArrayCodec();
-
-    private String name;
-
-    private Redisson redisson;
-
-    private ContentCodec codec;
+public class RedisQueueEventBus extends RedisEventBus {
 
     private ConcurrentMap<Class, EventThread> address2Threads;
+
+    private ConcurrentMap<Class, RBlockingQueue<byte[]>> address2Queues;
 
     private class EventThread extends Thread {
 
@@ -75,11 +64,18 @@ public class RedisQueueEventBus extends AbstractEventBus {
     };
 
     public RedisQueueEventBus(String name, Redisson redisson, ContentCodec codec) {
-        super(EventMode.QUEUE);
-        this.name = name;
-        this.redisson = redisson;
-        this.codec = codec;
+        super(EventMode.QUEUE, name, redisson, codec);
         this.address2Threads = new ConcurrentHashMap<>();
+        this.address2Queues = new ConcurrentHashMap<>();
+    }
+
+    protected RBlockingQueue<byte[]> getQueue(Class address) {
+        RBlockingQueue<byte[]> queue = address2Queues.get(address);
+        if (queue == null) {
+            queue = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName(), byteCodec);
+            address2Queues.put(address, queue);
+        }
+        return queue;
     }
 
     @Override
@@ -90,7 +86,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
                 manager = new EventManager();
                 address2Managers.put(address, manager);
                 // TODO 需要防止路径冲突
-                RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName(), byteCodec);
+                RBlockingQueue<byte[]> events = getQueue(address);
                 EventThread thread = new EventThread(address, manager, events);
                 thread.start();
                 address2Threads.put(address, thread);
@@ -118,7 +114,7 @@ public class RedisQueueEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         Class address = event.getClass();
         // TODO 需要防止路径冲突
-        RBlockingQueue<byte[]> events = redisson.getBlockingQueue(name + StringUtility.DOT + address.getName(), byteCodec);
+        RBlockingQueue<byte[]> events = getQueue(address);
         byte[] bytes = codec.encode(address, event);
         events.add(bytes);
     }
