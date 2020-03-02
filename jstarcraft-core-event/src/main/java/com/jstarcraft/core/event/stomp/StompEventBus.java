@@ -17,6 +17,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.stomp.Frame;
 import io.vertx.ext.stomp.StompClientConnection;
 
+// TODO 目前存在一个Bug,消费者注册Queue模式的时候,会变成Topic.
 public class StompEventBus extends AbstractEventBus {
 
     private StompClientConnection session;
