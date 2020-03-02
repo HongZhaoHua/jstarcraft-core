@@ -50,10 +50,10 @@ public class MemoryEventBusTestCase extends EventBusTestCase {
     protected EventBus getEventBus(EventMode mode) {
         switch (mode) {
         case QUEUE: {
-            return new MemoryQueueEventBus(1000);
+            return new MemoryQueueEventBus("MEMORY" + mode, 1000);
         }
         case TOPIC: {
-            return new MemoryTopicEventBus(pool);
+            return new MemoryTopicEventBus("MEMORY" + mode, pool);
         }
         default: {
             return null;

@@ -84,8 +84,8 @@ public class VertxEventBus extends AbstractEventBus {
 
     };
 
-    public VertxEventBus(EventMode mode, EventBus bus, ContentCodec codec) {
-        super(mode);
+    public VertxEventBus(EventMode mode, String name, EventBus bus, ContentCodec codec) {
+        super(mode, name);
         this.bus = bus;
         this.codec = codec;
         this.address2Consumers = new ConcurrentHashMap<>();
@@ -101,7 +101,7 @@ public class VertxEventBus extends AbstractEventBus {
                     address2Managers.put(address, manager);
                     // TODO 需要防止路径冲突
                     EventHandler handler = new EventHandler(address, manager);
-                    MessageConsumer<byte[]> consumer = bus.consumer(address.getName(), handler);
+                    MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + address.getName(), handler);
                     CountDownLatch latch = new CountDownLatch(1);
                     consumer.completionHandler((register) -> {
                         latch.countDown();
@@ -146,12 +146,12 @@ public class VertxEventBus extends AbstractEventBus {
         switch (mode) {
         case QUEUE: {
             // TODO 需要防止路径冲突
-            bus.send(address.getName(), bytes);
+            bus.send(name + StringUtility.DOT + address.getName(), bytes);
             break;
         }
         case TOPIC: {
             // TODO 需要防止路径冲突
-            bus.publish(address.getName(), bytes);
+            bus.publish(name + StringUtility.DOT + address.getName(), bytes);
             break;
         }
         }

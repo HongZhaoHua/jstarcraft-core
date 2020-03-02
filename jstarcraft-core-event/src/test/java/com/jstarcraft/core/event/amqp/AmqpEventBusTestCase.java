@@ -57,7 +57,7 @@ public class AmqpEventBusTestCase extends EventBusTestCase {
             Session session = connection.createSession();
             CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
             ContentCodec codec = new JsonContentCodec(definition);
-            return new AmqpEventBus(mode, session, codec);
+            return new AmqpEventBus(mode, "AMQP" + mode, session, codec);
         } catch (Exception exception) {
             return null;
         }

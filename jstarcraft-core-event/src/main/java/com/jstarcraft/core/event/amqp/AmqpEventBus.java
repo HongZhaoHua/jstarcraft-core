@@ -85,8 +85,8 @@ public class AmqpEventBus extends AbstractEventBus {
 
     };
 
-    public AmqpEventBus(EventMode mode, Session session, ContentCodec codec) {
-        super(mode);
+    public AmqpEventBus(EventMode mode, String name, Session session, ContentCodec codec) {
+        super(mode, name);
         this.session = session;
         this.codec = codec;
         Builder<Class, MessageProducer> builder = new Builder<>();
@@ -108,12 +108,12 @@ public class AmqpEventBus extends AbstractEventBus {
                     switch (mode) {
                     case QUEUE: {
                         // TODO 需要防止路径冲突
-                        channel = session.createQueue(mode + address.getName());
+                        channel = session.createQueue(name + StringUtility.DOT + address.getName());
                         break;
                     }
                     case TOPIC: {
                         // TODO 需要防止路径冲突
-                        channel = session.createTopic(mode + address.getName());
+                        channel = session.createTopic(name + StringUtility.DOT + address.getName());
                         break;
                     }
                     }
@@ -159,12 +159,12 @@ public class AmqpEventBus extends AbstractEventBus {
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    channel = session.createQueue(mode + address.getName());
+                    channel = session.createQueue(name + StringUtility.DOT + address.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    channel = session.createTopic(mode + address.getName());
+                    channel = session.createTopic(name + StringUtility.DOT + address.getName());
                     break;
                 }
                 }

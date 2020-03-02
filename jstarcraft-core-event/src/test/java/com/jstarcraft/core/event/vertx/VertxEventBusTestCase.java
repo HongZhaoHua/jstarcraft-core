@@ -31,7 +31,7 @@ public class VertxEventBusTestCase extends EventBusTestCase {
     protected EventBus getEventBus(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new VertxEventBus(mode, vertx.eventBus(), codec);
+        return new VertxEventBus(mode, "VERTX" + mode, vertx.eventBus(), codec);
     }
 
 }

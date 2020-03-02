@@ -77,8 +77,8 @@ public class StompEventBus extends AbstractEventBus {
 
     };
 
-    public StompEventBus(EventMode mode, StompClientConnection session, ContentCodec codec) {
-        super(mode);
+    public StompEventBus(EventMode mode, String name, StompClientConnection session, ContentCodec codec) {
+        super(mode, name);
         this.session = session;
         this.codec = codec;
     }
@@ -93,7 +93,8 @@ public class StompEventBus extends AbstractEventBus {
                     address2Managers.put(address, manager);
                     Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
-                    String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+                    String channel = name + StringUtility.DOT + address.getName();
+                    metadatas.put("id", channel);
                     metadatas.put("destination", channel);
                     switch (mode) {
                     case QUEUE: {
@@ -128,7 +129,8 @@ public class StompEventBus extends AbstractEventBus {
                         address2Managers.remove(address);
                         Map<String, String> metadatas = new HashMap<>();
                         // TODO 需要防止路径冲突
-                        String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+                        String channel = name + StringUtility.DOT + address.getName();
+                        metadatas.put("id", channel);
                         metadatas.put("destination", channel);
                         switch (mode) {
                         case QUEUE: {
@@ -158,7 +160,8 @@ public class StompEventBus extends AbstractEventBus {
             byte[] bytes = codec.encode(address, event);
             Map<String, String> metadatas = new HashMap<>();
             // TODO 需要防止路径冲突
-            String channel = mode.name().toLowerCase() + StringUtility.FORWARD_SLASH + address.getName();
+            String channel = name + StringUtility.DOT + address.getName();
+            metadatas.put("id", channel);
             metadatas.put("destination", channel);
             switch (mode) {
             case QUEUE: {

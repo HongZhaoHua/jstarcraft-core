@@ -48,7 +48,7 @@ public class MqttEventBusTestCase extends EventBusTestCase {
         if (mode == EventMode.TOPIC) {
             CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
             ContentCodec codec = new JsonContentCodec(definition);
-            return new MqttTopicEventBus(session, codec);
+            return new MqttTopicEventBus("MQTT" + mode, session, codec);
         } else {
             return null;
         }

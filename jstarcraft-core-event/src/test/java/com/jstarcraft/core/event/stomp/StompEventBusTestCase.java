@@ -52,7 +52,7 @@ public class StompEventBusTestCase extends EventBusTestCase {
     protected EventBus getEventBus(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new StompEventBus(mode, connection, codec);
+        return new StompEventBus(mode, "STOMP" + mode, connection, codec);
     }
 
 }

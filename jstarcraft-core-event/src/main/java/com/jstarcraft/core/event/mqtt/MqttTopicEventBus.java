@@ -29,7 +29,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
             String address = data.topicName();
             try {
                 // TODO 需要防止路径冲突
-                address = address.substring(mode.name().length());
+                address = address.substring(name.length() + 1);
                 address = address.replace(StringUtility.FORWARD_SLASH, StringUtility.DOT);
                 Class clazz = Class.forName(address);
                 EventManager manager = address2Managers.get(clazz);
@@ -54,8 +54,8 @@ public class MqttTopicEventBus extends AbstractEventBus {
 
     };
 
-    public MqttTopicEventBus(MqttClient session, ContentCodec codec) {
-        super(EventMode.TOPIC);
+    public MqttTopicEventBus(String name, MqttClient session, ContentCodec codec) {
+        super(EventMode.TOPIC, name);
         this.session = session;
         this.codec = codec;
         EventHandler handler = new EventHandler();
@@ -72,7 +72,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
                     address2Managers.put(address, manager);
                     // TODO 需要防止路径冲突
                     CountDownLatch latch = new CountDownLatch(1);
-                    session.subscribe(mode + address.getName(), MqttQoS.AT_MOST_ONCE.value(), (subscribe) -> {
+                    session.subscribe(name + StringUtility.DOT + address.getName(), MqttQoS.AT_MOST_ONCE.value(), (subscribe) -> {
                         latch.countDown();
                     });
                     latch.await();
@@ -95,7 +95,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
                         address2Managers.remove(address);
                         // TODO 需要防止路径冲突
                         CountDownLatch latch = new CountDownLatch(1);
-                        session.unsubscribe(mode + address.getName(), (subscribe) -> {
+                        session.unsubscribe(name + StringUtility.DOT + address.getName(), (subscribe) -> {
                             latch.countDown();
                         });
                         latch.await();
@@ -113,7 +113,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
             Class address = event.getClass();
             byte[] bytes = codec.encode(address, event);
             // TODO 需要防止路径冲突
-            session.publish(mode + address.getName(), Buffer.buffer(bytes), MqttQoS.AT_MOST_ONCE, false, false);
+            session.publish(name + StringUtility.DOT + address.getName(), Buffer.buffer(bytes), MqttQoS.AT_MOST_ONCE, false, false);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

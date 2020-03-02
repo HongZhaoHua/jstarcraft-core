@@ -12,8 +12,8 @@ public class MemoryTopicEventBus extends AbstractEventBus {
 
     private ExecutorService pool;
 
-    public MemoryTopicEventBus(ExecutorService pool) {
-        super(EventMode.TOPIC);
+    public MemoryTopicEventBus(String name, ExecutorService pool) {
+        super(EventMode.TOPIC, name);
         this.pool = pool;
     }
 

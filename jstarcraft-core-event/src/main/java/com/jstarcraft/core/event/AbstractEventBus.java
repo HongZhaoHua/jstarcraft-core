@@ -14,11 +14,14 @@ public abstract class AbstractEventBus implements EventBus {
     protected static final Logger logger = LoggerFactory.getLogger(AbstractEventBus.class);
 
     protected final EventMode mode;
+    
+    protected String name;
 
     protected ConcurrentMap<Class, EventManager> address2Managers;
 
-    protected AbstractEventBus(EventMode mode) {
+    protected AbstractEventBus(EventMode mode, String name) {
         this.mode = mode;
+        this.name = name;
         this.address2Managers = new ConcurrentHashMap<>();
     }
 

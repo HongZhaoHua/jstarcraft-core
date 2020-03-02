@@ -61,8 +61,8 @@ public class MemoryQueueEventBus extends AbstractEventBus {
         }
     };
 
-    public MemoryQueueEventBus(int size) {
-        super(EventMode.QUEUE);
+    public MemoryQueueEventBus(String name, int size) {
+        super(EventMode.QUEUE, name);
         this.size = size;
         this.address2Events = new ConcurrentHashMap<>();
         this.address2Threads = new ConcurrentHashMap<>();

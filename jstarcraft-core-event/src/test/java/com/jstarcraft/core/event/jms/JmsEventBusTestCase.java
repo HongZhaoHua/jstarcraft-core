@@ -49,7 +49,7 @@ public class JmsEventBusTestCase extends EventBusTestCase {
     protected EventBus getEventBus(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new JmsEventBus(mode, factory, codec);
+        return new JmsEventBus(mode, "JMS" + mode, factory, codec);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.jstarcraft.core.event;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MockMonitor implements EventMonitor<MockEvent> {
@@ -9,18 +9,18 @@ public class MockMonitor implements EventMonitor<MockEvent> {
 
     private AtomicInteger count;
 
-    private CountDownLatch latch;
+    private Semaphore semaphore;
 
-    public MockMonitor(int index, CountDownLatch latch) {
+    public MockMonitor(int index, Semaphore semaphore) {
         this.index = index;
         this.count = new AtomicInteger();
-        this.latch = latch;
+        this.semaphore = semaphore;
     }
 
     @Override
     public void onEvent(MockEvent event) {
         count.incrementAndGet();
-        latch.countDown();
+        semaphore.release(1);
     }
 
     public int getIndex() {

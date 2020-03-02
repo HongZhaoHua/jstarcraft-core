@@ -15,14 +15,12 @@ public abstract class RedisEventBus extends AbstractEventBus {
 
     protected static final ByteArrayCodec byteCodec = new ByteArrayCodec();
 
-    protected String name;
-
     protected Redisson redisson;
 
     protected ContentCodec codec;
 
     protected RedisEventBus(EventMode mode, String name, Redisson redisson, ContentCodec codec) {
-        super(mode);
+        super(mode, name);
         this.name = name;
         this.redisson = redisson;
         this.codec = codec;

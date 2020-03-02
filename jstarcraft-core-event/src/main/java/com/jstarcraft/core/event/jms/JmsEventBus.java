@@ -86,8 +86,8 @@ public class JmsEventBus extends AbstractEventBus {
 
     };
 
-    public JmsEventBus(EventMode mode, ConnectionFactory factory, ContentCodec codec) {
-        super(mode);
+    public JmsEventBus(EventMode mode, String name, ConnectionFactory factory, ContentCodec codec) {
+        super(mode, name);
         this.factory = factory;
         this.context = factory.createContext();
         this.codec = codec;
@@ -106,12 +106,12 @@ public class JmsEventBus extends AbstractEventBus {
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    channel = context.createQueue(address.getName());
+                    channel = context.createQueue(name + StringUtility.DOT + address.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    channel = context.createTopic(address.getName());
+                    channel = context.createTopic(name + StringUtility.DOT + address.getName());
                     break;
                 }
                 }
@@ -148,12 +148,12 @@ public class JmsEventBus extends AbstractEventBus {
         switch (mode) {
         case QUEUE: {
             // TODO 需要防止路径冲突
-            channel = context.createQueue(address.getName());
+            channel = context.createQueue(name + StringUtility.DOT + address.getName());
             break;
         }
         case TOPIC: {
             // TODO 需要防止路径冲突
-            channel = context.createTopic(address.getName());
+            channel = context.createTopic(name + StringUtility.DOT + address.getName());
             break;
         }
         }
