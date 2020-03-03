@@ -43,19 +43,4 @@ public class Lunar2SolarTestCase {
         Assert.assertThat(new SolarDate(2011, 1, 4).getLunar(), CoreMatchers.equalTo(new LunarDate(2010, false, 12, 1)));
     }
 
-    @Test
-    public void testCalendar() {
-        LocalDate from = LocalDate.of(1901, 1, 1);
-        LocalDate to = LocalDate.of(2100, 1, 1);
-        while (from.isBefore(to)) {
-            LunarCalendar calendar = LunarCalendar.solar2Lunar(from);
-            LunarDate lunar = new SolarDate(from).getLunar();
-            Assert.assertEquals(calendar.getYear(), lunar.getYear());
-            Assert.assertEquals(calendar.getMonth(), lunar.getMonth());
-            Assert.assertEquals(calendar.getDay(), lunar.getDay());
-            Assert.assertEquals(calendar.isLeap(), lunar.isLeap());
-            from = from.plusDays(1);
-        }
-    }
-
 }
