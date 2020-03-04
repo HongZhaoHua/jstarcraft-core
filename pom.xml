@@ -132,12 +132,6 @@
             </dependency>
 
             <!-- 事件框架依赖 -->
-            <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-core</artifactId>
-                <version>3.8.5</version>
-            </dependency>
-
             <!-- AMQP框架依赖 -->
             <dependency>
                 <groupId>org.apache.qpid</groupId>
@@ -169,6 +163,13 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-stomp</artifactId>
+                <version>3.8.5</version>
+            </dependency>
+
+            <!-- Vert.x框架依赖 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-core</artifactId>
                 <version>3.8.5</version>
             </dependency>
 

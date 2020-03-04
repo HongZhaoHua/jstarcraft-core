@@ -61,7 +61,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<!-- 访问器配置 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
-	<bean id="accessor" class="com.jstarcraft.core.orm.hibernate.HibernateAccessor">
+	<bean id="accessor" class="com.jstarcraft.core.storage.hibernate.HibernateAccessor">
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 

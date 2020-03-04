@@ -55,4 +55,9 @@ public class StompEventBusTestCase extends EventBusTestCase {
         return new StompEventBus(mode, "STOMP" + mode, connection, codec);
     }
 
+    @Override
+    public void testTriggerQueueEvent() throws Exception {
+        // TODO 无需测试队列模式
+    }
+
 }
