@@ -2,7 +2,6 @@ package com.jstarcraft.core.event;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 
 import org.junit.Assert;
