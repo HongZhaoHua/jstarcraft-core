@@ -63,9 +63,15 @@ public interface EventBus {
      */
     void triggerEvent(Object event);
 
+    /**
+     * 启动通道
+     */
     default void start() {
     }
 
+    /**
+     * 停止通道
+     */
     default void stop() {
     }
 
