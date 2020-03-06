@@ -15,7 +15,7 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class RedisQueueEventBus extends RedisEventBus {
+public class RedisQueueEventChannel extends RedisEventChannel {
 
     private ConcurrentMap<Class, EventThread> address2Threads;
 
@@ -63,7 +63,7 @@ public class RedisQueueEventBus extends RedisEventBus {
         }
     };
 
-    public RedisQueueEventBus(String name, Redisson redisson, ContentCodec codec) {
+    public RedisQueueEventChannel(String name, Redisson redisson, ContentCodec codec) {
         super(EventMode.QUEUE, name, redisson, codec);
         this.address2Threads = new ConcurrentHashMap<>();
         this.address2Queues = new ConcurrentHashMap<>();

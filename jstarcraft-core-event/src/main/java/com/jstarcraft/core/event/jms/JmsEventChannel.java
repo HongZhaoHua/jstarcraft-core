@@ -13,14 +13,14 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class JmsEventBus extends AbstractEventBus {
+public class JmsEventChannel extends AbstractEventChannel {
 
     private ConnectionFactory factory;
 
@@ -86,7 +86,7 @@ public class JmsEventBus extends AbstractEventBus {
 
     };
 
-    public JmsEventBus(EventMode mode, String name, ConnectionFactory factory, ContentCodec codec) {
+    public JmsEventChannel(EventMode mode, String name, ConnectionFactory factory, ContentCodec codec) {
         super(mode, name);
         this.factory = factory;
         this.context = factory.createContext();

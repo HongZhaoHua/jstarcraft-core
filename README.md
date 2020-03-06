@@ -63,6 +63,7 @@ JStarCraft Core框架各个模块之间的关系:
         * JMS
         * Memory
         * MQTT
+        * Redis
         * RocketMQ
         * STOMP
         * Vert.x

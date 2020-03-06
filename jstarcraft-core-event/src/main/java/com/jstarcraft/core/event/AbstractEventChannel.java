@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractEventBus implements EventBus {
+public abstract class AbstractEventChannel implements EventChannel {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractEventBus.class);
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractEventChannel.class);
 
     protected final EventMode mode;
 
@@ -19,7 +19,7 @@ public abstract class AbstractEventBus implements EventBus {
 
     protected ConcurrentMap<Class, EventManager> address2Managers;
 
-    protected AbstractEventBus(EventMode mode, String name) {
+    protected AbstractEventChannel(EventMode mode, String name) {
         this.mode = mode;
         this.name = name;
         this.address2Managers = new ConcurrentHashMap<>();
@@ -33,6 +33,16 @@ public abstract class AbstractEventBus implements EventBus {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     @Override

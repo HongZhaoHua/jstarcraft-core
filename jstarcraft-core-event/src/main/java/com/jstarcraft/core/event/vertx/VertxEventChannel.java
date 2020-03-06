@@ -1,11 +1,14 @@
-package com.jstarcraft.core.event.stomp;
+package com.jstarcraft.core.event.vertx;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CountDownLatch;
+
+import javax.jms.JMSProducer;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
@@ -13,18 +16,21 @@ import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 import io.vertx.core.Handler;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.ext.stomp.Frame;
-import io.vertx.ext.stomp.StompClientConnection;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.eventbus.MessageConsumer;
 
-// TODO 目前存在一个Bug,消费者注册Queue模式的时候,会变成Topic.
-public class StompEventBus extends AbstractEventBus {
+public class VertxEventChannel extends AbstractEventChannel {
 
-    private StompClientConnection session;
+    private EventBus bus;
 
     private ContentCodec codec;
 
-    private class EventHandler implements Handler<Frame> {
+    private JMSProducer producer;
+
+    private ConcurrentMap<Class, MessageConsumer<byte[]>> address2Consumers;
+
+    private class EventHandler implements Handler<Message<byte[]>> {
 
         private Class clazz;
 
@@ -36,9 +42,9 @@ public class StompEventBus extends AbstractEventBus {
         }
 
         @Override
-        public void handle(Frame data) {
+        public void handle(Message<byte[]> data) {
             try {
-                byte[] bytes = data.getBodyAsByteArray();
+                byte[] bytes = data.body();
                 Object event = codec.decode(clazz, bytes);
                 synchronized (manager) {
                     switch (mode) {
@@ -78,10 +84,11 @@ public class StompEventBus extends AbstractEventBus {
 
     };
 
-    public StompEventBus(EventMode mode, String name, StompClientConnection session, ContentCodec codec) {
+    public VertxEventChannel(EventMode mode, String name, EventBus bus, ContentCodec codec) {
         super(mode, name);
-        this.session = session;
+        this.bus = bus;
         this.codec = codec;
+        this.address2Consumers = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -92,25 +99,15 @@ public class StompEventBus extends AbstractEventBus {
                 if (manager == null) {
                     manager = new EventManager();
                     address2Managers.put(address, manager);
-                    Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
-                    String channel = name + StringUtility.DOT + address.getName();
-                    metadatas.put("id", channel);
-                    metadatas.put("destination", channel);
-                    switch (mode) {
-                    case QUEUE: {
-                        // Artemis特定的协议
-                        metadatas.put("destination-type", "ANYCAST");
-                        break;
-                    }
-                    case TOPIC: {
-                        // Artemis特定的协议
-                        metadatas.put("destination-type", "MULTICAST");
-                        break;
-                    }
-                    }
                     EventHandler handler = new EventHandler(address, manager);
-                    session.subscribe(channel, metadatas, handler);
+                    MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + address.getName(), handler);
+                    CountDownLatch latch = new CountDownLatch(1);
+                    consumer.completionHandler((register) -> {
+                        latch.countDown();
+                    });
+                    latch.await();
+                    address2Consumers.put(address, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -128,24 +125,12 @@ public class StompEventBus extends AbstractEventBus {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
                         address2Managers.remove(address);
-                        Map<String, String> metadatas = new HashMap<>();
-                        // TODO 需要防止路径冲突
-                        String channel = name + StringUtility.DOT + address.getName();
-                        metadatas.put("id", channel);
-                        metadatas.put("destination", channel);
-                        switch (mode) {
-                        case QUEUE: {
-                            // Artemis特定的协议
-                            metadatas.put("destination-type", "ANYCAST");
-                            break;
-                        }
-                        case TOPIC: {
-                            // Artemis特定的协议
-                            metadatas.put("destination-type", "MULTICAST");
-                            break;
-                        }
-                        }
-                        session.unsubscribe(channel, metadatas);
+                        MessageConsumer<byte[]> consumer = address2Consumers.remove(address);
+                        CountDownLatch latch = new CountDownLatch(1);
+                        consumer.unregister((unregister) -> {
+                            latch.countDown();
+                        });
+                        latch.await();
                     }
                 }
             }
@@ -156,29 +141,19 @@ public class StompEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        try {
-            Class address = event.getClass();
-            byte[] bytes = codec.encode(address, event);
-            Map<String, String> metadatas = new HashMap<>();
+        Class address = event.getClass();
+        byte[] bytes = codec.encode(address, event);
+        switch (mode) {
+        case QUEUE: {
             // TODO 需要防止路径冲突
-            String channel = name + StringUtility.DOT + address.getName();
-            metadatas.put("id", channel);
-            metadatas.put("destination", channel);
-            switch (mode) {
-            case QUEUE: {
-                // Artemis特定的协议
-                metadatas.put("destination-type", "ANYCAST");
-                break;
-            }
-            case TOPIC: {
-                // Artemis特定的协议
-                metadatas.put("destination-type", "MULTICAST");
-                break;
-            }
-            }
-            session.send(metadatas, Buffer.buffer(bytes));
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
+            bus.send(name + StringUtility.DOT + address.getName(), bytes);
+            break;
+        }
+        case TOPIC: {
+            // TODO 需要防止路径冲突
+            bus.publish(name + StringUtility.DOT + address.getName(), bytes);
+            break;
+        }
         }
     }
 

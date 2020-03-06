@@ -18,14 +18,14 @@ import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class RocketEventBus extends AbstractEventBus {
+public class RocketEventChannel extends AbstractEventChannel {
 
     private String address;
 
@@ -92,7 +92,7 @@ public class RocketEventBus extends AbstractEventBus {
 
     };
 
-    public RocketEventBus(EventMode mode, String name, String address, ContentCodec codec) {
+    public RocketEventChannel(EventMode mode, String name, String address, ContentCodec codec) {
         super(mode, name);
         try {
             this.address = address;

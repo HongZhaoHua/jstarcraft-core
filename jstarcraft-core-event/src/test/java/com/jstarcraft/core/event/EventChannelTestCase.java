@@ -9,18 +9,18 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class EventBusTestCase {
+public abstract class EventChannelTestCase {
 
-    protected static final Logger logger = LoggerFactory.getLogger(EventBusTestCase.class);
+    protected static final Logger logger = LoggerFactory.getLogger(EventChannelTestCase.class);
 
-    protected abstract EventBus getEventBus(EventMode mode);
+    protected abstract EventChannel getEventChannel(EventMode mode);
 
     @Test
     public void testTriggerQueueEvent() throws Exception {
         int size = 10;
         Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
-        EventBus bus = getEventBus(EventMode.QUEUE);
+        EventChannel bus = getEventChannel(EventMode.QUEUE);
         Assert.assertEquals(EventMode.QUEUE, bus.getMode());
         Semaphore semaphore = new Semaphore(0);
         MockMonitor[] monitors = new MockMonitor[size];
@@ -74,7 +74,7 @@ public abstract class EventBusTestCase {
         int size = 10;
         Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
-        EventBus bus = getEventBus(EventMode.TOPIC);
+        EventChannel bus = getEventChannel(EventMode.TOPIC);
         Assert.assertEquals(EventMode.TOPIC, bus.getMode());
         Semaphore semaphore = new Semaphore(0);
         MockMonitor[] monitors = new MockMonitor[size];

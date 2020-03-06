@@ -9,16 +9,16 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class MemoryQueueEventBus extends AbstractEventBus {
+public class MemoryQueueEventChannel extends AbstractEventChannel {
 
-    private static final Logger logger = LoggerFactory.getLogger(MemoryQueueEventBus.class);
+    private static final Logger logger = LoggerFactory.getLogger(MemoryQueueEventChannel.class);
 
     private int size;
 
@@ -61,7 +61,7 @@ public class MemoryQueueEventBus extends AbstractEventBus {
         }
     };
 
-    public MemoryQueueEventBus(String name, int size) {
+    public MemoryQueueEventChannel(String name, int size) {
         super(EventMode.QUEUE, name);
         this.size = size;
         this.address2Events = new ConcurrentHashMap<>();

@@ -1,36 +1,37 @@
-package com.jstarcraft.core.event.vertx;
+package com.jstarcraft.core.event.amqp;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
 
-import javax.jms.JMSProducer;
+import javax.jms.BytesMessage;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
 
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-import io.vertx.core.Handler;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.eventbus.MessageConsumer;
+public class AmqpEventChannel extends AbstractEventChannel {
 
-public class VertxEventBus extends AbstractEventBus {
-
-    private EventBus bus;
+    private Session session;
 
     private ContentCodec codec;
 
-    private JMSProducer producer;
+    private ConcurrentMap<Class, MessageProducer> address2Producers;
 
-    private ConcurrentMap<Class, MessageConsumer<byte[]>> address2Consumers;
+    private ConcurrentMap<Class, MessageConsumer> address2Consumers;
 
-    private class EventHandler implements Handler<Message<byte[]>> {
+    private class EventHandler implements MessageListener {
 
         private Class clazz;
 
@@ -42,9 +43,9 @@ public class VertxEventBus extends AbstractEventBus {
         }
 
         @Override
-        public void handle(Message<byte[]> data) {
+        public void onMessage(Message data) {
             try {
-                byte[] bytes = data.body();
+                byte[] bytes = data.getBody(byte[].class);
                 Object event = codec.decode(clazz, bytes);
                 synchronized (manager) {
                     switch (mode) {
@@ -84,10 +85,14 @@ public class VertxEventBus extends AbstractEventBus {
 
     };
 
-    public VertxEventBus(EventMode mode, String name, EventBus bus, ContentCodec codec) {
+    public AmqpEventChannel(EventMode mode, String name, Session session, ContentCodec codec) {
         super(mode, name);
-        this.bus = bus;
+        this.session = session;
         this.codec = codec;
+        Builder<Class, MessageProducer> builder = new Builder<>();
+        builder.initialCapacity(1000);
+        builder.maximumWeightedCapacity(1000);
+        this.address2Producers = builder.build();
         this.address2Consumers = new ConcurrentHashMap<>();
     }
 
@@ -99,14 +104,22 @@ public class VertxEventBus extends AbstractEventBus {
                 if (manager == null) {
                     manager = new EventManager();
                     address2Managers.put(address, manager);
-                    // TODO 需要防止路径冲突
+                    Destination channel = null;
+                    switch (mode) {
+                    case QUEUE: {
+                        // TODO 需要防止路径冲突
+                        channel = session.createQueue(name + StringUtility.DOT + address.getName());
+                        break;
+                    }
+                    case TOPIC: {
+                        // TODO 需要防止路径冲突
+                        channel = session.createTopic(name + StringUtility.DOT + address.getName());
+                        break;
+                    }
+                    }
+                    MessageConsumer consumer = session.createConsumer(channel);
                     EventHandler handler = new EventHandler(address, manager);
-                    MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + address.getName(), handler);
-                    CountDownLatch latch = new CountDownLatch(1);
-                    consumer.completionHandler((register) -> {
-                        latch.countDown();
-                    });
-                    latch.await();
+                    consumer.setMessageListener(handler);
                     address2Consumers.put(address, consumer);
                 }
                 manager.attachMonitor(monitor);
@@ -125,12 +138,8 @@ public class VertxEventBus extends AbstractEventBus {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
                         address2Managers.remove(address);
-                        MessageConsumer<byte[]> consumer = address2Consumers.remove(address);
-                        CountDownLatch latch = new CountDownLatch(1);
-                        consumer.unregister((unregister) -> {
-                            latch.countDown();
-                        });
-                        latch.await();
+                        MessageConsumer consumer = address2Consumers.remove(address);
+                        consumer.close();
                     }
                 }
             }
@@ -141,19 +150,33 @@ public class VertxEventBus extends AbstractEventBus {
 
     @Override
     public void triggerEvent(Object event) {
-        Class address = event.getClass();
-        byte[] bytes = codec.encode(address, event);
-        switch (mode) {
-        case QUEUE: {
-            // TODO 需要防止路径冲突
-            bus.send(name + StringUtility.DOT + address.getName(), bytes);
-            break;
-        }
-        case TOPIC: {
-            // TODO 需要防止路径冲突
-            bus.publish(name + StringUtility.DOT + address.getName(), bytes);
-            break;
-        }
+        try {
+            Class address = event.getClass();
+            MessageProducer producer = null;
+            synchronized (address2Producers) {
+                producer = address2Producers.get(address);
+                Destination channel = null;
+                switch (mode) {
+                case QUEUE: {
+                    // TODO 需要防止路径冲突
+                    channel = session.createQueue(name + StringUtility.DOT + address.getName());
+                    break;
+                }
+                case TOPIC: {
+                    // TODO 需要防止路径冲突
+                    channel = session.createTopic(name + StringUtility.DOT + address.getName());
+                    break;
+                }
+                }
+                producer = session.createProducer(channel);
+                address2Producers.put(address, producer);
+            }
+            byte[] bytes = codec.encode(address, event);
+            BytesMessage message = session.createBytesMessage();
+            message.writeBytes(bytes);
+            producer.send(message);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
         }
     }
 

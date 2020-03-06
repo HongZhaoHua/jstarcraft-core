@@ -6,14 +6,14 @@ import org.junit.Before;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.event.EventBus;
-import com.jstarcraft.core.event.EventBusTestCase;
+import com.jstarcraft.core.event.EventChannel;
+import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.MockEvent;
 
 import io.vertx.core.Vertx;
 
-public class VertxEventBusTestCase extends EventBusTestCase {
+public class VertxEventChannelTestCase extends EventChannelTestCase {
 
     private Vertx vertx;
 
@@ -28,10 +28,10 @@ public class VertxEventBusTestCase extends EventBusTestCase {
     }
 
     @Override
-    protected EventBus getEventBus(EventMode mode) {
+    protected EventChannel getEventChannel(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new VertxEventBus(mode, "VERTX" + mode, vertx.eventBus(), codec);
+        return new VertxEventChannel(mode, "VERTX" + mode, vertx.eventBus(), codec);
     }
 
 }

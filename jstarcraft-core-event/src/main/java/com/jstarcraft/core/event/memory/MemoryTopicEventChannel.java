@@ -2,17 +2,17 @@ package com.jstarcraft.core.event.memory;
 
 import java.util.concurrent.ExecutorService;
 
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class MemoryTopicEventBus extends AbstractEventBus {
+public class MemoryTopicEventChannel extends AbstractEventChannel {
 
     private ExecutorService pool;
 
-    public MemoryTopicEventBus(String name, ExecutorService pool) {
+    public MemoryTopicEventChannel(String name, ExecutorService pool) {
         super(EventMode.TOPIC, name);
         this.pool = pool;
     }

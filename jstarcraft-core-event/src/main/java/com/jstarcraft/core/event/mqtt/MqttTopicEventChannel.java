@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
@@ -16,7 +16,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.mqtt.messages.MqttPublishMessage;
 
-public class MqttTopicEventBus extends AbstractEventBus {
+public class MqttTopicEventChannel extends AbstractEventChannel {
 
     private MqttClient session;
 
@@ -54,7 +54,7 @@ public class MqttTopicEventBus extends AbstractEventBus {
 
     };
 
-    public MqttTopicEventBus(String name, MqttClient session, ContentCodec codec) {
+    public MqttTopicEventChannel(String name, MqttClient session, ContentCodec codec) {
         super(EventMode.TOPIC, name);
         this.session = session;
         this.codec = codec;

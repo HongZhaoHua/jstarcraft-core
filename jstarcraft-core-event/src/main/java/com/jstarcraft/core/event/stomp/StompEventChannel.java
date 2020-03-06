@@ -1,37 +1,30 @@
-package com.jstarcraft.core.event.amqp;
+package com.jstarcraft.core.event.stomp;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
-import javax.jms.BytesMessage;
-import javax.jms.Destination;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.event.AbstractEventBus;
+import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class AmqpEventBus extends AbstractEventBus {
+import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.ext.stomp.Frame;
+import io.vertx.ext.stomp.StompClientConnection;
 
-    private Session session;
+// TODO 目前存在一个Bug,消费者注册Queue模式的时候,会变成Topic.
+public class StompEventChannel extends AbstractEventChannel {
+
+    private StompClientConnection session;
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class, MessageProducer> address2Producers;
-
-    private ConcurrentMap<Class, MessageConsumer> address2Consumers;
-
-    private class EventHandler implements MessageListener {
+    private class EventHandler implements Handler<Frame> {
 
         private Class clazz;
 
@@ -43,9 +36,9 @@ public class AmqpEventBus extends AbstractEventBus {
         }
 
         @Override
-        public void onMessage(Message data) {
+        public void handle(Frame data) {
             try {
-                byte[] bytes = data.getBody(byte[].class);
+                byte[] bytes = data.getBodyAsByteArray();
                 Object event = codec.decode(clazz, bytes);
                 synchronized (manager) {
                     switch (mode) {
@@ -85,15 +78,10 @@ public class AmqpEventBus extends AbstractEventBus {
 
     };
 
-    public AmqpEventBus(EventMode mode, String name, Session session, ContentCodec codec) {
+    public StompEventChannel(EventMode mode, String name, StompClientConnection session, ContentCodec codec) {
         super(mode, name);
         this.session = session;
         this.codec = codec;
-        Builder<Class, MessageProducer> builder = new Builder<>();
-        builder.initialCapacity(1000);
-        builder.maximumWeightedCapacity(1000);
-        this.address2Producers = builder.build();
-        this.address2Consumers = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -104,23 +92,25 @@ public class AmqpEventBus extends AbstractEventBus {
                 if (manager == null) {
                     manager = new EventManager();
                     address2Managers.put(address, manager);
-                    Destination channel = null;
+                    Map<String, String> metadatas = new HashMap<>();
+                    // TODO 需要防止路径冲突
+                    String channel = name + StringUtility.DOT + address.getName();
+                    metadatas.put("id", channel);
+                    metadatas.put("destination", channel);
                     switch (mode) {
                     case QUEUE: {
-                        // TODO 需要防止路径冲突
-                        channel = session.createQueue(name + StringUtility.DOT + address.getName());
+                        // Artemis特定的协议
+                        metadatas.put("destination-type", "ANYCAST");
                         break;
                     }
                     case TOPIC: {
-                        // TODO 需要防止路径冲突
-                        channel = session.createTopic(name + StringUtility.DOT + address.getName());
+                        // Artemis特定的协议
+                        metadatas.put("destination-type", "MULTICAST");
                         break;
                     }
                     }
-                    MessageConsumer consumer = session.createConsumer(channel);
                     EventHandler handler = new EventHandler(address, manager);
-                    consumer.setMessageListener(handler);
-                    address2Consumers.put(address, consumer);
+                    session.subscribe(channel, metadatas, handler);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -138,8 +128,24 @@ public class AmqpEventBus extends AbstractEventBus {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
                         address2Managers.remove(address);
-                        MessageConsumer consumer = address2Consumers.remove(address);
-                        consumer.close();
+                        Map<String, String> metadatas = new HashMap<>();
+                        // TODO 需要防止路径冲突
+                        String channel = name + StringUtility.DOT + address.getName();
+                        metadatas.put("id", channel);
+                        metadatas.put("destination", channel);
+                        switch (mode) {
+                        case QUEUE: {
+                            // Artemis特定的协议
+                            metadatas.put("destination-type", "ANYCAST");
+                            break;
+                        }
+                        case TOPIC: {
+                            // Artemis特定的协议
+                            metadatas.put("destination-type", "MULTICAST");
+                            break;
+                        }
+                        }
+                        session.unsubscribe(channel, metadatas);
                     }
                 }
             }
@@ -152,29 +158,25 @@ public class AmqpEventBus extends AbstractEventBus {
     public void triggerEvent(Object event) {
         try {
             Class address = event.getClass();
-            MessageProducer producer = null;
-            synchronized (address2Producers) {
-                producer = address2Producers.get(address);
-                Destination channel = null;
-                switch (mode) {
-                case QUEUE: {
-                    // TODO 需要防止路径冲突
-                    channel = session.createQueue(name + StringUtility.DOT + address.getName());
-                    break;
-                }
-                case TOPIC: {
-                    // TODO 需要防止路径冲突
-                    channel = session.createTopic(name + StringUtility.DOT + address.getName());
-                    break;
-                }
-                }
-                producer = session.createProducer(channel);
-                address2Producers.put(address, producer);
-            }
             byte[] bytes = codec.encode(address, event);
-            BytesMessage message = session.createBytesMessage();
-            message.writeBytes(bytes);
-            producer.send(message);
+            Map<String, String> metadatas = new HashMap<>();
+            // TODO 需要防止路径冲突
+            String channel = name + StringUtility.DOT + address.getName();
+            metadatas.put("id", channel);
+            metadatas.put("destination", channel);
+            switch (mode) {
+            case QUEUE: {
+                // Artemis特定的协议
+                metadatas.put("destination-type", "ANYCAST");
+                break;
+            }
+            case TOPIC: {
+                // Artemis特定的协议
+                metadatas.put("destination-type", "MULTICAST");
+                break;
+            }
+            }
+            session.send(metadatas, Buffer.buffer(bytes));
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.event.EventBus;
-import com.jstarcraft.core.event.EventBusTestCase;
+import com.jstarcraft.core.event.EventChannel;
+import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.utility.NameThreadFactory;
 
-public class MemoryEventBusTestCase extends EventBusTestCase {
+public class MemoryEventChannelTestCase extends EventChannelTestCase {
 
-    protected static final Logger logger = LoggerFactory.getLogger(MemoryEventBusTestCase.class);
+    protected static final Logger logger = LoggerFactory.getLogger(MemoryEventChannelTestCase.class);
 
     private ThreadPoolExecutor pool;
 
@@ -47,13 +47,13 @@ public class MemoryEventBusTestCase extends EventBusTestCase {
 
     
     @Override
-    protected EventBus getEventBus(EventMode mode) {
+    protected EventChannel getEventChannel(EventMode mode) {
         switch (mode) {
         case QUEUE: {
-            return new MemoryQueueEventBus("MEMORY" + mode, 1000);
+            return new MemoryQueueEventChannel("MEMORY" + mode, 1000);
         }
         case TOPIC: {
-            return new MemoryTopicEventBus("MEMORY" + mode, pool);
+            return new MemoryTopicEventChannel("MEMORY" + mode, pool);
         }
         default: {
             return null;

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.event.mqtt;
+package com.jstarcraft.core.event.stomp;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -8,26 +8,30 @@ import org.junit.Before;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.event.EventBus;
-import com.jstarcraft.core.event.EventBusTestCase;
+import com.jstarcraft.core.event.EventChannel;
+import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.MockEvent;
 
 import io.vertx.core.Vertx;
-import io.vertx.mqtt.MqttClient;
+import io.vertx.ext.stomp.StompClient;
+import io.vertx.ext.stomp.StompClientConnection;
 
-public class MqttEventBusTestCase extends EventBusTestCase {
+public class StompEventChannelTestCase extends EventChannelTestCase {
 
     private Vertx vertx;
 
-    private MqttClient session;
+    private StompClient session;
+
+    private StompClientConnection connection;
 
     @Before
     public void start() throws Exception {
         vertx = Vertx.vertx();
-        session = MqttClient.create(vertx);
+        session = StompClient.create(vertx);
         CountDownLatch latch = new CountDownLatch(1);
-        session.connect(1883, "localhost", (connect) -> {
+        session.connect(61613, "localhost", (connect) -> {
+            connection = connect.result();
             latch.countDown();
         });
         latch.await();
@@ -36,22 +40,19 @@ public class MqttEventBusTestCase extends EventBusTestCase {
     @After
     public void stop() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
-        session.disconnect((disconnect) -> {
+        connection.disconnect((disconnect) -> {
             latch.countDown();
         });
         latch.await();
+        session.close();
         vertx.close();
     }
 
     @Override
-    protected EventBus getEventBus(EventMode mode) {
-        if (mode == EventMode.TOPIC) {
-            CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
-            ContentCodec codec = new JsonContentCodec(definition);
-            return new MqttTopicEventBus("MQTT" + mode, session, codec);
-        } else {
-            return null;
-        }
+    protected EventChannel getEventChannel(EventMode mode) {
+        CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+        ContentCodec codec = new JsonContentCodec(definition);
+        return new StompEventChannel(mode, "STOMP" + mode, connection, codec);
     }
 
     @Override

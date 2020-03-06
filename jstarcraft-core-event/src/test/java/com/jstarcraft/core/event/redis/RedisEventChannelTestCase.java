@@ -11,12 +11,12 @@ import org.redisson.config.Config;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.event.EventBus;
-import com.jstarcraft.core.event.EventBusTestCase;
+import com.jstarcraft.core.event.EventChannel;
+import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.MockEvent;
 
-public class RedisEventBusTestCase extends EventBusTestCase {
+public class RedisEventChannelTestCase extends EventChannelTestCase {
 
     private Redisson redisson;
     private RKeys keys;
@@ -41,16 +41,16 @@ public class RedisEventBusTestCase extends EventBusTestCase {
     }
 
     @Override
-    protected EventBus getEventBus(EventMode mode) {
+    protected EventChannel getEventChannel(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
         switch (mode) {
         case QUEUE: {
-            RedisQueueEventBus bus = new RedisQueueEventBus("redis", redisson, codec);
+            RedisQueueEventChannel bus = new RedisQueueEventChannel("redis", redisson, codec);
             return bus;
         }
         case TOPIC: {
-            RedisTopicEventBus bus = new RedisTopicEventBus("redis", redisson, codec);
+            RedisTopicEventChannel bus = new RedisTopicEventChannel("redis", redisson, codec);
             return bus;
         }
         default: {
