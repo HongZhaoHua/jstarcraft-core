@@ -20,52 +20,57 @@ public abstract class EventChannelTestCase {
         int size = 10;
         Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
-        EventChannel bus = getEventChannel(EventMode.QUEUE);
-        Assert.assertEquals(EventMode.QUEUE, bus.getMode());
+        EventChannel channel = getEventChannel(EventMode.QUEUE);
+        Assert.assertEquals(EventMode.QUEUE, channel.getMode());
         Semaphore semaphore = new Semaphore(0);
         MockMonitor[] monitors = new MockMonitor[size];
         for (int index = 0; index < size; index++) {
             monitors[index] = new MockMonitor(index, semaphore);
         }
 
-        // 注册监控器
-        for (int index = 0; index < size; index++) {
-            MockMonitor monitor = monitors[index];
-            bus.registerMonitor(addresses, monitor);
-            Assert.assertTrue(bus.getMonitors(MockEvent.class).contains(monitor));
-        }
-        // 触发事件
-        for (int index = 0; index < size; index++) {
-            bus.triggerEvent(new MockEvent(index));
-        }
-        {
-            semaphore.acquire(10);
-            int count = 0;
+        try {
+            channel.start();
+            // 注册监控器
             for (int index = 0; index < size; index++) {
                 MockMonitor monitor = monitors[index];
-                count += monitor.getCount();
+                channel.registerMonitor(addresses, monitor);
+                Assert.assertTrue(channel.getMonitors(MockEvent.class).contains(monitor));
             }
-            Assert.assertEquals(10, count);
-        }
+            // 触发事件
+            for (int index = 0; index < size; index++) {
+                channel.triggerEvent(new MockEvent(index));
+            }
+            {
+                semaphore.acquire(10);
+                int count = 0;
+                for (int index = 0; index < size; index++) {
+                    MockMonitor monitor = monitors[index];
+                    count += monitor.getCount();
+                }
+                Assert.assertEquals(10, count);
+            }
 
-        // 注销监控器
-        for (int index = 0; index < 5; index++) {
-            MockMonitor monitor = monitors[index];
-            bus.unregisterMonitor(addresses, monitor);
-            Assert.assertFalse(bus.getMonitors(MockEvent.class).contains(monitor));
-        }
-        // 触发事件
-        for (int index = 0; index < size; index++) {
-            bus.triggerEvent(new MockEvent(index));
-        }
-        {
-            semaphore.acquire(10);
-            int count = 0;
-            for (int index = 0; index < size; index++) {
+            // 注销监控器
+            for (int index = 0; index < 5; index++) {
                 MockMonitor monitor = monitors[index];
-                count += monitor.getCount();
+                channel.unregisterMonitor(addresses, monitor);
+                Assert.assertFalse(channel.getMonitors(MockEvent.class).contains(monitor));
             }
-            Assert.assertEquals(20, count);
+            // 触发事件
+            for (int index = 0; index < size; index++) {
+                channel.triggerEvent(new MockEvent(index));
+            }
+            {
+                semaphore.acquire(10);
+                int count = 0;
+                for (int index = 0; index < size; index++) {
+                    MockMonitor monitor = monitors[index];
+                    count += monitor.getCount();
+                }
+                Assert.assertEquals(20, count);
+            }
+        } finally {
+            channel.stop();
         }
     }
 
@@ -74,52 +79,57 @@ public abstract class EventChannelTestCase {
         int size = 10;
         Set<Class> addresses = new HashSet<>();
         addresses.add(MockEvent.class);
-        EventChannel bus = getEventChannel(EventMode.TOPIC);
-        Assert.assertEquals(EventMode.TOPIC, bus.getMode());
+        EventChannel channel = getEventChannel(EventMode.TOPIC);
+        Assert.assertEquals(EventMode.TOPIC, channel.getMode());
         Semaphore semaphore = new Semaphore(0);
         MockMonitor[] monitors = new MockMonitor[size];
         for (int index = 0; index < size; index++) {
             monitors[index] = new MockMonitor(index, semaphore);
         }
 
-        // 注册监控器
-        for (int index = 0; index < size; index++) {
-            MockMonitor monitor = monitors[index];
-            bus.registerMonitor(addresses, monitor);
-            Assert.assertTrue(bus.getMonitors(MockEvent.class).contains(monitor));
-        }
-        // 触发事件
-        for (int index = 0; index < size; index++) {
-            bus.triggerEvent(new MockEvent(index));
-        }
-        {
-            semaphore.acquire(100);
-            int count = 0;
+        try {
+            channel.start();
+            // 注册监控器
             for (int index = 0; index < size; index++) {
                 MockMonitor monitor = monitors[index];
-                count += monitor.getCount();
+                channel.registerMonitor(addresses, monitor);
+                Assert.assertTrue(channel.getMonitors(MockEvent.class).contains(monitor));
             }
-            Assert.assertEquals(100, count);
-        }
+            // 触发事件
+            for (int index = 0; index < size; index++) {
+                channel.triggerEvent(new MockEvent(index));
+            }
+            {
+                semaphore.acquire(100);
+                int count = 0;
+                for (int index = 0; index < size; index++) {
+                    MockMonitor monitor = monitors[index];
+                    count += monitor.getCount();
+                }
+                Assert.assertEquals(100, count);
+            }
 
-        // 注销监控器
-        for (int index = 0; index < 5; index++) {
-            MockMonitor monitor = monitors[index];
-            bus.unregisterMonitor(addresses, monitor);
-            Assert.assertFalse(bus.getMonitors(MockEvent.class).contains(monitor));
-        }
-        // 触发事件
-        for (int index = 0; index < size; index++) {
-            bus.triggerEvent(new MockEvent(index));
-        }
-        {
-            semaphore.acquire(50);
-            int count = 0;
-            for (int index = 0; index < size; index++) {
+            // 注销监控器
+            for (int index = 0; index < 5; index++) {
                 MockMonitor monitor = monitors[index];
-                count += monitor.getCount();
+                channel.unregisterMonitor(addresses, monitor);
+                Assert.assertFalse(channel.getMonitors(MockEvent.class).contains(monitor));
             }
-            Assert.assertEquals(150, count);
+            // 触发事件
+            for (int index = 0; index < size; index++) {
+                channel.triggerEvent(new MockEvent(index));
+            }
+            {
+                semaphore.acquire(50);
+                int count = 0;
+                for (int index = 0; index < size; index++) {
+                    MockMonitor monitor = monitors[index];
+                    count += monitor.getCount();
+                }
+                Assert.assertEquals(150, count);
+            }
+        } finally {
+            channel.stop();
         }
     }
 
