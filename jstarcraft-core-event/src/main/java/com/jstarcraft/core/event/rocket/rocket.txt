@@ -4,6 +4,9 @@ https://www.jianshu.com/p/b1824c6b96c1
 消息队列 RocketMQ:
 https://help.aliyun.com/product/29530.html
 
+RocketMQ概念篇:
+https://www.jianshu.com/p/10b012f0cd85
+
 RocketMQ消费模式:
 https://mp.weixin.qq.com/s/QdNQFG6ohhPpNppScEXdUQ
 
