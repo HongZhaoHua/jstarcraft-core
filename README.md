@@ -58,11 +58,12 @@ JStarCraft Core框架各个模块之间的关系:
     * 模式
        * 队列(queue)
        * 主题(topic)
-    * 协议
+    * 组件/协议
         * AMQP
         * JMS
         * Memory
         * MQTT
+        * RocketMQ
         * STOMP
         * Vert.x
 * 6.监控(monitor)
