@@ -14,7 +14,7 @@ public abstract class AbstractEventBus implements EventBus {
     protected static final Logger logger = LoggerFactory.getLogger(AbstractEventBus.class);
 
     protected final EventMode mode;
-    
+
     protected String name;
 
     protected ConcurrentMap<Class, EventManager> address2Managers;
@@ -28,6 +28,11 @@ public abstract class AbstractEventBus implements EventBus {
     @Override
     public EventMode getMode() {
         return mode;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

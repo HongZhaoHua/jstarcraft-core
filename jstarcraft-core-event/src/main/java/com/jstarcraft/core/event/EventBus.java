@@ -23,12 +23,12 @@ public interface EventBus {
      */
     EventMode getMode();
 
-//    /**
-//     * 获取通道名称
-//     * 
-//     * @return
-//     */
-//    String getName();
+    /**
+     * 获取通道名称
+     * 
+     * @return
+     */
+    String getName();
 
     /**
      * 获取指定地址的事件监控者
@@ -62,5 +62,11 @@ public interface EventBus {
      * @param event
      */
     void triggerEvent(Object event);
+
+    default void start() {
+    }
+
+    default void stop() {
+    }
 
 }

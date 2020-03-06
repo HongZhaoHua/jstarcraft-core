@@ -45,7 +45,7 @@ public class RockMqTestCase {
         int size = 5;
         DefaultMQPushConsumer[] consumers = new DefaultMQPushConsumer[size];
         for (int index = 0; index < size; index++) {
-            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("queueConsumer");
+            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("queue");
             consumer.setInstanceName("queueConsumer" + index);
             consumer.setNamesrvAddr("localhost:9876");
             consumer.setMessageModel(MessageModel.CLUSTERING);
@@ -57,7 +57,7 @@ public class RockMqTestCase {
             consumers[index] = consumer;
         }
 
-        DefaultMQProducer producer = new DefaultMQProducer("queueProducer");
+        DefaultMQProducer producer = new DefaultMQProducer("queue");
         producer.setNamesrvAddr("localhost:9876");
         producer.start();
 
@@ -79,7 +79,7 @@ public class RockMqTestCase {
         int size = 5;
         DefaultMQPushConsumer[] consumers = new DefaultMQPushConsumer[size];
         for (int index = 0; index < size; index++) {
-            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("topicConsumer");
+            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("topic");
             consumer.setInstanceName("topicConsumer" + index);
             consumer.setNamesrvAddr("localhost:9876");
             consumer.setMessageModel(MessageModel.BROADCASTING);
@@ -91,7 +91,7 @@ public class RockMqTestCase {
             consumers[index] = consumer;
         }
 
-        DefaultMQProducer producer = new DefaultMQProducer("topicProducer");
+        DefaultMQProducer producer = new DefaultMQProducer("topic");
         producer.setNamesrvAddr("localhost:9876");
         producer.start();
 
