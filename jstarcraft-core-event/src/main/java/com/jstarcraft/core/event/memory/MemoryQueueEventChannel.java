@@ -22,9 +22,9 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
 
     private int size;
 
-    private ConcurrentMap<Class, BlockingQueue<Object>> address2Events;
+    private ConcurrentMap<Class, BlockingQueue<Object>> type2Events;
 
-    private ConcurrentMap<Class, EventThread> address2Threads;
+    private ConcurrentMap<Class, EventThread> type2Threads;
 
     private class EventThread extends Thread {
 
@@ -64,44 +64,44 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
     public MemoryQueueEventChannel(String name, int size) {
         super(EventMode.QUEUE, name);
         this.size = size;
-        this.address2Events = new ConcurrentHashMap<>();
-        this.address2Threads = new ConcurrentHashMap<>();
+        this.type2Events = new ConcurrentHashMap<>();
+        this.type2Threads = new ConcurrentHashMap<>();
     }
 
-    private BlockingQueue<Object> getEvents(Class address) {
-        BlockingQueue<Object> events = address2Events.get(address);
+    private BlockingQueue<Object> getEvents(Class type) {
+        BlockingQueue<Object> events = type2Events.get(type);
         if (events == null) {
             events = new ArrayBlockingQueue<>(size);
-            address2Events.put(address, events);
+            type2Events.put(type, events);
         }
         return events;
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                address2Managers.put(address, manager);
-                BlockingQueue<Object> events = getEvents(address);
+                type2Managers.put(type, manager);
+                BlockingQueue<Object> events = getEvents(type);
                 EventThread thread = new EventThread(manager, events);
                 thread.start();
-                address2Threads.put(address, thread);
+                type2Threads.put(type, thread);
             }
             manager.attachMonitor(monitor);
         }
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    address2Managers.remove(address);
-                    EventThread thread = address2Threads.remove(address);
+                    type2Managers.remove(type);
+                    EventThread thread = type2Threads.remove(type);
                     thread.interrupt();
                 }
             }
@@ -110,8 +110,8 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
 
     @Override
     public void triggerEvent(Object event) {
-        Class address = event.getClass();
-        BlockingQueue<Object> events = getEvents(address);
+        Class type = event.getClass();
+        BlockingQueue<Object> events = getEvents(type);
         events.offer(event);
     }
 

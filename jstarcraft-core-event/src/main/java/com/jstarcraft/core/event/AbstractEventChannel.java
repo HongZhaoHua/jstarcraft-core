@@ -17,12 +17,12 @@ public abstract class AbstractEventChannel implements EventChannel {
 
     protected String name;
 
-    protected ConcurrentMap<Class, EventManager> address2Managers;
+    protected ConcurrentMap<Class, EventManager> type2Managers;
 
     protected AbstractEventChannel(EventMode mode, String name) {
         this.mode = mode;
         this.name = name;
-        this.address2Managers = new ConcurrentHashMap<>();
+        this.type2Managers = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -46,33 +46,33 @@ public abstract class AbstractEventChannel implements EventChannel {
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                address2Managers.put(address, manager);
+                type2Managers.put(type, manager);
             }
             manager.attachMonitor(monitor);
         }
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    address2Managers.remove(address);
+                    type2Managers.remove(type);
                 }
             }
         }
     }
 
     @Override
-    public Collection<EventMonitor> getMonitors(Class address) {
-        EventManager manager = address2Managers.get(address);
+    public Collection<EventMonitor> getMonitors(Class type) {
+        EventManager manager = type2Managers.get(type);
         return manager == null ? Collections.EMPTY_SET : manager.getMonitors();
     }
 

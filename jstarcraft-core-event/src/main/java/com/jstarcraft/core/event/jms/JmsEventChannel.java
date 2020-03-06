@@ -30,7 +30,7 @@ public class JmsEventChannel extends AbstractEventChannel {
 
     private JMSProducer producer;
 
-    private ConcurrentMap<Class, JMSConsumer> address2Consumers;
+    private ConcurrentMap<Class, JMSConsumer> type2Consumers;
 
     private class EventHandler implements MessageListener {
 
@@ -92,49 +92,49 @@ public class JmsEventChannel extends AbstractEventChannel {
         this.context = factory.createContext();
         this.codec = codec;
         this.producer = context.createProducer();
-        this.address2Consumers = new ConcurrentHashMap<>();
+        this.type2Consumers = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                address2Managers.put(address, manager);
-                Destination channel = null;
+                type2Managers.put(type, manager);
+                Destination address = null;
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    channel = context.createQueue(name + StringUtility.DOT + address.getName());
+                    address = context.createQueue(name + StringUtility.DOT + type.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    channel = context.createTopic(name + StringUtility.DOT + address.getName());
+                    address = context.createTopic(name + StringUtility.DOT + type.getName());
                     break;
                 }
                 }
                 // 注意:JMSContext不能共享.
                 JMSContext context = factory.createContext();
-                JMSConsumer consumer = context.createConsumer(channel);
-                EventHandler handler = new EventHandler(address, manager);
+                JMSConsumer consumer = context.createConsumer(address);
+                EventHandler handler = new EventHandler(type, manager);
                 consumer.setMessageListener(handler);
-                address2Consumers.put(address, consumer);
+                type2Consumers.put(type, consumer);
             }
             manager.attachMonitor(monitor);
         }
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    address2Managers.remove(address);
-                    JMSConsumer consumer = address2Consumers.remove(address);
+                    type2Managers.remove(type);
+                    JMSConsumer consumer = type2Consumers.remove(type);
                     consumer.close();
                 }
             }
@@ -143,22 +143,22 @@ public class JmsEventChannel extends AbstractEventChannel {
 
     @Override
     public void triggerEvent(Object event) {
-        Class address = event.getClass();
-        Destination channel = null;
+        Class type = event.getClass();
+        Destination address = null;
         switch (mode) {
         case QUEUE: {
             // TODO 需要防止路径冲突
-            channel = context.createQueue(name + StringUtility.DOT + address.getName());
+            address = context.createQueue(name + StringUtility.DOT + type.getName());
             break;
         }
         case TOPIC: {
             // TODO 需要防止路径冲突
-            channel = context.createTopic(name + StringUtility.DOT + address.getName());
+            address = context.createTopic(name + StringUtility.DOT + type.getName());
             break;
         }
         }
-        byte[] bytes = codec.encode(address, event);
-        producer.send(channel, bytes);
+        byte[] bytes = codec.encode(type, event);
+        producer.send(address, bytes);
     }
 
 }

@@ -27,7 +27,7 @@ public class MemoryTopicEventChannel extends AbstractEventChannel {
 
         @Override
         public void run() {
-            EventManager manager = address2Managers.get(event.getClass());
+            EventManager manager = type2Managers.get(event.getClass());
             if (manager != null) {
                 synchronized (manager) {
                     for (EventMonitor monitor : manager) {

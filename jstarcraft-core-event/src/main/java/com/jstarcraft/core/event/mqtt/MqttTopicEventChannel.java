@@ -32,7 +32,7 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
                 address = address.substring(name.length() + 1);
                 address = address.replace(StringUtility.FORWARD_SLASH, StringUtility.DOT);
                 Class clazz = Class.forName(address);
-                EventManager manager = address2Managers.get(clazz);
+                EventManager manager = type2Managers.get(clazz);
                 Object event = codec.decode(clazz, data.payload().getBytes());
                 synchronized (manager) {
                     for (EventMonitor monitor : manager) {
@@ -63,16 +63,16 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    address2Managers.put(address, manager);
+                    type2Managers.put(type, manager);
                     // TODO 需要防止路径冲突
                     CountDownLatch latch = new CountDownLatch(1);
-                    session.subscribe(name + StringUtility.DOT + address.getName(), MqttQoS.AT_MOST_ONCE.value(), (subscribe) -> {
+                    session.subscribe(name + StringUtility.DOT + type.getName(), MqttQoS.AT_MOST_ONCE.value(), (subscribe) -> {
                         latch.countDown();
                     });
                     latch.await();
@@ -85,17 +85,17 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        address2Managers.remove(address);
+                        type2Managers.remove(type);
                         // TODO 需要防止路径冲突
                         CountDownLatch latch = new CountDownLatch(1);
-                        session.unsubscribe(name + StringUtility.DOT + address.getName(), (subscribe) -> {
+                        session.unsubscribe(name + StringUtility.DOT + type.getName(), (subscribe) -> {
                             latch.countDown();
                         });
                         latch.await();
@@ -110,10 +110,10 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class address = event.getClass();
-            byte[] bytes = codec.encode(address, event);
+            Class type = event.getClass();
+            byte[] bytes = codec.encode(type, event);
             // TODO 需要防止路径冲突
-            session.publish(name + StringUtility.DOT + address.getName(), Buffer.buffer(bytes), MqttQoS.AT_MOST_ONCE, false, false);
+            session.publish(name + StringUtility.DOT + type.getName(), Buffer.buffer(bytes), MqttQoS.AT_MOST_ONCE, false, false);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

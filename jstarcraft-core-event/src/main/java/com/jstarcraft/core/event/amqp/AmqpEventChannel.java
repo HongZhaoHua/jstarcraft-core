@@ -27,9 +27,9 @@ public class AmqpEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class, MessageProducer> address2Producers;
+    private ConcurrentMap<Class, MessageProducer> type2Producers;
 
-    private ConcurrentMap<Class, MessageConsumer> address2Consumers;
+    private ConcurrentMap<Class, MessageConsumer> type2Consumers;
 
     private class EventHandler implements MessageListener {
 
@@ -92,35 +92,35 @@ public class AmqpEventChannel extends AbstractEventChannel {
         Builder<Class, MessageProducer> builder = new Builder<>();
         builder.initialCapacity(1000);
         builder.maximumWeightedCapacity(1000);
-        this.address2Producers = builder.build();
-        this.address2Consumers = new ConcurrentHashMap<>();
+        this.type2Producers = builder.build();
+        this.type2Consumers = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    address2Managers.put(address, manager);
-                    Destination channel = null;
+                    type2Managers.put(type, manager);
+                    Destination address = null;
                     switch (mode) {
                     case QUEUE: {
                         // TODO 需要防止路径冲突
-                        channel = session.createQueue(name + StringUtility.DOT + address.getName());
+                        address = session.createQueue(name + StringUtility.DOT + type.getName());
                         break;
                     }
                     case TOPIC: {
                         // TODO 需要防止路径冲突
-                        channel = session.createTopic(name + StringUtility.DOT + address.getName());
+                        address = session.createTopic(name + StringUtility.DOT + type.getName());
                         break;
                     }
                     }
-                    MessageConsumer consumer = session.createConsumer(channel);
-                    EventHandler handler = new EventHandler(address, manager);
+                    MessageConsumer consumer = session.createConsumer(address);
+                    EventHandler handler = new EventHandler(type, manager);
                     consumer.setMessageListener(handler);
-                    address2Consumers.put(address, consumer);
+                    type2Consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -130,15 +130,15 @@ public class AmqpEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        address2Managers.remove(address);
-                        MessageConsumer consumer = address2Consumers.remove(address);
+                        type2Managers.remove(type);
+                        MessageConsumer consumer = type2Consumers.remove(type);
                         consumer.close();
                     }
                 }
@@ -151,27 +151,27 @@ public class AmqpEventChannel extends AbstractEventChannel {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class address = event.getClass();
+            Class type = event.getClass();
             MessageProducer producer = null;
-            synchronized (address2Producers) {
-                producer = address2Producers.get(address);
-                Destination channel = null;
+            synchronized (type2Producers) {
+                producer = type2Producers.get(type);
+                Destination address = null;
                 switch (mode) {
                 case QUEUE: {
                     // TODO 需要防止路径冲突
-                    channel = session.createQueue(name + StringUtility.DOT + address.getName());
+                    address = session.createQueue(name + StringUtility.DOT + type.getName());
                     break;
                 }
                 case TOPIC: {
                     // TODO 需要防止路径冲突
-                    channel = session.createTopic(name + StringUtility.DOT + address.getName());
+                    address = session.createTopic(name + StringUtility.DOT + type.getName());
                     break;
                 }
                 }
-                producer = session.createProducer(channel);
-                address2Producers.put(address, producer);
+                producer = session.createProducer(address);
+                type2Producers.put(type, producer);
             }
-            byte[] bytes = codec.encode(address, event);
+            byte[] bytes = codec.encode(type, event);
             BytesMessage message = session.createBytesMessage();
             message.writeBytes(bytes);
             producer.send(message);

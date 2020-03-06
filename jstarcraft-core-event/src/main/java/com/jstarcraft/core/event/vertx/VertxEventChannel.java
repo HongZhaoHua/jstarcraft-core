@@ -5,8 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 
-import javax.jms.JMSProducer;
-
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
@@ -26,9 +24,7 @@ public class VertxEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private JMSProducer producer;
-
-    private ConcurrentMap<Class, MessageConsumer<byte[]>> address2Consumers;
+    private ConcurrentMap<Class, MessageConsumer<byte[]>> type2Consumers;
 
     private class EventHandler implements Handler<Message<byte[]>> {
 
@@ -88,26 +84,26 @@ public class VertxEventChannel extends AbstractEventChannel {
         super(mode, name);
         this.bus = bus;
         this.codec = codec;
-        this.address2Consumers = new ConcurrentHashMap<>();
+        this.type2Consumers = new ConcurrentHashMap<>();
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    address2Managers.put(address, manager);
+                    type2Managers.put(type, manager);
                     // TODO 需要防止路径冲突
-                    EventHandler handler = new EventHandler(address, manager);
-                    MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + address.getName(), handler);
+                    EventHandler handler = new EventHandler(type, manager);
+                    MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + type.getName(), handler);
                     CountDownLatch latch = new CountDownLatch(1);
                     consumer.completionHandler((register) -> {
                         latch.countDown();
                     });
                     latch.await();
-                    address2Consumers.put(address, consumer);
+                    type2Consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -117,15 +113,15 @@ public class VertxEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        address2Managers.remove(address);
-                        MessageConsumer<byte[]> consumer = address2Consumers.remove(address);
+                        type2Managers.remove(type);
+                        MessageConsumer<byte[]> consumer = type2Consumers.remove(type);
                         CountDownLatch latch = new CountDownLatch(1);
                         consumer.unregister((unregister) -> {
                             latch.countDown();
@@ -141,17 +137,17 @@ public class VertxEventChannel extends AbstractEventChannel {
 
     @Override
     public void triggerEvent(Object event) {
-        Class address = event.getClass();
-        byte[] bytes = codec.encode(address, event);
+        Class type = event.getClass();
+        byte[] bytes = codec.encode(type, event);
         switch (mode) {
         case QUEUE: {
             // TODO 需要防止路径冲突
-            bus.send(name + StringUtility.DOT + address.getName(), bytes);
+            bus.send(name + StringUtility.DOT + type.getName(), bytes);
             break;
         }
         case TOPIC: {
             // TODO 需要防止路径冲突
-            bus.publish(name + StringUtility.DOT + address.getName(), bytes);
+            bus.publish(name + StringUtility.DOT + type.getName(), bytes);
             break;
         }
         }

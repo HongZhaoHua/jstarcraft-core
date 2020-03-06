@@ -27,13 +27,13 @@ import com.jstarcraft.core.utility.StringUtility;
 
 public class RocketEventChannel extends AbstractEventChannel {
 
-    private String address;
+    private String addresses;
 
     private ContentCodec codec;
 
     private MQProducer producer;
 
-    private ConcurrentMap<Class, MQPushConsumer> address2Consumers;
+    private ConcurrentMap<Class, MQPushConsumer> type2Consumers;
 
     private class EventHandler implements MessageListenerConcurrently {
 
@@ -92,39 +92,39 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     };
 
-    public RocketEventChannel(EventMode mode, String name, String address, ContentCodec codec) {
+    public RocketEventChannel(EventMode mode, String name, String addresses, ContentCodec codec) {
         super(mode, name);
         try {
-            this.address = address;
+            this.addresses = addresses;
             this.codec = codec;
             DefaultMQProducer producer = new DefaultMQProducer(name);
             producer.setInstanceName(name);
-            producer.setNamesrvAddr(address);
+            producer.setNamesrvAddr(addresses);
             producer.start();
             this.producer = producer;
-            this.address2Consumers = new ConcurrentHashMap<>();
+            this.type2Consumers = new ConcurrentHashMap<>();
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class clazz : addresses) {
-                EventManager manager = address2Managers.get(clazz);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    address2Managers.put(clazz, manager);
+                    type2Managers.put(type, manager);
                     // TODO 需要防止路径冲突
-                    String channel = name + StringUtility.DOT + clazz.getName();
-                    channel = channel.replace(StringUtility.DOT, StringUtility.DASH);
-                    DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(channel);
+                    String address = name + StringUtility.DOT + type.getName();
+                    address = address.replace(StringUtility.DOT, StringUtility.DASH);
+                    DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(address);
                     consumer.setInstanceName(name);
-                    consumer.setNamesrvAddr(address);
+                    consumer.setNamesrvAddr(addresses);
                     consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
                     consumer.setConsumeMessageBatchMaxSize(1000);
-                    consumer.subscribe(channel, "*");
+                    consumer.subscribe(address, "*");
                     switch (mode) {
                     case QUEUE: {
                         consumer.setMessageModel(MessageModel.CLUSTERING);
@@ -135,10 +135,10 @@ public class RocketEventChannel extends AbstractEventChannel {
                         break;
                     }
                     }
-                    EventHandler handler = new EventHandler(clazz, manager);
+                    EventHandler handler = new EventHandler(type, manager);
                     consumer.registerMessageListener(handler);
                     consumer.start();
-                    address2Consumers.put(clazz, consumer);
+                    type2Consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -148,14 +148,14 @@ public class RocketEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class clazz : addresses) {
-            EventManager manager = address2Managers.get(clazz);
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    address2Managers.remove(clazz);
-                    MQPushConsumer consumer = address2Consumers.remove(clazz);
+                    type2Managers.remove(type);
+                    MQPushConsumer consumer = type2Consumers.remove(type);
                     consumer.shutdown();
                 }
             }
@@ -165,11 +165,11 @@ public class RocketEventChannel extends AbstractEventChannel {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class clazz = event.getClass();
-            String channel = name + StringUtility.DOT + clazz.getName();
-            channel = channel.replace(StringUtility.DOT, StringUtility.DASH);
-            byte[] bytes = codec.encode(clazz, event);
-            Message message = new Message(channel, channel, bytes);
+            Class type = event.getClass();
+            String address = name + StringUtility.DOT + type.getName();
+            address = address.replace(StringUtility.DOT, StringUtility.DASH);
+            byte[] bytes = codec.encode(type, event);
+            Message message = new Message(address, address, bytes);
             producer.send(message);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
@@ -183,7 +183,7 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     @Override
     public void stop() {
-        for (MQPushConsumer cousumer : address2Consumers.values()) {
+        for (MQPushConsumer cousumer : type2Consumers.values()) {
             cousumer.shutdown();
         }
         producer.shutdown();

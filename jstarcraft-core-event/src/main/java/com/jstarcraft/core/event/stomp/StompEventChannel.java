@@ -85,18 +85,17 @@ public class StompEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    address2Managers.put(address, manager);
+                    type2Managers.put(type, manager);
                     Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
-                    String channel = name + StringUtility.DOT + address.getName();
-                    metadatas.put("id", channel);
-                    metadatas.put("destination", channel);
+                    String address = name + StringUtility.DOT + type.getName();
+                    metadatas.put("destination", address);
                     switch (mode) {
                     case QUEUE: {
                         // Artemis特定的协议
@@ -109,8 +108,8 @@ public class StompEventChannel extends AbstractEventChannel {
                         break;
                     }
                     }
-                    EventHandler handler = new EventHandler(address, manager);
-                    session.subscribe(channel, metadatas, handler);
+                    EventHandler handler = new EventHandler(type, manager);
+                    session.subscribe(address, metadatas, handler);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -120,19 +119,18 @@ public class StompEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
-            for (Class address : addresses) {
-                EventManager manager = address2Managers.get(address);
+            for (Class type : types) {
+                EventManager manager = type2Managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        address2Managers.remove(address);
+                        type2Managers.remove(type);
                         Map<String, String> metadatas = new HashMap<>();
                         // TODO 需要防止路径冲突
-                        String channel = name + StringUtility.DOT + address.getName();
-                        metadatas.put("id", channel);
-                        metadatas.put("destination", channel);
+                        String address = name + StringUtility.DOT + type.getName();
+                        metadatas.put("destination", address);
                         switch (mode) {
                         case QUEUE: {
                             // Artemis特定的协议
@@ -145,7 +143,7 @@ public class StompEventChannel extends AbstractEventChannel {
                             break;
                         }
                         }
-                        session.unsubscribe(channel, metadatas);
+                        session.unsubscribe(address, metadatas);
                     }
                 }
             }
@@ -157,12 +155,11 @@ public class StompEventChannel extends AbstractEventChannel {
     @Override
     public void triggerEvent(Object event) {
         try {
-            Class address = event.getClass();
-            byte[] bytes = codec.encode(address, event);
+            Class type = event.getClass();
+            byte[] bytes = codec.encode(type, event);
             Map<String, String> metadatas = new HashMap<>();
             // TODO 需要防止路径冲突
-            String channel = name + StringUtility.DOT + address.getName();
-            metadatas.put("id", channel);
+            String channel = name + StringUtility.DOT + type.getName();
             metadatas.put("destination", channel);
             switch (mode) {
             case QUEUE: {

@@ -16,9 +16,9 @@ import com.jstarcraft.core.utility.StringUtility;
 
 public class RedisTopicEventChannel extends RedisEventChannel {
 
-    private ConcurrentMap<Class, EventHandler> address2Handlers;
+    private ConcurrentMap<Class, EventHandler> type2Handlers;
 
-    private ConcurrentMap<Class, RTopic> address2Topics;
+    private ConcurrentMap<Class, RTopic> type2Topics;
 
     private class EventHandler implements MessageListener<byte[]> {
 
@@ -55,47 +55,47 @@ public class RedisTopicEventChannel extends RedisEventChannel {
 
     public RedisTopicEventChannel(String name, Redisson redisson, ContentCodec codec) {
         super(EventMode.TOPIC, name, redisson, codec);
-        this.address2Handlers = new ConcurrentHashMap<>();
-        this.address2Topics = new ConcurrentHashMap<>();
+        this.type2Handlers = new ConcurrentHashMap<>();
+        this.type2Topics = new ConcurrentHashMap<>();
     }
 
-    protected RTopic getTopic(Class address) {
-        RTopic topic = address2Topics.get(address);
+    protected RTopic getTopic(Class type) {
+        RTopic topic = type2Topics.get(type);
         if (topic == null) {
-            topic = redisson.getTopic(name + StringUtility.DOT + address.getName(), byteCodec);
-            address2Topics.put(address, topic);
+            topic = redisson.getTopic(name + StringUtility.DOT + type.getName(), byteCodec);
+            type2Topics.put(type, topic);
         }
         return topic;
     }
 
     @Override
-    public void registerMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                address2Managers.put(address, manager);
+                type2Managers.put(type, manager);
                 // TODO 需要防止路径冲突
-                RTopic topic = getTopic(address);
-                EventHandler handler = new EventHandler(address, manager);
+                RTopic topic = getTopic(type);
+                EventHandler handler = new EventHandler(type, manager);
                 topic.addListener(byte[].class, handler);
-                address2Handlers.put(address, handler);
+                type2Handlers.put(type, handler);
             }
             manager.attachMonitor(monitor);
         }
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> addresses, EventMonitor monitor) {
-        for (Class address : addresses) {
-            EventManager manager = address2Managers.get(address);
+    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+        for (Class type : types) {
+            EventManager manager = type2Managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    address2Managers.remove(address);
+                    type2Managers.remove(type);
                     // TODO 需要防止路径冲突
-                    RTopic topic = getTopic(address);
-                    EventHandler handler = address2Handlers.remove(address);
+                    RTopic topic = getTopic(type);
+                    EventHandler handler = type2Handlers.remove(type);
                     topic.removeListener(handler);
                 }
             }
@@ -104,10 +104,10 @@ public class RedisTopicEventChannel extends RedisEventChannel {
 
     @Override
     public void triggerEvent(Object event) {
-        Class address = event.getClass();
+        Class type = event.getClass();
         // TODO 需要防止路径冲突
-        RTopic topic = getTopic(address);
-        byte[] bytes = codec.encode(address, event);
+        RTopic topic = getTopic(type);
+        byte[] bytes = codec.encode(type, event);
         topic.publish(bytes);
     }
 
