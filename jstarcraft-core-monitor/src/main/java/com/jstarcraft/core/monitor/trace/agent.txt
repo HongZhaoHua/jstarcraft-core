@@ -1,0 +1,39 @@
+手把手教你实现热更新功能，带你了解 Arthas 热更新背后的原理:
+https://www.cnblogs.com/goodAndyxublog/p/11880314.html
+
+基于Java Instrument的Agent实现:
+https://www.jianshu.com/p/b72f66da679f
+
+虚拟机类加载器:
+https://www.jianshu.com/p/42aa3325711e
+Java Agent简介:
+https://www.jianshu.com/p/63c328ca208d
+
+Java Agent技术原理及简单实现:
+https://www.cnblogs.com/kokov/p/12120033.html
+
+Java Agent基础原理:
+https://blog.csdn.net/ancinsdn/article/details/58276945
+
+JavaAgent学习小结:
+https://www.cnblogs.com/jycboy/p/12249472.html
+
+Java Agent:
+https://blog.csdn.net/wenwen513/article/details/86498687
+
+Java Agent实战:
+https://blog.csdn.net/manzhizhen/article/details/100178857
+
+<plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <configuration>
+        <archive>
+            <manifestEntries>
+                <Premain-Class>com.dianping.rhino.agent.AgentBoot</Premain-Class>
+                <Agent-Class>com.dianping.rhino.agent.AgentBoot</Agent-Class>
+                <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                <Can-Retransform-Classes>true</Can-Retransform-Classes>
+            </manifestEntries>
+        </archive>
+    </configuration>
+</plugin>
