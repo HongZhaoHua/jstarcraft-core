@@ -1,3 +1,9 @@
+MobileIMSDK一个专为移动端开发的开源原创即时通讯框架，超轻量级、高度提炼，完全基于UDP协议，支持iOS、Android、标准Java平台，服务端基于Mina和Netty编写:
+https://github.com/JackJiang2011/MobileIMSDK
+
+t-io（是百万级网络框架，更是万金油般的网络中台）:
+https://github.com/tywo45/t-io
+
 prototype:
 基于扫描构建通讯格式文件.
 支持通讯格式校验.
