@@ -19,7 +19,7 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- 仓储框架依赖 -->
+        <!-- 资源框架依赖 -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
