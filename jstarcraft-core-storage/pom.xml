@@ -95,32 +95,6 @@
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-core</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-analyzers-common</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-codecs</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-queryparser</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-highlighter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
