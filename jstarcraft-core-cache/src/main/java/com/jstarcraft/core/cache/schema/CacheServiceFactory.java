@@ -1,6 +1,5 @@
 package com.jstarcraft.core.cache.schema;
 
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -17,8 +16,8 @@ import com.jstarcraft.core.cache.CacheService;
 import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.annotation.AfterCacheStarted;
 import com.jstarcraft.core.cache.annotation.BeforeCacheStoped;
-import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
-import com.jstarcraft.core.cache.transience.TransienceConfiguration;
+import com.jstarcraft.core.cache.persistence.PersistenceStrategy;
+import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.StorageAccessor;
@@ -33,16 +32,16 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheServiceFactory.class);
 
     public static final String CACHE_CLASSES_NAME = "cacheClasses";
-    public static final String TRANSIENCE_CONFIGURATIONS_NAME = "transienceConfigurations";
-    public static final String PERSISTENCE_CONFIGURATIONS_NAME = "persistenceConfigurations";
+    public static final String TRANSIENCE_STRATEGIES_NAME = "transienceStrategies";
+    public static final String PERSISTENCE_STRATEGIES_NAME = "persistenceStrategies";
 
     @Autowired(required = true)
     private ApplicationContext applicationContext;
 
     private StorageAccessor accessor;
     private Set<Class<? extends IdentityObject>> cacheClasses;
-    private Map<String, TransienceConfiguration> transienceConfigurations;
-    private Map<String, PersistenceConfiguration> persistenceConfigurations;
+    private Set<TransienceStrategy> transienceStrategies;
+    private Set<PersistenceStrategy> persistenceStrategies;
     private CacheService cacheService;
 
     private void afterCacheServiceStarted() {
@@ -124,18 +123,18 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
         this.cacheClasses = cacheClasses;
     }
 
-    public void setTransienceConfigurations(Map<String, TransienceConfiguration> transienceConfigurations) {
-        this.transienceConfigurations = transienceConfigurations;
+    public void setTransienceStrategies(Set<TransienceStrategy> transienceStrategies) {
+        this.transienceStrategies = transienceStrategies;
     }
 
-    public void setPersistenceConfigurations(Map<String, PersistenceConfiguration> persistenceConfigurations) {
-        this.persistenceConfigurations = persistenceConfigurations;
+    public void setPersistenceStrategies(Set<PersistenceStrategy> persistenceStrategies) {
+        this.persistenceStrategies = persistenceStrategies;
     }
 
     @Override
     public synchronized CacheService getObject() throws Exception {
         if (cacheService == null) {
-            cacheService = new CacheService(cacheClasses, accessor, transienceConfigurations, persistenceConfigurations);
+            cacheService = new CacheService(cacheClasses, accessor, transienceStrategies, persistenceStrategies);
         }
         return cacheService;
 

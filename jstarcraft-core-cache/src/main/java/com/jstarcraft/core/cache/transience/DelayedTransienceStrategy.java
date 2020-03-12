@@ -1,5 +1,6 @@
 package com.jstarcraft.core.cache.transience;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.jstarcraft.core.cache.CacheState;
@@ -11,15 +12,12 @@ import com.jstarcraft.core.cache.exception.CacheConfigurationException;
  * @author Birdy
  *
  */
-public class DelayedTransienceStrategy implements TransienceStrategy {
+public class DelayedTransienceStrategy extends AbstractTransienceStrategy {
 
     /** 参数:到期时间(秒) */
     public static final String PARAMETER_EXPIRE = "expire";
     /** 参数:分段 */
     public static final String PARAMETER_SEGMENT = "segment";
-
-    /** 名称 */
-    private String name;
 
     /** 到期时间(秒) */
     private int expire;
@@ -29,14 +27,17 @@ public class DelayedTransienceStrategy implements TransienceStrategy {
     /** 状态 */
     private AtomicReference<CacheState> state = new AtomicReference<>(null);
 
+    public DelayedTransienceStrategy(String name, Map<String, String> configuration) {
+        super(name, configuration);
+    }
+
     @Override
-    public void start(TransienceConfiguration configuration) {
+    public void start() {
         if (!state.compareAndSet(null, CacheState.STARTED)) {
             throw new CacheConfigurationException();
         }
-        this.name = configuration.getName();
-        this.expire = Integer.parseInt(configuration.getValue(PARAMETER_EXPIRE));
-        this.segment = Integer.parseInt(configuration.getValue(PARAMETER_SEGMENT));
+        this.expire = Integer.parseInt(configuration.get(PARAMETER_EXPIRE));
+        this.segment = Integer.parseInt(configuration.get(PARAMETER_SEGMENT));
 
         if (expire <= 0 || segment <= 1) {
             throw new CacheConfigurationException();
@@ -48,11 +49,6 @@ public class DelayedTransienceStrategy implements TransienceStrategy {
         if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
             throw new CacheConfigurationException();
         }
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

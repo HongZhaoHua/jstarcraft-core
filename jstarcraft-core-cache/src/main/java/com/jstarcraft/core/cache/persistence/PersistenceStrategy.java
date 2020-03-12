@@ -14,22 +14,6 @@ import com.jstarcraft.core.storage.StorageAccessor;
 public interface PersistenceStrategy {
 
     /**
-     * 
-     * @author Birdy
-     *
-     */
-    public enum PersistenceType {
-
-        /** 立刻 */
-        PROMPT,
-        /** 队列 */
-        QUEUE,
-        /** 定时 */
-        SCHEDULE;
-
-    }
-
-    /**
      * 持久操作
      * 
      * @author Birdy
@@ -51,7 +35,7 @@ public interface PersistenceStrategy {
      * @param accessor
      * @param configuration
      */
-    void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration);
+    void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations);
 
     /**
      * 停止策略

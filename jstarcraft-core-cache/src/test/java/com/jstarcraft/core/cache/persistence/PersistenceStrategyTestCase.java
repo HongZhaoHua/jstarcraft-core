@@ -29,15 +29,15 @@ public abstract class PersistenceStrategyTestCase {
         cacheInformations.put(MockEntityObject.class, CacheInformation.instanceOf(MockEntityObject.class));
     }
 
-    protected abstract PersistenceConfiguration getPersistenceConfiguration();
+    protected abstract Map<String, String> getPersistenceConfiguration();
 
-    protected abstract PersistenceStrategy getPersistenceStrategy();
+    protected abstract PersistenceStrategy getPersistenceStrategy(String name, Map<String, String> configuration);
 
     @Test
     public void testPerformance() throws Exception {
         int size = 10000;
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         // 创建数据
@@ -111,8 +111,8 @@ public abstract class PersistenceStrategyTestCase {
     @Test
     public void testQuery() throws Exception {
         int size = 10000;
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         synchronized (accessor) {
@@ -177,8 +177,8 @@ public abstract class PersistenceStrategyTestCase {
 
     @Test
     public void testUpdate() throws Exception {
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         MockEntityObject object = MockEntityObject.instanceOf(0, "birdy", "hong", 1, -1);

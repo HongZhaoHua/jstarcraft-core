@@ -53,7 +53,7 @@ public class CommunicationXmlParser extends AbstractBeanDefinitionParser {
     private MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
     /** 获取指令策略集合 */
-    private static ManagedMap<String, Object> getStrategies(Element configurationElement, ParserContext parserContext) {
+    private static ManagedMap<String, Object> getStrategies(Element configurationElement, ParserContext context) {
         // 设置每个执行策略配置
         ManagedMap<String, Object> strategies = new ManagedMap<>();
         String strategyName = configurationElement.getAttribute(AttributeDefinition.REFERENCE.getName());
@@ -97,7 +97,7 @@ public class CommunicationXmlParser extends AbstractBeanDefinitionParser {
     }
 
     @Override
-    protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+    protected AbstractBeanDefinition parseInternal(Element element, ParserContext context) {
         // 通信调度器工厂
         BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CommunicationDispatcherFactory.class);
 
@@ -176,7 +176,7 @@ public class CommunicationXmlParser extends AbstractBeanDefinitionParser {
         factory.addPropertyReference(ElementDefinition.SENDER.getName(), senderBeanName);
 
         // 设置执行策略
-        ManagedMap<String, Object> strategies = getStrategies(element, parserContext);
+        ManagedMap<String, Object> strategies = getStrategies(element, context);
         factory.addPropertyValue(CommunicationDispatcherFactory.STRATEGIES, strategies);
 
         // 设置等待

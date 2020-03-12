@@ -19,12 +19,10 @@ import com.jstarcraft.core.storage.StorageAccessor;
  * @author Birdy
  *
  */
-public class PromptPersistenceStrategy implements PersistenceStrategy {
+public class PromptPersistenceStrategy extends AbstractPersistenceStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PromptPersistenceStrategy.class);
 
-    /** 名称 */
-    private String name;
     /** ORM访问器 */
     private StorageAccessor accessor;
     /** 缓存类型信息 */
@@ -34,12 +32,15 @@ public class PromptPersistenceStrategy implements PersistenceStrategy {
 
     private Map<Class, PromptPersistenceManager> managers = new HashMap<>();
 
+    public PromptPersistenceStrategy(String name, Map<String, String> configuration) {
+        super(name, configuration);
+    }
+
     @Override
-    public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration) {
+    public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations) {
         if (!state.compareAndSet(null, CacheState.STARTED)) {
             throw new CacheConfigurationException();
         }
-        this.name = configuration.getName();
         this.accessor = accessor;
         this.informations = informations;
         for (Entry<Class<?>, CacheInformation> keyValue : informations.entrySet()) {
@@ -56,11 +57,6 @@ public class PromptPersistenceStrategy implements PersistenceStrategy {
             throw new CacheConfigurationException();
         }
         this.managers.clear();
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

@@ -3,47 +3,37 @@ package com.jstarcraft.core.cache.persistence;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
-import com.jstarcraft.core.storage.StorageAccessor;
-import com.jstarcraft.core.utility.StringUtility;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class SchedulePersistenceStrategyTestCase extends PersistenceStrategyTestCase {
 
     @Override
-    protected PersistenceConfiguration getPersistenceConfiguration() {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put(SchedulePersistenceStrategy.PARAMETER_CRON, "0/10 * * ? * *");
-        PersistenceConfiguration configuration = new PersistenceConfiguration("schedulePersistenceStrategy", PersistenceType.SCHEDULE, parameters);
+    protected Map<String, String> getPersistenceConfiguration() {
+        Map<String, String> configuration = new HashMap<>();
+        configuration.put(SchedulePersistenceStrategy.PARAMETER_CRON, "0/10 * * ? * *");
         return configuration;
     }
 
     @Override
-    protected PersistenceStrategy getPersistenceStrategy() {
-        SchedulePersistenceStrategy strategy = new SchedulePersistenceStrategy();
+    protected PersistenceStrategy getPersistenceStrategy(String name, Map<String, String> configuration) {
+        SchedulePersistenceStrategy strategy = new SchedulePersistenceStrategy(name, configuration);
         return strategy;
     }
 
     @Test
     public void testMerge() throws Exception {
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         int id = -1;

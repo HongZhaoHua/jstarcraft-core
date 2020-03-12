@@ -21,14 +21,12 @@ import com.jstarcraft.core.storage.StorageAccessor;
  * @author Birdy
  *
  */
-public class SchedulePersistenceStrategy implements PersistenceStrategy {
+public class SchedulePersistenceStrategy extends AbstractPersistenceStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulePersistenceStrategy.class);
 
     /** CRON表达式 */
     public static final String PARAMETER_CRON = "cron";
-    /** 名称 */
-    private String name;
     /** ORM访问器 */
     private StorageAccessor accessor;
     /** 缓存类型信息 */
@@ -51,15 +49,18 @@ public class SchedulePersistenceStrategy implements PersistenceStrategy {
     /** 异常统计 */
     private final AtomicInteger exceptionCount = new AtomicInteger();
 
+    public SchedulePersistenceStrategy(String name, Map<String, String> configuration) {
+        super(name, configuration);
+    }
+
     @Override
-    public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations, PersistenceConfiguration configuration) {
+    public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations) {
         if (!state.compareAndSet(null, CacheState.STARTED)) {
             throw new CacheConfigurationException();
         }
-        this.name = configuration.getName();
         this.accessor = accessor;
         this.informations = informations;
-        this.cron = configuration.getValue(PARAMETER_CRON);
+        this.cron = configuration.get(PARAMETER_CRON);
         for (Entry<Class<?>, CacheInformation> keyValue : informations.entrySet()) {
             Class clazz = keyValue.getKey();
             CacheInformation information = keyValue.getValue();
@@ -92,11 +93,6 @@ public class SchedulePersistenceStrategy implements PersistenceStrategy {
         }
         this.managers.clear();
         LOGGER.info("结束等待写队列[{}]清理", name);
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

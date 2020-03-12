@@ -93,10 +93,29 @@ http://www.jstarcraft.com/core/storage/mybatis/mybatis.xsd">
     </bean>
 
     <!-- 缓存配置 -->
+    <bean id="lruMemoryStrategy" class="com.jstarcraft.core.cache.transience.LeastRecentlyUsedTransienceStrategy">
+        <constructor-arg value="lruMemoryStrategy" />
+        <constructor-arg>
+            <map>
+                <entry key="minimunSize" value-type="java.lang.Integer" value="16"></entry>
+                <entry key="maximunSize" value-type="java.lang.Integer" value="100"></entry>
+                <entry key="concurrencyLevel" value-type="java.lang.Integer" value="10"></entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="promptPersistenceStrategy" class="com.jstarcraft.core.cache.persistence.PromptPersistenceStrategy">
+        <constructor-arg value="promptPersistenceStrategy" />
+        <constructor-arg>
+            <map>
+            </map>
+        </constructor-arg>
+    </bean>
+
     <cache:configuration id="cacheService">
         <cache:accessor reference="accessor" />
-        <cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_USED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
-        <cache:persistenceStrategy name="promptPersistenceStrategy" type="PROMPT" parameters="{}" />
+        <cache:transienceStrategy reference="lruMemoryStrategy" />
+        <cache:persistenceStrategy reference="promptPersistenceStrategy" />
         <cache:scan>
             <cache:package name="com.jstarcraft.core.cache.crud.mybatis" />
         </cache:scan>

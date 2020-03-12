@@ -13,16 +13,8 @@ import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.annotation.CacheConfiguration.Unit;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
 import com.jstarcraft.core.cache.exception.CacheException;
-import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy;
-import com.jstarcraft.core.cache.persistence.PromptPersistenceStrategy;
-import com.jstarcraft.core.cache.persistence.QueuePersistenceStrategy;
-import com.jstarcraft.core.cache.persistence.SchedulePersistenceStrategy;
-import com.jstarcraft.core.cache.transience.DelayedTransienceStrategy;
-import com.jstarcraft.core.cache.transience.LeastRecentlyUsedTransienceStrategy;
-import com.jstarcraft.core.cache.transience.TransienceConfiguration;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
-import com.jstarcraft.core.cache.transience.UserDefinedTransienceStrategy;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.storage.StorageAccessor;
 
@@ -41,14 +33,10 @@ public class CacheService implements CacheMonitor {
 
     /** 缓存类型信息 */
     private final Map<Class<?>, CacheInformation> cacheInformations = new HashMap<>();
-    /** 内存配置 */
-    private final Map<String, TransienceConfiguration> transienceConfigurations;
     /** 内存策略映射 */
-    private final Map<String, TransienceStrategy> transienceStrategies = new HashMap<>();
-    /** 持久配置 */
-    private final Map<String, PersistenceConfiguration> persistenceConfigurations;
+    private final Map<String, TransienceStrategy> transienceStrategies;
     /** 持久策略映射 */
-    private final Map<String, PersistenceStrategy> persistenceStrategies = new HashMap<>();
+    private final Map<String, PersistenceStrategy> persistenceStrategies;
 
     /** 实体缓存管理器 */
     private final Map<Class<? extends IdentityObject>, EntityCacheManager> entityManagers = new HashMap<>();
@@ -58,13 +46,19 @@ public class CacheService implements CacheMonitor {
     /** 状态 */
     private AtomicReference<CacheState> state = new AtomicReference<>(null);
 
-    public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, StorageAccessor accessor, Map<String, TransienceConfiguration> transienceConfigurations, Map<String, PersistenceConfiguration> persistenceConfigurations) {
+    public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, StorageAccessor accessor, Set<TransienceStrategy> transienceStrategies, Set<PersistenceStrategy> persistenceStrategies) {
         if (cacheClasses == null || accessor == null) {
             throw new IllegalArgumentException();
         }
         this.accessor = accessor;
-        this.transienceConfigurations = new HashMap<>(transienceConfigurations);
-        this.persistenceConfigurations = new HashMap<>(persistenceConfigurations);
+        this.transienceStrategies = new HashMap<>();
+        for (TransienceStrategy strategy : transienceStrategies) {
+            this.transienceStrategies.put(strategy.getName(), strategy);
+        }
+        this.persistenceStrategies = new HashMap<>();
+        for (PersistenceStrategy strategy : persistenceStrategies) {
+            this.persistenceStrategies.put(strategy.getName(), strategy);
+        }
         for (Class<? extends IdentityObject> cacheClass : cacheClasses) {
             if (!CacheInformation.checkCacheClass(cacheClass)) {
                 throw new CacheConfigurationException("非法缓存类型[" + cacheClass.getName() + "]配置");
@@ -82,6 +76,12 @@ public class CacheService implements CacheMonitor {
         if (!state.compareAndSet(null, CacheState.STARTED)) {
             throw new CacheConfigurationException();
         }
+        for (TransienceStrategy strategy : transienceStrategies.values()) {
+            strategy.start();
+        }
+        for (PersistenceStrategy strategy : persistenceStrategies.values()) {
+            strategy.start(accessor, cacheInformations);
+        }
     }
 
     /**
@@ -90,6 +90,9 @@ public class CacheService implements CacheMonitor {
     public void stop() {
         if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
             throw new CacheConfigurationException();
+        }
+        for (TransienceStrategy strategy : transienceStrategies.values()) {
+            strategy.stop();
         }
         for (PersistenceStrategy strategy : persistenceStrategies.values()) {
             strategy.stop();
@@ -125,8 +128,8 @@ public class CacheService implements CacheMonitor {
             return entityManagers.get(cacheClass);
         }
         CacheConfiguration configuration = information.getCacheConfiguration();
-        TransienceStrategy transienceStrategy = getTransienceStrategy(configuration.transienceStrategy());
-        PersistenceStrategy persistenceStrategy = getPersistenceStrategy(configuration.persistenceStrategy());
+        TransienceStrategy transienceStrategy = transienceStrategies.get(configuration.transienceStrategy());
+        PersistenceStrategy persistenceStrategy = persistenceStrategies.get(configuration.persistenceStrategy());
         manager = new EntityCacheManager(information, transienceStrategy, persistenceStrategy);
         entityManagers.put(information.getCacheClass(), manager);
         return manager;
@@ -154,8 +157,8 @@ public class CacheService implements CacheMonitor {
             return regionManagers.get(cacheClass);
         }
         CacheConfiguration configuration = information.getCacheConfiguration();
-        TransienceStrategy transienceStrategy = getTransienceStrategy(configuration.transienceStrategy());
-        PersistenceStrategy persistenceStrategy = getPersistenceStrategy(configuration.persistenceStrategy());
+        TransienceStrategy transienceStrategy = transienceStrategies.get(configuration.transienceStrategy());
+        PersistenceStrategy persistenceStrategy = persistenceStrategies.get(configuration.persistenceStrategy());
         manager = new RegionCacheManager(information, transienceStrategy, persistenceStrategy);
         regionManagers.put(information.getCacheClass(), manager);
         return manager;
@@ -168,58 +171,6 @@ public class CacheService implements CacheMonitor {
      */
     public StorageAccessor getAccessor() {
         return this.accessor;
-    }
-
-    /** 获取持久化处理器实例 */
-    private TransienceStrategy getTransienceStrategy(String name) {
-        TransienceStrategy result = transienceStrategies.get(name);
-        if (result != null) {
-            return result;
-        }
-        if (!transienceConfigurations.containsKey(name)) {
-            throw new CacheConfigurationException("没有内存策略[" + name + "]的配置");
-        }
-        TransienceConfiguration configuration = transienceConfigurations.get(name);
-        switch (configuration.getType()) {
-        case DELAYED:
-            result = new DelayedTransienceStrategy();
-            break;
-        case LEAST_RECENTLY_USED:
-            result = new LeastRecentlyUsedTransienceStrategy();
-            break;
-        case USER_DEFINED:
-            result = new UserDefinedTransienceStrategy();
-            break;
-        }
-        result.start(configuration);
-        transienceStrategies.put(name, result);
-        return result;
-    }
-
-    /** 获取持久化处理器实例 */
-    private PersistenceStrategy getPersistenceStrategy(String name) {
-        PersistenceStrategy strategy = persistenceStrategies.get(name);
-        if (strategy != null) {
-            return strategy;
-        }
-        if (!persistenceConfigurations.containsKey(name)) {
-            throw new CacheConfigurationException("没有持久策略[" + name + "]的配置");
-        }
-        PersistenceConfiguration configuration = persistenceConfigurations.get(name);
-        switch (configuration.getType()) {
-        case PROMPT:
-            strategy = new PromptPersistenceStrategy();
-            break;
-        case QUEUE:
-            strategy = new QueuePersistenceStrategy();
-            break;
-        case SCHEDULE:
-            strategy = new SchedulePersistenceStrategy();
-            break;
-        }
-        strategy.start(accessor, cacheInformations, configuration);
-        persistenceStrategies.put(name, strategy);
-        return strategy;
     }
 
     @Override

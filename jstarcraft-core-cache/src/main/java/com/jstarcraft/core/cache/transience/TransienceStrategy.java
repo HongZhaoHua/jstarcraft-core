@@ -13,29 +13,11 @@ package com.jstarcraft.core.cache.transience;
 public interface TransienceStrategy {
 
     /**
-     * 策略类型
-     * 
-     * @author Birdy
-     */
-    public enum TransienceType {
-
-        /** 使用到期策略管理内存 */
-        DELAYED,
-
-        /** 使用最近最少使用策略管理内存 */
-        LEAST_RECENTLY_USED,
-
-        /** 使用自定义策略管理内存 */
-        USER_DEFINED,
-
-    }
-
-    /**
      * 启动(策略需要保证有且仅调用一次)
      * 
      * @param configuration
      */
-    void start(TransienceConfiguration configuration);
+    void start();
 
     /**
      * 关闭

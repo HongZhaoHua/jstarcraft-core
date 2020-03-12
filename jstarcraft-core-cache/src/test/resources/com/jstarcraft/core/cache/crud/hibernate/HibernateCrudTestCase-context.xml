@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.jstarcraft.com/core/cache"
-	xsi:schemaLocation="
+    xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context
@@ -14,65 +14,84 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/cache
 http://www.jstarcraft.com/core/cache/cache.xsd">
 
-	<!-- 配置文件配置 -->
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>/com/jstarcraft/core/cache/crud/hibernate/jdbc.properties</value>
-			</list>
-		</property>
-	</bean>
+    <!-- 配置文件配置 -->
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>/com/jstarcraft/core/cache/crud/hibernate/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
 
-	<!-- 注解配置 -->
-	<context:annotation-config />
+    <!-- 注解配置 -->
+    <context:annotation-config />
 
-	<!-- 自动包扫描配置 -->
-	<context:component-scan base-package="com.jstarcraft.core.cache.crud.hibernate" />
+    <!-- 自动包扫描配置 -->
+    <context:component-scan base-package="com.jstarcraft.core.cache.crud.hibernate" />
 
-	<!-- 数据源配置 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
+    <!-- 数据源配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
 
-	<!-- Hibernate配置 -->
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.jstarcraft.core.cache.crud.hibernate" />
-		<property name="hibernateProperties">
-			<props>
-				<prop key="current_session_context_class">thread</prop>
-				<prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-			</props>
-		</property>
-	</bean>
+    <!-- Hibernate配置 -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.jstarcraft.core.cache.crud.hibernate" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="current_session_context_class">thread</prop>
+                <prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>
+    </bean>
 
-	<!-- 事务配置 -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
+    <!-- 事务配置 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- 访问器配置 -->
-	<bean id="accessor" class="com.jstarcraft.core.storage.hibernate.HibernateAccessor">
-		<constructor-arg ref="sessionFactory" />
-	</bean>
+    <!-- 访问器配置 -->
+    <bean id="accessor" class="com.jstarcraft.core.storage.hibernate.HibernateAccessor">
+        <constructor-arg ref="sessionFactory" />
+    </bean>
 
-	<!-- 缓存配置 -->
-	<cache:configuration id="cacheService">
-		<cache:accessor reference="accessor" />
-		<cache:transienceStrategy name="lruMemoryStrategy" type="LEAST_RECENTLY_USED" parameters="{&quot;minimunSize&quot;:&quot;16&quot;,&quot;maximunSize&quot;:&quot;100&quot;,&quot;concurrencyLevel&quot;:&quot;10&quot;}" />
-		<cache:persistenceStrategy name="promptPersistenceStrategy" type="PROMPT" parameters="{}" />
-		<cache:scan>
-			<cache:package name="com.jstarcraft.core.cache.crud.hibernate" />
-		</cache:scan>
-	</cache:configuration>
+    <!-- 缓存配置 -->
+    <bean id="lruMemoryStrategy" class="com.jstarcraft.core.cache.transience.LeastRecentlyUsedTransienceStrategy">
+        <constructor-arg value="lruMemoryStrategy" />
+        <constructor-arg>
+            <map>
+                <entry key="minimunSize" value-type="java.lang.Integer" value="16"></entry>
+                <entry key="maximunSize" value-type="java.lang.Integer" value="100"></entry>
+                <entry key="concurrencyLevel" value-type="java.lang.Integer" value="10"></entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="promptPersistenceStrategy" class="com.jstarcraft.core.cache.persistence.PromptPersistenceStrategy">
+        <constructor-arg value="promptPersistenceStrategy" />
+        <constructor-arg>
+            <map>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <cache:configuration id="cacheService">
+        <cache:accessor reference="accessor" />
+        <cache:transienceStrategy reference="lruMemoryStrategy" />
+        <cache:persistenceStrategy reference="promptPersistenceStrategy" />
+        <cache:scan>
+            <cache:package name="com.jstarcraft.core.cache.crud.hibernate" />
+        </cache:scan>
+    </cache:configuration>
 
 </beans>

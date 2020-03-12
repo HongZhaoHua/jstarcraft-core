@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.cache.transience.TransienceStrategy.TransienceType;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -27,12 +26,11 @@ public class DelayedTransienceStrategyTestCase {
 
     @Test(timeout = 20000)
     public void testExpire() throws Exception {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put(DelayedTransienceStrategy.PARAMETER_EXPIRE, String.valueOf(EXPIRE_SECONDS));
-        parameters.put(DelayedTransienceStrategy.PARAMETER_SEGMENT, "3");
-        TransienceConfiguration configuration = new TransienceConfiguration("delayedMemoryStrategy", TransienceType.DELAYED, parameters);
-        DelayedTransienceStrategy strategy = new DelayedTransienceStrategy();
-        strategy.start(configuration);
+        Map<String, String> configuration = new HashMap<>();
+        configuration.put(DelayedTransienceStrategy.PARAMETER_EXPIRE, String.valueOf(EXPIRE_SECONDS));
+        configuration.put(DelayedTransienceStrategy.PARAMETER_SEGMENT, "3");
+        DelayedTransienceStrategy strategy = new DelayedTransienceStrategy("stratiegy", configuration);
+        strategy.start();
 
         AtomicInteger expireCount = new AtomicInteger();
         TransienceManager manager = strategy.getTransienceManager(new TransienceMonitor() {
@@ -59,12 +57,11 @@ public class DelayedTransienceStrategyTestCase {
 
     @Test
     public void testPerformance() throws Exception {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put(DelayedTransienceStrategy.PARAMETER_EXPIRE, String.valueOf(EXPIRE_SECONDS));
-        parameters.put(DelayedTransienceStrategy.PARAMETER_SEGMENT, "3");
-        TransienceConfiguration configuration = new TransienceConfiguration("delayedMemoryStrategy", TransienceType.DELAYED, parameters);
-        DelayedTransienceStrategy strategy = new DelayedTransienceStrategy();
-        strategy.start(configuration);
+        Map<String, String> configuration = new HashMap<>();
+        configuration.put(DelayedTransienceStrategy.PARAMETER_EXPIRE, String.valueOf(EXPIRE_SECONDS));
+        configuration.put(DelayedTransienceStrategy.PARAMETER_SEGMENT, "3");
+        DelayedTransienceStrategy strategy = new DelayedTransienceStrategy("stratiegy", configuration);
+        strategy.start();
         TransienceManager manager = strategy.getTransienceManager(null);
 
         // 多线程并发读写操作

@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -19,24 +18,23 @@ import com.jstarcraft.core.utility.StringUtility;
 public class QueuePersistenceStrategyTestCase extends PersistenceStrategyTestCase {
 
     @Override
-    protected PersistenceConfiguration getPersistenceConfiguration() {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put(QueuePersistenceStrategy.PARAMETER_SIZE, "0");
-        PersistenceConfiguration configuration = new PersistenceConfiguration("strategy", PersistenceType.QUEUE, parameters);
+    protected Map<String, String> getPersistenceConfiguration() {
+        Map<String, String> configuration = new HashMap<>();
+        configuration.put(QueuePersistenceStrategy.PARAMETER_SIZE, "0");
         return configuration;
     }
 
     @Override
-    protected PersistenceStrategy getPersistenceStrategy() {
-        QueuePersistenceStrategy strategy = new QueuePersistenceStrategy();
+    protected PersistenceStrategy getPersistenceStrategy(String name, Map<String, String> configuration) {
+        QueuePersistenceStrategy strategy = new QueuePersistenceStrategy(name, configuration);
         return strategy;
     }
 
     @Test
     public void testInhibit() throws Exception {
         int size = 1000;
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         // 创建数据

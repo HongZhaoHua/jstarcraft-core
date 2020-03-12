@@ -46,33 +46,11 @@
 
 	<!-- transienceStrategy -->
 	<xsd:complexType name="transienceStrategy">
-		<xsd:attribute name="name" type="xsd:string" use="required" />
-		<xsd:attribute name="type" type="transienceType" use="required" />
-		<xsd:attribute name="parameters" type="xsd:string" use="required" />
+		<xsd:attribute name="reference" type="xsd:string" use="required" />
 	</xsd:complexType>
-
-	<!-- transienceType -->
-	<xsd:simpleType name="transienceType">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="DELAYED" />
-			<xsd:enumeration value="LEAST_RECENTLY_USED" />
-			<xsd:enumeration value="USER_DEFINED" />
-		</xsd:restriction>
-	</xsd:simpleType>
 
 	<!-- persistenceStrategy -->
 	<xsd:complexType name="persistenceStrategy">
-		<xsd:attribute name="name" type="xsd:string" use="required" />
-		<xsd:attribute name="type" type="persistenceType" use="required" />
-		<xsd:attribute name="parameters" type="xsd:string" use="required" />
+		<xsd:attribute name="reference" type="xsd:string" use="required" />
 	</xsd:complexType>
-
-	<!-- persistenceType -->
-	<xsd:simpleType name="persistenceType">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="PROMPT" />
-			<xsd:enumeration value="QUEUE" />
-			<xsd:enumeration value="SCHEDULE" />
-		</xsd:restriction>
-	</xsd:simpleType>
 </xsd:schema>

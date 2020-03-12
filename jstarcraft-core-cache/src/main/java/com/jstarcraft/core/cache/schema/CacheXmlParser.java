@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.core.io.Resource;
@@ -30,11 +32,6 @@ import org.w3c.dom.NodeList;
 
 import com.jstarcraft.core.cache.annotation.CacheConfiguration;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
-import com.jstarcraft.core.cache.persistence.PersistenceConfiguration;
-import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
-import com.jstarcraft.core.cache.transience.TransienceConfiguration;
-import com.jstarcraft.core.cache.transience.TransienceStrategy.TransienceType;
-import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.conversion.xml.XmlUtility;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -61,6 +58,30 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
         String name = StringUtility.uncapitalize(CacheAccessorProcessor.class.getSimpleName());
         BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition(CacheAccessorProcessor.class);
         registry.registerBeanDefinition(name, factory.getBeanDefinition());
+    }
+
+    /** 获取瞬时策略集合 */
+    private static ManagedSet<Object> getTransienceStrategies(Element configurationElement, ParserContext context) {
+        // 设置每个执行策略配置
+        ManagedSet<Object> strategies = new ManagedSet<>();
+        List<Element> elements = XmlUtility.getChildElementsByTagName(configurationElement, ElementDefinition.TRANSIENCE_STRATEGY.getName());
+        for (Element element : elements) {
+            String reference = element.getAttribute(AttributeDefinition.REFERENCE.getName());
+            strategies.add(new RuntimeBeanReference(reference));
+        }
+        return strategies;
+    }
+
+    /** 获取持久策略集合 */
+    private static ManagedSet<Object> getPersistenceStrategies(Element configurationElement, ParserContext context) {
+        // 设置每个执行策略配置
+        ManagedSet<Object> strategies = new ManagedSet<>();
+        List<Element> elements = XmlUtility.getChildElementsByTagName(configurationElement, ElementDefinition.PERSISTENCE_STRATEGY.getName());
+        for (Element element : elements) {
+            String reference = element.getAttribute(AttributeDefinition.REFERENCE.getName());
+            strategies.add(new RuntimeBeanReference(reference));
+        }
+        return strategies;
     }
 
     private String[] getResources(String packageName) {
@@ -112,24 +133,12 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
         Type mapType = TypeUtility.parameterize(HashMap.class, String.class, String.class);
 
         // 设置内存策略
-        Map<String, TransienceConfiguration> transienceConfigurations = new HashMap<String, TransienceConfiguration>();
-        for (Element transienceElement : XmlUtility.getChildElementsByTagName(element, ElementDefinition.TRANSIENCE_STRATEGY.getName())) {
-            String name = transienceElement.getAttribute(AttributeDefinition.NAME.getName());
-            TransienceType type = TransienceType.valueOf(transienceElement.getAttribute(AttributeDefinition.TYPE.getName()));
-            String value = transienceElement.getAttribute(AttributeDefinition.PARAMETERS.getName());
-            transienceConfigurations.put(name, new TransienceConfiguration(name, type, JsonUtility.string2Object(value, mapType)));
-        }
-        factory.addPropertyValue(CacheServiceFactory.TRANSIENCE_CONFIGURATIONS_NAME, transienceConfigurations);
+        ManagedSet<Object> transienceStrategies = getTransienceStrategies(element, context);
+        factory.addPropertyValue(CacheServiceFactory.TRANSIENCE_STRATEGIES_NAME, transienceStrategies);
 
         // 设置持久策略
-        Map<String, PersistenceConfiguration> persistenceConfigurations = new HashMap<String, PersistenceConfiguration>();
-        for (Element persistenceElement : XmlUtility.getChildElementsByTagName(element, ElementDefinition.PERSISTENCE_STRATEGY.getName())) {
-            String name = persistenceElement.getAttribute(AttributeDefinition.NAME.getName());
-            PersistenceType type = PersistenceType.valueOf(persistenceElement.getAttribute(AttributeDefinition.TYPE.getName()));
-            String value = persistenceElement.getAttribute(AttributeDefinition.PARAMETERS.getName());
-            persistenceConfigurations.put(name, new PersistenceConfiguration(name, type, JsonUtility.string2Object(value, mapType)));
-        }
-        factory.addPropertyValue(CacheServiceFactory.PERSISTENCE_CONFIGURATIONS_NAME, persistenceConfigurations);
+        ManagedSet<Object> persistenceStrategies = getPersistenceStrategies(element, context);
+        factory.addPropertyValue(CacheServiceFactory.PERSISTENCE_STRATEGIES_NAME, persistenceStrategies);
 
         // 设置实体集合
         NodeList nodes = XmlUtility.getChildElementByTagName(element, ElementDefinition.SCAN.getName()).getChildNodes();
@@ -228,13 +237,7 @@ public class CacheXmlParser extends AbstractBeanDefinitionParser {
         REFERENCE("reference"),
 
         /** 名称 */
-        NAME("name"),
-
-        /** 类型 */
-        TYPE("type"),
-
-        /** 参数 */
-        PARAMETERS("parameters");
+        NAME("name");
 
         private String name;
 

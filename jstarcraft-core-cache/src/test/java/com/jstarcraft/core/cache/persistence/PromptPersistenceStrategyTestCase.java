@@ -11,30 +11,28 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.cache.MockEntityObject;
-import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class PromptPersistenceStrategyTestCase extends PersistenceStrategyTestCase {
 
     @Override
-    protected PersistenceConfiguration getPersistenceConfiguration() {
-        Map<String, String> parameters = new HashMap<>();
-        PersistenceConfiguration configuration = new PersistenceConfiguration("strategy", PersistenceType.PROMPT, parameters);
+    protected Map<String, String> getPersistenceConfiguration() {
+        Map<String, String> configuration = new HashMap<>();
         return configuration;
     }
 
     @Override
-    protected PersistenceStrategy getPersistenceStrategy() {
-        PromptPersistenceStrategy strategy = new PromptPersistenceStrategy();
+    protected PersistenceStrategy getPersistenceStrategy(String name, Map<String, String> configuration) {
+        PromptPersistenceStrategy strategy = new PromptPersistenceStrategy(name, configuration);
         return strategy;
     }
 
     @Test
     public void testQuery() throws Exception {
         int size = 10000;
-        PersistenceStrategy strategy = getPersistenceStrategy();
-        strategy.start(accessor, cacheInformations, getPersistenceConfiguration());
+        PersistenceStrategy strategy = getPersistenceStrategy("strategy", getPersistenceConfiguration());
+        strategy.start(accessor, cacheInformations);
         PersistenceManager<Integer, MockEntityObject> manager = strategy.getPersistenceManager(MockEntityObject.class);
 
         // 创建数据
