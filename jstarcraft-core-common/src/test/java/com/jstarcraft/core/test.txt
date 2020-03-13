@@ -4,6 +4,17 @@ http://jinnianshilongnian.iteye.com/blog/1902886
 用JUnit4进行单元测试:
 http://tonl.iteye.com/blog/1948869
 
+JUnit4(一)基础:
+https://blog.csdn.net/fanxiaobin577328725/article/details/78407131
+JUnit4(二)高级之运行器:
+https://blog.csdn.net/fanxiaobin577328725/article/details/78407167
+JUnit4(三)高级之 assertThat和Matchers (匹配器):
+https://blog.csdn.net/fanxiaobin577328725/article/details/78407192
+JUnit4(四)高级之规则:
+https://blog.csdn.net/fanxiaobin577328725/article/details/78407199
+JUnit4(五)高级之假设与理论:
+https://blog.csdn.net/fanxiaobin577328725/article/details/81740015
+
 Java中的Mongodb单元测试:
 https://blog.csdn.net/kiwi_coder/article/details/37873093
 
