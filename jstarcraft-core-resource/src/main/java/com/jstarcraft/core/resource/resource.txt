@@ -29,3 +29,6 @@ https://blog.csdn.net/haoranhaoshi/article/details/86922503
 
 使用javaAPI操作hdfs:
 https://www.cnblogs.com/yanghuabin/p/7628088.html
+
+GitHub 拉取指定子目录:
+https://www.jianshu.com/p/20205df72001
