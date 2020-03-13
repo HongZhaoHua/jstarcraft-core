@@ -3,3 +3,6 @@ https://mp.weixin.qq.com/s?__biz=MzAwOTcyNzA0OQ==&mid=2658970142&idx=1&sn=fdd43a
 
 A JPA 2.1 compliant Polyglot Object-Datastore Mapping Library for NoSQL Datastores:
 https://github.com/Impetus/Kundera
+
+NoSQL Unit is a JUnit extension that helps you write NoSQL unit tests:
+https://github.com/lordofthejars/nosql-unit
