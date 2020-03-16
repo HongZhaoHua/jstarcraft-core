@@ -137,7 +137,6 @@ public class CacheServiceFactory implements FactoryBean<CacheService>, Applicati
             cacheService = new CacheService(cacheClasses, accessor, transienceStrategies, persistenceStrategies);
         }
         return cacheService;
-
     }
 
     @Override
