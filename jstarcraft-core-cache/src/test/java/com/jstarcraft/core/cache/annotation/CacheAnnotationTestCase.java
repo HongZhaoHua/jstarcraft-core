@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,9 +23,6 @@ public class CacheAnnotationTestCase {
     @CacheAccessor
     private RegionManager<Integer, MockRegionObject> regionManager;
 
-    /** 用于测试{@link AfterCacheStarted}和{@link BeforeCacheStoped} */
-    @Autowired
-    private AbstractApplicationContext applicationContext;
     @Autowired
     private MockService springService;
 
@@ -35,11 +31,6 @@ public class CacheAnnotationTestCase {
         // 保证@CacheAccessor注解的实体管理器与区域管理能被自动装配
         Assert.assertThat(entityManager, CoreMatchers.notNullValue());
         Assert.assertThat(regionManager, CoreMatchers.notNullValue());
-
-        // 保证@AfterCacheServiceStarted与@BeforeCacheServiceStoped的执行顺序
-        Assert.assertThat(springService.getState(), CoreMatchers.equalTo(MockService.State.SERVICE_RUN));
-        applicationContext.close();
-        Assert.assertNull(springService.getState());
     }
 
 }
