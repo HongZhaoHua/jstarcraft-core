@@ -3,3 +3,9 @@ https://github.com/heqiao2010/LunarCalendar
 
 Java 8新的时间日期库的20个使用示例:
 http://ifeve.com/20-examples-of-date-and-time-api-from-java8/
+
+A Java library for calculating prayer (salat) times, Hijri date, and qibla direction, based on ITL (Islamic Tools and Libraries):
+https://github.com/fikr4n/itl-java
+
+A Hijri (Islamic) Calendar Library:
+https://github.com/sahaab/HijriCalendar-master
