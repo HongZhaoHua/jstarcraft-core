@@ -68,6 +68,7 @@ public class SolarDate implements CalendarDate {
         return date.isLeapYear();
     }
 
+    @Override
     public LocalDate getDate() {
         return date;
     }

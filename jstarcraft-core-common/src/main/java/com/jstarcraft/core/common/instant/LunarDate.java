@@ -450,6 +450,11 @@ public class LunarDate implements CalendarDate {
         return leap;
     }
 
+    @Override
+    public LocalDate getDate() {
+        return getSolar().getDate();
+    }
+
     /**
      * 阴历转阳历
      * 

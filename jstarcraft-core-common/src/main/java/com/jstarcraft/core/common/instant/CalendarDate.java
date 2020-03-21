@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.instant;
 
+import java.time.LocalDate;
+
 /**
  * 历法日期
  * 
@@ -35,5 +37,12 @@ public interface CalendarDate {
      * @return
      */
     boolean isLeap();
+
+    /**
+     * 获取日期
+     * 
+     * @return
+     */
+    LocalDate getDate();
 
 }
