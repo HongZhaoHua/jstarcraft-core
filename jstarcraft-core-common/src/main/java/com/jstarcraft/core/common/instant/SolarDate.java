@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * @author Birdy
  *
  */
-public class SolarDate {
+public class SolarDate implements CalendarDate {
 
     private LocalDate date;
 
@@ -33,6 +33,7 @@ public class SolarDate {
      * 
      * @return
      */
+    @Override
     public int getYear() {
         return date.getYear();
     }
@@ -42,6 +43,7 @@ public class SolarDate {
      * 
      * @return
      */
+    @Override
     public int getMonth() {
         return date.getMonthValue();
     }
@@ -51,6 +53,7 @@ public class SolarDate {
      * 
      * @return
      */
+    @Override
     public int getDay() {
         return date.getDayOfMonth();
     }
@@ -60,6 +63,7 @@ public class SolarDate {
      * 
      * @return
      */
+    @Override
     public boolean isLeap() {
         return date.isLeapYear();
     }

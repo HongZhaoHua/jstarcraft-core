@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
  * @author Birdy
  *
  */
-public class LunarDate {
+public class LunarDate implements CalendarDate {
 
     /**
      * 支持的最小年份
@@ -415,6 +415,7 @@ public class LunarDate {
      * 
      * @return
      */
+    @Override
     public int getYear() {
         return year;
     }
@@ -424,6 +425,7 @@ public class LunarDate {
      * 
      * @return
      */
+    @Override
     public int getMonth() {
         return month;
     }
@@ -433,6 +435,7 @@ public class LunarDate {
      * 
      * @return
      */
+    @Override
     public int getDay() {
         return day;
     }
@@ -442,6 +445,7 @@ public class LunarDate {
      * 
      * @return
      */
+    @Override
     public boolean isLeap() {
         return leap;
     }
