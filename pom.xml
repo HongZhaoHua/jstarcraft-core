@@ -140,6 +140,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.qpid</groupId>
+                <artifactId>qpid-broker-core</artifactId>
+                <version>7.1.8</version>
+            </dependency>
+
+            <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-amqp-client</artifactId>
                 <version>3.8.5</version>
