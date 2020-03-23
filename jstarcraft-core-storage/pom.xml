@@ -31,11 +31,6 @@
             <artifactId>redisson</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
-
         <!-- 对象关系映射框架依赖 -->
         <dependency>
             <groupId>com.sleepycat</groupId>
