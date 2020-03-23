@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Configuration的2个属性status和monitorInterval,分别是状态日志级别以及重新刷新配置文件间隔 -->
 <Configuration status="FATAL" packages="com.jstarcraft.core">
-	<Properties>
-		<Property name="path">logs2/{type}/{$yyyy}-{$MM}-{$dd}/{file}.{$HH}-{$mm}-{$ss}.log</Property>
-	</Properties>
+    <Properties>
+        <Property name="path">logs2/{type}/{$yyyy}-{$MM}-{$dd}/{file}.{$HH}-{$mm}-{$ss}.log</Property>
+    </Properties>
 
-	<Appenders>
-		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{HH:mm:ss} [%t] %p (%F:%L) - %m%n" />
-			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
-		</Console>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %p (%F:%L) - %m%n" />
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+        </Console>
+    </Appenders>
 
-		<Storage name="Storage" ignoreExceptions="false" cron="0 0/5 * ? * *" format="CSV" names="type,file" path="${path}" zone="UTC" period="10">
-			<PatternLayout pattern="%m%n" />
-		</Storage>
-	</Appenders>
-
-	<Loggers>
-		<Root level="INFO">
-			<AppenderRef ref="Console" />
-		</Root>
-		<Logger name="com.jstarcraft" level="ERROR" />
-		<Logger name="com.jstarcraft.core.cache" level="INFO" />
-		<Logger name="com.jstarcraft.core.codec" level="INFO" />
-		<Logger name="com.jstarcraft.core.communication" level="INFO" />
-		<Logger name="com.jstarcraft.core.log" level="INFO" />
-		<Logger name="Storage" level="INFO" additivity="false">
-			<AppenderRef ref="Storage" />
-			<AppenderRef ref="Console" />
-		</Logger>
-	</Loggers>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+        </Root>
+        <Logger name="com.jstarcraft" level="DEBUG" />
+        <Logger name="com.jstarcraft.core.cache" level="INFO" />
+        <Logger name="com.jstarcraft.core.codec" level="INFO" />
+        <Logger name="com.jstarcraft.core.communication" level="INFO" />
+        <Logger name="com.jstarcraft.core.log" level="INFO" />
+        <Logger name="Storage" level="INFO" additivity="false">
+            <AppenderRef ref="Storage" />
+            <AppenderRef ref="Console" />
+        </Logger>
+    </Loggers>
 </Configuration>

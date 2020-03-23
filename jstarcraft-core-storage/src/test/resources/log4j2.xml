@@ -10,17 +10,13 @@
             <PatternLayout pattern="%d{HH:mm:ss} [%t] %p (%F:%L) - %m%n" />
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
         </Console>
-
-        <Storage name="Storage" ignoreExceptions="false" cron="0 0/5 * ? * *" format="CSV" names="type,file" path="${path}" zone="UTC" period="10">
-            <PatternLayout pattern="%m%n" />
-        </Storage>
     </Appenders>
 
     <Loggers>
         <Root level="INFO">
             <AppenderRef ref="Console" />
         </Root>
-        <Logger name="com.jstarcraft" level="ERROR" />
+        <Logger name="com.jstarcraft" level="DEBUG" />
         <Logger name="com.jstarcraft.core.cache" level="INFO" />
         <Logger name="com.jstarcraft.core.codec" level="INFO" />
         <Logger name="com.jstarcraft.core.communication" level="INFO" />
