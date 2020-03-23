@@ -73,23 +73,42 @@ public enum ZodiacType {
         return to;
     }
 
+    /**
+     * 按宫位获取星座
+     * 
+     * @param number
+     * @return
+     */
+    public static ZodiacType getZodiac(int number) {
+        if (number < 1 || number > 12) {
+            throw new IllegalArgumentException();
+        }
+        ZodiacType zodiac = values()[(number + 2) % 12];
+        return zodiac;
+    }
+
+    /**
+     * 按月日获取星座
+     * 
+     * @param month
+     * @param day
+     * @return
+     */
     public static ZodiacType getZodiac(int month, int day) {
         return getZodiac(MonthDay.of(month, day));
     }
 
+    /**
+     * 按月日获取星座
+     * 
+     * @param monthDay
+     * @return
+     */
     public static ZodiacType getZodiac(MonthDay monthDay) {
         int month = monthDay.getMonthValue();
         int day = monthDay.getDayOfMonth();
         ZodiacType zodiac = values()[month - 1];
         return day <= zodiac.to.getDayOfMonth() ? zodiac : values()[month % 12];
-    }
-
-    public static ZodiacType getZodiac(int number) {
-        if (number < 1 || number > 12) {
-            throw new IllegalArgumentException();
-        }
-        ZodiacType zodiac = values()[(number - 2) % 12];
-        return zodiac;
     }
 
 }
