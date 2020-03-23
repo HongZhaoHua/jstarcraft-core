@@ -22,7 +22,7 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>jdk.tools</groupId>
             <artifactId>jdk.tools</artifactId>
