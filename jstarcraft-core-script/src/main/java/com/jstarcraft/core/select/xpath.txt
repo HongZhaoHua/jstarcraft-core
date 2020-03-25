@@ -1,6 +1,12 @@
 XPath 教程:
 https://www.w3school.com.cn/xpath/index.asp
 
+XPath学习:
+https://www.cnblogs.com/zhaozhan/tag/XPath/
+
+XPath示例:
+http://www.zvon.org/xxl/XPathTutorial/
+
 The Jaxen XPath Engine for Java:
 https://github.com/jaxen-xpath/jaxen
 
