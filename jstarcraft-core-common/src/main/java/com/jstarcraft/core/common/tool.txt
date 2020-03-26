@@ -3,3 +3,6 @@ https://github.com/looly/hutool
 
 Nutz -- Web Framework(Mvc/Ioc/Aop/Dao/Json) for ALL Java developer
 https://github.com/nutzam/nutz
+
+快速开发工具类收集,史上最全的开发工具类:
+https://github.com/AbrahamCaiJin/CommonUtilLibrary
