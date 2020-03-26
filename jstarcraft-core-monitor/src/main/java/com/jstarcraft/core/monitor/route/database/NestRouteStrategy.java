@@ -16,14 +16,17 @@ import java.util.List;
 public class NestRouteStrategy implements RouteStrategy {
 
     /** 上下文 */
-    private ThreadLocal<LinkedList<String>> contexts = new ThreadLocal<>();
+    private ThreadLocal<LinkedList<String>> contexts = new ThreadLocal<LinkedList<String>>() {
+
+        @Override
+        protected LinkedList<String> initialValue() {
+            return new LinkedList<>();
+        }
+
+    };
 
     private LinkedList<String> getContext() {
         LinkedList<String> context = contexts.get();
-        if (context == null) {
-            context = new LinkedList<>();
-            contexts.set(context);
-        }
         return context;
     }
 
