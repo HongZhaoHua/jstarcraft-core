@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * @author Birdy
  *
  */
-public interface CalendarDate {
+public interface CalendarDate extends Comparable<CalendarDate> {
 
     /**
      * 获取历法年
@@ -44,5 +44,12 @@ public interface CalendarDate {
      * @return
      */
     LocalDate getDate();
+
+    /**
+     * 比较日期
+     */
+    default int compareTo(CalendarDate that) {
+        return this.getDate().compareTo(that.getDate());
+    }
 
 }
