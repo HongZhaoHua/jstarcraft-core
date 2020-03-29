@@ -10,6 +10,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -196,12 +197,9 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
                     properties.add(property);
                 }
             } else if (protocolConfiguration.mode() == Mode.METHOD) {
-                PropertyDescriptor[] descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
-                for (PropertyDescriptor descriptor : descriptors) {
+                Map<String, PropertyDescriptor> descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
+                for (PropertyDescriptor descriptor : descriptors.values()) {
                     String name = descriptor.getName();
-                    if (name.equals("class")) {
-                        continue;
-                    }
                     Method getter = descriptor.getReadMethod();
                     if (getter == null) {
                         continue;
@@ -237,12 +235,9 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
                     PropertyDefinition property = PropertyDefinition.instanceOf(name, code, type, field);
                     properties.add(property);
                 }
-                PropertyDescriptor[] descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
-                for (PropertyDescriptor descriptor : descriptors) {
+                Map<String, PropertyDescriptor> descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
+                for (PropertyDescriptor descriptor : descriptors.values()) {
                     String name = descriptor.getName();
-                    if (name.equals("class")) {
-                        continue;
-                    }
                     Method getter = descriptor.getReadMethod();
                     if (getter == null) {
                         continue;
@@ -292,16 +287,14 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
                     PropertyDefinition property = PropertyDefinition.instanceOf(name, propertyCode, type, field);
                     properties.add(property);
                 } else {
-                    PropertyDescriptor[] descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
-                    for (PropertyDescriptor descriptor : descriptors) {
-                        if (name.equals(descriptor.getName())) {
-                            Method getter = descriptor.getReadMethod();
-                            Method setter = descriptor.getWriteMethod();
-                            type = descriptor.getPropertyType();
-                            PropertyDefinition property = PropertyDefinition.instanceOf(name, code, type, getter, setter);
-                            properties.add(property);
-                            break;
-                        }
+                    Map<String, PropertyDescriptor> descriptors = ReflectionUtility.getPropertyDescriptors(clazz);
+                    PropertyDescriptor descriptor = descriptors.get(name);
+                    if (descriptor != null) {
+                        Method getter = descriptor.getReadMethod();
+                        Method setter = descriptor.getWriteMethod();
+                        type = descriptor.getPropertyType();
+                        PropertyDefinition property = PropertyDefinition.instanceOf(name, code, type, getter, setter);
+                        properties.add(property);
                     }
                 }
                 if (type == null) {

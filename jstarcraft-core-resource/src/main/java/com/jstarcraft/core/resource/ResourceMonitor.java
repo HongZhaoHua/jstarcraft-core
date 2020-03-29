@@ -3,6 +3,7 @@ package com.jstarcraft.core.resource;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -45,8 +46,8 @@ public class ResourceMonitor implements Observer {
         this.key = key;
         this.necessary = accessor.necessary();
         if (StringUtility.isNotBlank(accessor.property())) {
-            PropertyDescriptor[] properties = ReflectionUtility.getPropertyDescriptors(clazz);
-            for (PropertyDescriptor property : properties) {
+            Map<String, PropertyDescriptor> properties = ReflectionUtility.getPropertyDescriptors(clazz);
+            for (PropertyDescriptor property : properties.values()) {
                 if (property.getName().equals(accessor.property())) {
                     this.property = property;
                     break;

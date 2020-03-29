@@ -35,7 +35,7 @@ public abstract class ReflectionUtility extends ReflectionUtils {
     private static final HashMap<Class<?>, Map<String, Field>> class2Fields = new HashMap<>();
 
     /** 属性描述符的缓存 */
-    private static final WeakHashMap<Class<?>, PropertyDescriptor[]> DESCRIPTORS_CACHE = new WeakHashMap<Class<?>, PropertyDescriptor[]>();
+    private static final WeakHashMap<Class<?>, Map<String, PropertyDescriptor>> DESCRIPTORS_CACHE = new WeakHashMap<>();
 
     public static Field getField(Class<?> clazz, String name) {
         Map<String, Field> fields = getFields(clazz);
@@ -232,23 +232,25 @@ public abstract class ReflectionUtility extends ReflectionUtils {
     /**
      * 获取指定类型的属性描述符
      * 
+     * <pre>
+     * 忽略class属性
+     * </pre>
+     * 
      * @param clazz
      * @return
      */
-    public static PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz) {
+    public static Map<String, PropertyDescriptor> getPropertyDescriptors(Class<?> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException();
         }
-        PropertyDescriptor[] descriptors = DESCRIPTORS_CACHE.get(clazz);
-        if (descriptors != null) {
-            return descriptors;
+        Map<String, PropertyDescriptor> properties = DESCRIPTORS_CACHE.get(clazz);
+        if (properties != null) {
+            return properties;
         }
         try {
             BeanInfo information = Introspector.getBeanInfo(clazz);
-            descriptors = information.getPropertyDescriptors();
-            if (descriptors == null) {
-                descriptors = new PropertyDescriptor[0];
-            }
+            PropertyDescriptor[] descriptors = information.getPropertyDescriptors();
+            properties = new HashMap<>();
             for (int index = 0; index < descriptors.length; index++) {
                 PropertyDescriptor descriptor = descriptors[index];
                 String name = descriptor.getName();
@@ -283,12 +285,14 @@ public abstract class ReflectionUtility extends ReflectionUtils {
                         LOGGER.debug("属性[{}]没有setter方法", name);
                     }
                 }
+                properties.put(descriptor.getName(), descriptor);
             }
-            DESCRIPTORS_CACHE.put(clazz, descriptors);
-            return descriptors;
         } catch (IntrospectionException exception) {
-            return new PropertyDescriptor[0];
+            properties = Collections.EMPTY_MAP;
         }
+        properties = Collections.unmodifiableMap(properties);
+        DESCRIPTORS_CACHE.put(clazz, properties);
+        return properties;
     }
 
 }
