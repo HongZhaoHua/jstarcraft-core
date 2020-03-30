@@ -12,3 +12,12 @@ https://github.com/fikr4n/itl-java
 
 A Hijri (Islamic) Calendar Library:
 https://github.com/sahaab/HijriCalendar-master
+
+新月满月时间表(2010-2049):
+https://wenku.baidu.com/view/0463ce0c4a7302768e993990.html
+
+月相的日期及時間資料:
+https://www.hko.gov.hk/tc/gts/astronomy/Moon_Phase.htm
+
+月亮圆缺:
+https://yueliangyuanque.51240.com/
