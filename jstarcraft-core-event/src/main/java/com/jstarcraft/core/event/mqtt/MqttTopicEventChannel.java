@@ -1,5 +1,7 @@
 package com.jstarcraft.core.event.mqtt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -18,6 +20,8 @@ import io.vertx.mqtt.messages.MqttPublishMessage;
 
 public class MqttTopicEventChannel extends AbstractEventChannel {
 
+    private Map<String, Class> address2Classes = new HashMap<>();
+    
     private MqttClient session;
 
     private ContentCodec codec;
@@ -31,7 +35,7 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
                 // TODO 需要防止路径冲突
                 address = address.substring(name.length() + 1);
                 address = address.replace(StringUtility.FORWARD_SLASH, StringUtility.DOT);
-                Class clazz = Class.forName(address);
+                Class clazz = address2Classes.get(address);
                 EventManager manager = type2Managers.get(clazz);
                 Object event = codec.decode(clazz, data.payload().getBytes());
                 synchronized (manager) {
@@ -70,6 +74,7 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
                 if (manager == null) {
                     manager = new EventManager();
                     type2Managers.put(type, manager);
+                    address2Classes.put(type.getName(), type);
                     // TODO 需要防止路径冲突
                     CountDownLatch latch = new CountDownLatch(1);
                     session.subscribe(name + StringUtility.DOT + type.getName(), MqttQoS.AT_MOST_ONCE.value(), (subscribe) -> {
@@ -93,6 +98,7 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
                         type2Managers.remove(type);
+                        address2Classes.remove(type.getName());
                         // TODO 需要防止路径冲突
                         CountDownLatch latch = new CountDownLatch(1);
                         session.unsubscribe(name + StringUtility.DOT + type.getName(), (subscribe) -> {
