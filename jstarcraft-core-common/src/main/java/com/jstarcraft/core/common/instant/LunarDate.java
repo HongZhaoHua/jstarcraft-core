@@ -19,7 +19,7 @@ public class LunarDate implements CalendarDate {
     /**
      * 支持的最大年份
      */
-    public final static int MAXIMUM_YEAR = 2150;
+    public final static int MAXIMUM_YEAR = 2149;
 
     /**
      * <pre>
