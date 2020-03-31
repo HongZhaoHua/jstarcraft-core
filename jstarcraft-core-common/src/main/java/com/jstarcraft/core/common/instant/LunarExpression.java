@@ -83,7 +83,7 @@ public class LunarExpression extends DateTimeExpression {
                     throw new IllegalArgumentException("Incrementer has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
                 }
                 range = getRange(split[0], from, to);
-                if (!split[0].contains(StringUtility.UNDERSCORE)) {
+                if (!split[0].contains(StringUtility.DASH)) {
                     range[1] = to - 1;
                 }
                 skip = Integer.parseInt(split[1]);
@@ -91,7 +91,6 @@ public class LunarExpression extends DateTimeExpression {
                     throw new IllegalArgumentException("Incrementer delta must be 1 or higher: '" + field + "' in expression \"" + this.expression + "\"");
                 }
             }
-
             if (range[0] < 0) {
                 range[0] = to + range[0];
             }
@@ -114,15 +113,15 @@ public class LunarExpression extends DateTimeExpression {
             range[1] = to - 1;
         } else {
             // 处理连接符
-            if (!field.contains(StringUtility.UNDERSCORE)) {
-                range[0] = range[1] = Integer.valueOf(field);
+            if (!field.contains(StringUtility.DASH)) {
+                range[0] = range[1] = field.startsWith("L") ? -Integer.valueOf(field.substring(1)) : Integer.valueOf(field);
             } else {
-                String[] split = field.split(StringUtility.UNDERSCORE);
+                String[] split = field.split(StringUtility.DASH);
                 if (split.length > 2) {
                     throw new IllegalArgumentException("Range has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
                 }
-                range[0] = Integer.valueOf(split[0]);
-                range[1] = Integer.valueOf(split[1]);
+                range[0] = split[0].startsWith("L") ? -Integer.valueOf(split[0].substring(1)) : Integer.valueOf(split[0]);
+                range[1] = split[1].startsWith("L") ? -Integer.valueOf(split[1].substring(1)) : Integer.valueOf(split[1]);
             }
         }
         return range;
@@ -140,8 +139,12 @@ public class LunarExpression extends DateTimeExpression {
         return hours;
     }
 
-    public BitSet getDays() {
+    public BitSet getBigDays() {
         return bigDays;
+    }
+
+    public BitSet getSmallDays() {
+        return smallDays;
     }
 
     public BitSet getMonths() {

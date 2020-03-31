@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * 日期时间表达式
@@ -82,6 +83,23 @@ abstract public class DateTimeExpression {
     public Instant getNextDateTime(Instant dateTime) {
         ZonedDateTime instant = getNextDateTime(ZonedDateTime.ofInstant(dateTime, ZoneOffset.UTC));
         return instant == null ? null : instant.toInstant();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(expression);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        DateTimeExpression that = (DateTimeExpression) object;
+        return Objects.equals(this.expression, that.expression);
     }
 
     @Override

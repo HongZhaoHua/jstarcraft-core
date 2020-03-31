@@ -1,13 +1,12 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.jstarcraft.core.common.instant.SolarExpression;
 
 public class SolarExpressionTestCase {
 
@@ -70,6 +69,28 @@ public class SolarExpressionTestCase {
         {
             LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
             Assert.assertNull(dateTime);
+        }
+    }
+
+    @Test
+    public void testLast() {
+        // 每个月倒数第2天
+        SolarExpression expression = new SolarExpression("0 0 12 L-1 * ? 2020");
+        {
+            LocalDateTime dateTime = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+            for (int index = 0, size = 12; index < size; index++) {
+                dateTime = expression.getPreviousDateTime(dateTime);
+                Assert.assertEquals(YearMonth.of(dateTime.getYear(), dateTime.getMonth()).lengthOfMonth() - 1, dateTime.getDayOfMonth());
+                Assert.assertEquals(2020, dateTime.getYear());
+            }
+        }
+        {
+            LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+            for (int index = 0, size = 12; index < size; index++) {
+                dateTime = expression.getNextDateTime(dateTime);
+                Assert.assertEquals(YearMonth.of(dateTime.getYear(), dateTime.getMonth()).lengthOfMonth() - 1, dateTime.getDayOfMonth());
+                Assert.assertEquals(2020, dateTime.getYear());
+            }
         }
     }
 
