@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Birdy
  *
  */
-public class PollRouteStrategy implements RouteStrategy {
+public class RollRouteStrategy implements RouteStrategy {
 
     /** 计数 */
     private AtomicInteger count = new AtomicInteger(0);
