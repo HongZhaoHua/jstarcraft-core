@@ -11,6 +11,13 @@ import java.time.LocalDate;
 public interface CalendarDate extends Comparable<CalendarDate> {
 
     /**
+     * 获取历法类型
+     * 
+     * @return
+     */
+    CalendarType getType();
+
+    /**
      * 获取历法年
      * 
      * @return

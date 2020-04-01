@@ -28,6 +28,11 @@ public class SolarDate implements CalendarDate {
         this.date = LocalDate.of(year, month, day);
     }
 
+    @Override
+    public CalendarType getType() {
+        return CalendarType.Solar;
+    }
+
     /**
      * 获取阳历年
      * 

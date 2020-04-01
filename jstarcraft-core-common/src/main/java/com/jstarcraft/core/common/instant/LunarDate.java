@@ -410,6 +410,11 @@ public class LunarDate implements CalendarDate {
         this.day = day;
     }
 
+    @Override
+    public CalendarType getType() {
+        return CalendarType.Lunar;
+    }
+
     /**
      * 获取阴历年
      * 
