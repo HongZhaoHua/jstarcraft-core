@@ -1,9 +1,6 @@
 package com.jstarcraft.core.common.configuration;
 
-import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
 
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -13,26 +10,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class Configurator {
+public interface Configurator {
 
-    /** 配置项 */
-    private TreeMap<String, String> keyValues;
-
-    public Configurator(Map<String, String>... keyValues) {
-        this.keyValues = new TreeMap<>();
-        for (Map<String, String> property : keyValues) {
-            this.keyValues.putAll(property);
-        }
-    }
-
-    public Configurator(Properties... keyValues) {
-        this.keyValues = new TreeMap<>();
-        for (Map property : keyValues) {
-            this.keyValues.putAll(property);
-        }
-    }
-
-    public Class getClass(String name, Class instead) {
+    default Class getClass(String name, Class instead) {
         String value = getString(name);
         try {
             return StringUtility.isBlank(value) ? instead : Class.forName(value);
@@ -41,79 +21,71 @@ public class Configurator {
         }
     }
 
-    public Class getClass(String name) {
+    default Class getClass(String name) {
         return getClass(name, null);
     }
 
-    public Boolean getBoolean(String name, Boolean instead) {
+    default Boolean getBoolean(String name, Boolean instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Boolean.valueOf(value);
     }
 
-    public Boolean getBoolean(String name) {
+    default Boolean getBoolean(String name) {
         return getBoolean(name, null);
     }
 
-    public Character getCharacter(String name, Character instead) {
+    default Character getCharacter(String name, Character instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Character.valueOf(value.charAt(0));
     }
 
-    public Character getCharacter(String name) {
+    default Character getCharacter(String name) {
         return getCharacter(name, null);
     }
 
-    public Double getDouble(String name, Double instead) {
+    default Double getDouble(String name, Double instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Double.valueOf(value);
     }
 
-    public Double getDouble(String name) {
+    default Double getDouble(String name) {
         return getDouble(name, null);
     }
 
-    public Float getFloat(String name, Float instead) {
+    default Float getFloat(String name, Float instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Float.valueOf(value);
     }
 
-    public Float getFloat(String name) {
+    default Float getFloat(String name) {
         return getFloat(name, null);
     }
 
-    public Integer getInteger(String name, Integer instead) {
+    default Integer getInteger(String name, Integer instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Integer.valueOf(value);
     }
 
-    public Integer getInteger(String name) {
+    default Integer getInteger(String name) {
         return getInteger(name, null);
     }
 
-    public Long getLong(String name, Long instead) {
+    default Long getLong(String name, Long instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Long.valueOf(value);
     }
 
-    public Long getLong(String name) {
+    default Long getLong(String name) {
         return getLong(name, null);
     }
 
-    public String getString(String name, String instead) {
+    default String getString(String name, String instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : value;
     }
 
-    public String getString(String name) {
-        return keyValues.get(name);
-    }
+    String getString(String name);
 
-    public Set<String> getKeys() {
-        return keyValues.keySet();
-    }
-
-    public Set<String> getKeys(String from, String to) {
-        return keyValues.subMap(from, to).keySet();
-    }
+    public Set<String> getKeys();
 
 }
