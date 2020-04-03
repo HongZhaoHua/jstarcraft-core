@@ -1,12 +1,14 @@
-package com.jstarcraft.core.utility;
+package com.jstarcraft.core.common.configuration;
 
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.jstarcraft.core.utility.StringUtility;
+
 /**
- * 配置
+ * 配置器
  * 
  * @author Birdy
  *
