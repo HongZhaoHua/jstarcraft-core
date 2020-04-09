@@ -1,11 +1,17 @@
-中国农历的Java实现，支持约300年公历范围：1850-02-12到2150-12-31:
-https://github.com/heqiao2010/LunarCalendar
+Joda-Time 简介:
+https://www.cnblogs.com/matd/p/10824133.html
+
+Joda-Time 学习笔记:
+https://www.cnblogs.com/wihainan/p/5999771.html
 
 Java 8新的时间日期库的20个使用示例:
 http://ifeve.com/20-examples-of-date-and-time-api-from-java8/
 
 Java8中计算日期时间差:
 https://blog.csdn.net/hspingcc/article/details/73332526
+
+中国农历的Java实现，支持约300年公历范围：1850-02-12到2150-12-31:
+https://github.com/heqiao2010/LunarCalendar
 
 A Java library for calculating prayer (salat) times, Hijri date, and qibla direction, based on ITL (Islamic Tools and Libraries):
 https://github.com/fikr4n/itl-java
