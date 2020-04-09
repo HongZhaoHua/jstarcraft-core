@@ -3,6 +3,7 @@ package com.jstarcraft.core.common.instant;
 import java.time.LocalDate;
 import java.time.chrono.HijrahDate;
 import java.time.temporal.ChronoField;
+import java.util.Objects;
 
 public class IslamicDate implements CalendarDate {
 
@@ -44,6 +45,28 @@ public class IslamicDate implements CalendarDate {
     @Override
     public LocalDate getDate() {
         return LocalDate.ofEpochDay(date.toEpochDay());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        IslamicDate that = (IslamicDate) object;
+        return Objects.equals(this.date, that.date);
+    }
+
+    @Override
+    public String toString() {
+        return "IslamicDate [" + date.toString() + "]";
     }
 
     /**

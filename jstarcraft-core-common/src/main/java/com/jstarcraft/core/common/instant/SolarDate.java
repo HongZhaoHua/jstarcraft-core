@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * 阳历日期
@@ -80,10 +81,7 @@ public class SolarDate implements CalendarDate {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int hash = 1;
-        hash = prime * hash + ((date == null) ? 0 : date.hashCode());
-        return hash;
+        return Objects.hash(date);
     }
 
     @Override
@@ -95,12 +93,7 @@ public class SolarDate implements CalendarDate {
         if (getClass() != object.getClass())
             return false;
         SolarDate that = (SolarDate) object;
-        if (this.date == null) {
-            if (that.date != null)
-                return false;
-        } else if (!this.date.equals(that.date))
-            return false;
-        return true;
+        return Objects.equals(this.date, that.date);
     }
 
     @Override
