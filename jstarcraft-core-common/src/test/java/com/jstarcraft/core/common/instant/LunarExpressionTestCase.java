@@ -44,7 +44,7 @@ public class LunarExpressionTestCase {
     public void testGetPreviousDateTime() {
         LunarExpression expression = new LunarExpression("0 0 12 1,L1 *");
 
-        LocalDateTime dateTime = LocalDateTime.of(2021, 2, 12, 0, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(2021, 2, 11, 23, 59, 59);
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
@@ -55,7 +55,7 @@ public class LunarExpressionTestCase {
     public void testGetNextDateTime() {
         LunarExpression expression = new LunarExpression("0 0 12 1,L1 *");
 
-        LocalDateTime dateTime = LocalDateTime.of(2020, 1, 23, 0, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(2020, 1, 24, 0, 0, 0);
         for (int index = 0, size = dateTimes.size(); index < size; index++) {
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);

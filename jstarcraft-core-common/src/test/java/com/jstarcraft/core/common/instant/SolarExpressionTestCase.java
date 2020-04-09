@@ -41,7 +41,7 @@ public class SolarExpressionTestCase {
     public void testGetPreviousDateTime() {
         SolarExpression expression = new SolarExpression("0 0 12 1,30 * ?");
 
-        LocalDateTime dateTime = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(2020, 12, 30, 23, 59, 59);
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);

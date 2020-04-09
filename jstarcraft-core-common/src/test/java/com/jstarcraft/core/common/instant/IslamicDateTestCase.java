@@ -9,6 +9,15 @@ public class IslamicDateTestCase {
 
     @Test
     public void testLeap() {
+        for (int index = 1; index < 13; index++) {
+            LocalDate date = new IslamicDate(1432, index, 1).getDate();
+            System.out.println(date.minusDays(1L));
+            System.out.println(date);
+        }
+        LocalDate date = new IslamicDate(1433, 1, 1).getDate();
+        System.out.println(date.minusDays(1L));
+        System.out.println(date);
+
         Assert.assertTrue(new IslamicDate(1441, 1, 1).isLeap());
         Assert.assertFalse(new IslamicDate(1442, 1, 1).isLeap());
     }
