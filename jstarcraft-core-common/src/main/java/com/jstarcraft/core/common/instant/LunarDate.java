@@ -3,6 +3,9 @@ package com.jstarcraft.core.common.instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import it.unimi.dsi.fastutil.ints.Int2IntAVLTreeMap;
+import it.unimi.dsi.fastutil.ints.Int2IntSortedMap;
+
 /**
  * 阴历日期
  * 
@@ -334,6 +337,18 @@ public class LunarDate implements CalendarDate {
 
     };
 
+    private final static Int2IntAVLTreeMap leaps = new Int2IntAVLTreeMap();
+
+    static {
+        for (int index = 0, size = lunar2Solar.length; index < size; index++) {
+            int[] values = lunar2Solar[index];
+            int leap = values[0];
+            if (leap > 0) {
+                leaps.put(index + MINIMUM_YEAR, leap);
+            }
+        }
+    }
+
     private int year;
 
     private boolean leap;
@@ -501,6 +516,17 @@ public class LunarDate implements CalendarDate {
     @Override
     public String toString() {
         return "LunarDate [year=" + year + ", leap=" + leap + ", month=" + month + ", day=" + day + "]";
+    }
+
+    /**
+     * 获取指定范围的闰年
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
+    public static Int2IntSortedMap getLeapYears(int from, int to) {
+        return leaps.subMap(from, to);
     }
 
     /**
