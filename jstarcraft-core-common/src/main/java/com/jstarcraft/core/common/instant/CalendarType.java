@@ -11,6 +11,8 @@ import java.util.function.Function;
  */
 public enum CalendarType {
 
+    Islamic(IslamicDate::new, new IslamicDate(LocalDate.MIN), new IslamicDate(LocalDate.MAX)),
+
     Lunar(LunarDate::new, new LunarDate(LunarDate.MINIMUM_YEAR, false, 1, 1), new LunarDate(LunarDate.MAXIMUM_YEAR, false, 12, 30)),
 
     Solar(SolarDate::new, new SolarDate(LocalDate.MIN), new SolarDate(LocalDate.MAX));

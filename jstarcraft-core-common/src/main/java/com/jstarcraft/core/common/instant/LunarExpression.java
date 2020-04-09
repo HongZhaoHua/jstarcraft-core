@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.instant;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.BitSet;
@@ -246,8 +247,8 @@ public class LunarExpression extends DateTimeExpression {
             return null;
         }
         lunar = new LunarDate(year, leap, month, day);
-        SolarDate solar = lunar.getSolar();
-        return ZonedDateTime.of(solar.getDate(), LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        LocalDate date = lunar.getDate();
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
     }
 
     @Override
@@ -318,8 +319,8 @@ public class LunarExpression extends DateTimeExpression {
             return null;
         }
         lunar = new LunarDate(year, leap, month, day);
-        SolarDate solar = lunar.getSolar();
-        return ZonedDateTime.of(solar.getDate(), LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        LocalDate date = lunar.getDate();
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
     }
 
 }

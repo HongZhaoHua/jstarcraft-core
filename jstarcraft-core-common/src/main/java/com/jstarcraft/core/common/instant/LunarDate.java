@@ -457,15 +457,6 @@ public class LunarDate implements CalendarDate {
 
     @Override
     public LocalDate getDate() {
-        return getSolar().getDate();
-    }
-
-    /**
-     * 阴历转阳历
-     * 
-     * @return
-     */
-    public SolarDate getSolar() {
         int year = this.year;
         int month = this.month;
         int day = this.day;
@@ -473,7 +464,7 @@ public class LunarDate implements CalendarDate {
         int value = lunar2Solar[year - MINIMUM_YEAR][leap > 0 && (this.leap || month > leap) ? month + 1 : month];
         SolarDate date = new SolarDate(year, value / 100, value % 100);
         date = new SolarDate(date.getDate().plusDays(day - 1));
-        return date;
+        return date.getDate();
     }
 
     @Override

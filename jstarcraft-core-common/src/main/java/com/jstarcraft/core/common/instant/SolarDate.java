@@ -78,15 +78,6 @@ public class SolarDate implements CalendarDate {
         return date;
     }
 
-    /**
-     * 阳历转阴历
-     * 
-     * @return
-     */
-    public LunarDate getLunar() {
-        return new LunarDate(date);
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
