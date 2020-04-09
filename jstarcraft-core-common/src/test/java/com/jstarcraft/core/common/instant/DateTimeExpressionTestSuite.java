@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IntervalExpressionTestCase.class, LunarExpressionTestCase.class, SolarExpressionTestCase.class, TermExpressionTestCase.class })
+@SuiteClasses({ IntervalExpressionTestCase.class, IslamicExpressionTestCase.class, LunarExpressionTestCase.class, SolarExpressionTestCase.class, TermExpressionTestCase.class })
 public class DateTimeExpressionTestSuite {
 
 }
