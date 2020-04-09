@@ -15,10 +15,6 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class IslamicExpression extends DateTimeExpression {
 
-    public final static int MINIMUM_YEAR = 1000;
-    
-    public final static int MAXIMUM_YEAR = 2000;
-
     /** 秒位图 */
     private final BitSet seconds;
 
@@ -50,7 +46,7 @@ public class IslamicExpression extends DateTimeExpression {
         this.bigDays = new BitSet(31);
         this.smallDays = new BitSet(30);
         this.months = new BitSet(13);
-        this.years = new BitSet(MAXIMUM_YEAR - MINIMUM_YEAR);
+        this.years = new BitSet(IslamicDate.MAXIMUM_YEAR - IslamicDate.MINIMUM_YEAR);
 
         String[] fields = expression.split(StringUtility.SPACE);
         if (fields.length != 5 && fields.length != 6) {
@@ -63,9 +59,9 @@ public class IslamicExpression extends DateTimeExpression {
             this.setBits(this.smallDays, fields[3], 1, 30, 0);
             this.setBits(this.months, fields[4], 1, 13, 0);
             if (fields.length == 6) {
-                this.setBits(this.years, fields[5], MINIMUM_YEAR, MAXIMUM_YEAR, MINIMUM_YEAR);
+                this.setBits(this.years, fields[5], IslamicDate.MINIMUM_YEAR, IslamicDate.MAXIMUM_YEAR, IslamicDate.MINIMUM_YEAR);
             } else {
-                this.setBits(this.years, StringUtility.ASTERISK, MINIMUM_YEAR, MAXIMUM_YEAR, MINIMUM_YEAR);
+                this.setBits(this.years, StringUtility.ASTERISK, IslamicDate.MINIMUM_YEAR, IslamicDate.MAXIMUM_YEAR, IslamicDate.MINIMUM_YEAR);
             }
         }
     }
@@ -223,18 +219,18 @@ public class IslamicExpression extends DateTimeExpression {
                 if (month == -1) {
                     month = months.previousSetBit(12);
                     year--;
-                    year = years.previousSetBit(year - MINIMUM_YEAR);
+                    year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
                     if (year == -1) {
                         return null;
                     }
-                    year += MINIMUM_YEAR;
+                    year += IslamicDate.MINIMUM_YEAR;
                 }
             }
             size = IslamicDate.getDaySize(year, month);
             days = getDays(size);
             day = days.previousSetBit(30);
         }
-        if (!years.get(year - MINIMUM_YEAR)) {
+        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
             return null;
         }
         islamic = new IslamicDate(year, month, day);
@@ -286,17 +282,17 @@ public class IslamicExpression extends DateTimeExpression {
                     month = months.nextSetBit(1);
                     year++;
                 }
-                year = years.nextSetBit(year - MINIMUM_YEAR);
+                year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
                 if (year == -1) {
                     return null;
                 }
-                year += MINIMUM_YEAR;
+                year += IslamicDate.MINIMUM_YEAR;
             }
             size = IslamicDate.getDaySize(year, month);
             days = getDays(size);
             day = days.nextSetBit(1);
         }
-        if (!years.get(year - MINIMUM_YEAR)) {
+        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
             return null;
         }
         islamic = new IslamicDate(year, month, day);

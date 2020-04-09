@@ -5,7 +5,23 @@ import java.time.chrono.HijrahDate;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
 
+/**
+ * 伊斯兰历日期
+ * 
+ * @author Birdy
+ *
+ */
 public class IslamicDate implements CalendarDate {
+
+    /**
+     * 支持的最小年份
+     */
+    public final static int MINIMUM_YEAR = 1300;
+
+    /**
+     * 支持的最大年份
+     */
+    public final static int MAXIMUM_YEAR = 1600;
 
     private HijrahDate date;
 
