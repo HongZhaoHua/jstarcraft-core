@@ -119,7 +119,7 @@ public class JsonUtility {
     }
 
     /**
-     * 对字符串执行JSON转义
+     * 对字符串执行JSON加密
      * 
      * @param string
      * @return
@@ -129,7 +129,7 @@ public class JsonUtility {
     }
 
     /**
-     * 对字符串执行JSON翻译
+     * 对字符串执行JSON解密
      * 
      * @param string
      * @return

@@ -413,7 +413,7 @@ public class CsvUtility {
     }
 
     /**
-     * 对字符串执行CSV转义
+     * 对字符串执行CSV加密
      * 
      * @param string
      * @return
@@ -423,7 +423,7 @@ public class CsvUtility {
     }
 
     /**
-     * 对字符串执行CSV翻译
+     * 对字符串执行CSV解密
      * 
      * @param string
      * @return

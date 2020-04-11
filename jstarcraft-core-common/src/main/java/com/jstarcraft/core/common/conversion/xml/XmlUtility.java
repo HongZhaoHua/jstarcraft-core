@@ -49,7 +49,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行XML1.0转义
+     * 对字符串执行XML1.0加密
      * 
      * @param string
      * @return
@@ -59,7 +59,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行XML1.0翻译
+     * 对字符串执行XML1.0解密
      * 
      * @param string
      * @return
@@ -69,7 +69,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行XML1.1转义
+     * 对字符串执行XML1.1加密
      * 
      * @param string
      * @return
@@ -79,7 +79,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行XML1.1翻译
+     * 对字符串执行XML1.1解密
      * 
      * @param string
      * @return
@@ -89,7 +89,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行HTML3.0转义
+     * 对字符串执行HTML3.0加密
      * 
      * @param string
      * @return
@@ -99,7 +99,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行HTML3.0翻译
+     * 对字符串执行HTML3.0解密
      * 
      * @param string
      * @return
@@ -109,7 +109,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行HTML4.0转义
+     * 对字符串执行HTML4.0加密
      * 
      * @param string
      * @return
@@ -119,7 +119,7 @@ public class XmlUtility extends DomUtils {
     }
 
     /**
-     * 对字符串执行HTML4.0翻译
+     * 对字符串执行HTML4.0解密
      * 
      * @param string
      * @return
