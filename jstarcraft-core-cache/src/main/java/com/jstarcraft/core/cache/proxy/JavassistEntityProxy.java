@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import com.jstarcraft.core.cache.CacheInformation;
 import com.jstarcraft.core.cache.annotation.CacheChange;
-import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
+import com.jstarcraft.core.common.conversion.ConversionUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 import javassist.CtClass;

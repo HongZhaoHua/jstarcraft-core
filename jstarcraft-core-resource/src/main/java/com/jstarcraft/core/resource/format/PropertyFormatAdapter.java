@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
+import com.jstarcraft.core.common.conversion.ConversionUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.resource.annotation.ResourceId;

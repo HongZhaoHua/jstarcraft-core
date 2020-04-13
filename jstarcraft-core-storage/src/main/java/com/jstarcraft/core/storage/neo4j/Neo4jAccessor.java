@@ -17,7 +17,7 @@ import org.neo4j.ogm.metadata.MetaData;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 
-import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
+import com.jstarcraft.core.common.conversion.ConversionUtility;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.storage.StorageCondition;

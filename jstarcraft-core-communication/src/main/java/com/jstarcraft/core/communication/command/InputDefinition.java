@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.common.conversion.csv.ConversionUtility;
+import com.jstarcraft.core.common.conversion.ConversionUtility;
 import com.jstarcraft.core.communication.annotation.CommandVariable;
 import com.jstarcraft.core.communication.annotation.CommandVariable.VariableType;
 import com.jstarcraft.core.communication.annotation.MessageCodec;

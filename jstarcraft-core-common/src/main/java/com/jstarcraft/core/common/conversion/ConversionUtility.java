@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.conversion.csv;
+package com.jstarcraft.core.common.conversion;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
