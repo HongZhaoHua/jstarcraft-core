@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:resource="http://www.jstarcraft.com/core/resource"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.jstarcraft.com/core/resource
+http://www.jstarcraft.com/core/resource/resource.xsd">
+
+    <bean id="formatAdapter" class="com.jstarcraft.core.resource.format.ExcelFormatAdapter">
+        <constructor-arg value="2" />
+    </bean>
+
+    <bean id="pathAdapter" class="com.jstarcraft.core.resource.path.ClassPathAdapter">
+        <constructor-arg value="com/jstarcraft/core/resource/format" />
+    </bean>
+
+    <!-- 仓储管理器配置 -->
+    <resource:configuration id="resourceStorage" format="formatAdapter" path="pathAdapter">
+        <resource:scan>
+            <resource:package name="com.jstarcraft.core.resource.format.excel" />
+        </resource:scan>
+    </resource:configuration>
+
+</beans>

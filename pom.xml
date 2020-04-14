@@ -343,6 +343,12 @@
                 <version>4.0.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>2.1.7</version>
+            </dependency>
+
             <!-- 脚本框架依赖 -->
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
