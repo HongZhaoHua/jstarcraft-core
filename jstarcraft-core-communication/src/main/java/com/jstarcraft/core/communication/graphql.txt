@@ -20,3 +20,9 @@ https://www.graphql-java.com/documentation/master/
 
 Getting started with GraphQL Java and Spring Boot:
 https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/
+
+A strongly-typed, caching GraphQL client for Android and the JVM:
+https://github.com/apollographql/apollo-android
+
+A GraphQL JVM Client - Java, Kotlin, Scala:
+https://github.com/americanexpress/nodes
