@@ -9,6 +9,9 @@ https://segmentfault.com/a/1190000014131950
 5个用/不用GraphQL的理由:
 https://www.jianshu.com/p/12dff5905cf6
 
+GraphQL从入门到放弃:
+https://xeblog.cn/articles/6
+
 GraphQL Java从入门到实践:
 https://www.jianshu.com/p/4ede220b713e
 
