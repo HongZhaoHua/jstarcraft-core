@@ -35,7 +35,7 @@ public class HibernateTransactionManager extends TransactionManager {
         for (String name : names) {
             try {
                 HibernateTransactionDefinition definition = new HibernateTransactionDefinition(name, now);
-                accessor.create(HibernateTransactionDefinition.class, definition);
+                accessor.createInstance(HibernateTransactionDefinition.class, definition);
                 count++;
             } catch (Exception exception) {
             }
@@ -53,7 +53,7 @@ public class HibernateTransactionManager extends TransactionManager {
         int count = 0;
         for (String name : names) {
             try {
-                accessor.delete(HibernateTransactionDefinition.class, name);
+                accessor.deleteInstance(HibernateTransactionDefinition.class, name);
                 count++;
             } catch (Exception exception) {
             }
@@ -70,7 +70,7 @@ public class HibernateTransactionManager extends TransactionManager {
         parameters.put("name", name);
         parameters.put("most", most);
         parameters.put("now", now);
-        Integer count = Integer.class.cast(accessor.query(HibernateTransactionDefinition.LOCK_HQL, null, null, parameters).get(0));
+        Integer count = Integer.class.cast(accessor.queryDatas(HibernateTransactionDefinition.LOCK_HQL, null, null, parameters).get(0));
         if (count != 1) {
             throw new TransactionLockException();
         }
@@ -85,7 +85,7 @@ public class HibernateTransactionManager extends TransactionManager {
         parameters.put("name", name);
         parameters.put("most", most);
         parameters.put("now", now);
-        Integer count = Integer.class.cast(accessor.query(HibernateTransactionDefinition.UNLOCK_HQL, null, null, parameters).get(0));
+        Integer count = Integer.class.cast(accessor.queryDatas(HibernateTransactionDefinition.UNLOCK_HQL, null, null, parameters).get(0));
         if (count != 1) {
             throw new TransactionUnlockException();
         }

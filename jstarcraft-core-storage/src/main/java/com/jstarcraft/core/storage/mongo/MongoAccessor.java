@@ -55,13 +55,13 @@ public class MongoAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         MongoMetadata metadata = metadatas.get(clazz);
         return template.findById(id, clazz, metadata.getOrmName());
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
         try {
             template.insert(object, metadata.getOrmName());
@@ -72,21 +72,21 @@ public class MongoAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         MongoMetadata metadata = metadatas.get(clazz);
         DeleteResult state = template.remove(Query.query(Criteria.where(MongoMetadata.mongoId).is(id)), metadata.getOrmName());
         return state.getDeletedCount() > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
         DeleteResult state = template.remove(object, metadata.getOrmName());
         return state.getDeletedCount() > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         MongoMetadata metadata = metadatas.get(clazz);
         try {
             template.save(object, metadata.getOrmName());
@@ -199,7 +199,7 @@ public class MongoAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         MongoMetadata metadata = metadatas.get(clazz);
         Query query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
         if (pagination != null) {
@@ -258,7 +258,7 @@ public class MongoAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         MongoMetadata metadata = metadatas.get(clazz);
         Query query = new Query(Criteria.where(MongoMetadata.mongoId).exists(true));
         return template.count(query, metadata.getOrmName());

@@ -108,7 +108,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
                     return (T) element.getCacheObject();
                 }
             }
-            T value = (T) accessor.get(cacheClass, cacheId);
+            T value = (T) accessor.getInstance(cacheClass, cacheId);
             return value;
         } finally {
             readLock.unlock();
@@ -344,16 +344,16 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
                             switch (element.getOperation()) {
                             case CREATE:
                                 ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
-                                accessor.create(cacheClass, copyInstance);
+                                accessor.createInstance(cacheClass, copyInstance);
                                 createdCount.incrementAndGet();
                                 break;
                             case DELETE:
-                                accessor.delete(cacheClass, element.getCacheId());
+                                accessor.deleteInstance(cacheClass, element.getCacheId());
                                 deletedCount.incrementAndGet();
                                 break;
                             case UPDATE:
                                 ReflectionUtility.copyInstance(element.getCacheObject(), copyInstance);
-                                accessor.update(cacheClass, copyInstance);
+                                accessor.updateInstance(cacheClass, copyInstance);
                                 updatedCount.incrementAndGet();
                                 break;
                             default:

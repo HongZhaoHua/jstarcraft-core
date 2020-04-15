@@ -100,35 +100,35 @@ public class MyBatisAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         return (T) mapper.selectById((Serializable) id);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         return mapper.insert(object) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         return mapper.deleteById((Serializable) id) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         return mapper.deleteById((Serializable) object.getId()) > 0;
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         return mapper.updateById(object) > 0;
@@ -244,7 +244,7 @@ public class MyBatisAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         QueryWrapper<?> query = new QueryWrapper<>();
@@ -293,7 +293,7 @@ public class MyBatisAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         MyBatisMetadata metadata = metadatas.get(clazz);
         BaseMapper mapper = template.getMapper(metadata.getMapperClass());
         QueryWrapper<?> query = new QueryWrapper<>();

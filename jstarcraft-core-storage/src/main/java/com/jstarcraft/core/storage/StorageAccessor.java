@@ -30,7 +30,7 @@ public interface StorageAccessor {
      * @param id
      * @return
      */
-    <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id);
+    <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id);
 
     /**
      * 保存指定的对象,并返回对象的主键
@@ -39,7 +39,7 @@ public interface StorageAccessor {
      * @param object
      * @return
      */
-    <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object);
 
     /**
      * 根据主键,删除指定的对象
@@ -47,7 +47,7 @@ public interface StorageAccessor {
      * @param clazz
      * @param id
      */
-    <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id);
+    <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id);
 
     /**
      * 删除指定的对象
@@ -55,7 +55,7 @@ public interface StorageAccessor {
      * @param clazz
      * @param object
      */
-    <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object);
 
     /**
      * 更新指定的对象
@@ -64,7 +64,7 @@ public interface StorageAccessor {
      * @param object
      * @return
      */
-    <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object);
+    <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object);
 
     /**
      * 查询指定范围的最大主键标识
@@ -115,7 +115,7 @@ public interface StorageAccessor {
      * @param pagination
      * @return
      */
-    <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination);
+    <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination);
 
     /**
      * 查询指定交集条件,返回对象的集合
@@ -143,7 +143,7 @@ public interface StorageAccessor {
      * @param clazz
      * @return
      */
-    <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz);
+    <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz);
 
     /**
      * 查询指定交集条件的对象总数

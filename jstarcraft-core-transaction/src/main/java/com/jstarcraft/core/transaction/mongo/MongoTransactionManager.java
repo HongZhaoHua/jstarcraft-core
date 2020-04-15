@@ -39,7 +39,7 @@ public class MongoTransactionManager extends TransactionManager {
         for (String name : names) {
             try {
                 MongoTransactionDefinition definition = new MongoTransactionDefinition(name, now);
-                accessor.create(MongoTransactionDefinition.class, definition);
+                accessor.createInstance(MongoTransactionDefinition.class, definition);
                 count++;
             } catch (Exception exception) {
             }
@@ -57,7 +57,7 @@ public class MongoTransactionManager extends TransactionManager {
         int count = 0;
         for (String name : names) {
             try {
-                accessor.delete(MongoTransactionDefinition.class, name);
+                accessor.deleteInstance(MongoTransactionDefinition.class, name);
                 count++;
             } catch (Exception exception) {
             }

@@ -31,18 +31,18 @@ public class MyBatisAccessorTestCase {
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
             MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, MockEnumeration.RANDOM);
-            accessor.create(MockObject.class, object);
+            accessor.createInstance(MockObject.class, object);
             int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较
-            MockObject instance = accessor.get(MockObject.class, id);
+            MockObject instance = accessor.getInstance(MockObject.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
 
             // 修改对象并保存
             object.setName("mickey");
-            accessor.update(MockObject.class, object);
-            instance = accessor.get(MockObject.class, id);
+            accessor.updateInstance(MockObject.class, object);
+            instance = accessor.getInstance(MockObject.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
         }
 
@@ -88,7 +88,7 @@ public class MyBatisAccessorTestCase {
 
         // 查询分页
         StoragePagination pagination = new StoragePagination(1, 15);
-        objects = accessor.query(MockObject.class, pagination);
+        objects = accessor.queryInstances(MockObject.class, pagination);
         Assert.assertTrue(objects.size() == 15);
         AtomicInteger times = new AtomicInteger();
         accessor.iterate((object) -> {
@@ -97,7 +97,7 @@ public class MyBatisAccessorTestCase {
         Assert.assertTrue(times.get() == 15);
 
         pagination = new StoragePagination(7, 15);
-        objects = accessor.query(MockObject.class, pagination);
+        objects = accessor.queryInstances(MockObject.class, pagination);
         Assert.assertTrue(objects.size() == 10);
         times.set(0);
         accessor.iterate((object) -> {
@@ -106,9 +106,9 @@ public class MyBatisAccessorTestCase {
         Assert.assertTrue(times.get() == 10);
 
         // 测试总数
-        long count = accessor.count(MockObject.class);
+        long count = accessor.countInstances(MockObject.class);
         Assert.assertTrue(count == size);
-        objects = accessor.query(MockObject.class, null);
+        objects = accessor.queryInstances(MockObject.class, null);
         Assert.assertTrue(objects.size() == count);
 
         count = accessor.countIntersection(MockObject.class, condition);
@@ -123,13 +123,13 @@ public class MyBatisAccessorTestCase {
 
         // 删除对象并保存
         for (MockObject object : accessor.queryIntersection(MockObject.class, condition, null)) {
-            accessor.delete(MockObject.class, object);
-            object = accessor.get(MockObject.class, object.getId());
+            accessor.deleteInstance(MockObject.class, object);
+            object = accessor.getInstance(MockObject.class, object.getId());
             Assert.assertNull(object);
         }
         for (MockObject object : accessor.queryUnion(MockObject.class, condition, null)) {
-            accessor.delete(MockObject.class, object.getId());
-            object = accessor.get(MockObject.class, object.getId());
+            accessor.deleteInstance(MockObject.class, object.getId());
+            object = accessor.getInstance(MockObject.class, object.getId());
             Assert.assertNull(object);
         }
     }

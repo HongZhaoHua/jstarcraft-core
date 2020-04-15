@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StoragePagination;
-import com.jstarcraft.core.storage.neo4j.Neo4jAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -39,21 +38,21 @@ public class Neo4jAccessorTestCase {
         MockNode to = new MockNode(1000, "to", 1000, MockEnumeration.RANDOM);
         MockRelation relation = new MockRelation("relation", from, to);
 
-        accessor.create(MockNode.class, from);
-        accessor.create(MockNode.class, to);
-        accessor.create(MockRelation.class, relation);
-        relation = accessor.get(MockRelation.class, relation.getId());
+        accessor.createInstance(MockNode.class, from);
+        accessor.createInstance(MockNode.class, to);
+        accessor.createInstance(MockRelation.class, relation);
+        relation = accessor.getInstance(MockRelation.class, relation.getId());
         Assert.assertNotNull(relation);
 
         // 无法删除节点(受关系限制)
-        Assert.assertFalse(accessor.delete(MockNode.class, from.getId()));
+        Assert.assertFalse(accessor.deleteInstance(MockNode.class, from.getId()));
 
         // 可以删除节点(将关系删除)
-        Assert.assertTrue(accessor.delete(MockNode.class, to));
-        relation = accessor.get(MockRelation.class, relation.getId());
+        Assert.assertTrue(accessor.deleteInstance(MockNode.class, to));
+        relation = accessor.getInstance(MockRelation.class, relation.getId());
         Assert.assertNull(relation);
 
-        from = accessor.get(MockNode.class, from.getId());
+        from = accessor.getInstance(MockNode.class, from.getId());
         Assert.assertNotNull(from);
     }
 
@@ -67,18 +66,18 @@ public class Neo4jAccessorTestCase {
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
             MockNode object = new MockNode(index, "birdy", index, MockEnumeration.values()[index % MockEnumeration.values().length]);
-            accessor.create(MockNode.class, object);
+            accessor.createInstance(MockNode.class, object);
             int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));
 
             // 获取对象并比较
-            MockNode instance = accessor.get(MockNode.class, id);
+            MockNode instance = accessor.getInstance(MockNode.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
 
             // 修改对象并保存
             object.setName("mickey");
-            accessor.update(MockNode.class, object);
-            instance = accessor.get(MockNode.class, id);
+            accessor.updateInstance(MockNode.class, object);
+            instance = accessor.getInstance(MockNode.class, id);
             Assert.assertThat(instance, CoreMatchers.equalTo(object));
         }
 
@@ -124,7 +123,7 @@ public class Neo4jAccessorTestCase {
 
         // 查询分页
         StoragePagination pagination = new StoragePagination(1, 15);
-        objects = accessor.query(MockNode.class, pagination);
+        objects = accessor.queryInstances(MockNode.class, pagination);
         Assert.assertTrue(objects.size() == 15);
         AtomicInteger times = new AtomicInteger();
         accessor.iterate((object) -> {
@@ -133,7 +132,7 @@ public class Neo4jAccessorTestCase {
         Assert.assertTrue(times.get() == 15);
 
         pagination = new StoragePagination(7, 15);
-        objects = accessor.query(MockNode.class, pagination);
+        objects = accessor.queryInstances(MockNode.class, pagination);
         Assert.assertTrue(objects.size() == 10);
         times.set(0);
         accessor.iterate((object) -> {
@@ -142,9 +141,9 @@ public class Neo4jAccessorTestCase {
         Assert.assertTrue(times.get() == 10);
 
         // 测试总数
-        long count = accessor.count(MockNode.class);
+        long count = accessor.countInstances(MockNode.class);
         Assert.assertTrue(count == size);
-        objects = accessor.query(MockNode.class, null);
+        objects = accessor.queryInstances(MockNode.class, null);
         Assert.assertTrue(objects.size() == count);
 
         count = accessor.countIntersection(MockNode.class, condition);
@@ -159,13 +158,13 @@ public class Neo4jAccessorTestCase {
 
         // 删除对象
         for (MockNode object : accessor.queryIntersection(MockNode.class, condition, null)) {
-            accessor.delete(MockNode.class, object);
-            object = accessor.get(MockNode.class, object.getId());
+            accessor.deleteInstance(MockNode.class, object);
+            object = accessor.getInstance(MockNode.class, object.getId());
             Assert.assertNull(object);
         }
         for (MockNode object : accessor.queryUnion(MockNode.class, condition, null)) {
-            accessor.delete(MockNode.class, object.getId());
-            object = accessor.get(MockNode.class, object.getId());
+            accessor.deleteInstance(MockNode.class, object.getId());
+            object = accessor.getInstance(MockNode.class, object.getId());
             Assert.assertNull(object);
         }
 

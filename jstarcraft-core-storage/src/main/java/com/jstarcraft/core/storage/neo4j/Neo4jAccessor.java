@@ -133,7 +133,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         try {
             // TODO 注意:Neo4j-OGM对原始类型支持似乎有问题,必须使用包装类型,否则Session.load无法装载到指定对象.
             return template.load(clazz, (Serializable) id);
@@ -143,7 +143,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         try {
             template.save(object);
             return true;
@@ -155,7 +155,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         try {
             Neo4jMetadata metadata = metadatas.get(clazz);
             HashMap<String, Object> parameters = new HashMap<>();
@@ -171,7 +171,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         try {
             template.delete(object);
             return true;
@@ -183,7 +183,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         try {
             template.save(object);
             return true;
@@ -377,7 +377,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         Iterable<T> iterable = iterate(clazz, null, null, pagination);
         List<T> query = new ArrayList<>(BATCH_SIZE);
         for (T keyValue : iterable) {
@@ -446,7 +446,7 @@ public class Neo4jAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         return count(clazz, null, null);
     }
 

@@ -126,7 +126,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         T value = getHibernateTemplate().executeWithNativeSession(new HibernateCallback<T>() {
 
             @Override
@@ -139,7 +139,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
@@ -156,7 +156,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
@@ -171,7 +171,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
@@ -188,7 +188,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Boolean>() {
 
             @Override
@@ -387,7 +387,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         return query(clazz, null, null, pagination);
     }
 
@@ -444,7 +444,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         return count(clazz, null, null);
     }
 
@@ -533,7 +533,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
         iterate(iterator, clazz, Operation.OR, condition, pagination);
     }
 
-    public <R> List<R> query(String name, Class<R> queryType, StoragePagination pagination, Map<String, Object> parameters) {
+    public <R> List<R> queryDatas(String name, Class<R> queryType, StoragePagination pagination, Map<String, Object> parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<R>>() {
             @Override
             public List<R> doInHibernate(Session session) throws HibernateException {
@@ -565,7 +565,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
         });
     }
 
-    public <R> List<R> query(String name, Class<R> queryType, StoragePagination pagination, Object... parameters) {
+    public <R> List<R> queryDatas(String name, Class<R> queryType, StoragePagination pagination, Object... parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<List<R>>() {
 
             @Override
@@ -597,7 +597,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
 
     }
 
-    public <R> R unique(String name, Class<R> queryType, Map<String, Object> parameters) {
+    public <R> R uniqueData(String name, Class<R> queryType, Map<String, Object> parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<R>() {
 
             @Override
@@ -615,7 +615,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
         });
     }
 
-    public <R> R unique(String name, Class<R> queryType, Object... parameters) {
+    public <R> R uniqueData(String name, Class<R> queryType, Object... parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<R>() {
 
             @Override
@@ -631,7 +631,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
         });
     }
 
-    public int modify(String name, Map<String, Object> parameters) {
+    public int modifyDatas(String name, Map<String, Object> parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Integer>() {
 
             @Override
@@ -648,7 +648,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements StorageAcc
         });
     }
 
-    public int modify(String name, Object... parameters) {
+    public int modifyDatas(String name, Object... parameters) {
         return getHibernateTemplate().executeWithNativeSession(new HibernateCallback<Integer>() {
 
             @Override

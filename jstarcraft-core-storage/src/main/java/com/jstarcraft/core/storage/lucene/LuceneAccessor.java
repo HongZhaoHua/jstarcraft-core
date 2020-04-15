@@ -83,7 +83,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         LuceneMetadata metadata = metadatas.get(clazz);
         KeyValue<Field, IndexConverter> keyValue = metadata.getIndexKeyValue(metadata.getPrimaryName());
         Field key = keyValue.getKey();
@@ -99,7 +99,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
         K id = object.getId();
         String key = converter.convert(id.getClass(), id);
@@ -109,7 +109,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         LuceneMetadata metadata = metadatas.get(clazz);
         String key = converter.convert(id.getClass(), id);
         engine.deleteDocument(key);
@@ -117,7 +117,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
         K id = object.getId();
         String key = converter.convert(id.getClass(), id);
@@ -126,7 +126,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         LuceneMetadata metadata = metadatas.get(clazz);
         try {
             K id = object.getId();
@@ -256,7 +256,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         LuceneMetadata metadata = metadatas.get(clazz);
         Query query = new MatchAllDocsQuery();
         int offset = pagination == null ? 0 : pagination.getFirst();
@@ -319,7 +319,7 @@ public class LuceneAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         Query query = new MatchAllDocsQuery();
         return engine.countDocuments(query);
     }

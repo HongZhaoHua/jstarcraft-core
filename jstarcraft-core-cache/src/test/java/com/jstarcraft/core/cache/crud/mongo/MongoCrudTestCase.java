@@ -46,11 +46,11 @@ public class MongoCrudTestCase {
         // 此部分数据最初不加载到缓存
         for (int index = 1; index <= SIZE; index++) {
             MongoEntityObject entity = MongoEntityObject.instanceOf(-index, "birdy:" + index, "hong", index, index);
-            accessor.create(MongoEntityObject.class, entity);
+            accessor.createInstance(MongoEntityObject.class, entity);
 
             for (int position = 1; position <= SIZE; position++) {
                 MongoRegionObject region = MongoRegionObject.instanceOf(-(index * SIZE + position), entity.getId());
-                accessor.create(MongoRegionObject.class, region);
+                accessor.createInstance(MongoRegionObject.class, region);
             }
         }
     }
@@ -58,12 +58,12 @@ public class MongoCrudTestCase {
     @After
     public void afterTest() throws Exception {
         for (int index = 1; index <= SIZE; index++) {
-            accessor.delete(MongoEntityObject.class, -index);
-            accessor.delete(MongoEntityObject.class, index);
+            accessor.deleteInstance(MongoEntityObject.class, -index);
+            accessor.deleteInstance(MongoEntityObject.class, index);
 
             for (int position = 1; position <= SIZE; position++) {
-                accessor.delete(MongoRegionObject.class, -(index * SIZE + position));
-                accessor.delete(MongoRegionObject.class, (index * SIZE + position));
+                accessor.deleteInstance(MongoRegionObject.class, -(index * SIZE + position));
+                accessor.deleteInstance(MongoRegionObject.class, (index * SIZE + position));
             }
         }
     }

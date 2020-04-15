@@ -71,9 +71,9 @@ public class MigrationTestCase {
         logger.debug("execute total time is : " + totalTime);
 
         long start = System.currentTimeMillis();
-        logger.debug("item count is : " + olderAccessor.count(Item.class));
-        logger.debug("player count is : " + olderAccessor.count(Player.class));
-        logger.debug("information count is : " + olderAccessor.count(Information.class));
+        logger.debug("item count is : " + olderAccessor.countInstances(Item.class));
+        logger.debug("player count is : " + olderAccessor.countInstances(Player.class));
+        logger.debug("information count is : " + olderAccessor.countInstances(Information.class));
         long end = System.currentTimeMillis();
         logger.debug("count total time is : " + (end - start));
 

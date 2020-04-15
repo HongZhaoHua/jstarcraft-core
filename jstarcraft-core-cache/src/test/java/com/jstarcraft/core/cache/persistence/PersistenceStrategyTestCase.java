@@ -187,11 +187,11 @@ public abstract class PersistenceStrategyTestCase {
         manager.updateInstance(object);
 
         strategy.stop();
-        object = accessor.get(MockEntityObject.class, 0);
+        object = accessor.getInstance(MockEntityObject.class, 0);
         Assert.assertThat(object.getLastName(), CoreMatchers.equalTo("洪"));
         Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(0));
 
-        accessor.delete(MockEntityObject.class, 0);
+        accessor.deleteInstance(MockEntityObject.class, 0);
     }
 
 }

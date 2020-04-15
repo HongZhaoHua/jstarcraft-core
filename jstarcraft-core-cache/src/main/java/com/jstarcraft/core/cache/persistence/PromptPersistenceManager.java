@@ -76,7 +76,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
         Lock readLock = lock.readLock();
         try {
             readLock.lock();
-            T value = (T) accessor.get(cacheClass, cacheId);
+            T value = (T) accessor.getInstance(cacheClass, cacheId);
             return value;
         } finally {
             readLock.unlock();
@@ -120,7 +120,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
             Lock writeLock = lock.writeLock();
             try {
                 writeLock.lock();
-                accessor.create(cacheClass, copyInstance);
+                accessor.createInstance(cacheClass, copyInstance);
                 createdCount.incrementAndGet();
             } catch (Exception throwable) {
                 String message = StringUtility.format("立即策略[{}]处理元素[{}]时异常", new Object[] { name, element });
@@ -144,7 +144,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
         Lock writeLock = lock.writeLock();
         try {
             writeLock.lock();
-            accessor.delete(cacheClass, element.getCacheId());
+            accessor.deleteInstance(cacheClass, element.getCacheId());
             deletedCount.incrementAndGet();
         } catch (Exception throwable) {
             String message = StringUtility.format("立即策略[{}]处理元素[{}]时异常", new Object[] { name, element });
@@ -173,7 +173,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
             Lock writeLock = lock.writeLock();
             try {
                 writeLock.lock();
-                accessor.update(cacheClass, copyInstance);
+                accessor.updateInstance(cacheClass, copyInstance);
                 updatedCount.incrementAndGet();
             } catch (Exception throwable) {
                 String message = StringUtility.format("立即策略[{}]处理元素[{}]时异常", new Object[] { name, element });

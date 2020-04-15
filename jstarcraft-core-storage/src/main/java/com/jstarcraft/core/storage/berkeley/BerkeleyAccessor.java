@@ -251,28 +251,28 @@ public class BerkeleyAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> T get(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> T getInstance(Class<T> clazz, K id) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         return (T) manager.get(transactor, id);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean create(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean createInstance(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         return manager.create(transactor, object);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, K id) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, K id) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         return manager.delete(transactor, id);
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean delete(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean deleteInstance(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         K id = (K) manager.getMetadata().getPrimaryValue(object);
@@ -280,7 +280,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> boolean update(Class<T> clazz, T object) {
+    public <K extends Comparable, T extends IdentityObject<K>> boolean updateInstance(Class<T> clazz, T object) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         BerkeleyMetadata metadata = manager.getMetadata();
@@ -327,7 +327,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> List<T> query(Class<T> clazz, StoragePagination pagination) {
+    public <K extends Comparable, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StoragePagination pagination) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         return manager.query(transactor, pagination);
@@ -348,7 +348,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     }
 
     @Override
-    public <K extends Comparable, T extends IdentityObject<K>> long count(Class<T> clazz) {
+    public <K extends Comparable, T extends IdentityObject<K>> long countInstances(Class<T> clazz) {
         BerkeleyManager<K, T> manager = managers.get(clazz);
         BerkeleyTransactor transactor = transactors.get();
         return manager.count(transactor);

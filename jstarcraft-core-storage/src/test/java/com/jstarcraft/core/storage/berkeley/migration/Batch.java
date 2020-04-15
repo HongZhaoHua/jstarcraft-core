@@ -58,11 +58,11 @@ class Batch extends Thread {
         String uuid = UUID.randomUUID().toString();
         for (int index = 0; index < size; index++) {
             final Information entity = new Information(100000, "pack", "name", map);
-            accessor.create(Information.class, entity);
+            accessor.createInstance(Information.class, entity);
             final Player player = new Player(index + uuid);
-            accessor.create(Player.class, player);
+            accessor.createInstance(Player.class, player);
             final Item item = new Item(player.getId());
-            accessor.create(Item.class, item);
+            accessor.createInstance(Item.class, item);
             if (index % 1000000 == 0) {
                 logger.debug("Entity[{}],Player[{}],Item[{}]", new Object[] { entity.getId(), player.getId(), item.getId() });
             }

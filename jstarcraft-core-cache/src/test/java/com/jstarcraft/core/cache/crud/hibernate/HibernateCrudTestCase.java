@@ -46,11 +46,11 @@ public class HibernateCrudTestCase {
         // 此部分数据最初不加载到缓存
         for (int index = 1; index <= SIZE; index++) {
             HibernateEntityObject entity = HibernateEntityObject.instanceOf(-index, "birdy:" + index, "hong", index, index);
-            accessor.create(HibernateEntityObject.class, entity);
+            accessor.createInstance(HibernateEntityObject.class, entity);
 
             for (int position = 1; position <= SIZE; position++) {
                 HibernateRegionObject region = HibernateRegionObject.instanceOf(-(index * SIZE + position), entity.getId());
-                accessor.create(HibernateRegionObject.class, region);
+                accessor.createInstance(HibernateRegionObject.class, region);
             }
         }
     }
@@ -58,12 +58,12 @@ public class HibernateCrudTestCase {
     @After
     public void afterTest() throws Exception {
         for (int index = 1; index <= SIZE; index++) {
-            accessor.delete(HibernateEntityObject.class, -index);
-            accessor.delete(HibernateEntityObject.class, index);
+            accessor.deleteInstance(HibernateEntityObject.class, -index);
+            accessor.deleteInstance(HibernateEntityObject.class, index);
 
             for (int position = 1; position <= SIZE; position++) {
-                accessor.delete(HibernateRegionObject.class, -(index * SIZE + position));
-                accessor.delete(HibernateRegionObject.class, (index * SIZE + position));
+                accessor.deleteInstance(HibernateRegionObject.class, -(index * SIZE + position));
+                accessor.deleteInstance(HibernateRegionObject.class, (index * SIZE + position));
             }
         }
     }

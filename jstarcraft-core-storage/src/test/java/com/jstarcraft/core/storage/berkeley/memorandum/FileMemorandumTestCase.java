@@ -54,7 +54,7 @@ public class FileMemorandumTestCase {
         int size = 100000;
         for (long index = 0; index < size; index++) {
             Person person = new Person(index, String.valueOf(index));
-            accessor.create(Person.class, person);
+            accessor.createInstance(Person.class, person);
         }
         Instant from = dateTime.toInstant(ZoneOffset.UTC);
         // 执行备份
@@ -71,7 +71,7 @@ public class FileMemorandumTestCase {
 
         for (long index = 0; index < size; index++) {
             Pack pack = new Pack(index, size, index);
-            accessor.create(Pack.class, pack);
+            accessor.createInstance(Pack.class, pack);
         }
         Instant to = from.plus(1, ChronoUnit.HOURS);
         // 执行备份
@@ -104,8 +104,8 @@ public class FileMemorandumTestCase {
         // 执行还原
         fileMemorandum.checkOut(from, to);
         accessor.start();
-        Assert.assertTrue(accessor.count(Person.class) == size);
-        Assert.assertTrue(accessor.count(Pack.class) == size);
+        Assert.assertTrue(accessor.countInstances(Person.class) == size);
+        Assert.assertTrue(accessor.countInstances(Pack.class) == size);
         accessor.stop();
     }
 

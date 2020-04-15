@@ -11,11 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.storage.StorageCondition;
-import com.jstarcraft.core.storage.berkeley.BerkeleyAccessor;
-import com.jstarcraft.core.storage.berkeley.BerkeleyIsolation;
 import com.jstarcraft.core.storage.berkeley.entity.Pack;
 import com.jstarcraft.core.storage.berkeley.entity.Person;
-import com.jstarcraft.core.storage.berkeley.exception.BerkeleyOperationException;
 import com.jstarcraft.core.storage.berkeley.exception.BerkeleyVersionException;
 import com.jstarcraft.core.storage.berkeley.persistent.Item;
 import com.sleepycat.je.UniqueConstraintException;
@@ -33,40 +30,40 @@ public class BerkeleyAccessorTestCase {
     @Test
     public void testCRUD() {
         Person birdy = new Person(1L, "Birdy");
-        Assert.assertTrue(accessor.create(Person.class, birdy));
+        Assert.assertTrue(accessor.createInstance(Person.class, birdy));
 
         // 标识冲突
         birdy = new Person(1L, "Mickey");
-        Assert.assertFalse(accessor.create(Person.class, birdy));
+        Assert.assertFalse(accessor.createInstance(Person.class, birdy));
 
         try {
             // 索引冲突
             birdy = new Person(2L, "Birdy");
-            accessor.create(Person.class, birdy);
+            accessor.createInstance(Person.class, birdy);
             Assert.fail();
         } catch (UniqueConstraintException exception) {
         }
 
-        birdy = accessor.get(Person.class, 1L);
+        birdy = accessor.getInstance(Person.class, 1L);
         Assert.assertThat(birdy.getName(), CoreMatchers.equalTo("Birdy"));
 
         int size = 10;
         Item item = new Item(size, size);
         for (long index = 0; index < size; index++) {
             Pack pack = new Pack(index, size, birdy.getId());
-            accessor.create(Pack.class, pack);
-            Pack newPack = accessor.get(Pack.class, index);
-            Pack oldPack = accessor.get(Pack.class, index);
+            accessor.createInstance(Pack.class, pack);
+            Pack newPack = accessor.getInstance(Pack.class, index);
+            Pack oldPack = accessor.getInstance(Pack.class, index);
             // 检查版本
             Assert.assertThat(newPack.getVersion(), CoreMatchers.equalTo(0));
             newPack.push(item);
-            accessor.update(Pack.class, newPack);
+            accessor.updateInstance(Pack.class, newPack);
             Assert.assertThat(newPack.getVersion(), CoreMatchers.equalTo(1));
 
             oldPack.push(item);
             try {
                 // 版本冲突
-                accessor.update(Pack.class, oldPack);
+                accessor.updateInstance(Pack.class, oldPack);
                 Assert.fail();
             } catch (BerkeleyVersionException exception) {
             }
@@ -75,47 +72,47 @@ public class BerkeleyAccessorTestCase {
         Collection<Pack> packs = accessor.queryInstances(Pack.class, StorageCondition.Equal, "personId", birdy.getId());
         Assert.assertThat(packs.size(), CoreMatchers.equalTo(size));
 
-        accessor.delete(Person.class, 1L);
+        accessor.deleteInstance(Person.class, 1L);
 
         // 由于级联操作,所有Pack的personId会被重置为null
         packs = accessor.queryInstances(Pack.class, StorageCondition.Equal, "personId", birdy.getId());
         Assert.assertTrue(packs.isEmpty());
 
-        Assert.assertTrue(accessor.count(Pack.class) == size);
+        Assert.assertTrue(accessor.countInstances(Pack.class) == size);
         for (long index = 0; index < size; index++) {
-            accessor.delete(Pack.class, index);
+            accessor.deleteInstance(Pack.class, index);
         }
 
-        Assert.assertFalse(accessor.delete(Person.class, 1L));
+        Assert.assertFalse(accessor.deleteInstance(Person.class, 1L));
     }
 
     private void testAbortTransactor(Pack pack, BerkeleyIsolation isolation) {
         accessor.openTransactor(isolation);
         Assert.assertNotNull(accessor.getTransactor());
-        accessor.create(Pack.class, pack);
-        pack = accessor.get(Pack.class, 1L);
+        accessor.createInstance(Pack.class, pack);
+        pack = accessor.getInstance(Pack.class, 1L);
         Assert.assertThat(pack.getSize(), CoreMatchers.equalTo(10));
 
         accessor.closeTransactor(true);
         Assert.assertNull(accessor.getTransactor());
 
-        pack = accessor.get(Pack.class, 1L);
+        pack = accessor.getInstance(Pack.class, 1L);
         Assert.assertNull(pack);
     }
 
     private void testCommitTransactor(Pack pack, BerkeleyIsolation isolation) {
         accessor.openTransactor(isolation);
         Assert.assertNotNull(accessor.getTransactor());
-        accessor.create(Pack.class, pack);
-        pack = accessor.get(Pack.class, 1L);
+        accessor.createInstance(Pack.class, pack);
+        pack = accessor.getInstance(Pack.class, 1L);
         Assert.assertThat(pack.getSize(), CoreMatchers.equalTo(10));
 
         accessor.closeTransactor(false);
         Assert.assertNull(accessor.getTransactor());
 
-        pack = accessor.get(Pack.class, 1L);
+        pack = accessor.getInstance(Pack.class, 1L);
         Assert.assertNotNull(pack);
-        accessor.delete(Pack.class, 1L);
+        accessor.deleteInstance(Pack.class, 1L);
     }
 
     /**
