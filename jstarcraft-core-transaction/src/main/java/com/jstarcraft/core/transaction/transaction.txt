@@ -1,0 +1,2 @@
+如何选择分布式事务形态:
+https://blog.csdn.net/skyesx/article/details/82834439
