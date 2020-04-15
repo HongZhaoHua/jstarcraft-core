@@ -1,0 +1,19 @@
+Spring WebClient vs. RestTemplate:
+https://www.cnblogs.com/liululee/p/11275427.html
+
+Spring 中 UriComponentsBuilder 类示例:
+https://blog.csdn.net/neweastsun/article/details/80821524
+
+spring 5 webclient使用指南:
+https://juejin.im/post/5a62f17cf265da3e51333205
+
+Spring WebClient与RestTemplate性能对比——响应式Spring的道法术器:
+https://blog.csdn.net/get_set/article/details/79506373
+
+https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#spring-web
+
+Spring 5 WebClient和WebTestClient使用教程
+http://www.leftso.com/blog/404.html
+
+一些Spring MVC的使用技巧
+https://www.scienjus.com/spring-mvc-use-skill/

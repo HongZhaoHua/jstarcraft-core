@@ -1,0 +1,10 @@
+一种用于 API 的查询语言:
+https://graphql.cn
+
+RPC vs REST vs GraphQL:
+https://segmentfault.com/a/1190000013961872
+30分钟理解GraphQL核心概念:
+https://segmentfault.com/a/1190000014131950
+
+5个用/不用GraphQL的理由:
+https://www.jianshu.com/p/12dff5905cf6

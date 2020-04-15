@@ -1,0 +1,5 @@
+享学Feign:
+https://blog.csdn.net/f641385712/category_9708549.html
+
+Feign makes writing java http clients easier:
+https://github.com/OpenFeign/feign
