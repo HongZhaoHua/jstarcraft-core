@@ -1,6 +1,7 @@
 package com.jstarcraft.core.script;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -43,7 +44,7 @@ public class ScriptScope {
      * @param attributes
      * @return
      */
-    public ScriptScope createAttributes(HashMap<String, Object> attributes) {
+    public ScriptScope createAttributes(Map<String, Object> attributes) {
         for (Entry<String, Object> keyValue : attributes.entrySet()) {
             createAttribute(keyValue.getKey(), keyValue.getValue());
         }
@@ -76,7 +77,7 @@ public class ScriptScope {
      * 
      * @return
      */
-    HashMap<String, Object> getAttributes() {
+    Map<String, Object> getAttributes() {
         return scopeAttributes;
     }
 
