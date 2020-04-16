@@ -40,5 +40,10 @@ https://www.oschina.net/question/12_4825
 Ruby 教程:
 https://www.runoob.com/ruby/ruby-tutorial.html
 
+Ruby 101:
+https://www.cnblogs.com/allenlooplee/category/211768.html
+
 Ruby 包管理分析:
 https://ruby-china.org/topics/29475
+
+ruby别名与方法取消(undef,remove_method):
