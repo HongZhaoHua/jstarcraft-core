@@ -40,6 +40,9 @@ https://www.oschina.net/question/12_4825
 JRuby——Java和Ruby的强强联合:
 https://www.cnblogs.com/skyme/archive/2012/08/18/2637417.html
 
+Calling Java from JRuby:
+https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
+
 Ruby 教程:
 https://www.runoob.com/ruby/ruby-tutorial.html
 
