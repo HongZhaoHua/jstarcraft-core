@@ -36,3 +36,9 @@ https://bbs.csdn.net/topics/391865152
 
 可爱的 Jython:
 https://www.oschina.net/question/12_4825
+
+Ruby 教程:
+https://www.runoob.com/ruby/ruby-tutorial.html
+
+Ruby 包管理分析:
+https://ruby-china.org/topics/29475
