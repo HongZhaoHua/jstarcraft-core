@@ -574,7 +574,31 @@ public class LunarDate implements CalendarDate {
     }
 
     /**
-     * 获取指定月份的天数
+     * 获取某年第几个月的天数
+     * 
+     * @param year
+     * @param index
+     * @return
+     */
+    public static int getDaySize(int year, int index) {
+        // 检查是否存在指定的天数
+        int[] values = lunar2Solar[year - MINIMUM_YEAR];
+        int fromValue = values[index];
+        LocalDate from = new SolarDate(year, fromValue / 100, fromValue % 100).getDate();
+        if (index >= values.length - 1) {
+            year = year + 1;
+            index = 1;
+            values = lunar2Solar[year - MINIMUM_YEAR];
+        } else {
+            index++;
+        }
+        int toValue = values[index];
+        LocalDate to = new SolarDate(year, toValue / 100, toValue % 100).getDate();
+        return (int) ChronoUnit.DAYS.between(from, to);
+    }
+
+    /**
+     * 获取某年指定月份的天数
      * 
      * @param year
      * @param leap
@@ -590,18 +614,7 @@ public class LunarDate implements CalendarDate {
             }
         }
         int index = leap || (values[0] != 0 && month > values[0]) ? month + 1 : month;
-        int fromValue = values[index];
-        LocalDate from = new SolarDate(year, fromValue / 100, fromValue % 100).getDate();
-        if (index >= values.length - 1) {
-            year = year + 1;
-            index = 1;
-            values = lunar2Solar[year - MINIMUM_YEAR];
-        } else {
-            index++;
-        }
-        int toValue = values[index];
-        LocalDate to = new SolarDate(year, toValue / 100, toValue % 100).getDate();
-        return (int) ChronoUnit.DAYS.between(from, to);
+        return getDaySize(year, index);
     }
 
 }
