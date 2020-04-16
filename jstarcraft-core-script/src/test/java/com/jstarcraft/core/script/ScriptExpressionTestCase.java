@@ -2,6 +2,7 @@ package com.jstarcraft.core.script;
 
 import java.lang.reflect.Modifier;
 import java.time.Instant;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -91,7 +92,8 @@ public abstract class ScriptExpressionTestCase {
 
     @Test
     public void testParallel() throws Exception {
-        int size = 50;
+        int size = 10;
+        CountDownLatch latch = new CountDownLatch(size);
         ScriptContext context = new ScriptContext();
         ScriptExpression expression = getFibonacciExpression(context, scope);
         for (int index = 0; index < size; index++) {
@@ -102,8 +104,10 @@ public abstract class ScriptExpressionTestCase {
                 Number fibonacci = expression.doWith(Number.class);
                 Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
                 scope.deleteAttributes();
+                latch.countDown();
             });
         }
+        latch.await();
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
     }

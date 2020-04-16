@@ -2,6 +2,7 @@ package com.jstarcraft.core.script;
 
 import java.lang.reflect.Modifier;
 import java.time.Instant;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -82,6 +83,7 @@ public abstract class ScriptFunctionTestCase {
     @Test
     public void testParallel() throws Exception {
         int size = 50;
+        CountDownLatch latch = new CountDownLatch(size);
         ScriptContext context = new ScriptContext();
         ScriptFunction function = getFibonacciFunction(context);
         for (int index = 0; index < size; index++) {
@@ -89,8 +91,10 @@ public abstract class ScriptFunctionTestCase {
             executor.execute(() -> {
                 Number fibonacci = function.doWith(Number.class, number);
                 Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
+                latch.countDown();
             });
         }
+        latch.await();
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
     }
