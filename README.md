@@ -40,11 +40,12 @@ JStarCraft Core框架各个模块之间的关系:
 * 3.通用(common)
     * 编译(compilation)
     * 转换(conversion)
-    * 识别(identification)
+    * 标识(identification)
     * 日期与时间(instant)
         * 间隔
         * 阳历
         * 阴历
+        * 伊斯兰历
         * 节气
     * 锁(lockable)
         * 链锁
