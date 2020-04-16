@@ -13,10 +13,22 @@ public class SolarDate implements CalendarDate {
 
     private LocalDate date;
 
+    /**
+     * 通过标准日期获取阳历日期
+     * 
+     * @param date
+     */
     public SolarDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * 通过年,月,日获取阳历日期
+     * 
+     * @param year
+     * @param month
+     * @param day
+     */
     public SolarDate(int year, int month, int day) {
         // 防止由于月份超过12导致的异常
         if (month > 12) {

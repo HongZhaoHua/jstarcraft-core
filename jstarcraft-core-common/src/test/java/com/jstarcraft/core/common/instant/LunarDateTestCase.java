@@ -37,6 +37,11 @@ public class LunarDateTestCase {
 
         Assert.assertEquals(LocalDate.of(2010, 2, 14), new LunarDate(2010, false, 1, 1).getDate());
         Assert.assertEquals(LocalDate.of(2011, 1, 4), new LunarDate(2010, false, 12, 1).getDate());
+
+        // 测试阴历索引的情况
+        Assert.assertEquals(LocalDate.of(2020, 4, 23), new LunarDate(2020, 4, 1).getDate());
+        Assert.assertEquals(LocalDate.of(2020, 5, 23), new LunarDate(2020, 5, 1).getDate());
+        Assert.assertEquals(LocalDate.of(2020, 6, 21), new LunarDate(2020, 6, 1).getDate());
     }
 
 }

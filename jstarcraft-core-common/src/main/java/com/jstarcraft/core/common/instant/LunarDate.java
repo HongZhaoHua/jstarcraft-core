@@ -384,6 +384,11 @@ public class LunarDate implements CalendarDate {
         return -1;
     }
 
+    /**
+     * 通过标准日期获取阴历日期
+     * 
+     * @param date
+     */
     public LunarDate(LocalDate date) {
         int year = date.getYear();
         int month = date.getMonthValue();
@@ -416,6 +421,34 @@ public class LunarDate implements CalendarDate {
         this.day = (int) ChronoUnit.DAYS.between(from, to) + 1;
     }
 
+    /**
+     * 通过年,索引,日获取阴历日期
+     * 
+     * @param year
+     * @param leap
+     * @param month
+     * @param day
+     */
+    public LunarDate(int year, int index, int day) {
+        this.year = year;
+        int leap = getLeapMonth(year);
+        // 索引转月
+        int month = leap > 0 && index > leap ? index - 1 : index;
+        this.leap = leap > 0 && leap == index - 1;
+        this.month = month;
+        // 检查是否存在指定的天数
+        assert day <= getDaySize(year, this.leap, month);
+        this.day = day;
+    }
+
+    /**
+     * 通过年,闰,月,日获取阴历日期
+     * 
+     * @param year
+     * @param leap
+     * @param month
+     * @param day
+     */
     public LunarDate(int year, boolean leap, int month, int day) {
         this.year = year;
         this.leap = leap;

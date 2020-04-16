@@ -25,10 +25,20 @@ public class IslamicDate implements CalendarDate {
 
     private HijrahDate date;
 
+    /**
+     * 通过标准日期获取伊斯兰历日期
+     * 
+     * @param date
+     */
     public IslamicDate(LocalDate date) {
         this.date = HijrahDate.from(date);
     }
 
+    /**
+     * 通过年,月,日获取伊斯兰历日期
+     * 
+     * @param date
+     */
     public IslamicDate(int year, int month, int day) {
         this.date = HijrahDate.of(year, month, day);
     }
