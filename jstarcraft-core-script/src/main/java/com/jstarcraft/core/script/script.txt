@@ -37,6 +37,9 @@ https://bbs.csdn.net/topics/391865152
 可爱的 Jython:
 https://www.oschina.net/question/12_4825
 
+JRuby——Java和Ruby的强强联合:
+https://www.cnblogs.com/skyme/archive/2012/08/18/2637417.html
+
 Ruby 教程:
 https://www.runoob.com/ruby/ruby-tutorial.html
 
