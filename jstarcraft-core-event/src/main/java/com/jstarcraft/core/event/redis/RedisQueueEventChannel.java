@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
-import org.redisson.api.RQueue;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.EventManager;
@@ -15,6 +14,12 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * Redis队列事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class RedisQueueEventChannel extends RedisEventChannel {
 
     private ConcurrentMap<Class, EventThread> type2Threads;

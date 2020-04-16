@@ -9,6 +9,12 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventMode;
 
+/**
+ * Redis事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public abstract class RedisEventChannel extends AbstractEventChannel {
 
     protected static final Logger logger = LoggerFactory.getLogger(RedisEventChannel.class);

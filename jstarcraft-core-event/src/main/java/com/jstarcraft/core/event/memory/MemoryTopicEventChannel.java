@@ -8,6 +8,12 @@ import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * 内存主题事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class MemoryTopicEventChannel extends AbstractEventChannel {
 
     private ExecutorService pool;

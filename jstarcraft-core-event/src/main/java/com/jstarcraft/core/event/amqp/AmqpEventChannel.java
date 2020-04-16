@@ -21,6 +21,12 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * AMQP事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class AmqpEventChannel extends AbstractEventChannel {
 
     private Session session;

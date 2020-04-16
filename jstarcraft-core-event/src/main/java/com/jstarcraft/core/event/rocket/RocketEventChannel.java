@@ -25,6 +25,12 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * RocketMQ事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class RocketEventChannel extends AbstractEventChannel {
 
     private String addresses;

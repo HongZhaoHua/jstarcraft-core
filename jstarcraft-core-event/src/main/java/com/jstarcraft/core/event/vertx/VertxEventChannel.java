@@ -18,6 +18,12 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 
+/**
+ * Vert.x事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class VertxEventChannel extends AbstractEventChannel {
 
     private EventBus bus;

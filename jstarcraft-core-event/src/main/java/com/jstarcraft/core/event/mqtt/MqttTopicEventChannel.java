@@ -18,10 +18,16 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.mqtt.messages.MqttPublishMessage;
 
+/**
+ * MQTT主题事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class MqttTopicEventChannel extends AbstractEventChannel {
 
     private Map<String, Class> address2Classes = new HashMap<>();
-    
+
     private MqttClient session;
 
     private ContentCodec codec;

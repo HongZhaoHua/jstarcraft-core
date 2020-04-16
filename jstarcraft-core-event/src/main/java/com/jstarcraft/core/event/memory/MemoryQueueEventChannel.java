@@ -16,6 +16,12 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * 内存队列事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class MemoryQueueEventChannel extends AbstractEventChannel {
 
     private static final Logger logger = LoggerFactory.getLogger(MemoryQueueEventChannel.class);

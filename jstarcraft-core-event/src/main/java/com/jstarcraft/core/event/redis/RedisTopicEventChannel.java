@@ -14,6 +14,12 @@ import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * Redis主题事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class RedisTopicEventChannel extends RedisEventChannel {
 
     private ConcurrentMap<Class, EventHandler> type2Handlers;

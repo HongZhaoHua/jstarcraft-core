@@ -20,6 +20,12 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * JMS事件管道
+ * 
+ * @author Birdy
+ *
+ */
 public class JmsEventChannel extends AbstractEventChannel {
 
     private ConnectionFactory factory;
