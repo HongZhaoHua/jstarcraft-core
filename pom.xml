@@ -374,6 +374,12 @@
                 <version>2.7.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.jruby</groupId>
+                <artifactId>jruby-complete</artifactId>
+                <version>9.2.11.1</version>
+            </dependency>
+
             <!-- 事务框架依赖 -->
             <dependency>
                 <groupId>com.hazelcast</groupId>
