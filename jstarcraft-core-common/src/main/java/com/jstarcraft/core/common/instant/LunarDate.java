@@ -515,6 +515,23 @@ public class LunarDate implements CalendarDate {
         return date.getDate();
     }
 
+    /**
+     * 获取索引
+     * 
+     * @return
+     */
+    public int getIndex() {
+        // 月转索引
+        int index;
+        if (leap) {
+            index = month + 1;
+        } else {
+            int leap = getLeapMonth(year);
+            index = (leap > 0 && month > leap) ? month + 1 : month;
+        }
+        return index;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object)

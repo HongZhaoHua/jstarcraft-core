@@ -42,6 +42,9 @@ public class LunarDateTestCase {
         Assert.assertEquals(LocalDate.of(2020, 4, 23), new LunarDate(2020, 4, 1).getDate());
         Assert.assertEquals(LocalDate.of(2020, 5, 23), new LunarDate(2020, 5, 1).getDate());
         Assert.assertEquals(LocalDate.of(2020, 6, 21), new LunarDate(2020, 6, 1).getDate());
+        Assert.assertEquals(4, new LunarDate(2020, 4, 1).getIndex());
+        Assert.assertEquals(5, new LunarDate(2020, 5, 1).getIndex());
+        Assert.assertEquals(6, new LunarDate(2020, 6, 1).getIndex());
     }
 
 }
