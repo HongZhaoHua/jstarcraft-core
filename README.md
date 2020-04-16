@@ -105,6 +105,7 @@ JStarCraft Core框架各个模块之间的关系:
     * Lua
     * MVEL
     * Python
+    * Ruby
 * [9.存储(storage)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
     * 标识管理
     * 键值数据库(Berkeley DB)
