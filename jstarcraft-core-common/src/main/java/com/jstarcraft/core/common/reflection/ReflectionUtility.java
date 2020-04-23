@@ -108,11 +108,11 @@ public abstract class ReflectionUtility extends ReflectionUtils {
         return fields;
     }
 
-    public static Method getMethod(Class<?> clazz, String name) {
+    public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
         Method method = null;
         while (method == null && clazz != null) {
             try {
-                method = clazz.getDeclaredMethod(name);
+                method = clazz.getDeclaredMethod(name, parameterTypes);
             } catch (Exception exception) {
             }
             clazz = clazz.getSuperclass();
