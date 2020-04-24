@@ -88,13 +88,13 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         return secondaryIndexes.get(name);
     }
 
-    public boolean has(BerkeleyTransactor transactor, K id) {
+    public boolean hasInstance(BerkeleyTransactor transactor, K id) {
         LockMode lockMode = transactor == null ? null : transactor.getIsolation().getLockMode();
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         return primaryIndex.contains(transaction, id, lockMode);
     }
 
-    public boolean create(BerkeleyTransactor transactor, T instance) {
+    public boolean createInstance(BerkeleyTransactor transactor, T instance) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         if (primaryIndex.putNoOverwrite(transaction, instance)) {
             return true;
@@ -107,7 +107,7 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         }
     }
 
-    public boolean delete(BerkeleyTransactor transactor, K id) {
+    public boolean deleteInstance(BerkeleyTransactor transactor, K id) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         if (primaryIndex.delete(transaction, id)) {
             return true;
@@ -120,13 +120,13 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         }
     }
 
-    public boolean update(BerkeleyTransactor transactor, T instance) {
+    public boolean updateInstance(BerkeleyTransactor transactor, T instance) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         if (primaryIndex.put(transaction, instance) != null) {
             return true;
         } else {
             // TODO 删除保存的实例
-            delete(transactor, instance.getId());
+            deleteInstance(transactor, instance.getId());
             String message = StringUtility.format("修改的实例[{}:{}]不存在", metadata.getOrmName(), instance.getId());
             if (logger.isDebugEnabled()) {
                 logger.debug(message);
@@ -135,7 +135,7 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         }
     }
 
-    public T get(BerkeleyTransactor transactor, K id) {
+    public T getInstance(BerkeleyTransactor transactor, K id) {
         LockMode lockMode = transactor == null ? null : transactor.getIsolation().getLockMode();
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         return (T) primaryIndex.get(transaction, id, lockMode);
@@ -321,7 +321,7 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         return count;
     }
 
-    public List<T> query(BerkeleyTransactor transactor, StoragePagination pagination) {
+    public List<T> queryInstances(BerkeleyTransactor transactor, StoragePagination pagination) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         ArrayList<T> instances = new ArrayList<>();
         long ignore = pagination.getFirst();
@@ -378,7 +378,7 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         return instances;
     }
 
-    public long count(BerkeleyTransactor transactor) {
+    public long countInstances(BerkeleyTransactor transactor) {
         return primaryIndex.count();
     }
 
@@ -407,7 +407,7 @@ public class BerkeleyManager<K extends Comparable, T extends IdentityObject<K>> 
         return count;
     }
 
-    public void iterate(StorageIterator<T> iterator, BerkeleyTransactor transactor, StoragePagination pagination) {
+    public void iterateInstances(StorageIterator<T> iterator, BerkeleyTransactor transactor, StoragePagination pagination) {
         Transaction transaction = transactor == null ? null : transactor.getTransaction();
         long first = pagination.getFirst();
         long last = pagination.getLast();
