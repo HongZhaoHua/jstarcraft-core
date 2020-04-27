@@ -106,7 +106,6 @@ public class SolarExpressionTestCase {
                 Assert.assertEquals(LocalDateTime.of(2020, 12 - index, 1, 12, 0, 0).with(TemporalAdjusters.dayOfWeekInMonth(-1, DayOfWeek.SUNDAY)), dateTime);
             }
         }
-
         {
             SolarExpression expression = new SolarExpression("0 0 12 ? * SUNL 2020");
             LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
@@ -115,7 +114,6 @@ public class SolarExpressionTestCase {
                 Assert.assertEquals(LocalDateTime.of(2020, 1 + index, 1, 12, 0, 0).with(TemporalAdjusters.dayOfWeekInMonth(-1, DayOfWeek.SUNDAY)), dateTime);
             }
         }
-
         {
             // TODO 此处cron-utils存在Bug,导致测试无法通过,等待修复.
 //            SolarExpression expression = new SolarExpression("0 0 12 ? * SUN#4 2020");
@@ -125,7 +123,6 @@ public class SolarExpressionTestCase {
 //                Assert.assertEquals(LocalDateTime.of(2020, 12 - index, 1, 12, 0, 0).with(TemporalAdjusters.dayOfWeekInMonth(4, DayOfWeek.SUNDAY)), dateTime);
 //            }
         }
-
         {
             SolarExpression expression = new SolarExpression("0 0 12 ? * SUN#4 2020");
             LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
