@@ -4,6 +4,15 @@ http://jinnianshilongnian.iteye.com/blog/1902886
 Junit5 入门系列:
 https://blog.csdn.net/ryo1060732496/category_9276134.html
 
+JUnit 5 简介 Jupiter API:
+https://winrains.cn/archives/164
+
+JUnit 5 系列 环境搭建:
+https://www.cnblogs.com/natasha-yarovenko/archive/2016/09/17/5879628.html
+
+Embracing JUnit 5 with Eclipse:
+https://www.eclipse.org/community/eclipse_newsletter/2017/october/article5.php
+
 JUnit5用户手册:
 https://www.cnblogs.com/followerofjests/p/10466070.html
 
