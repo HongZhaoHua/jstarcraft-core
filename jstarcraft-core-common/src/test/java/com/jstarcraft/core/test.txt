@@ -4,6 +4,12 @@ http://jinnianshilongnian.iteye.com/blog/1902886
 Junit5 入门系列:
 https://blog.csdn.net/ryo1060732496/category_9276134.html
 
+JUnit5用户手册:
+https://www.cnblogs.com/followerofjests/p/10466070.html
+
+JUnit 5基础指南:
+https://blog.csdn.net/qq_31884013/article/details/105504043
+
 用JUnit4进行单元测试:
 http://tonl.iteye.com/blog/1948869
 
