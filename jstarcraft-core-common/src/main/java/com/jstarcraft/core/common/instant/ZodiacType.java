@@ -26,7 +26,7 @@ public enum ZodiacType {
     Taurus(2, MonthDay.of(4, 20), MonthDay.of(5, 20)),
 
     /** 双子座 */
-    Genimi(3, MonthDay.of(5, 21), MonthDay.of(6, 21)),
+    Gemini(3, MonthDay.of(5, 21), MonthDay.of(6, 21)),
 
     /** 巨蟹座 */
     Cancer(4, MonthDay.of(6, 22), MonthDay.of(7, 22)),
