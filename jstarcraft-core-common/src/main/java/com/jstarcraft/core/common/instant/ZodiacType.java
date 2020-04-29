@@ -14,7 +14,7 @@ public enum ZodiacType {
     Capricornus(10, MonthDay.of(12, 22), MonthDay.of(1, 19)),
 
     /** 水瓶座 */
-    Aguarius(11, MonthDay.of(1, 20), MonthDay.of(2, 18)),
+    Aquarius(11, MonthDay.of(1, 20), MonthDay.of(2, 18)),
 
     /** 双鱼座 */
     Pisces(12, MonthDay.of(2, 19), MonthDay.of(3, 20)),
