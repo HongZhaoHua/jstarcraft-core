@@ -52,6 +52,17 @@ JStarCraft Core框架各个模块之间的关系:
         * 哈希锁
     * 反射(reflection)
     * 安全(security)
+    * 选择(selection)
+        * CSS
+            HTML
+        * JSONPath
+            JSON
+        * Regular
+            Text
+        * XPath
+            HTML
+            Swing
+            XML
 * 4.通讯(communication)
     * TCP
     * UDP
