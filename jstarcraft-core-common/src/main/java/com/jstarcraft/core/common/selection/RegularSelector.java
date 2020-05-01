@@ -17,17 +17,17 @@ public class RegularSelector extends AbstractSelector<String> {
 
     private int group;
 
-    public RegularSelector(String select) {
-        this(select, 0);
+    public RegularSelector(String query) {
+        this(query, 0);
     }
 
-    public RegularSelector(String select, int flag) {
-        this(select, 0, 0);
+    public RegularSelector(String query, int flag) {
+        this(query, 0, 0);
     }
 
-    public RegularSelector(String select, int flag, int group) {
-        super(select);
-        this.pattern = Pattern.compile(select, flag);
+    public RegularSelector(String query, int flag, int group) {
+        super(query);
+        this.pattern = Pattern.compile(query, flag);
         this.group = group;
     }
 

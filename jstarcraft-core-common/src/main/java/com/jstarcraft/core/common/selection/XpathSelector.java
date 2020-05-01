@@ -10,8 +10,8 @@ public abstract class XpathSelector<T> extends AbstractSelector<T> {
 
     protected SwingXPath xpath;
 
-    public XpathSelector(String select) {
-        super(select);
+    public XpathSelector(String query) {
+        super(query);
     }
 
     @Override
