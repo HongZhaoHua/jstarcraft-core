@@ -1,7 +1,8 @@
-package com.jstarcraft.core.common.selection.xpath.swing;
+package com.jstarcraft.core.common.selection.xpath.jsoup;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.jaxen.DefaultNavigator;
 import org.jaxen.JaxenConstants;
@@ -9,16 +10,19 @@ import org.jaxen.JaxenException;
 import org.jaxen.NamedAccessNavigator;
 import org.jaxen.Navigator;
 import org.jaxen.XPath;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
- * Swing浏览器
+ * HTML浏览器
  * 
  * @author Birdy
  *
  */
-public class SwingNavigator extends DefaultNavigator implements NamedAccessNavigator {
+public class HtmlNavigator extends DefaultNavigator implements NamedAccessNavigator {
 
-    private static final SwingNavigator instance = new SwingNavigator();
+    private static final HtmlNavigator instance = new HtmlNavigator();
 
     public static Navigator getInstance() {
         return instance;
@@ -32,12 +36,12 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public String getElementName(Object object) {
-        return ((SwingNode) object).getName();
+        return ((Element) object).tagName();
     }
 
     @Override
     public String getElementQName(Object object) {
-        return ((SwingNode) object).getName();
+        return ((Element) object).tagName();
     }
 
     @Override
@@ -48,19 +52,18 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public String getAttributeName(Object object) {
-        return ((SwingNode) object).getName();
+        return ((Attribute) object).getKey();
     }
 
     @Override
     public String getAttributeQName(Object object) {
-        return ((SwingNode) object).getName();
+        return ((Attribute) object).getKey();
     }
 
     @Override
     public boolean isDocument(Object object) {
-        if (object instanceof SwingComponentNode) {
-            SwingComponentNode node = (SwingComponentNode) object;
-            return node.getParent() == null;
+        if (object instanceof Document) {
+            return true;
         } else {
             return false;
         }
@@ -68,9 +71,8 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public boolean isElement(Object object) {
-        if (object instanceof SwingComponentNode) {
-            SwingComponentNode node = (SwingComponentNode) object;
-            return node.getParent() != null;
+        if (object instanceof Element) {
+            return !isDocument(object);
         } else {
             return false;
         }
@@ -78,7 +80,7 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public boolean isAttribute(Object object) {
-        if (object instanceof SwingAttributeNode) {
+        if (object instanceof Attribute) {
             return true;
         } else {
             return false;
@@ -121,7 +123,7 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public String getAttributeStringValue(Object object) {
-        Object value = ((SwingAttributeNode) object).getProperty();
+        Object value = ((Attribute) object).getValue();
         return value == null ? "" : value.toString();
     }
 
@@ -142,56 +144,63 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public XPath parseXPath(String xpath) throws JaxenException {
-        return new SwingXPath(xpath);
+        return new HtmlXPath(xpath);
     }
 
     @Override
-    public Iterator<SwingNode> getParentAxisIterator(Object contextNode) {
-        SwingNode node = ((SwingNode) contextNode);
-        if (node.getParent() != null) {
-            return Arrays.asList(node.getParent()).iterator();
+    public Iterator<Element> getParentAxisIterator(Object contextNode) {
+        Element node = ((Element) contextNode);
+        if (node.parent() != null) {
+            return Arrays.asList(node.parent()).iterator();
         } else {
             return JaxenConstants.EMPTY_ITERATOR;
         }
     }
 
     @Override
-    public Iterator<SwingComponentNode> getChildAxisIterator(Object contextNode) {
-        SwingNode node = ((SwingNode) contextNode);
-        return SwingComponentNode.getInstances(node).iterator();
+    public Iterator<Element> getChildAxisIterator(Object contextNode) {
+        Element node = ((Element) contextNode);
+        return node.children().iterator();
     }
 
     @Override
-    public Iterator<SwingComponentNode> getChildAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
-        SwingNode node = ((SwingNode) contextNode);
-        return SwingComponentNode.getInstances(node, localName).iterator();
-    }
-
-    @Override
-    public Iterator<SwingAttributeNode> getAttributeAxisIterator(Object contextNode) {
-        SwingNode node = ((SwingNode) contextNode);
-        return SwingAttributeNode.getInstances(node).iterator();
-    }
-
-    @Override
-    public Iterator<SwingAttributeNode> getAttributeAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
-        SwingNode node = ((SwingNode) contextNode);
-        return Arrays.asList(SwingAttributeNode.getInstance(node, localName)).iterator();
-    }
-
-    @Override
-    public SwingNode getDocumentNode(Object contextNode) {
-        SwingNode node = getParentNode(contextNode);
-        while (node != null) {
-            contextNode = node;
-            node = getParentNode(contextNode);
+    public Iterator<Element> getChildAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
+        Element node = ((Element) contextNode);
+        LinkedList<Element> children = new LinkedList<>();
+        for (Element child : node.children()) {
+            if (localName.equals(child.tagName())) {
+                children.add(child);
+            }
         }
-        return (SwingComponentNode) contextNode;
+        return children.iterator();
     }
 
     @Override
-    public SwingNode getParentNode(Object contextNode) {
-        return ((SwingNode) contextNode).getParent();
+    public Iterator<Attribute> getAttributeAxisIterator(Object contextNode) {
+        Element node = ((Element) contextNode);
+        return node.attributes().iterator();
+    }
+
+    @Override
+    public Iterator<Attribute> getAttributeAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
+        Element node = ((Element) contextNode);
+        LinkedList<Attribute> attributes = new LinkedList<>();
+        for (Attribute attribute : node.attributes()) {
+            if (localName.equals(attribute.getKey())) {
+                attributes.add(attribute);
+            }
+        }
+        return attributes.iterator();
+    }
+
+    @Override
+    public Element getDocumentNode(Object contextNode) {
+        return ((Element) contextNode).root();
+    }
+
+    @Override
+    public Element getParentNode(Object contextNode) {
+        return ((Element) contextNode).parent();
     }
 
 }

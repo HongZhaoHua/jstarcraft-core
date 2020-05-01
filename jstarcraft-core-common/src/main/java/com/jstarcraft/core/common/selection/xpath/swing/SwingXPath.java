@@ -5,7 +5,7 @@ import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
 
 /**
- * SwingXPath
+ * Swing-XPath
  * 
  * @author Birdy
  *
