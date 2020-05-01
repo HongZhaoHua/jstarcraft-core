@@ -462,6 +462,13 @@
                 <version>9.0.2</version>
             </dependency>
 
+            <!-- XPath -->
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>1.2.0</version>
+            </dependency>
+
             <!-- 测试框架依赖 -->
             <dependency>
                 <groupId>junit</groupId>

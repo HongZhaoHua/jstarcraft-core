@@ -110,6 +110,12 @@
             <artifactId>cron-utils</artifactId>
         </dependency>
 
+        <!-- XPath -->
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
