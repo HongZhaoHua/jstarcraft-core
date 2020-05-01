@@ -6,3 +6,6 @@ https://www.cnblogs.com/aoyihuashao/p/8665873.html
 
 Java JsonPath implementation:
 https://github.com/json-path/JsonPath
+
+JsonPath with Jackson or Gson:
+http://www.hackerav.com/?post=35451
