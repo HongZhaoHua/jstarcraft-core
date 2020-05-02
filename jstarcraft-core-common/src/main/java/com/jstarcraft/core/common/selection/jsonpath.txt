@@ -9,3 +9,15 @@ https://github.com/json-path/JsonPath
 
 JsonPath with Jackson or Gson:
 http://www.hackerav.com/?post=35451
+
+使用 JSONPath 解析 JSON 完整内容详解:
+https://www.cnblogs.com/wynjauu/articles/9556396.html
+
+noear::一个微型JSON框架:
+https://github.com/noear/snack3
+
+Java 中 Snack3的使用:
+https://www.jianshu.com/p/23ff40ef63fa
+
+更强的 JsonPath 兼容性及性能测试:
+https://blog.csdn.net/cwzb/article/details/103273757
