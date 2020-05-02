@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.selection;
 
 /**
- * JSON选择器
+ * JSONPath选择器
  * 
  * @author Birdy
  *

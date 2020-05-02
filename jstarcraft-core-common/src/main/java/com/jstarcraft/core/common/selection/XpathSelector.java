@@ -5,6 +5,14 @@ import java.util.Collection;
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
 
+/**
+ * XPath选择器
+ * 
+ * @author Birdy
+ *
+ * @param <T>
+ */
+//TODO 目前仍存在问题,如何兼容节点与属性
 public abstract class XpathSelector<T> extends AbstractSelector<T> {
 
     protected BaseXPath xpath;

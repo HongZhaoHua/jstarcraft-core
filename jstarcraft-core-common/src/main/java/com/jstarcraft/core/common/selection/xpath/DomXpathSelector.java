@@ -6,6 +6,12 @@ import org.w3c.dom.Node;
 
 import com.jstarcraft.core.common.selection.XpathSelector;
 
+/**
+ * DOM-XPath选择器
+ * 
+ * @author Birdy
+ *
+ */
 public class DomXpathSelector extends XpathSelector<Node> {
 
     public DomXpathSelector(String query) {

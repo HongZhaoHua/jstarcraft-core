@@ -6,6 +6,12 @@ import org.jdom2.Parent;
 
 import com.jstarcraft.core.common.selection.XpathSelector;
 
+/**
+ * JDOM-XPath选择器
+ * 
+ * @author Birdy
+ *
+ */
 public class JdomXpathSelector extends XpathSelector<Parent> {
 
     public JdomXpathSelector(String query) {

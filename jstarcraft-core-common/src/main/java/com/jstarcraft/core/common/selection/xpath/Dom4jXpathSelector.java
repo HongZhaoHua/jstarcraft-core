@@ -6,6 +6,12 @@ import org.jaxen.dom4j.Dom4jXPath;
 
 import com.jstarcraft.core.common.selection.XpathSelector;
 
+/**
+ * dom4j-XPath选择器
+ * 
+ * @author Birdy
+ *
+ */
 public class Dom4jXpathSelector extends XpathSelector<Node> {
 
     public Dom4jXpathSelector(String query) {

@@ -7,6 +7,12 @@ import com.jstarcraft.core.common.selection.XpathSelector;
 
 import nu.xom.Node;
 
+/**
+ * XOM-XPath选择器
+ * 
+ * @author Birdy
+ *
+ */
 public class XomXpathSelector extends XpathSelector<Node> {
 
     public XomXpathSelector(String query) {
