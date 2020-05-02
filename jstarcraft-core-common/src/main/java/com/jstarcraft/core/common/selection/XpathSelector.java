@@ -2,13 +2,12 @@ package com.jstarcraft.core.common.selection;
 
 import java.util.Collection;
 
+import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
-
-import com.jstarcraft.core.common.selection.xpath.swing.SwingXPath;
 
 public abstract class XpathSelector<T> extends AbstractSelector<T> {
 
-    protected SwingXPath xpath;
+    protected BaseXPath xpath;
 
     public XpathSelector(String query) {
         super(query);

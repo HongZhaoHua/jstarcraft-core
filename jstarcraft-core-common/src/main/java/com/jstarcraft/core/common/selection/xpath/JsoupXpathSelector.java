@@ -1,17 +1,17 @@
 package com.jstarcraft.core.common.selection.xpath;
 
-import org.dom4j.Node;
 import org.jaxen.JaxenException;
-import org.jaxen.dom4j.Dom4jXPath;
 
 import com.jstarcraft.core.common.selection.XpathSelector;
+import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlXPath;
+import com.jstarcraft.core.common.selection.xpath.swing.SwingNode;
 
-public class Dom4jXpathSelector extends XpathSelector<Node> {
+public class JsoupXpathSelector extends XpathSelector<SwingNode> {
 
-    public Dom4jXpathSelector(String query) {
+    public JsoupXpathSelector(String query) {
         super(query);
         try {
-            this.xpath = new Dom4jXPath(query);
+            this.xpath = new HtmlXPath(query);
         } catch (JaxenException exception) {
             throw new RuntimeException(exception);
         }

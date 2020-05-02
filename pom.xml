@@ -462,6 +462,32 @@
                 <version>9.0.2</version>
             </dependency>
 
+            <!-- CSS -->
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>1.13.1</version>
+            </dependency>
+
+            <!-- JSONPath -->
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.gatling</groupId>
+                <artifactId>jsonpath_2.12</artifactId>
+                <version>0.7.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack3</artifactId>
+                <version>3.1.6.3</version>
+            </dependency>
+
             <!-- XPath -->
             <dependency>
                 <groupId>jaxen</groupId>
