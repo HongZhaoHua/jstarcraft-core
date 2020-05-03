@@ -4,6 +4,9 @@ https://howtodoinjava.com
 Modern Java: From Java 8 to Java 13. 现代Java案例大全:
 https://github.com/waylau/modern-java-demos
 
+Java 9 揭秘:
+https://www.cnblogs.com/IcanFixIt/p/7278696.html
+
 JVM从基础到实战系列:
 透彻理解Java并发编程系列:
 分布式系统从理论到实战系列:
