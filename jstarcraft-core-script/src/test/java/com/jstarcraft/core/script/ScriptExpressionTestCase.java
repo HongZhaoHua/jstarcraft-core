@@ -15,9 +15,11 @@ import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptExpressionTestCase {
 
-    private ScriptScope scope = new ScriptScope();
+    protected ScriptScope scope = new ScriptScope();
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    protected ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    protected static final ClassLoader loader = ScriptExpressionTestCase.class.getClassLoader();
 
     public static double fibonacci(int number) {
         if (number == 0) {
@@ -41,6 +43,8 @@ public abstract class ScriptExpressionTestCase {
     protected abstract ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope);
 
     protected abstract ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope);
+
+    protected abstract ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope);
 
     @Test
     public void testMethod() throws Exception {
@@ -110,6 +114,15 @@ public abstract class ScriptExpressionTestCase {
         latch.await();
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void testLoad() {
+        ScriptContext context = new ScriptContext();
+        ScriptExpression expression = getLoadExpression(context, scope);
+        ScriptScope scope = expression.getScope();
+        scope.createAttribute("loader", loader);
+        Assert.assertEquals(MockObject.class, expression.doWith(Class.class));
     }
 
 }

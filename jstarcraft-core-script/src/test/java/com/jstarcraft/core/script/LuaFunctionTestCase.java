@@ -8,6 +8,8 @@ public class LuaFunctionTestCase extends ScriptFunctionTestCase {
 
     private String fibonacci = "function method(size) local index; local fibonacci = {}; fibonacci[0] = 0.0; fibonacci[1] = 1.0; for index = 2, size, 1 do fibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1] end; return fibonacci[size] end";
 
+    private String load = "function method(loader) return loader:loadClass(\"com.jstarcraft.core.script.MockObject\") end";
+
     @Override
     protected ScriptFunction getMethodFunction(ScriptContext context) {
         LuaFunction function = new LuaFunction(context, method, "method", Integer.class);
@@ -23,6 +25,12 @@ public class LuaFunctionTestCase extends ScriptFunctionTestCase {
     @Override
     protected ScriptFunction getFibonacciFunction(ScriptContext context) {
         LuaFunction function = new LuaFunction(context, fibonacci, "method", Integer.class);
+        return function;
+    }
+
+    @Override
+    protected ScriptFunction getLoadFunction(ScriptContext context) {
+        LuaFunction function = new LuaFunction(context, load, "method", ClassLoader.class);
         return function;
     }
 

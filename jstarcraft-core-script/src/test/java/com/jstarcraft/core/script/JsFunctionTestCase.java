@@ -8,6 +8,8 @@ public class JsFunctionTestCase extends ScriptFunctionTestCase {
 
     private String fibonacci = "function method(size) { var index; var fibonacci = []; fibonacci[0] = 0.0; fibonacci[1] = 1.0; for(index = 2; index <= size; index++) { fibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1]; } return fibonacci[size] }";
 
+    private String load = "function method(loader) { return loader.loadClass(\"com.jstarcraft.core.script.MockObject\") }";
+
     @Override
     protected ScriptFunction getMethodFunction(ScriptContext context) {
         JsFunction function = new JsFunction(context, method, "method", Integer.class);
@@ -23,6 +25,12 @@ public class JsFunctionTestCase extends ScriptFunctionTestCase {
     @Override
     protected ScriptFunction getFibonacciFunction(ScriptContext context) {
         JsFunction function = new JsFunction(context, fibonacci, "method", Integer.class);
+        return function;
+    }
+
+    @Override
+    protected ScriptFunction getLoadFunction(ScriptContext context) {
+        JsFunction function = new JsFunction(context, load, "method", ClassLoader.class);
         return function;
     }
 

@@ -12,6 +12,8 @@ public class PythonFunctionTestCase extends ScriptFunctionTestCase {
 
     private String fibonacci = "def method(size):\r\n\tfibonacci = [0.0] * (size + 1)\r\n\tfibonacci[0] = 0.0\r\n\tfibonacci[1] = 1.0\r\n\tfor index in range(2, size + 1):\r\n\t\tfibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1]\r\n\treturn fibonacci[size]";
 
+    private String load = "def method(loader):\r\n\treturn loader.loadClass('com.jstarcraft.core.script.MockObject')";
+
     @BeforeClass
     public static void setProperty() {
         System.setProperty("python.console.encoding", StringUtility.CHARSET.name());
@@ -32,6 +34,12 @@ public class PythonFunctionTestCase extends ScriptFunctionTestCase {
     @Override
     protected ScriptFunction getFibonacciFunction(ScriptContext context) {
         PythonFunction function = new PythonFunction(context, fibonacci, "method", Integer.class);
+        return function;
+    }
+
+    @Override
+    protected ScriptFunction getLoadFunction(ScriptContext context) {
+        PythonFunction function = new PythonFunction(context, load, "method", ClassLoader.class);
         return function;
     }
 

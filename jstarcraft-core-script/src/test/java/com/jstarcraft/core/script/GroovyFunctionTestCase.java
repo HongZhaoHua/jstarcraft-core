@@ -8,6 +8,8 @@ public class GroovyFunctionTestCase extends ScriptFunctionTestCase {
 
     private String fibonacci = "def method(size) { def index; def fibonacci = []; fibonacci[0] = 0.0; fibonacci[1] = 1.0; for(index = 2; index <= size; index++) { fibonacci.add(fibonacci[index - 2] + fibonacci[index - 1]);}; fibonacci[size] }";
 
+    private String load = "def method(loader) { loader.loadClass(\"com.jstarcraft.core.script.MockObject\") }";
+
     @Override
     protected ScriptFunction getMethodFunction(ScriptContext context) {
         GroovyFunction function = new GroovyFunction(context, method, "method", Integer.class);
@@ -23,6 +25,12 @@ public class GroovyFunctionTestCase extends ScriptFunctionTestCase {
     @Override
     protected ScriptFunction getFibonacciFunction(ScriptContext context) {
         GroovyFunction function = new GroovyFunction(context, fibonacci, "method", Integer.class);
+        return function;
+    }
+
+    @Override
+    protected ScriptFunction getLoadFunction(ScriptContext context) {
+        GroovyFunction function = new GroovyFunction(context, load, "method", ClassLoader.class);
         return function;
     }
 

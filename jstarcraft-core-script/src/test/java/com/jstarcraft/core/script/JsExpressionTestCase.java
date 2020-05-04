@@ -8,6 +8,8 @@ public class JsExpressionTestCase extends ScriptExpressionTestCase {
 
     private String fibonacci = "var index; var fibonacci = []; fibonacci[0] = 0.0; fibonacci[1] = 1.0; for(index = 2; index <= size; index++) { fibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1]; } fibonacci[size]";
 
+    private String load = "loader.loadClass(\"com.jstarcraft.core.script.MockObject\")";
+    
     @Override
     protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
         JsExpression expression = new JsExpression(context, scope, method);
@@ -23,6 +25,12 @@ public class JsExpressionTestCase extends ScriptExpressionTestCase {
     @Override
     protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
         JsExpression expression = new JsExpression(context, scope, fibonacci);
+        return expression;
+    }
+
+    @Override
+    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
+        JsExpression expression = new JsExpression(context, scope, load);
         return expression;
     }
 

@@ -15,7 +15,9 @@ import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptFunctionTestCase {
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    protected ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    protected static final ClassLoader loader = ScriptFunctionTestCase.class.getClassLoader();
 
     public static double fibonacci(int number) {
         if (number == 0) {
@@ -39,6 +41,8 @@ public abstract class ScriptFunctionTestCase {
     protected abstract ScriptFunction getObjectFunction(ScriptContext context);
 
     protected abstract ScriptFunction getFibonacciFunction(ScriptContext context);
+
+    protected abstract ScriptFunction getLoadFunction(ScriptContext context);
 
     @Test
     public void testMethod() throws Exception {
@@ -97,6 +101,13 @@ public abstract class ScriptFunctionTestCase {
         latch.await();
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void testLoad() {
+        ScriptContext context = new ScriptContext();
+        ScriptFunction function = getLoadFunction(context);
+        Assert.assertEquals(MockObject.class, function.doWith(Class.class, loader));
     }
 
 }

@@ -8,6 +8,8 @@ public class RubyExpressionTestCase extends ScriptExpressionTestCase {
 
     private String fibonacci = "fibonacci = Array.new($size); fibonacci[0] = 0.0; fibonacci[1] = 1.0; for index in 2..$size\r\nfibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1]; end; fibonacci[$size];";
 
+    private String load = "$loader.loadClass('com.jstarcraft.core.script.MockObject')";
+    
     @Override
     protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
         RubyExpression expression = new RubyExpression(context, scope, method);
@@ -23,6 +25,12 @@ public class RubyExpressionTestCase extends ScriptExpressionTestCase {
     @Override
     protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
         RubyExpression expression = new RubyExpression(context, scope, fibonacci);
+        return expression;
+    }
+    
+    @Override
+    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
+        RubyExpression expression = new RubyExpression(context, scope, load);
         return expression;
     }
 

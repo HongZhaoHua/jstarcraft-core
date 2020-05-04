@@ -8,6 +8,8 @@ public class LuaExpressionTestCase extends ScriptExpressionTestCase {
 
     private String fibonacci = "local index; local fibonacci = {}; fibonacci[0] = 0.0; fibonacci[1] = 1.0; for index = 2, size, 1 do fibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1] end; return fibonacci[size]";
 
+    private String load = "return loader:loadClass(\"com.jstarcraft.core.script.MockObject\")";
+
     @Override
     protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
         LuaExpression expression = new LuaExpression(context, scope, method);
@@ -23,6 +25,12 @@ public class LuaExpressionTestCase extends ScriptExpressionTestCase {
     @Override
     protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
         LuaExpression expression = new LuaExpression(context, scope, fibonacci);
+        return expression;
+    }
+
+    @Override
+    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
+        LuaExpression expression = new LuaExpression(context, scope, load);
         return expression;
     }
 

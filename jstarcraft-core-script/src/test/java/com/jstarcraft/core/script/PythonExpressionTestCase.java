@@ -1,6 +1,9 @@
 package com.jstarcraft.core.script;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Test;
+import org.python.core.PyJavaType;
 
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -11,6 +14,8 @@ public class PythonExpressionTestCase extends ScriptExpressionTestCase {
     private String object = "mock = Mock(index, 'birdy', 'mickey' + bytes(index), size, Instant.now(), MockEnumeration.TERRAN); mock.toString(); _data = mock";
 
     private String fibonacci = "fibonacci = [0.0] * (size + 1)\r\nfibonacci[0] = 0.0\r\nfibonacci[1] = 1.0\r\nfor index in range(2, size + 1):\r\n\tfibonacci[index] = fibonacci[index - 2] + fibonacci[index - 1]\r\n_data = fibonacci[size]";
+
+    private String load = "_data = loader.loadClass('com.jstarcraft.core.script.MockObject')";
 
     @BeforeClass
     public static void setProperty() {
@@ -33,6 +38,21 @@ public class PythonExpressionTestCase extends ScriptExpressionTestCase {
     protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
         PythonExpression expression = new PythonExpression(context, scope, fibonacci);
         return expression;
+    }
+
+    @Override
+    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
+        PythonExpression expression = new PythonExpression(context, scope, load);
+        return expression;
+    }
+
+    @Test
+    public void testLoad() {
+        ScriptContext context = new ScriptContext();
+        ScriptExpression expression = getLoadExpression(context, scope);
+        ScriptScope scope = expression.getScope();
+        scope.createAttribute("loader", loader);
+        Assert.assertEquals(MockObject.class, expression.doWith(PyJavaType.class).getProxyType());
     }
 
 }
