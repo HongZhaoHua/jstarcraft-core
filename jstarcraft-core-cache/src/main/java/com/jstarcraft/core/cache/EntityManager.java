@@ -30,7 +30,7 @@ public interface EntityManager<K extends Comparable<K>, T extends IdentityObject
     T getInstance(K id);
 
     /**
-     * 加载指定主键的缓存
+     * 装载指定主键的缓存
      * 
      * @param id
      * @param factory
