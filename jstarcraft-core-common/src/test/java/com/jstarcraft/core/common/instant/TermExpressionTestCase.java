@@ -57,18 +57,32 @@ public class TermExpressionTestCase {
             Assert.assertNull(dateTime);
         }
 
+        expression = new TermExpression("0 0 0 XiaoHan *");
         {
-            // 测试连续跨年
-            expression = new TermExpression("0 0 0 XiaoHan *");
+            // 测试跨年
             LocalDateTime dateTime = LocalDateTime.of(2020, 12, 31, 23, 59, 59);
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(LocalDateTime.of(2021, 1, 5, 0, 0, 0), dateTime);
         }
 
         {
-            // 测试连续跨年
-            expression = new TermExpression("59 59 23 DongZhi *");
+            // 测试不跨年
+            LocalDateTime dateTime = LocalDateTime.of(2021, 1, 4, 23, 59, 59);
+            dateTime = expression.getNextDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2021, 1, 5, 0, 0, 0), dateTime);
+        }
+
+        expression = new TermExpression("59 59 23 DongZhi *");
+        {
+            // 测试跨年
             LocalDateTime dateTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
+            dateTime = expression.getPreviousDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2021, 12, 21, 23, 59, 59), dateTime);
+        }
+
+        {
+            // 测试不跨年
+            LocalDateTime dateTime = LocalDateTime.of(2021, 12, 22, 0, 0, 0);
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(LocalDateTime.of(2021, 12, 21, 23, 59, 59), dateTime);
         }

@@ -146,20 +146,25 @@ public class TermExpression extends DateTimeExpression {
     public ZonedDateTime getPreviousDateTime(ZonedDateTime nowDateTime) {
         int year = nowDateTime.getYear();
         int month = nowDateTime.getMonthValue();
-        int day = nowDateTime.getDayOfMonth();
         int term = (month - 1) * 2 + 1;
-        LocalDate date = TermType.values()[term].getDate(year);
-        if (day < date.getDayOfMonth()) {
+        LocalDate date;
+        term++;
+        do {
             term--;
-            date = TermType.values()[term].getDate(year);
-            if (day < date.getDayOfMonth()) {
-                term--;
-                if (term < 0) {
-                    term = 23;
-                    year--;
-                }
+            term = terms.previousSetBit(term);
+            if (term == -1) {
+                term = terms.previousSetBit(23);
+                year--;
             }
+            date = TermType.values()[term].getDate(year);
+        } while (date.isAfter(nowDateTime.toLocalDate()));
+        if (date.isBefore(nowDateTime.toLocalDate())) {
+            int second = seconds.previousSetBit(59);
+            int minute = minutes.previousSetBit(59);
+            int hour = hours.previousSetBit(23);
+            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
         }
+        // 日期相同才需要执行
         int hour = nowDateTime.getHour();
         int minute = nowDateTime.getMinute();
         int second = nowDateTime.getSecond();
@@ -204,20 +209,25 @@ public class TermExpression extends DateTimeExpression {
     public ZonedDateTime getNextDateTime(ZonedDateTime nowDateTime) {
         int year = nowDateTime.getYear();
         int month = nowDateTime.getMonthValue();
-        int day = nowDateTime.getDayOfMonth();
         int term = (month - 1) * 2;
-        LocalDate date = TermType.values()[term].getDate(year);
-        if (day > date.getDayOfMonth()) {
+        LocalDate date;
+        term--;
+        do {
             term++;
-            date = TermType.values()[term].getDate(year);
-            if (day > date.getDayOfMonth()) {
-                term++;
-                if (term > 23) {
-                    term = 0;
-                    year++;
-                }
+            term = terms.nextSetBit(term);
+            if (term == -1) {
+                term = terms.nextSetBit(0);
+                year++;
             }
+            date = TermType.values()[term].getDate(year);
+        } while (date.isBefore(nowDateTime.toLocalDate()));
+        if (date.isAfter(nowDateTime.toLocalDate())) {
+            int second = seconds.nextSetBit(0);
+            int minute = minutes.nextSetBit(0);
+            int hour = hours.nextSetBit(0);
+            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
         }
+        // 日期相同才需要执行
         int hour = nowDateTime.getHour();
         int minute = nowDateTime.getMinute();
         int second = nowDateTime.getSecond();
