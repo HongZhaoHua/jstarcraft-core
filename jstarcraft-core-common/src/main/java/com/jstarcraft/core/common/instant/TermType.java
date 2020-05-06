@@ -126,7 +126,7 @@ public enum TermType {
         int month = ordinal() / 2 + 1;
         int l;
         // 步骤2:凡闰年3月1日前闰年数要减一,即:L=[(Y-1)/4],因为小寒,大寒,立春,雨水4个节气都小于3月1日
-        if (((year % 4 == 0 && year % 100 != 0)) && month < 3) {// 闰年
+        if (((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) && month < 3) {// 闰年
             l = (y - 1) / 4;
         } else {
             l = y / 4;
