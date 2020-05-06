@@ -62,26 +62,39 @@ public enum TermType {
     private final static Int2IntMap table = new Int2IntOpenHashMap();
 
     static {
-        table.put(2026 * 100 + TermType.YuShui.ordinal(), -1);
-        table.put(2084 * 100 + TermType.ChunFen.ordinal(), 1);
-        table.put(2008 * 100 + TermType.XiaoMan.ordinal(), 1);
         table.put(1902 * 100 + TermType.MangZhong.ordinal(), 1);
-        table.put(1928 * 100 + TermType.XiaZhi.ordinal(), 1);
-        table.put(1925 * 100 + TermType.XiaoShu.ordinal(), 1);
-        table.put(2016 * 100 + TermType.XiaoShu.ordinal(), 1);
+        table.put(1911 * 100 + TermType.LiXia.ordinal(), 1);
+        table.put(1914 * 100 + TermType.LiChun.ordinal(), -1);
+        table.put(1914 * 100 + TermType.DongZhi.ordinal(), 1);
+        table.put(1915 * 100 + TermType.JingZhe.ordinal(), -1);
         table.put(1922 * 100 + TermType.DaShu.ordinal(), 1);
-        table.put(2002 * 100 + TermType.LiQiu.ordinal(), 1);
+        table.put(1925 * 100 + TermType.XiaoShu.ordinal(), 1);
         table.put(1927 * 100 + TermType.BaiLu.ordinal(), 1);
+        table.put(1928 * 100 + TermType.XiaZhi.ordinal(), 1);
         table.put(1942 * 100 + TermType.QiuFen.ordinal(), 1);
+        table.put(1947 * 100 + TermType.LiChun.ordinal(), -1);
+        table.put(1947 * 100 + TermType.DongZhi.ordinal(), 1);
+        table.put(1948 * 100 + TermType.JingZhe.ordinal(), -1);
+        table.put(1951 * 100 + TermType.DongZhi.ordinal(), 1);
+        table.put(1978 * 100 + TermType.XiaoXue.ordinal(), 1);
+        table.put(1979 * 100 + TermType.DaHan.ordinal(), 1);
+        table.put(1980 * 100 + TermType.DongZhi.ordinal(), 1);
+        table.put(1982 * 100 + TermType.XiaoHan.ordinal(), 1);
+        table.put(1984 * 100 + TermType.DongZhi.ordinal(), 1);
+        table.put(2000 * 100 + TermType.XiaoHan.ordinal(), 1);
+        table.put(2000 * 100 + TermType.DaHan.ordinal(), 1);
+        table.put(2000 * 100 + TermType.LiChun.ordinal(), 1);
+        table.put(2000 * 100 + TermType.YuShui.ordinal(), 1);
+        table.put(2002 * 100 + TermType.LiQiu.ordinal(), 1);
+        table.put(2008 * 100 + TermType.XiaoMan.ordinal(), 1);
+        table.put(2016 * 100 + TermType.XiaoShu.ordinal(), 1);
+        table.put(2019 * 100 + TermType.XiaoHan.ordinal(), -1);
+        table.put(2021 * 100 + TermType.DongZhi.ordinal(), -1);
+        table.put(2026 * 100 + TermType.YuShui.ordinal(), -1);
+        table.put(2082 * 100 + TermType.DaHan.ordinal(), 1);
+        table.put(2084 * 100 + TermType.ChunFen.ordinal(), 1);
         table.put(2089 * 100 + TermType.ShuangJiang.ordinal(), 1);
         table.put(2089 * 100 + TermType.LiDong.ordinal(), 1);
-        table.put(1978 * 100 + TermType.XiaoXue.ordinal(), 1);
-        table.put(1954 * 100 + TermType.DaXue.ordinal(), 1);
-        table.put(1918 * 100 + TermType.DongZhi.ordinal(), -1);
-        table.put(2021 * 100 + TermType.DongZhi.ordinal(), -1);
-        table.put(1982 * 100 + TermType.XiaoHan.ordinal(), 1);
-        table.put(2019 * 100 + TermType.XiaoHan.ordinal(), -1);
-        table.put(2082 * 100 + TermType.DaHan.ordinal(), 1);
     }
 
     /** 世纪值 */
@@ -113,7 +126,7 @@ public enum TermType {
         int month = ordinal() / 2 + 1;
         int l;
         // 步骤2:凡闰年3月1日前闰年数要减一,即:L=[(Y-1)/4],因为小寒,大寒,立春,雨水4个节气都小于3月1日
-        if (((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) && month < 3) {// 闰年
+        if (((year % 4 == 0 && year % 100 != 0)) && month < 3) {// 闰年
             l = (y - 1) / 4;
         } else {
             l = y / 4;
