@@ -16,6 +16,9 @@ https://blog.csdn.net/hspingcc/article/details/73332526
 中国农历的Java实现，支持约300年公历范围：1850-02-12到2150-12-31:
 https://github.com/heqiao2010/LunarCalendar
 
+20世纪至22世纪二十四节气的计算公式:
+http://blog.sina.com.cn/s/blog_65c178a801017czv.html
+
 A Java library for calculating prayer (salat) times, Hijri date, and qibla direction, based on ITL (Islamic Tools and Libraries):
 https://github.com/fikr4n/itl-java
 
