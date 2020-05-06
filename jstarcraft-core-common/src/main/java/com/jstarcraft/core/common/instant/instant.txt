@@ -16,6 +16,9 @@ https://blog.csdn.net/hspingcc/article/details/73332526
 中国农历的Java实现，支持约300年公历范围：1850-02-12到2150-12-31:
 https://github.com/heqiao2010/LunarCalendar
 
+无第三方依赖的公历(阳历)和农历(阴历、老黄历)工具:
+https://github.com/6tail/lunar-java
+
 20世纪至22世纪二十四节气的计算公式:
 http://blog.sina.com.cn/s/blog_65c178a801017czv.html
 
