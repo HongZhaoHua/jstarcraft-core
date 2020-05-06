@@ -111,14 +111,14 @@ public enum TermType {
         // 步骤1:年数%100
         int y = year % 100;
         int month = ordinal() / 2 + 1;
-        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {// 闰年
-            // 步骤2:凡闰年3月1日前闰年数要减一,即:L=[(Y-1)/4],因为小寒,大寒,立春,雨水4个节气都小于3月1日
-            if (month < 3) {
-                y = y - 1;
-            }
+        int l;
+        // 步骤2:凡闰年3月1日前闰年数要减一,即:L=[(Y-1)/4],因为小寒,大寒,立春,雨水4个节气都小于3月1日
+        if (((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) && month < 3) {// 闰年
+            l = (y - 1) / 4;
+        } else {
+            l = y / 4;
         }
         double c = getCentury(year);
-        int l = y / 4;
         // 步骤3:使用公式[Y*D+C]-L计算
         int day = (int) (y * d + c) - l;
         // 步骤4:加上特殊的年分的节气偏移量
