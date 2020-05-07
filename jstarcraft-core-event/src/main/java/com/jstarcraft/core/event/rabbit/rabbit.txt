@@ -1,3 +1,9 @@
+Windows10环境下的RabbitMQ安装步骤:
+https://www.cnblogs.com/saryli/p/9729591.html
+
+Installing on Windows:
+https://www.rabbitmq.com/install-windows.html
+
 理解RabbitMQ中的AMQP-0-9-1模型:
 https://www.cnblogs.com/throwable/p/12275645.html
 
