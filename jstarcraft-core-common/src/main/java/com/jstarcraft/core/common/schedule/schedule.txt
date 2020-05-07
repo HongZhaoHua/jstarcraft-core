@@ -3,3 +3,15 @@ https://www.cnblogs.com/zhangbin1989/p/9294114.html
 
 Java定时任务的几种实现方式:
 https://blog.csdn.net/kegumingxin2626/article/details/72854823
+
+定时任务Timer/SpringSchedule/Quartz:
+https://github.com/xuda27/schedule-test
+
+Spring Boot 定时任务之Scheduled Task
+https://blog.csdn.net/qq_34125349/article/details/77430956
+
+Spring Task原理及使用:
+https://blog.csdn.net/weixin_43777983/article/details/99685666
+
+深入浅出Spring Task定时任务:
+https://blog.csdn.net/u011116672/article/details/52517247
