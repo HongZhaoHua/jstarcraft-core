@@ -1,0 +1,2 @@
+在计算机上本地部署 DynamoDB:
+https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
