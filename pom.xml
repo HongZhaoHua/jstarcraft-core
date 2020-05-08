@@ -382,6 +382,30 @@
 
             <!-- 事务框架依赖 -->
             <dependency>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-core</artifactId>
+                <version>4.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-query-builder</artifactId>
+                <version>4.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.couchbase.client</groupId>
+                <artifactId>java-client</artifactId>
+                <version>2.7.14</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>6.4.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast</artifactId>
                 <version>3.11.2</version>
@@ -554,6 +578,24 @@
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-embedded-driver</artifactId>
                 <version>3.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.cassandraunit</groupId>
+                <artifactId>cassandra-unit</artifactId>
+                <version>4.3.1.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>pl.allegro.tech</groupId>
+                <artifactId>embedded-elasticsearch</artifactId>
+                <version>2.7.0</version>
             </dependency>
 
             <dependency>
