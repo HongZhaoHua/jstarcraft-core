@@ -126,6 +126,8 @@ JStarCraft Core框架各个模块之间的关系:
     * 图数据库(Neo4j)
 * 10.事务(transaction)
     * 分布式锁
+        * Cassandra
+        * ElasticSearch
         * Hazelcast
         * Hibernate
         * Mongo
