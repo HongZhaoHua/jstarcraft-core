@@ -109,7 +109,7 @@ public class CassandraTransactionManager extends TransactionManager {
 
                 .whereColumn(NAME).isEqualTo(QueryBuilder.literal(name))
 
-                .ifColumn(MOST).isLessThan(QueryBuilder.literal(now))
+                .ifColumn(MOST).isLessThanOrEqualTo(QueryBuilder.literal(now))
 
                 .build());
         if (!lock) {
@@ -131,7 +131,7 @@ public class CassandraTransactionManager extends TransactionManager {
 
                 .ifColumn(MOST).isEqualTo(QueryBuilder.literal(instant))
 
-                .ifColumn(MOST).isGreaterThanOrEqualTo(QueryBuilder.literal(now))
+                .ifColumn(MOST).isGreaterThan(QueryBuilder.literal(now))
 
                 .build());
         if (!unlock) {

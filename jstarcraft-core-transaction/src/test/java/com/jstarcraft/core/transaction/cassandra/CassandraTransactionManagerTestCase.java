@@ -12,6 +12,7 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 
+// TODO Cassandra目前仍然不兼容Java 11,执行单元测试需要Java 8环境.
 public class CassandraTransactionManagerTestCase extends TransactionManagerTestCase {
 
     private static CqlSession cqlSession;
