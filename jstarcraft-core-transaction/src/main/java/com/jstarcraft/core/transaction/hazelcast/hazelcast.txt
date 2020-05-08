@@ -1,2 +1,2 @@
 Get Started with Hazelcast IMDG:
-https://hazelcast.org/getting-started-with-hazelcast/
+https://hazelcast.org/getting-started-with-hazelcast
