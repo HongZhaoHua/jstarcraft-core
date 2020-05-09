@@ -10,7 +10,7 @@ https://logging.apache.org/log4j/2.x/manual/configuration.html
 Log4j2使用教程
 http://www.cnblogs.com/leo-lsw/p/log4j2tutorial.html
 
-logback log4j log4j2 性能实测:
+Logback log4j Log4j2 性能实测:
 https://blog.souche.com/logback-log4j-log4j2shi-ce/
 
 如何获取请求与响应并记录到日志?
