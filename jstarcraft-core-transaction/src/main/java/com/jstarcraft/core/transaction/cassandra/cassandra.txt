@@ -1,2 +1,5 @@
 Cassandra Tutorial:
 https://www.tutorialspoint.com/cassandra/
+
+Spring Data Cassandra官方参考文档:
+http://jvm123.com/doc/cassandra/index.html
