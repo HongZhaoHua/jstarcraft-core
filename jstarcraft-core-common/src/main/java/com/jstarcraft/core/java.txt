@@ -12,3 +12,8 @@ JVM从基础到实战系列:
 分布式系统从理论到实战系列:
 https://www.tpvlog.com
 https://www.jianshu.com/u/ab8ce2ed45a1
+
+Java8新的异步编程方式 CompletableFuture:
+https://www.jianshu.com/p/dff9063e1ab6
+https://www.jianshu.com/p/d81cf0beb858
+https://www.jianshu.com/p/807e6822292a
