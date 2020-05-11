@@ -3,6 +3,7 @@ package com.jstarcraft.core.common.instant;
 import java.time.ZonedDateTime;
 
 import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronConstraintsFactory;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
@@ -16,9 +17,34 @@ import com.cronutils.parser.CronParser;
  */
 public class SolarExpression extends DateTimeExpression {
 
-    private static final CronDefinition cronDefinition = CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ);
+    private static final CronDefinition cronDefinition;
 
-    private static final CronParser parser = new CronParser(cronDefinition);
+    private static final CronParser parser;
+
+    static {
+        cronDefinition = CronDefinitionBuilder.defineCron()
+
+                .withSeconds().and()
+
+                .withMinutes().and()
+
+                .withHours().and()
+
+                .withDayOfMonth().withValidRange(1, 32).supportsL().supportsW().supportsLW().supportsQuestionMark().and()
+
+                .withMonth().withValidRange(1, 13).and()
+
+                .withDayOfWeek().withValidRange(1, 7).withMondayDoWValue(2).supportsHash().supportsL().supportsQuestionMark().and()
+
+                // 无年份限制
+                .withYear().optional().and()
+
+                .withCronValidation(CronConstraintsFactory.ensureEitherDayOfWeekOrDayOfMonth())
+
+                .instance();
+
+        parser = new CronParser(cronDefinition);
+    }
 
     private final ExecutionTime execution;
 
