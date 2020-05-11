@@ -177,14 +177,14 @@ public class IslamicExpression extends DateTimeExpression {
     }
 
     @Override
-    public ZonedDateTime getPreviousDateTime(ZonedDateTime nowDateTime) {
-        IslamicDate islamic = new IslamicDate(nowDateTime.toLocalDate());
+    public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
+        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
-        LocalTime time = nowDateTime.toLocalTime();
+        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -235,18 +235,18 @@ public class IslamicExpression extends DateTimeExpression {
         }
         islamic = new IslamicDate(year, month, day);
         LocalDate date = islamic.getDate();
-        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
     }
 
     @Override
-    public ZonedDateTime getNextDateTime(ZonedDateTime nowDateTime) {
-        IslamicDate islamic = new IslamicDate(nowDateTime.toLocalDate());
+    public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
+        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
-        LocalTime time = nowDateTime.toLocalTime();
+        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -297,7 +297,27 @@ public class IslamicExpression extends DateTimeExpression {
         }
         islamic = new IslamicDate(year, month, day);
         LocalDate date = islamic.getDate();
-        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
+    }
+
+    @Override
+    public boolean isMatchDateTime(ZonedDateTime dateTime) {
+        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
+        int year = islamic.getYear();
+        int month = islamic.getMonth();
+        int day = islamic.getDay();
+        int size = IslamicDate.getDaySize(year, month);
+        BitSet days = getDays(size);
+        LocalTime time = dateTime.toLocalTime();
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        int second = time.getSecond();
+        if (seconds.get(second) && minutes.get(minute) && hours.get(hour)) {
+            if (days.get(day) && months.get(month) && years.get(year)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -65,4 +65,9 @@ public class SolarExpression extends DateTimeExpression {
         return dateTime;
     }
 
+    @Override
+    public boolean isMatchDateTime(ZonedDateTime dateTime) {
+        return execution.isMatch(dateTime);
+    }
+
 }

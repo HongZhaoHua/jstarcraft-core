@@ -177,15 +177,15 @@ public class LunarExpression extends DateTimeExpression {
     }
 
     @Override
-    public ZonedDateTime getPreviousDateTime(ZonedDateTime nowDateTime) {
-        LunarDate lunar = new LunarDate(nowDateTime.toLocalDate());
+    public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
+        LunarDate lunar = new LunarDate(dateTime.toLocalDate());
         int year = lunar.getYear();
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
         int size = LunarDate.getDaySize(year, leap, month);
         BitSet days = getDays(size);
-        LocalTime time = nowDateTime.toLocalTime();
+        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -248,19 +248,19 @@ public class LunarExpression extends DateTimeExpression {
         }
         lunar = new LunarDate(year, leap, month, day);
         LocalDate date = lunar.getDate();
-        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
     }
 
     @Override
-    public ZonedDateTime getNextDateTime(ZonedDateTime nowDateTime) {
-        LunarDate lunar = new LunarDate(nowDateTime.toLocalDate());
+    public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
+        LunarDate lunar = new LunarDate(dateTime.toLocalDate());
         int year = lunar.getYear();
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
         int size = LunarDate.getDaySize(year, leap, month);
         BitSet days = getDays(size);
-        LocalTime time = nowDateTime.toLocalTime();
+        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -320,7 +320,28 @@ public class LunarExpression extends DateTimeExpression {
         }
         lunar = new LunarDate(year, leap, month, day);
         LocalDate date = lunar.getDate();
-        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
+    }
+
+    @Override
+    public boolean isMatchDateTime(ZonedDateTime dateTime) {
+        LunarDate lunar = new LunarDate(dateTime.toLocalDate());
+        int year = lunar.getYear();
+        boolean leap = lunar.isLeap();
+        int month = lunar.getMonth();
+        int day = lunar.getDay();
+        int size = LunarDate.getDaySize(year, leap, month);
+        BitSet days = getDays(size);
+        LocalTime time = dateTime.toLocalTime();
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        int second = time.getSecond();
+        if (seconds.get(second) && minutes.get(minute) && hours.get(hour)) {
+            if (days.get(day) && months.get(month) && years.get(year)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

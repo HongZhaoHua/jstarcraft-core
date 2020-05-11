@@ -42,6 +42,14 @@ abstract public class DateTimeExpression {
     abstract public ZonedDateTime getNextDateTime(ZonedDateTime dateTime);
 
     /**
+     * 判断指定日期时间是否匹配
+     * 
+     * @param dateTime
+     * @return
+     */
+    abstract public boolean isMatchDateTime(ZonedDateTime dateTime);
+
+    /**
      * 根据指定日期时间获取上一次日期时间
      * 
      * @param dateTime
@@ -64,6 +72,16 @@ abstract public class DateTimeExpression {
     }
 
     /**
+     * 判断指定日期时间是否匹配
+     * 
+     * @param dateTime
+     * @return
+     */
+    public boolean isMatchDateTime(LocalDateTime dateTime) {
+        return isMatchDateTime(ZonedDateTime.of(dateTime, ZoneOffset.UTC));
+    }
+
+    /**
      * 根据指定日期时间获取上一次日期时间
      * 
      * @param dateTime
@@ -83,6 +101,16 @@ abstract public class DateTimeExpression {
     public Instant getNextDateTime(Instant dateTime) {
         ZonedDateTime instant = getNextDateTime(ZonedDateTime.ofInstant(dateTime, ZoneOffset.UTC));
         return instant == null ? null : instant.toInstant();
+    }
+
+    /**
+     * 判断指定日期时间是否匹配
+     * 
+     * @param dateTime
+     * @return
+     */
+    public boolean isMatchDateTime(Instant dateTime) {
+        return isMatchDateTime(ZonedDateTime.ofInstant(dateTime, ZoneOffset.UTC));
     }
 
     @Override

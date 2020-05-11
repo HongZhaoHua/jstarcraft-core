@@ -143,9 +143,9 @@ public class TermExpression extends DateTimeExpression {
     }
 
     @Override
-    public ZonedDateTime getPreviousDateTime(ZonedDateTime nowDateTime) {
-        int year = nowDateTime.getYear();
-        int month = nowDateTime.getMonthValue();
+    public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthValue();
         int term = (month - 1) * 2 + 1;
         LocalDate date;
         term++;
@@ -157,17 +157,17 @@ public class TermExpression extends DateTimeExpression {
                 year--;
             }
             date = TermType.values()[term].getDate(year);
-        } while (date.isAfter(nowDateTime.toLocalDate()));
-        if (date.isBefore(nowDateTime.toLocalDate())) {
+        } while (date.isAfter(dateTime.toLocalDate()));
+        if (date.isBefore(dateTime.toLocalDate())) {
             int second = seconds.previousSetBit(59);
             int minute = minutes.previousSetBit(59);
             int hour = hours.previousSetBit(23);
-            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
         }
         // 日期相同才需要执行
-        int hour = nowDateTime.getHour();
-        int minute = nowDateTime.getMinute();
-        int second = nowDateTime.getSecond();
+        int hour = dateTime.getHour();
+        int minute = dateTime.getMinute();
+        int second = dateTime.getSecond();
         second = seconds.previousSetBit(second - 1);
         if (second == -1) {
             second = seconds.previousSetBit(59);
@@ -193,7 +193,7 @@ public class TermExpression extends DateTimeExpression {
             hour = hours.previousSetBit(23);
             term = terms.previousSetBit(23);
             // 防止连续跨年
-            if (year == nowDateTime.getYear()) {
+            if (year == dateTime.getYear()) {
                 year--;
             }
         }
@@ -202,13 +202,13 @@ public class TermExpression extends DateTimeExpression {
             return null;
         }
         year += TermType.MINIMUM_YEAR;
-        return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), dateTime.getZone());
     }
 
     @Override
-    public ZonedDateTime getNextDateTime(ZonedDateTime nowDateTime) {
-        int year = nowDateTime.getYear();
-        int month = nowDateTime.getMonthValue();
+    public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthValue();
         int term = (month - 1) * 2;
         LocalDate date;
         term--;
@@ -220,17 +220,17 @@ public class TermExpression extends DateTimeExpression {
                 year++;
             }
             date = TermType.values()[term].getDate(year);
-        } while (date.isBefore(nowDateTime.toLocalDate()));
-        if (date.isAfter(nowDateTime.toLocalDate())) {
+        } while (date.isBefore(dateTime.toLocalDate()));
+        if (date.isAfter(dateTime.toLocalDate())) {
             int second = seconds.nextSetBit(0);
             int minute = minutes.nextSetBit(0);
             int hour = hours.nextSetBit(0);
-            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), nowDateTime.getZone());
+            return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
         }
         // 日期相同才需要执行
-        int hour = nowDateTime.getHour();
-        int minute = nowDateTime.getMinute();
-        int second = nowDateTime.getSecond();
+        int hour = dateTime.getHour();
+        int minute = dateTime.getMinute();
+        int second = dateTime.getSecond();
         second = seconds.nextSetBit(second + 1);
         if (second == -1) {
             second = seconds.nextSetBit(0);
@@ -256,7 +256,7 @@ public class TermExpression extends DateTimeExpression {
             hour = hours.nextSetBit(0);
             term = terms.nextSetBit(0);
             // 防止连续跨年
-            if (year == nowDateTime.getYear()) {
+            if (year == dateTime.getYear()) {
                 year++;
             }
         }
@@ -265,7 +265,29 @@ public class TermExpression extends DateTimeExpression {
             return null;
         }
         year += TermType.MINIMUM_YEAR;
-        return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), nowDateTime.getZone());
+        return ZonedDateTime.of(TermType.values()[term].getDate(year), LocalTime.of(hour, minute, second), dateTime.getZone());
+    }
+
+    @Override
+    public boolean isMatchDateTime(ZonedDateTime dateTime) {
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthValue();
+        int day = dateTime.getDayOfMonth();
+        int term;
+        int hour = dateTime.getHour();
+        int minute = dateTime.getMinute();
+        int second = dateTime.getSecond();
+        if (seconds.get(second) && minutes.get(minute) && hours.get(hour)) {
+            term = (month - 1) * 2;
+            if (TermType.values()[term].getDate(year).getDayOfMonth() == day) {
+                return true;
+            }
+            term++;
+            if (TermType.values()[term].getDate(year).getDayOfMonth() == day) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

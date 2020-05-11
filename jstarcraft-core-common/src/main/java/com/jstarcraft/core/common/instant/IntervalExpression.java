@@ -63,4 +63,10 @@ public class IntervalExpression extends DateTimeExpression {
         }
     }
 
+    @Override
+    public boolean isMatchDateTime(ZonedDateTime dateTime) {
+        long duration = ChronoUnit.SECONDS.between(reference, dateTime.toLocalDateTime());
+        return duration % iterval == 0;
+    }
+
 }
