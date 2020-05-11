@@ -42,9 +42,11 @@ public class IslamicExpressionTestCase {
         IslamicExpression expression = new IslamicExpression("0 0 12 1,L1 *");
 
         LocalDateTime dateTime = LocalDateTime.of(2011, 11, 25, 23, 59, 59);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 
@@ -53,9 +55,11 @@ public class IslamicExpressionTestCase {
         IslamicExpression expression = new IslamicExpression("0 0 12 1,L1 *");
 
         LocalDateTime dateTime = LocalDateTime.of(2010, 12, 7, 0, 0, 0);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = 0, size = dateTimes.size(); index < size; index++) {
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 

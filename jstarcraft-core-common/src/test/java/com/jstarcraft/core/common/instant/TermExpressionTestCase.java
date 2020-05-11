@@ -28,9 +28,11 @@ public class TermExpressionTestCase {
         TermExpression expression = new TermExpression("0 0 0 LiChun,LiXia,LiQiu,LiDong *");
 
         LocalDateTime dateTime = LocalDateTime.of(2022, 1, 1, 0, 0, 0);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 
@@ -39,9 +41,11 @@ public class TermExpressionTestCase {
         TermExpression expression = new TermExpression("0 0 0 LiChun,LiXia,LiQiu,LiDong *");
 
         LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = 0, size = dateTimes.size(); index < size; index++) {
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 

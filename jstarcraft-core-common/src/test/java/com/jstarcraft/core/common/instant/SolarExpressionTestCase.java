@@ -54,9 +54,11 @@ public class SolarExpressionTestCase {
         SolarExpression expression = new SolarExpression("0 0 12 1,30 * ?");
 
         LocalDateTime dateTime = LocalDateTime.of(2020, 12, 30, 23, 59, 59);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 
@@ -65,9 +67,11 @@ public class SolarExpressionTestCase {
         SolarExpression expression = new SolarExpression("0 0 12 1,30 * ?");
 
         LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+        Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = 0, size = dateTimes.size(); index < size; index++) {
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(dateTimes.get(index), dateTime);
+            Assert.assertTrue(expression.isMatchDateTime(dateTime));
         }
     }
 

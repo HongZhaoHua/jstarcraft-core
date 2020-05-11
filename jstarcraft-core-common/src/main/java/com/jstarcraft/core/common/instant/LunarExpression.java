@@ -337,7 +337,7 @@ public class LunarExpression extends DateTimeExpression {
         int minute = time.getMinute();
         int second = time.getSecond();
         if (seconds.get(second) && minutes.get(minute) && hours.get(hour)) {
-            if (days.get(day) && months.get(month) && years.get(year)) {
+            if (days.get(day) && months.get(month) && years.get(year - LunarDate.MINIMUM_YEAR)) {
                 return true;
             }
         }
