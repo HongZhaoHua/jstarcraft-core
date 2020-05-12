@@ -20,6 +20,8 @@ import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 
 public class ElasticSearchTransactionManagerTestCase extends TransactionManagerTestCase {
 
+    private static final String EMBEDDED_ELASTIC_HOST = "localhost";
+
     private static final int EMBEDDED_ELASTIC_PORT = 9350;
 
     private static EmbeddedElastic elasticServer;
@@ -28,7 +30,7 @@ public class ElasticSearchTransactionManagerTestCase extends TransactionManagerT
 
     @Before
     public void testBefore() {
-        elasticClient = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", EMBEDDED_ELASTIC_PORT, "http")));
+        elasticClient = new RestHighLevelClient(RestClient.builder(new HttpHost(EMBEDDED_ELASTIC_HOST, EMBEDDED_ELASTIC_PORT, "http")));
     }
 
     @After

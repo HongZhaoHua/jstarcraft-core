@@ -17,6 +17,7 @@ import com.jstarcraft.core.transaction.TransactionDefinition;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.exception.TransactionLockException;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * ElasticSearch事务管理器
@@ -38,32 +39,38 @@ public class ElasticSearchTransactionManager extends TransactionManager {
 
     private static final String SCRIPT = "painless";
 
-    private static final String LOCK_SCRIPT =
+    private static final String LOCK_SCRIPT = new StringBuilder()
 
-            "if (ctx._source." + MOST + " <= " + "params." + NOW + ") { " +
+            .append(StringUtility.format("if (ctx._source.{} <= params.{}) {", MOST, NOW))
 
-                    "ctx._source." + MOST + " =  params." + MOST + "; " +
+            .append(StringUtility.format("    ctx._source.{} = params.{};", MOST, MOST))
 
-                    "} else { " +
+            .append(StringUtility.format("} else {"))
 
-                    "ctx.op = 'none' " +
+            .append(StringUtility.format("    ctx.op = 'none';"))
 
-                    "}";
+            .append(StringUtility.format("}"))
 
-    private static final String UNLOCK_SCRIPT =
+            .toString();
 
-            "if (ctx._source." + MOST + " > " + "params." + NOW + ") { " +
+    private static final String UNLOCK_SCRIPT = new StringBuilder()
 
-                    "ctx._source." + MOST + " =  params." + NOW + "; " +
+            .append(StringUtility.format("if (ctx._source.{} > params.{}) {", MOST, NOW))
 
-                    "} else { " +
+            .append(StringUtility.format("    ctx._source.{} = params.{};", MOST, NOW))
 
-                    "ctx.op = 'none' " +
+            .append(StringUtility.format("} else {"))
 
-                    "}";
+            .append(StringUtility.format("    ctx.op = 'none';"))
+
+            .append(StringUtility.format("}"))
+
+            .toString();
 
     private final RestHighLevelClient elastic;
+
     private final String index;
+
     private final String type;
 
     public ElasticSearchTransactionManager(RestHighLevelClient elastic) {
