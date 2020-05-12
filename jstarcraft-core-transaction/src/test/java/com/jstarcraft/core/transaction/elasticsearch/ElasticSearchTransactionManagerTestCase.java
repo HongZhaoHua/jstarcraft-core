@@ -22,23 +22,23 @@ public class ElasticSearchTransactionManagerTestCase extends TransactionManagerT
 
     private static final int EMBEDDED_ELASTIC_PORT = 9350;
 
-    private static EmbeddedElastic embeddedElastic;
+    private static EmbeddedElastic elasticServer;
 
-    private RestHighLevelClient highLevelClient;
+    private RestHighLevelClient elasticClient;
 
     @Before
     public void testBefore() {
-        highLevelClient = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", EMBEDDED_ELASTIC_PORT, "http")));
+        elasticClient = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", EMBEDDED_ELASTIC_PORT, "http")));
     }
 
     @After
     public void testAfter() throws IOException {
-        highLevelClient.close();
+        elasticClient.close();
     }
 
     @BeforeClass
     public static void startEmbeddedElastic() throws IOException, InterruptedException {
-        embeddedElastic = EmbeddedElastic.builder().withElasticVersion("6.4.0")
+        elasticServer = EmbeddedElastic.builder().withElasticVersion("6.4.0")
 
                 .withSetting(PopularProperties.HTTP_PORT, EMBEDDED_ELASTIC_PORT)
 
@@ -57,14 +57,14 @@ public class ElasticSearchTransactionManagerTestCase extends TransactionManagerT
 
     @AfterClass
     public static void stopEmbeddedElastic() {
-        if (embeddedElastic != null) {
-            embeddedElastic.stop();
+        if (elasticServer != null) {
+            elasticServer.stop();
         }
     }
 
     @Override
     protected TransactionManager getDistributionManager() {
-        return new ElasticSearchTransactionManager(highLevelClient);
+        return new ElasticSearchTransactionManager(elasticClient);
     }
 
 }

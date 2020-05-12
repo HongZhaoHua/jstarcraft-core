@@ -62,16 +62,16 @@ public class ElasticSearchTransactionManager extends TransactionManager {
 
                     "}";
 
-    private final RestHighLevelClient highLevelClient;
+    private final RestHighLevelClient elastic;
     private final String index;
     private final String type;
 
-    public ElasticSearchTransactionManager(RestHighLevelClient highLevelClient) {
-        this(highLevelClient, DEFAULT_INDEX, DEFAULT_TYPE);
+    public ElasticSearchTransactionManager(RestHighLevelClient elastic) {
+        this(elastic, DEFAULT_INDEX, DEFAULT_TYPE);
     }
 
-    public ElasticSearchTransactionManager(RestHighLevelClient highLevelClient, String index, String type) {
-        this.highLevelClient = highLevelClient;
+    public ElasticSearchTransactionManager(RestHighLevelClient elastic, String index, String type) {
+        this.elastic = elastic;
         this.index = index;
         this.type = type;
     }
@@ -95,7 +95,7 @@ public class ElasticSearchTransactionManager extends TransactionManager {
 
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
         try {
-            UpdateResponse res = highLevelClient.update(ur, RequestOptions.DEFAULT);
+            UpdateResponse res = elastic.update(ur, RequestOptions.DEFAULT);
             if (res.getResult() == DocWriteResponse.Result.NOOP) {
                 throw new TransactionLockException();
             }
@@ -120,7 +120,7 @@ public class ElasticSearchTransactionManager extends TransactionManager {
 
                 .script(new Script(ScriptType.INLINE, SCRIPT, UNLOCK_SCRIPT, document));
         try {
-            UpdateResponse res = highLevelClient.update(ur, RequestOptions.DEFAULT);
+            UpdateResponse res = elastic.update(ur, RequestOptions.DEFAULT);
             if (res.getResult() == DocWriteResponse.Result.NOOP) {
                 throw new TransactionUnlockException();
             }
