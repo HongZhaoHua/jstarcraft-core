@@ -10,8 +10,6 @@ import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.jstarcraft.core.storage.neo4j.Neo4jAccessor;
-
 @Configuration
 public class Neo4jAccessorConfigurer {
 
