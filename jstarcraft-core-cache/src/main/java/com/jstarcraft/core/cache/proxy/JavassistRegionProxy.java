@@ -76,9 +76,9 @@ public class JavassistRegionProxy extends JavassistProxy {
         if (method.getExceptionTypes().length != 0) {
             proxyMethod.setExceptionTypes(toProxyClasses(method.getExceptionTypes()));
         }
-        StringBuilder methodBuilder = new StringBuilder("{");
-        methodBuilder.append(StringUtility.format("{} methodId = {}.valueOf({});", Integer.class.getName(), Integer.class.getName(), cacheInformation.getMethodId(method)));
-        methodBuilder.append(StringUtility.format("{} changeValues = _information.getMethodChanges(methodId);", HashSet.class.getName()));
+        StringBuilder methodBuffer = new StringBuilder("{");
+        methodBuffer.append(StringUtility.format("{} methodId = {}.valueOf({});", Integer.class.getName(), Integer.class.getName(), cacheInformation.getMethodId(method)));
+        methodBuffer.append(StringUtility.format("{} changeValues = _information.getMethodChanges(methodId);", HashSet.class.getName()));
         // TODO 索引变更部分
         // if (!indexChanges.isEmpty()) {
         // methodBuilder.append(StringUtility.format("{} indexNames = ({})
@@ -96,20 +96,20 @@ public class JavassistRegionProxy extends JavassistProxy {
         if (returnType != void.class) {
             String typeName = returnType.isArray() ? toArrayType(returnType) : returnType.getName();
             if (returnType.isPrimitive()) {
-                methodBuilder.append(StringUtility.format("{} value;", typeName));
+                methodBuffer.append(StringUtility.format("{} value;", typeName));
             } else {
-                methodBuilder.append(StringUtility.format("{} value = null;", typeName));
+                methodBuffer.append(StringUtility.format("{} value = null;", typeName));
             }
         }
-        methodBuilder.append(StringUtility.format("try {"));
+        methodBuffer.append(StringUtility.format("try {"));
         // if (!indexChanges.isEmpty()) {
         // methodBuilder.append(StringUtility.format(" {} oldIndexValues =
         // _information.getIndexValues(_instance, indexNames);", Map.class.getName()));
         // }
         if (returnType != void.class) {
-            methodBuilder.append(StringUtility.format("	value = super.{}($$);", method.getName()));
+            methodBuffer.append(StringUtility.format("	value = super.{}($$);", method.getName()));
         } else {
-            methodBuilder.append(StringUtility.format("	super.{}($$);", method.getName()));
+            methodBuffer.append(StringUtility.format("	super.{}($$);", method.getName()));
         }
         // TODO 数据变更部分
         if (cacheChange != null) {
@@ -118,18 +118,18 @@ public class JavassistRegionProxy extends JavassistProxy {
                 // methodBuilder.append(StringUtility.format(" _manager.modifyIndexes(_instance,
                 // newIndexValues, oldIndexValues);"));
                 // }
-                methodBuilder.append(StringUtility.format(" _manager.modifyInstance(this);"));
+                methodBuffer.append(StringUtility.format(" _manager.modifyInstance(this);"));
             } else {
                 if (cacheChange.values().length > 0) {
-                    methodBuilder.append(StringUtility.format(" if (changeValues.contains({}.primitiveToWrap(value))) {", ConversionUtility.class.getName()));
+                    methodBuffer.append(StringUtility.format(" if (changeValues.contains({}.primitiveToWrap(value))) {", ConversionUtility.class.getName()));
                 }
                 // if (!indexChanges.isEmpty()) {
                 // methodBuilder.append(StringUtility.format(" _manager.modifyIndexes(_instance,
                 // newIndexValues, oldIndexValues);"));
                 // }
-                methodBuilder.append(StringUtility.format("		_manager.modifyInstance(this);"));
+                methodBuffer.append(StringUtility.format("		_manager.modifyInstance(this);"));
                 if (cacheChange.values().length > 0) {
-                    methodBuilder.append(StringUtility.format(" }"));
+                    methodBuffer.append(StringUtility.format(" }"));
                 }
             }
         } else {
@@ -138,14 +138,14 @@ public class JavassistRegionProxy extends JavassistProxy {
             // newIndexValues, oldIndexValues);"));
             // }
         }
-        methodBuilder.append(StringUtility.format("} finally {"));
-        methodBuilder.append(StringUtility.format("}"));
+        methodBuffer.append(StringUtility.format("} finally {"));
+        methodBuffer.append(StringUtility.format("}"));
         // TODO 返回值部分
         if (returnType != void.class) {
-            methodBuilder.append(StringUtility.format("return value;"));
+            methodBuffer.append(StringUtility.format("return value;"));
         }
-        methodBuilder.append(StringUtility.format("}"));
-        proxyMethod.setBody(methodBuilder.toString());
+        methodBuffer.append(StringUtility.format("}"));
+        proxyMethod.setBody(methodBuffer.toString());
         proxyClazz.addMethod(proxyMethod);
     }
 
