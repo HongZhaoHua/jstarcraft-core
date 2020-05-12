@@ -53,7 +53,7 @@ public class LuceneIndexTestCase {
             InputStream stream = new FileInputStream(file);
             String format = "dd-MMM-yyyy";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format, Locale.US);
-            try (InputStreamReader reader = new InputStreamReader(stream); BufferedReader buffer = new BufferedReader(reader)) {
+            try (InputStreamReader reader = new InputStreamReader(stream, StringUtility.CHARSET); BufferedReader buffer = new BufferedReader(reader)) {
                 try (CSVParser parser = new CSVParser(buffer, CSVFormat.newFormat('|'))) {
                     Iterator<CSVRecord> iterator = parser.iterator();
                     while (iterator.hasNext()) {

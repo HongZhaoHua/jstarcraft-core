@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.storage.lucene.LuceneMetadata;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
+import com.jstarcraft.core.utility.StringUtility;
 
 public class LuceneMetadataTestCase {
 
@@ -42,7 +43,7 @@ public class LuceneMetadataTestCase {
         Assert.assertTrue(metadata.getIndexNames().contains("lastName"));
         Assert.assertEquals(LuceneMetadata.LUCENE_VERSION, metadata.getVersionName());
     }
-    
+
     @Test
     public void testCodec() throws Exception {
         Directory directory = new ByteBuffersDirectory();
@@ -52,7 +53,7 @@ public class LuceneMetadataTestCase {
 
         LuceneContext context = new LuceneContext(CodecDefinition.instanceOf(MockComplexObject.class));
         LuceneMetadata codec = new LuceneMetadata(MockComplexObject.class, context);
-        Instant now = Instant.now();
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         MockComplexObject protoss = MockComplexObject.instanceOf(-1, "protoss", "jstarcraft", -1, now, MockEnumeration.PROTOSS);
         MockComplexObject terran = MockComplexObject.instanceOf(0, "terran", "jstarcraft", 0, now, MockEnumeration.TERRAN);
         MockComplexObject zerg = MockComplexObject.instanceOf(1, "zerg", "jstarcraft", 1, now, MockEnumeration.ZERG);
@@ -71,7 +72,8 @@ public class LuceneMetadataTestCase {
             int index = 0;
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
-                Assert.assertEquals(objects[index++], codec.decodeDocument(document));
+                Assert.assertEquals(objects[index], codec.decodeDocument(document));
+                index++;
             }
         }
 

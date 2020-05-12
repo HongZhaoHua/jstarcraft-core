@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StoragePagination;
-import com.jstarcraft.core.storage.lucene.LuceneAccessor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -28,10 +27,10 @@ public class LuceneAccessorTestCase {
     @Test
     public void testCRUD() {
         int size = 100;
-
+        Instant now = Instant.ofEpochMilli(System.currentTimeMillis());
         for (int index = 0; index < size; index++) {
             // 创建对象并保存
-            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, Instant.now(), MockEnumeration.values()[index % MockEnumeration.values().length]);
+            MockObject object = MockObject.instanceOf(index, "birdy", "mickey" + index, index, now, MockEnumeration.values()[index % MockEnumeration.values().length]);
             accessor.createInstance(MockObject.class, object);
             int id = object.getId();
             Assert.assertThat(id, CoreMatchers.equalTo(index));

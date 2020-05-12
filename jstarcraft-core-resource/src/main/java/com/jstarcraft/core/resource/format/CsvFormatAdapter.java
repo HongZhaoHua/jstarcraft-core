@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
 import com.jstarcraft.core.resource.exception.StorageException;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * CSV适配器
@@ -28,7 +29,7 @@ public class CsvFormatAdapter implements FormatAdapter {
     public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
         try {
             List<E> list = new LinkedList<>();
-            try (InputStreamReader reader = new InputStreamReader(stream); BufferedReader buffer = new BufferedReader(reader)) {
+            try (InputStreamReader reader = new InputStreamReader(stream, StringUtility.CHARSET); BufferedReader buffer = new BufferedReader(reader)) {
                 for (String line = buffer.readLine(); line != null; line = buffer.readLine()) {
                     E instance = CsvUtility.string2Object(line, clazz);
                     list.add(instance);

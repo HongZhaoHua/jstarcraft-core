@@ -59,7 +59,7 @@ public class FileMemorandum implements Memorandum {
                 // 标记文件不存在
                 markNumber = -1L;
             } else {
-                try (FileInputStream input = new FileInputStream(markFile); InputStreamReader reader = new InputStreamReader(input); BufferedReader buffer = new BufferedReader(reader)) {
+                try (FileInputStream input = new FileInputStream(markFile); InputStreamReader reader = new InputStreamReader(input, StringUtility.CHARSET); BufferedReader buffer = new BufferedReader(reader)) {
                     markNumber = Long.valueOf(buffer.readLine());
                 }
             }
@@ -108,7 +108,7 @@ public class FileMemorandum implements Memorandum {
 
             File memorandumFile = new File(directory, MEMORANDUM_FILE);
             memorandumFile.createNewFile();
-            try (FileOutputStream output = new FileOutputStream(memorandumFile); OutputStreamWriter writer = new OutputStreamWriter(output); BufferedWriter buffer = new BufferedWriter(writer);) {
+            try (FileOutputStream output = new FileOutputStream(memorandumFile); OutputStreamWriter writer = new OutputStreamWriter(output, StringUtility.CHARSET); BufferedWriter buffer = new BufferedWriter(writer);) {
                 final String[] environmentNames = environmentDirectory.list();
                 for (String name : environmentNames) {
                     buffer.write(name);
@@ -169,7 +169,7 @@ public class FileMemorandum implements Memorandum {
         // 恢复的文件列表
         final Collection<String> names = new HashSet<String>();
 
-        try (FileInputStream fileInputStream = new FileInputStream(listFile); InputStreamReader dataInputStream = new InputStreamReader(fileInputStream); BufferedReader bufferedReader = new BufferedReader(dataInputStream);) {
+        try (FileInputStream fileInputStream = new FileInputStream(listFile); InputStreamReader dataInputStream = new InputStreamReader(fileInputStream, StringUtility.CHARSET); BufferedReader bufferedReader = new BufferedReader(dataInputStream);) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 names.add(line);
@@ -221,7 +221,7 @@ public class FileMemorandum implements Memorandum {
 
         // 保留的文件列表
         final Collection<String> saveList = new HashSet<String>();
-        try (FileInputStream input = new FileInputStream(listFile); InputStreamReader reader = new InputStreamReader(input); BufferedReader buffer = new BufferedReader(reader);) {
+        try (FileInputStream input = new FileInputStream(listFile); InputStreamReader reader = new InputStreamReader(input, StringUtility.CHARSET); BufferedReader buffer = new BufferedReader(reader);) {
             String line;
             while ((line = buffer.readLine()) != null) {
                 saveList.add(line);

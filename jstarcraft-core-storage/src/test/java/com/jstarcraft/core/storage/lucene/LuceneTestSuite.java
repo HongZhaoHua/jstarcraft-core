@@ -11,8 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
         LuceneEngineTestCase.class,
 
         // Lucene访问器测试
-        LuceneAccessorTestCase.class, LuceneMetadataTestCase.class, 
-        
+        LuceneAccessorTestCase.class, LuceneMetadataTestCase.class,
+
         // Lucene索引与检索测试
         LuceneIndexTestCase.class, LuceneQueryTestCase.class })
 public class LuceneTestSuite {

@@ -9,6 +9,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import com.jstarcraft.core.codec.csv.converter.CsvContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * CSV读入器
@@ -22,7 +23,7 @@ public class CsvReader extends CsvContext {
 
     public CsvReader(InputStream inputStream, CodecDefinition definition) {
         super(definition);
-        InputStreamReader buffer = new InputStreamReader(inputStream);
+        InputStreamReader buffer = new InputStreamReader(inputStream, StringUtility.CHARSET);
         try (CSVParser input = new CSVParser(buffer, FORMAT)) {
             Iterator<CSVRecord> iterator = input.iterator();
             if (iterator.hasNext()) {
