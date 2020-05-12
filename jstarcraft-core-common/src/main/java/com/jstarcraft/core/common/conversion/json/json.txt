@@ -1,0 +1,5 @@
+Jackson 中的 Features:
+https://www.dazhuanlan.com/2019/12/27/5e05894aae157
+
+Jackson features:
+https://github.com/FasterXML/jackson-databind/wiki/JacksonFeatures
