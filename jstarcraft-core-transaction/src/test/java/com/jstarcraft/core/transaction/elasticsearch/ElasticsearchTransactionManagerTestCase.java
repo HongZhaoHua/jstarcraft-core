@@ -18,7 +18,7 @@ import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 import pl.allegro.tech.embeddedelasticsearch.IndexSettings;
 import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 
-public class ElasticSearchTransactionManagerTestCase extends TransactionManagerTestCase {
+public class ElasticsearchTransactionManagerTestCase extends TransactionManagerTestCase {
 
     private static final String EMBEDDED_ELASTIC_HOST = "localhost";
 
@@ -46,9 +46,9 @@ public class ElasticSearchTransactionManagerTestCase extends TransactionManagerT
 
                 .withStartTimeout(2, TimeUnit.MINUTES)
 
-                .withIndex(ElasticSearchTransactionManager.DEFAULT_INDEX, IndexSettings.builder()
+                .withIndex(ElasticsearchTransactionManager.DEFAULT_INDEX, IndexSettings.builder()
 
-                        .withType(ElasticSearchTransactionManager.DEFAULT_TYPE, ClassLoader.getSystemResourceAsStream("ElasticSearchTransactionDefinition.mapping.json"))
+                        .withType(ElasticsearchTransactionManager.DEFAULT_TYPE, ClassLoader.getSystemResourceAsStream("ElasticsearchTransactionDefinition.mapping.json"))
 
                         .build())
 
@@ -66,7 +66,7 @@ public class ElasticSearchTransactionManagerTestCase extends TransactionManagerT
 
     @Override
     protected TransactionManager getDistributionManager() {
-        return new ElasticSearchTransactionManager(elasticClient);
+        return new ElasticsearchTransactionManager(elasticClient);
     }
 
 }

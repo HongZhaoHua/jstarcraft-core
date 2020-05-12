@@ -20,16 +20,16 @@ import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * ElasticSearch事务管理器
+ * Elasticsearch事务管理器
  * 
  * @author Birdy
  *
  */
-public class ElasticSearchTransactionManager extends TransactionManager {
+public class ElasticsearchTransactionManager extends TransactionManager {
 
     public static final String DEFAULT_INDEX = "jstarcraft";
 
-    public static final String DEFAULT_TYPE = "ElasticSearchTransactionDefinition";
+    public static final String DEFAULT_TYPE = "ElasticsearchTransactionDefinition";
 
     public static final String NAME = "name";
 
@@ -73,11 +73,11 @@ public class ElasticSearchTransactionManager extends TransactionManager {
 
     private final String type;
 
-    public ElasticSearchTransactionManager(RestHighLevelClient elastic) {
+    public ElasticsearchTransactionManager(RestHighLevelClient elastic) {
         this(elastic, DEFAULT_INDEX, DEFAULT_TYPE);
     }
 
-    public ElasticSearchTransactionManager(RestHighLevelClient elastic, String index, String type) {
+    public ElasticsearchTransactionManager(RestHighLevelClient elastic, String index, String type) {
         this.elastic = elastic;
         this.index = index;
         this.type = type;
