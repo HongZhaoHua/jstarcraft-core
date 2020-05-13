@@ -16,7 +16,7 @@ import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.StorageCondition;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
@@ -65,8 +65,8 @@ public class NumberIndexConverter implements IndexConverter {
     }
 
     @Override
-    public Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, StorageCondition condition, Object... data) {
-        if (!condition.checkValues(data)) {
+    public Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, ConditionType condition, Object... data) {
+        if (!condition.check(data)) {
             throw new StorageQueryException();
         }
         Class<?> clazz = TypeUtility.getRawType(type, null);

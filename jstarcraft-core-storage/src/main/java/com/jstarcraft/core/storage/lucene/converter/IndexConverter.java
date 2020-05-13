@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.search.Query;
 
-import com.jstarcraft.core.storage.StorageCondition;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 
 /**
@@ -31,7 +31,7 @@ public interface IndexConverter {
      */
     Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data);
 
-    default Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, StorageCondition condition, Object... data) {
+    default Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, ConditionType condition, Object... data) {
         throw new UnsupportedOperationException();
     }
 

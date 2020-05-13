@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StoragePagination;
 
@@ -54,30 +55,30 @@ public class HibernateAccessorTestCase {
 		Assert.assertThat(minimum, CoreMatchers.equalTo(0));
 
 		// 查询指定范围的主键与对象
-		Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockObject.class, StorageCondition.All, "money");
+		Map<Integer, Object> id2Moneys = accessor.queryIdentities(MockObject.class, "money", new StorageCondition<>(ConditionType.All));
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(size));
-		List<MockObject> objects = accessor.queryInstances(MockObject.class, StorageCondition.All, "money");
+		List<MockObject> objects = accessor.queryInstances(MockObject.class, "money", new StorageCondition<>(ConditionType.All));
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, StorageCondition.Equal, "money", 0);
+		id2Moneys = accessor.queryIdentities(MockObject.class, "money", new StorageCondition<>(ConditionType.Equal, 0));
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(1));
-		objects = accessor.queryInstances(MockObject.class, StorageCondition.Equal, "money", 0);
+		objects = accessor.queryInstances(MockObject.class, "money", new StorageCondition<>(ConditionType.Equal, 0));
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, StorageCondition.Between, "money", 1, 50);
+		id2Moneys = accessor.queryIdentities(MockObject.class, "money", new StorageCondition<>(ConditionType.Between, 1, 50));
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(50));
-		objects = accessor.queryInstances(MockObject.class, StorageCondition.Between, "money", 1, 50);
+		objects = accessor.queryInstances(MockObject.class, "money", new StorageCondition<>(ConditionType.Between, 1, 50));
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
 
-		id2Moneys = accessor.queryIdentities(MockObject.class, StorageCondition.In, "money", 25, 50, 75);
+		id2Moneys = accessor.queryIdentities(MockObject.class, "money", new StorageCondition<>(ConditionType.In, 25, 50, 75));
 		Assert.assertThat(id2Moneys.size(), CoreMatchers.equalTo(3));
-		objects = accessor.queryInstances(MockObject.class, StorageCondition.In, "money", 25, 50, 75);
+		objects = accessor.queryInstances(MockObject.class, "money", new StorageCondition<>(ConditionType.In, 25, 50, 75));
 		for (MockObject object : objects) {
 			Assert.assertThat(object.getMoney(), CoreMatchers.equalTo(id2Moneys.get(object.getId())));
 		}
@@ -158,7 +159,7 @@ public class HibernateAccessorTestCase {
 		parameters.put("id", 0);
 		parameters.put("money", 10);
 		Assert.assertThat(accessor.queryDatas(MockObject.UPDATE_MONEY_BY_ID, null, null, parameters).get(0), CoreMatchers.equalTo(1));
-		Assert.assertThat(accessor.queryIdentities(MockObject.class, StorageCondition.Equal, "money", 10).size(), CoreMatchers.equalTo(1));
+		Assert.assertThat(accessor.queryIdentities(MockObject.class, "money", new StorageCondition<>(ConditionType.Equal, 10)).size(), CoreMatchers.equalTo(1));
 
 		Assert.assertThat(accessor.queryDatas(MockObject.DELETE_ALL, null, null).get(0), CoreMatchers.equalTo(10));
 		Assert.assertThat(accessor.countInstances(MockObject.class), CoreMatchers.equalTo(0L));

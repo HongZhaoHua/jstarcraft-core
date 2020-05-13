@@ -94,7 +94,7 @@ public interface StorageAccessor {
      * @param values
      * @return
      */
-    <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, StorageCondition condition, String name, I... values);
+    <K extends Comparable, I, T extends IdentityObject<K>> Map<K, I> queryIdentities(Class<T> clazz, String name, StorageCondition<I> condition);
 
     /**
      * 查询指定索引范围的对象集合
@@ -104,7 +104,7 @@ public interface StorageAccessor {
      * @param values
      * @return
      */
-    <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, StorageCondition condition, String name, I... values);
+    <K extends Comparable, I, T extends IdentityObject<K>> List<T> queryInstances(Class<T> clazz, String name, StorageCondition<I> condition);
 
     // 结构化查询接口部分
 

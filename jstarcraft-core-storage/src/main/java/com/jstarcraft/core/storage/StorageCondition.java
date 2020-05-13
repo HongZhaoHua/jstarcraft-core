@@ -1,41 +1,51 @@
 package com.jstarcraft.core.storage;
 
-public enum StorageCondition {
+import java.util.Arrays;
+import java.util.Objects;
 
-    /** all */
-    All(0, 1),
+import com.jstarcraft.core.storage.exception.StorageQueryException;
 
-    /** from <= x <= to */
-    Between(2, 3),
+public class StorageCondition<V> {
 
-    /** x == value */
-    Equal(1, 2),
+	private ConditionType type;
 
-    /** x > from */
-    Higher(1, 2),
+	private V[] values;
 
-    /** x in values */
-    In(1, Integer.MAX_VALUE),
+	public StorageCondition(ConditionType type, V... values) {
+		if (!type.check(values)) {
+			throw new StorageQueryException();
+		}
+		this.type = type;
+		this.values = values;
+	}
 
-    /** x < to */
-    Lower(1, 2),
+	public ConditionType getType() {
+		return type;
+	}
 
-    /** x != value */
-    Unequal(1, 2);
+	public V[] getValues() {
+		return values;
+	}
 
-    /** 最小数量(包含) */
-    private final int minimum;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 1;
+		hash = prime * hash + Objects.hash(type);
+		hash = prime * hash + Arrays.deepHashCode(values);
+		return hash;
+	}
 
-    /** 最大数量(不包含) */
-    private final int maximum;
-
-    private StorageCondition(int minimum, int maximum) {
-        this.minimum = minimum;
-        this.maximum = maximum;
-    }
-
-    public <I> boolean checkValues(I... values) {
-        return values.length >= minimum && values.length < maximum;
-    }
+	@Override
+	public boolean equals(Object object) {
+		if (this == object)
+			return true;
+		if (object == null)
+			return false;
+		if (getClass() != object.getClass())
+			return false;
+		StorageCondition taht = (StorageCondition) object;
+		return this.type == taht.type && Arrays.deepEquals(this.values, taht.values);
+	}
 
 }

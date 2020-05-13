@@ -16,7 +16,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.BooleanClause.Occur;
 
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import com.jstarcraft.core.storage.StorageCondition;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;

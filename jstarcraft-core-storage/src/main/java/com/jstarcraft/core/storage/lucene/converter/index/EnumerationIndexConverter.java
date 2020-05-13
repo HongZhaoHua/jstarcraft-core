@@ -11,7 +11,7 @@ import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 
-import com.jstarcraft.core.storage.StorageCondition;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.converter.IndexConverter;
@@ -39,8 +39,8 @@ public class EnumerationIndexConverter implements IndexConverter {
     }
 
     @Override
-    public Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, StorageCondition condition, Object... data) {
-        if (!condition.checkValues(data)) {
+    public Query query(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, ConditionType condition, Object... data) {
+        if (!condition.check(data)) {
             throw new StorageQueryException();
         }
         Query query = null;
