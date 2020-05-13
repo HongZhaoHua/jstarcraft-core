@@ -40,7 +40,7 @@ public class ElasticsearchTransactionManagerTestCase extends TransactionManagerT
 
     @BeforeClass
     public static void startEmbeddedElastic() throws IOException, InterruptedException {
-        elasticServer = EmbeddedElastic.builder().withElasticVersion("6.4.0")
+        elasticServer = EmbeddedElastic.builder().withElasticVersion("6.8.8")
 
                 .withSetting(PopularProperties.HTTP_PORT, EMBEDDED_ELASTIC_PORT)
 
