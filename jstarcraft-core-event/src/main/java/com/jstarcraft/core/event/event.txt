@@ -1,5 +1,5 @@
 企业集成模式:
-https://www.enterpriseintegrationpatterns.com/patterns/messaging/
+https://www.enterpriseintegrationpatterns.com/patterns/messaging
 
 消息队列的两种模式:
 https://www.cnblogs.com/jackytang/p/9011051.html

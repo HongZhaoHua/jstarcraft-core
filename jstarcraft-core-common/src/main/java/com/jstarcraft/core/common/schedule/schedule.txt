@@ -1,3 +1,9 @@
+定时和延时消息:
+https://help.aliyun.com/document_detail/43349.html
+
+ActiveMQ 延迟消息与定时消息传递:
+https://blog.csdn.net/relax_hb/article/details/84974120
+
 细说延时任务的处理:
 https://www.jianshu.com/p/7beebbc61229
 
