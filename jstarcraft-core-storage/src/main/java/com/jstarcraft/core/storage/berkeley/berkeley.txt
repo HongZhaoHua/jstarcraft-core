@@ -4,3 +4,6 @@ http://zizihaier.iteye.com/blog/1157251
 
 BerkeleyDB-JE:
 https://www.iteye.com/category/112496
+
+Oracle Berkeley DB Java Edition:
+https://docs.oracle.com/cd/E17277_02/html/index.html
