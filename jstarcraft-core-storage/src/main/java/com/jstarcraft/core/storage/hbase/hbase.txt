@@ -1,3 +1,6 @@
+几张图看懂列式存储:
+https://blog.csdn.net/dc_726/article/details/41143175
+
 HBase - 安装(Windows):
 https://www.cnblogs.com/yangfansaily/p/12254743.html
 
