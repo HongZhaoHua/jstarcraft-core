@@ -62,6 +62,11 @@
             <artifactId>commons-compress</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.junrar</groupId>
+            <artifactId>junrar</artifactId>
+        </dependency>
+
         <!-- CSV -->
         <dependency>
             <groupId>org.apache.commons</groupId>

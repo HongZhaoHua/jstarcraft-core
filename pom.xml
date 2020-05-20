@@ -436,6 +436,12 @@
                 <version>1.20</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.github.junrar</groupId>
+                <artifactId>junrar</artifactId>
+                <version>4.0.0</version>
+            </dependency>
+
             <!-- CSV -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
