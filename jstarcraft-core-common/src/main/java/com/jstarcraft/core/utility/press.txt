@@ -1,6 +1,10 @@
 Apache Commons Compress 文件解压缩库:
 https://blog.csdn.net/wangmx1993328/article/details/103943688
 
+Java压缩/解压7Z:
+https://www.jianshu.com/p/f982e797d753
+https://www.jianshu.com/p/ddc514f77a1f
+
 Apache Commons Compress User Guide:
 http://commons.apache.org/proper/commons-compress/examples.html
 Apache Commons Compress Known Limitations

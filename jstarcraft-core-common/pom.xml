@@ -62,6 +62,13 @@
             <artifactId>commons-compress</artifactId>
         </dependency>
 
+        <!-- 7Z格式 -->
+        <dependency>
+            <groupId>org.tukaani</groupId>
+            <artifactId>xz</artifactId>
+        </dependency>
+
+        <!-- RAR格式 -->
         <dependency>
             <groupId>com.github.junrar</groupId>
             <artifactId>junrar</artifactId>
