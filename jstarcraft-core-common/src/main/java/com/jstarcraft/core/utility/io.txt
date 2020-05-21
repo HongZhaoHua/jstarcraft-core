@@ -1,5 +1,8 @@
 Java中3种OutputStream转InputStream的方法:
 https://www.jianshu.com/p/659a821d5118
 
+Convert a Java OutputStream to an InputStream:
+https://blog.ostermiller.org/convert-a-java-outputstream-to-an-inputstream
+
 Java Utilities - OstermillerUtils:
 https://ostermiller.org/utils
