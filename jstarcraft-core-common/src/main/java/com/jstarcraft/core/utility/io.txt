@@ -1,2 +1,5 @@
 Java中3种OutputStream转InputStream的方法:
 https://www.jianshu.com/p/659a821d5118
+
+Java Utilities - OstermillerUtils:
+https://ostermiller.org/utils
