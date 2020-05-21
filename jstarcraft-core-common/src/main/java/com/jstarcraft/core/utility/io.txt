@@ -1,3 +1,6 @@
+[重学Java基础][JavaIO流]:
+https://blog.csdn.net/u011863951/category_7596732.html
+
 Java中3种OutputStream转InputStream的方法:
 https://www.jianshu.com/p/659a821d5118
 
