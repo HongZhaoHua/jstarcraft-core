@@ -1,2 +1,7 @@
 Apache Commons Compress 文件解压缩库:
 https://blog.csdn.net/wangmx1993328/article/details/103943688
+
+Apache Commons Compress User Guide:
+http://commons.apache.org/proper/commons-compress/examples.html
+Apache Commons Compress Known Limitations
+https://commons.apache.org/proper/commons-compress/limitations.html
