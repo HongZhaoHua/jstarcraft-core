@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +24,9 @@ import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.compressors.CompressorInputStream;
+import org.apache.commons.compress.compressors.CompressorOutputStream;
+import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +35,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Birdy
  */
+@Deprecated
+// TODO 待重构
 public class PressUtility {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PressUtility.class);
@@ -105,6 +112,48 @@ public class PressUtility {
 		}
 	}
 
+	private static final CompressorStreamFactory compressorStreamFactory = new CompressorStreamFactory();
+
+	/**
+	 * 将输入流根据指定类型压缩到输出流
+	 * 
+	 * @param type
+	 * @param input
+	 * @param output
+	 */
+	public static void compress(String type, InputStream input, OutputStream output) {
+		try (CompressorOutputStream compressor = compressorStreamFactory.createCompressorOutputStream(type, output)) {
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int length = -1;
+			while ((length = input.read(buffer)) != -1) {
+				compressor.write(buffer, 0, length);
+			}
+		} catch (Exception exception) {
+			String message = StringUtility.format("压缩{}异常", type);
+			throw new IllegalStateException(message, exception);
+		}
+	}
+
+	/**
+	 * 将输入流根据指定类型解压到输出流
+	 * 
+	 * @param type
+	 * @param input
+	 * @param output
+	 */
+	public static void decompress(String type, InputStream input, OutputStream output) {
+		try (CompressorInputStream compressor = compressorStreamFactory.createCompressorInputStream(type, input)) {
+			byte[] buffer = new byte[BUFFER_SIZE];
+			int length = -1;
+			while ((length = compressor.read(buffer)) != -1) {
+				output.write(buffer, 0, length);
+			}
+		} catch (Exception exception) {
+			String message = StringUtility.format("解压{}异常", type);
+			throw new IllegalStateException(message, exception);
+		}
+	}
+
 	public static void compressZip(File fromDirectory, File toFile) {
 		try (FileOutputStream fileOutputStream = new FileOutputStream(toFile); ZipArchiveOutputStream archiveOutputStream = new ZipArchiveOutputStream(fileOutputStream)) {
 			byte[] buffer = new byte[BUFFER_SIZE];
@@ -158,7 +207,6 @@ public class PressUtility {
 					archiveOutputStream.closeArchiveEntry();
 				}
 			}
-			archiveOutputStream.finish();
 		} catch (IOException exception) {
 			throw new IllegalStateException("压缩7Z异常", exception);
 		}
@@ -175,7 +223,6 @@ public class PressUtility {
 					while ((length = archiveInputStream.read(buffer)) != -1) {
 						fileOutputStream.write(buffer, 0, length);
 					}
-					fileOutputStream.flush();
 				}
 			}
 		} catch (IOException exception) {
