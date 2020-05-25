@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.instant;
 
+import java.time.LocalDate;
 import java.time.MonthDay;
 
 /**
@@ -85,6 +86,26 @@ public enum ZodiacType {
         }
         ZodiacType zodiac = values()[(number + 2) % 12];
         return zodiac;
+    }
+
+    /**
+     * 按历法获取星座
+     * 
+     * @param calendar
+     * @return
+     */
+    public static ZodiacType getZodiac(CalendarDate calendar) {
+        return getZodiac(calendar.getDate());
+    }
+
+    /**
+     * 按日期获取星座
+     * 
+     * @param date
+     * @return
+     */
+    public static ZodiacType getZodiac(LocalDate date) {
+        return getZodiac(date.getMonthValue(), date.getDayOfMonth());
     }
 
     /**
