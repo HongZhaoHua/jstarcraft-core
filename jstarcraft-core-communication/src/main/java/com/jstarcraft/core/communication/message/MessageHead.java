@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * 信息头
  * 
  * <pre>
- * 信息头:[长度(length)][序列(sequence)][时间(time)][指令(command)][模块(module)]
+ * 信息头:[长度(length)][序列(sequence)][时间(instant)][指令(command)][模块(module)]
  * </pre>
  * 
  * @author Birdy
@@ -25,7 +25,7 @@ public class MessageHead {
     private int sequence;
     /** 时间 */
     // TODO 可能重构为long类型
-    private Instant time;
+    private Instant instant;
     /** 指令 */
     private byte command;
     /** 模块 */
@@ -35,8 +35,8 @@ public class MessageHead {
         return sequence;
     }
 
-    public Instant getTime() {
-        return time;
+    public Instant getInstant() {
+        return instant;
     }
 
     public byte getCommand() {
@@ -60,7 +60,7 @@ public class MessageHead {
         equal.append(this.command, that.command);
         equal.append(this.module, that.module);
         equal.append(this.sequence, that.sequence);
-        equal.append(this.time, that.time);
+        equal.append(this.instant, that.instant);
         return equal.isEquals();
     }
 
@@ -70,7 +70,7 @@ public class MessageHead {
         hash.append(command);
         hash.append(module);
         hash.append(sequence);
-        hash.append(time);
+        hash.append(instant);
         return hash.toHashCode();
     }
 
@@ -86,7 +86,7 @@ public class MessageHead {
         DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
         MessageHead value = new MessageHead();
         value.sequence = dataInputStream.readInt();
-        value.time = Instant.ofEpochMilli(dataInputStream.readLong());
+        value.instant = Instant.ofEpochMilli(dataInputStream.readLong());
         value.command = dataInputStream.readByte();
         value.module = new byte[dataInputStream.available()];
         dataInputStream.read(value.module);
@@ -104,7 +104,7 @@ public class MessageHead {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         dataOutputStream.writeInt(value.sequence);
-        dataOutputStream.writeLong(value.time.toEpochMilli());
+        dataOutputStream.writeLong(value.instant.toEpochMilli());
         dataOutputStream.writeByte(value.command);
         dataOutputStream.write(value.module);
         byte[] data = byteArrayOutputStream.toByteArray();
@@ -114,7 +114,7 @@ public class MessageHead {
     public static MessageHead instanceOf(int sequence, byte command, byte... modules) {
         MessageHead instance = new MessageHead();
         instance.sequence = sequence;
-        instance.time = Instant.now();
+        instance.instant = Instant.now();
         instance.command = command;
         instance.module = modules;
         return instance;

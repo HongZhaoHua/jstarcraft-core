@@ -19,7 +19,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * 
  * <pre>
  * 信息结构：[0xFFFFFFFF][长度(length)][信息头(head)][信息体(body)][信息尾(tail)]
- * 信息头:[长度(length)][序列(sequence)][时间(time)][模块(module)][指令(command)]
+ * 信息头:[长度(length)][序列(sequence)][时间(instant)][模块(module)][指令(command)]
  * 信息体:[长度(length)][格式(format)][内容(content)] TODO 考虑将异常整合到格式[异常(exception)][模块(module)][代号(code)]
  * 信息尾:[长度(length)][校验(check)][内容(content)]
  * </pre>
@@ -150,7 +150,7 @@ public class CommunicationMessage {
         checksum.update(bodyData, 0, bodyData.length);
         checksum.update(tailData, 0, tailData.length);
 
-        // TODO 此处消息长度+20是由于check与headData.length,bodyData.length,tailData.length占用的长度大小
+        // TODO 此处消息长度+20是由于check与headData.length,bodyData.length,tailData.length占用的字节长度
         int length = headData.length + bodyData.length + tailData.length + 20;
         out.writeInt(length);
         long check = checksum.getValue();
