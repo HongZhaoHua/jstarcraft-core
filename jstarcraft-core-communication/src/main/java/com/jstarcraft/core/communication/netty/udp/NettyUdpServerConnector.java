@@ -276,7 +276,7 @@ public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPac
             Object value = keyValue.getValue();
             connector.option(key, value);
         }
-        eventLoopGroup = new NioEventLoopGroup(1, new NameThreadFactory("服务端主EventLoop线程"));
+        eventLoopGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors(), new NameThreadFactory("服务端主EventLoop线程"));
         connector.group(eventLoopGroup);
         connector.channel(NioDatagramChannel.class);
         connector.handler(new ChannelInitializer<Channel>() {
