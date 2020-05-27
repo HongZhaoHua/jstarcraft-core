@@ -17,6 +17,7 @@ import com.jstarcraft.core.communication.message.CommunicationMessage;
 import com.jstarcraft.core.communication.netty.NettyServerConnector;
 import com.jstarcraft.core.communication.netty.NettySessionManager;
 import com.jstarcraft.core.communication.session.CommunicationSession;
+import com.jstarcraft.core.communication.session.SessionManager;
 import com.jstarcraft.core.communication.session.SessionReceiver;
 import com.jstarcraft.core.communication.session.SessionSender;
 import com.jstarcraft.core.utility.DelayElement;
@@ -190,8 +191,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
     public void channelActive(ChannelHandlerContext context) throws Exception {
         Channel channel = context.channel();
         InetSocketAddress address = InetSocketAddress.class.cast(channel.remoteAddress());
-        String key = address.getHostName() + ":" + address.getPort();
-        sessionManager.attachSession(key, channel);
+        sessionManager.attachSession(address, channel);
         super.channelActive(context);
     }
 
@@ -199,8 +199,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
     public void channelInactive(ChannelHandlerContext context) throws Exception {
         Channel channel = context.channel();
         InetSocketAddress address = InetSocketAddress.class.cast(channel.remoteAddress());
-        String key = address.getHostName() + ":" + address.getPort();
-        CommunicationSession<Channel> session = sessionManager.getSession(key);
+        CommunicationSession<Channel> session = sessionManager.getSession(address);
         // 将会话放到定时队列
         Instant now = Instant.now();
         Instant expire = now.plusMillis(expired);
@@ -213,8 +212,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
     public void checkData(Channel channel, CommunicationMessage message) {
         synchronized (channel) {
             InetSocketAddress address = InetSocketAddress.class.cast(channel.remoteAddress());
-            String key = address.getHostName() + ":" + address.getPort();
-            CommunicationSession<Channel> session = sessionManager.getSession(key);
+            CommunicationSession<Channel> session = sessionManager.getSession(address);
             session.pushReceiveMessage(message);
             receiveSessions.offer(session);
         }
@@ -321,7 +319,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 
     @Override
     public String getAddress() {
-        return StringUtility.format("{}:{}", address.getHostName(), address.getPort());
+        return SessionManager.address2Key(address);
     }
 
 }

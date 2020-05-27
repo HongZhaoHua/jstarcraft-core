@@ -1,5 +1,6 @@
 package com.jstarcraft.core.communication.netty;
 
+import java.net.InetSocketAddress;
 import java.util.Collection;
 
 import com.jstarcraft.core.communication.session.CommunicationSession;
@@ -22,7 +23,7 @@ public interface NettyClientConnector<T> extends NettyConnector<T> {
      * @param wait
      * @return
      */
-    CommunicationSession<T> open(String key, long wait);
+    CommunicationSession<T> open(InetSocketAddress address, long wait);
 
     /**
      * 关闭会话
@@ -30,13 +31,13 @@ public interface NettyClientConnector<T> extends NettyConnector<T> {
      * @param key
      * @return
      */
-    void close(String key);
+    void close(InetSocketAddress address);
 
     /**
      * 获取通道地址
      * 
      * @return
      */
-    Collection<String> getAddresses();
+    Collection<InetSocketAddress> getAddresses();
 
 }

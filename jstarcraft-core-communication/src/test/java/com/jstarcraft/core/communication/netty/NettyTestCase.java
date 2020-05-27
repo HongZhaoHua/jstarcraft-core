@@ -1,5 +1,6 @@
 package com.jstarcraft.core.communication.netty;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +26,7 @@ import com.jstarcraft.core.communication.command.MockServerClass;
 import com.jstarcraft.core.communication.command.MockServerInterface;
 import com.jstarcraft.core.communication.command.UserObject;
 import com.jstarcraft.core.communication.session.CommunicationSession;
+import com.jstarcraft.core.communication.session.SessionManager;
 import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class NettyTestCase<T> {
@@ -63,8 +65,8 @@ public abstract class NettyTestCase<T> {
     @Autowired
     protected MockClientClass mockClientClass;
 
-    protected String clientAddress = "127.0.0.1:6969";
-    protected String serverAddress = "0.0.0.0:6969";
+    protected InetSocketAddress clientAddress = SessionManager.key2Address("127.0.0.1:6969");
+    protected InetSocketAddress serverAddress = SessionManager.key2Address("0.0.0.0:6969");
 
     @Before
     public void before() {
@@ -107,7 +109,7 @@ public abstract class NettyTestCase<T> {
     public void testService() throws Exception {
         // 启动客户端与服务端的会话
         CommunicationSession<T> clientSession = nettyClientConnector.open(clientAddress, 5000);
-        Assert.assertThat(clientSession.getKey(), CoreMatchers.equalTo(clientAddress));
+        Assert.assertThat(clientSession.getKey(), CoreMatchers.equalTo(SessionManager.address2Key(clientAddress)));
         // Thread.sleep(1000L);
         // Assert.assertThat(serverSessionManager.getSessions(null).size(),
         // CoreMatchers.equalTo(1));
@@ -115,7 +117,7 @@ public abstract class NettyTestCase<T> {
         // 相当于业务流程
         long userId = 1;
         String userName = "birdy";
-        MockServerInterface serverService = clientCommandManager.getProxy(MockServerInterface.class, clientAddress, 10000);
+        MockServerInterface serverService = clientCommandManager.getProxy(MockServerInterface.class, SessionManager.address2Key(clientAddress), 10000);
         UserObject user = UserObject.instanceOf(userId, userName);
 
         int serverTimes = mockServerClass.getTimes();
@@ -163,7 +165,7 @@ public abstract class NettyTestCase<T> {
             long userId = thread;
             executor.submit(() -> {
                 try {
-                    MockServerInterface service = clientCommandManager.getProxy(MockServerInterface.class, clientAddress, 10000);
+                    MockServerInterface service = clientCommandManager.getProxy(MockServerInterface.class, SessionManager.address2Key(clientAddress), 10000);
                     String userName = "birdy";
                     UserObject user = UserObject.instanceOf(userId, userName);
                     for (int time = 0; time < times; time++) {

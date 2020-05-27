@@ -22,6 +22,7 @@ import com.jstarcraft.core.communication.netty.NettyBufferOutputStream;
 import com.jstarcraft.core.communication.netty.NettyServerConnector;
 import com.jstarcraft.core.communication.netty.NettySessionManager;
 import com.jstarcraft.core.communication.session.CommunicationSession;
+import com.jstarcraft.core.communication.session.SessionManager;
 import com.jstarcraft.core.communication.session.SessionReceiver;
 import com.jstarcraft.core.communication.session.SessionSender;
 import com.jstarcraft.core.utility.DelayElement;
@@ -217,13 +218,12 @@ public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPac
 
     @Override
     public void checkData(InetSocketAddress address, CommunicationMessage message) {
-        String key = address.getHostName() + ":" + address.getPort();
-        CommunicationSession<InetSocketAddress> session = sessionManager.getSession(key);
+        CommunicationSession<InetSocketAddress> session = sessionManager.getSession(address);
         if (session == null) {
             synchronized (sessionManager) {
-                session = sessionManager.getSession(key);
+                session = sessionManager.getSession(address);
                 if (session == null) {
-                    session = sessionManager.attachSession(key, address);
+                    session = sessionManager.attachSession(address, address);
                     // 将会话放到定时队列
                     Instant now = session.getUpdatedAt();
                     Instant expire = now.plusMillis(expired);
@@ -331,7 +331,7 @@ public class NettyUdpServerConnector extends MessageToMessageDecoder<DatagramPac
 
     @Override
     public String getAddress() {
-        return StringUtility.format("{}:{}", address.getHostName(), address.getPort());
+        return SessionManager.address2Key(address);
     }
 
 }

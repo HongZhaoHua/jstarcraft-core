@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.jstarcraft.core.communication.command.MockServerInterface;
 import com.jstarcraft.core.communication.exception.CommunicationException;
 import com.jstarcraft.core.communication.netty.NettyTestCase;
+import com.jstarcraft.core.communication.session.SessionManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -27,7 +28,7 @@ public class NettyUdpTestCase extends NettyTestCase<InetSocketAddress> {
         Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(0));
 
         // UDP服务端在第一次收到消息才会创建会话
-        MockServerInterface service = clientCommandManager.getProxy(MockServerInterface.class, clientAddress, 10000);
+        MockServerInterface service = clientCommandManager.getProxy(MockServerInterface.class, SessionManager.address2Key(clientAddress), 10000);
 
         Assert.assertNull(service.getUser(0L));
         Assert.assertThat(serverSessionManager.getSessions(null).size(), CoreMatchers.equalTo(1));

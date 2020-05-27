@@ -70,7 +70,7 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     /** Netty选项 */
     private Map<String, Object> options;
     /** Netty通道映射 */
-    private Map<String, Channel> channels = new HashMap<>();
+    private Map<InetSocketAddress, Channel> channels = new HashMap<>();
     /** 会话管理器 */
     private NettySessionManager<Channel> sessionManager;
     /** 已接收的会话队列 */
@@ -170,8 +170,7 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     public void channelInactive(ChannelHandlerContext context) throws Exception {
         Channel channel = context.channel();
         InetSocketAddress address = InetSocketAddress.class.cast(channel.remoteAddress());
-        String key = address.getHostName() + ":" + address.getPort();
-        CommunicationSession<Channel> session = sessionManager.getSession(key);
+        CommunicationSession<Channel> session = sessionManager.getSession(address);
         if (session != null) {
             // TODO 将会话放到定时队列
             Instant now = Instant.now();
@@ -186,8 +185,7 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     public void checkData(Channel channel, CommunicationMessage message) {
         synchronized (channel) {
             InetSocketAddress address = InetSocketAddress.class.cast(channel.remoteAddress());
-            String key = address.getHostName() + ":" + address.getPort();
-            CommunicationSession<Channel> session = sessionManager.getSession(key);
+            CommunicationSession<Channel> session = sessionManager.getSession(address);
             session.pushReceiveMessage(message);
             receiveSessions.offer(session);
         }
@@ -262,7 +260,7 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
         if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
             throw new CommunicationException();
         }
-        for (String key : channels.keySet()) {
+        for (InetSocketAddress key : channels.keySet()) {
             close(key);
         }
         eventLoopGroup.shutdownGracefully();
@@ -278,33 +276,16 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     }
 
     @Override
-    public synchronized CommunicationSession<Channel> open(String key, long wait) {
-        if (StringUtility.isEmpty(key)) {
-            throw new IllegalArgumentException();
-        }
-        if (sessionManager.getSession(key) != null) {
+    public synchronized CommunicationSession<Channel> open(InetSocketAddress address, long wait) {
+        if (sessionManager.getSession(address) != null) {
             throw new CommunicationException();
-        }
-        InetSocketAddress address;
-        int colonIndex = key.lastIndexOf(StringUtility.COLON);
-        if (colonIndex > 0) {
-            String host = key.substring(0, colonIndex);
-            int port = Integer.parseInt(key.substring(colonIndex + 1));
-            if (!StringUtility.ASTERISK.equals(host)) {
-                address = new InetSocketAddress(host, port);
-            } else {
-                address = new InetSocketAddress(port);
-            }
-        } else {
-            int port = Integer.parseInt(key.substring(colonIndex + 1));
-            address = new InetSocketAddress(port);
         }
         try {
             ChannelFuture future = connector.connect(address);
             future.sync();
             Channel channel = future.channel();
-            channels.put(key, channel);
-            return sessionManager.attachSession(key, channel);
+            channels.put(address, channel);
+            return sessionManager.attachSession(address, channel);
         } catch (Throwable throwable) {
             String message = StringUtility.format("客户端异常");
             LOGGER.error(message, throwable);
@@ -313,8 +294,8 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     }
 
     @Override
-    public synchronized void close(String key) {
-        Channel channel = channels.remove(key);
+    public synchronized void close(InetSocketAddress address) {
+        Channel channel = channels.remove(address);
         if (channel != null) {
             ChannelFuture channelFuture = channel.close();
             channelFuture.awaitUninterruptibly();
@@ -322,7 +303,7 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
     }
 
     @Override
-    public Collection<String> getAddresses() {
+    public Collection<InetSocketAddress> getAddresses() {
         return channels.keySet();
     }
 

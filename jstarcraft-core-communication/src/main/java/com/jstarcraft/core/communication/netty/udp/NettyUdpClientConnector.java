@@ -193,8 +193,7 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
 
     @Override
     public void checkData(InetSocketAddress address, CommunicationMessage message) {
-        String key = address.getHostName() + ":" + address.getPort();
-        CommunicationSession<InetSocketAddress> session = sessionManager.getSession(key);
+        CommunicationSession<InetSocketAddress> session = sessionManager.getSession(address);
         session.pushReceiveMessage(message);
         receiveSessions.offer(session);
     }
@@ -293,39 +292,22 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
     }
 
     @Override
-    public synchronized CommunicationSession<InetSocketAddress> open(String key, long wait) {
-        if (StringUtility.isEmpty(key)) {
-            throw new IllegalArgumentException();
-        }
-        if (sessionManager.getSession(key) != null) {
+    public synchronized CommunicationSession<InetSocketAddress> open(InetSocketAddress address, long wait) {
+        if (sessionManager.getSession(address) != null) {
             throw new CommunicationException();
         }
-        InetSocketAddress address;
-        int colonIndex = key.lastIndexOf(StringUtility.COLON);
-        if (colonIndex > 0) {
-            String host = key.substring(0, colonIndex);
-            int port = Integer.parseInt(key.substring(colonIndex + 1));
-            if (!StringUtility.ASTERISK.equals(host)) {
-                address = new InetSocketAddress(host, port);
-            } else {
-                address = new InetSocketAddress(port);
-            }
-        } else {
-            int port = Integer.parseInt(key.substring(colonIndex + 1));
-            address = new InetSocketAddress(port);
-        }
-        return sessionManager.attachSession(key, address);
+        return sessionManager.attachSession(address, address);
     }
 
     @Override
-    public synchronized void close(String key) {
-        sessionManager.detachSession(key);
+    public synchronized void close(InetSocketAddress address) {
+        sessionManager.detachSession(address);
     }
 
     @Override
-    public synchronized Collection<String> getAddresses() {
+    public synchronized Collection<InetSocketAddress> getAddresses() {
         // TODO 此处需要重构.
-        HashSet<String> addresses = new HashSet<>();
+        HashSet<InetSocketAddress> addresses = new HashSet<>();
         // for (InetSocketAddress address : addressSessions.keySet()) {
         // addresses.add(address.toString());
         // }
