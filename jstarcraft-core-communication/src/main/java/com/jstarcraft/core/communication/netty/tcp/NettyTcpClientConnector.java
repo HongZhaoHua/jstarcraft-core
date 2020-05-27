@@ -285,22 +285,22 @@ public class NettyTcpClientConnector extends ChannelInboundHandlerAdapter implem
         if (sessionManager.getSession(key) != null) {
             throw new CommunicationException();
         }
-        InetSocketAddress socketAddress;
+        InetSocketAddress address;
         int colonIndex = key.lastIndexOf(StringUtility.COLON);
         if (colonIndex > 0) {
             String host = key.substring(0, colonIndex);
             int port = Integer.parseInt(key.substring(colonIndex + 1));
             if (!StringUtility.ASTERISK.equals(host)) {
-                socketAddress = new InetSocketAddress(host, port);
+                address = new InetSocketAddress(host, port);
             } else {
-                socketAddress = new InetSocketAddress(port);
+                address = new InetSocketAddress(port);
             }
         } else {
             int port = Integer.parseInt(key.substring(colonIndex + 1));
-            socketAddress = new InetSocketAddress(port);
+            address = new InetSocketAddress(port);
         }
         try {
-            ChannelFuture future = connector.connect(socketAddress);
+            ChannelFuture future = connector.connect(address);
             future.sync();
             Channel channel = future.channel();
             channels.put(key, channel);
