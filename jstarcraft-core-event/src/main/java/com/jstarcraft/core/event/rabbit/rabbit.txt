@@ -7,6 +7,9 @@ https://www.rabbitmq.com/install-windows.html
 理解RabbitMQ中的AMQP-0-9-1模型:
 https://www.cnblogs.com/throwable/p/12275645.html
 
+Rabbit指南:
+https://blog.csdn.net/weixin_43533358/category_8270622.html
+
 java操作RabbitMQ(原生java客户端amqp-client):
 https://blog.csdn.net/u010904188/article/details/81066040
 
