@@ -15,6 +15,9 @@ public class LunarDateTestCase {
             Assert.fail();
         } catch (IllegalArgumentException exception) {
         }
+
+        // 1944年的闰4月有30天
+        Assert.assertEquals(LocalDate.of(1944, 6, 20), new LunarDate(1944, true, 4, 30).getDate());
     }
 
     @Test
