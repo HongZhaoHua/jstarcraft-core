@@ -33,3 +33,6 @@ https://blog.csdn.net/l1028386804/article/details/54573106
 
 Hash算法大全(java实现):
 http://tdcq.iteye.com/blog/1968756
+
+Hashids algorithm v1.0.0 implementation in Java:
+https://github.com/10cella/hashids-java
