@@ -63,7 +63,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
                             monitor.onEvent(event);
                         } catch (Exception exception) {
                             // 记录日志
-                            String message = StringUtility.format("监控器[{}]处理JMS事件[{}]时异常", monitor.getClass(), event.getClass());
+                            String message = StringUtility.format("监控器[{}]处理AMQP事件[{}]时异常", monitor.getClass(), event.getClass());
                             logger.error(message, exception);
                         }
                         break;
@@ -74,7 +74,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
                                 monitor.onEvent(event);
                             } catch (Exception exception) {
                                 // 记录日志
-                                String message = StringUtility.format("监控器[{}]处理JMS事件[{}]时异常", monitor.getClass(), event.getClass());
+                                String message = StringUtility.format("监控器[{}]处理AMQP事件[{}]时异常", monitor.getClass(), event.getClass());
                                 logger.error(message, exception);
                             }
                         }
@@ -84,7 +84,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
                 }
             } catch (Exception exception) {
                 // 记录日志
-                String message = StringUtility.format("编解码器[{}]处理JMS事件[{}]时异常", codec.getClass(), data);
+                String message = StringUtility.format("编解码器[{}]处理AMQP事件[{}]时异常", codec.getClass(), data);
                 logger.error(message, exception);
             }
         }
