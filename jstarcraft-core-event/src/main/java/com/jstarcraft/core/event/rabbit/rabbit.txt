@@ -17,4 +17,8 @@ java操作RabbitMQ(原生java客户端amqp-client):
 https://blog.csdn.net/u010904188/article/details/81066040
 
 RabbitMQ Java客户端API指南:
-https://blog.csdn.net/qq_34446485/article/details/81327789
+https://www.cnblogs.com/xinxiucan/p/8041423.html
+https://www.cnblogs.com/xinxiucan/p/8041431.html
+
+RabbitMQ之方法详解:
+https://blog.csdn.net/yaomingyang/article/details/102636657
