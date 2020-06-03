@@ -1,6 +1,12 @@
 Windows安装Kafka 2.10:
 https://www.jianshu.com/p/66d89376d9cd
 
+单元测试之embedded-kafka:
+https://www.jianshu.com/p/66ed08b3f155
+
+Apache Kafka系列:
+http://www.itrensheng.com/categories/kafka
+
 Kafka核心设计与实践原理总结:
 https://blog.csdn.net/wk52525/article/details/96985534
 https://blog.csdn.net/wk52525/article/details/98070770
