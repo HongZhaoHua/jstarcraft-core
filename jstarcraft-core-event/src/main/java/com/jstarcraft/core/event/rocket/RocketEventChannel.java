@@ -68,7 +68,7 @@ public class RocketEventChannel extends AbstractEventChannel {
                                 monitor.onEvent(event);
                             } catch (Exception exception) {
                                 // 记录日志
-                                String message = StringUtility.format("监控器[{}]处理Rocket事件[{}]时异常", monitor.getClass(), event.getClass());
+                                String message = StringUtility.format("监控器[{}]处理RocketMQ事件[{}]时异常", monitor.getClass(), event.getClass());
                                 logger.error(message, exception);
                             }
                             break;
@@ -79,7 +79,7 @@ public class RocketEventChannel extends AbstractEventChannel {
                                     monitor.onEvent(event);
                                 } catch (Exception exception) {
                                     // 记录日志
-                                    String message = StringUtility.format("监控器[{}]处理Rocket事件[{}]时异常", monitor.getClass(), event.getClass());
+                                    String message = StringUtility.format("监控器[{}]处理RocketMQ事件[{}]时异常", monitor.getClass(), event.getClass());
                                     logger.error(message, exception);
                                 }
                             }
@@ -89,7 +89,7 @@ public class RocketEventChannel extends AbstractEventChannel {
                     }
                 } catch (Exception exception) {
                     // 记录日志
-                    String message = StringUtility.format("编解码器[{}]处理Rocket事件[{}]时异常", codec.getClass(), data);
+                    String message = StringUtility.format("编解码器[{}]处理RocketMQ事件[{}]时异常", codec.getClass(), data);
                     logger.error(message, exception);
                 }
             }
