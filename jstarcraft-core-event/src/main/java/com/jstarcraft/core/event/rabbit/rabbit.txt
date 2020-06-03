@@ -4,6 +4,9 @@ https://www.cnblogs.com/saryli/p/9729591.html
 Installing on Windows:
 https://www.rabbitmq.com/install-windows.html
 
+嵌入式的RabbitMQ开源库包:
+https://www.jdon.com/48409
+
 理解RabbitMQ中的AMQP-0-9-1模型:
 https://www.cnblogs.com/throwable/p/12275645.html
 
