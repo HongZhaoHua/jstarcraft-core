@@ -42,10 +42,22 @@
             <artifactId>artemis-jms-client</artifactId>
         </dependency>
 
+        <!-- Kafka框架依赖 -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+        </dependency>
+
         <!-- MQTT框架依赖 -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mqtt</artifactId>
+        </dependency>
+
+        <!-- RabbitMQ框架依赖 -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
         </dependency>
 
         <!-- RocketMQ框架依赖 -->
@@ -106,6 +118,18 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.salesforce.kafka.test</groupId>
+            <artifactId>kafka-junit4</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.arivera.oss</groupId>
+            <artifactId>embedded-rabbitmq</artifactId>
             <scope>test</scope>
         </dependency>
 

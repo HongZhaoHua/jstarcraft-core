@@ -1,4 +1,4 @@
-package com.jstarcraft.core.event.rocketmq;
+package com.jstarcraft.core.event.rocket;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

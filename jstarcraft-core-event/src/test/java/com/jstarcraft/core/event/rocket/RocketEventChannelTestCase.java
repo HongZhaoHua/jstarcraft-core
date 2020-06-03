@@ -1,4 +1,4 @@
-package com.jstarcraft.core.event.rocketmq;
+package com.jstarcraft.core.event.rocket;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
