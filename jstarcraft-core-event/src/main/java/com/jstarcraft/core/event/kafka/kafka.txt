@@ -4,6 +4,9 @@ https://www.jianshu.com/p/66d89376d9cd
 A library that provides an in-memory Kafka instance to run your tests against:
 https://github.com/embeddedkafka/embedded-kafka
 
+This library wraps Kafka's embedded test cluster, allowing you to more easily create and run integration tests using JUnit against a "real" kafka server running within the context of your tests. No need to stand up an external kafka cluster:
+https://github.com/salesforce/kafka-junit
+
 单元测试之embedded-kafka:
 https://www.jianshu.com/p/66ed08b3f155
 

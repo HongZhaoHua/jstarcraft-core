@@ -128,6 +128,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.11</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.arivera.oss</groupId>
             <artifactId>embedded-rabbitmq</artifactId>
             <scope>test</scope>
