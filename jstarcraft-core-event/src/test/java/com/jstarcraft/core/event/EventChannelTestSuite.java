@@ -8,6 +8,7 @@ import com.jstarcraft.core.event.amqp.AmqpEventBusTestCase;
 import com.jstarcraft.core.event.jms.JmsEventChannelTestCase;
 import com.jstarcraft.core.event.memory.MemoryEventChannelTestCase;
 import com.jstarcraft.core.event.mqtt.MqttEventChannelTestCase;
+import com.jstarcraft.core.event.rabbit.RabbitEventChannelTestCase;
 import com.jstarcraft.core.event.redis.RedisEventChannelTestCase;
 import com.jstarcraft.core.event.rocket.RocketEventChannelTestCase;
 import com.jstarcraft.core.event.stomp.StompEventChannelTestCase;
@@ -23,6 +24,8 @@ import com.jstarcraft.core.event.vertx.VertxEventChannelTestCase;
         MemoryEventChannelTestCase.class,
 
         MqttEventChannelTestCase.class,
+        
+        RabbitEventChannelTestCase.class,
 
         RedisEventChannelTestCase.class,
 

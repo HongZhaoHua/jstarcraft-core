@@ -5,8 +5,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.jms.MessageConsumer;
-
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
@@ -28,7 +26,7 @@ import com.rabbitmq.client.Envelope;
  */
 public class RabbitEventChannel extends AbstractEventChannel {
 
-    private Channel session;
+    private Channel channel;
 
     private ContentCodec codec;
 
@@ -40,8 +38,8 @@ public class RabbitEventChannel extends AbstractEventChannel {
 
         private EventManager manager;
 
-        private EventHandler(Channel session, Class clazz, EventManager manager) {
-            super(session);
+        private EventHandler(Channel channel, Class clazz, EventManager manager) {
+            super(channel);
             this.clazz = clazz;
             this.manager = manager;
         }
@@ -58,12 +56,12 @@ public class RabbitEventChannel extends AbstractEventChannel {
                         EventMonitor monitor = manager.getMonitor(index);
                         try {
                             monitor.onEvent(event);
-                            session.basicAck(envelope.getDeliveryTag(), false);
+                            channel.basicAck(envelope.getDeliveryTag(), false);
                         } catch (Exception exception) {
                             // 记录日志
                             String message = StringUtility.format("监控器[{}]处理RabbitMQ事件[{}]时异常", monitor.getClass(), event.getClass());
                             logger.error(message, exception);
-                            session.basicNack(envelope.getDeliveryTag(), false, false);
+                            channel.basicNack(envelope.getDeliveryTag(), false, false);
                         }
                         break;
                     }
@@ -81,9 +79,9 @@ public class RabbitEventChannel extends AbstractEventChannel {
                             }
                         }
                         if (throwable) {
-                            session.basicNack(envelope.getDeliveryTag(), false, false);
+                            channel.basicNack(envelope.getDeliveryTag(), false, false);
                         } else {
-                            session.basicAck(envelope.getDeliveryTag(), false);
+                            channel.basicAck(envelope.getDeliveryTag(), false);
                         }
                         break;
                     }
@@ -98,13 +96,13 @@ public class RabbitEventChannel extends AbstractEventChannel {
 
     };
 
-    public RabbitEventChannel(EventMode mode, String name, Channel session, ContentCodec codec) {
+    public RabbitEventChannel(EventMode mode, String name, Channel channel, ContentCodec codec) {
         super(mode, name);
-        this.session = session;
+        this.channel = channel;
         this.codec = codec;
         this.type2Tags = new ConcurrentHashMap<>();
         try {
-            session.exchangeDeclare(name, BuiltinExchangeType.DIRECT);
+            channel.exchangeDeclare(name, BuiltinExchangeType.DIRECT);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
@@ -124,26 +122,27 @@ public class RabbitEventChannel extends AbstractEventChannel {
                     case QUEUE: {
                         // 共享名称,不独占队列
                         address = name + StringUtility.DOT + type.getName();
-                        session.queueDeclare(address, true, false, false, null);
+                        channel.queueDeclare(address, true, false, false, null);
                         break;
                     }
                     case TOPIC: {
                         // 不共享名称,独占队列
                         address = name + StringUtility.DOT + type.getName() + UUID.randomUUID();
-                        session.queueDeclare(address + UUID.randomUUID().toString(), true, true, true, null);
+                        channel.queueDeclare(address, true, true, true, null);
                         break;
                     }
                     }
                     String key = type.getName();
-                    session.queueBind(address, name, key);
+                    channel.queueBind(address, name, key);
 
-                    EventHandler handler = new EventHandler(session, type, manager);
-                    String tag = session.basicConsume(address, false, handler);
+                    EventHandler handler = new EventHandler(channel, type, manager);
+                    String tag = channel.basicConsume(address, false, handler);
                     type2Tags.put(type, tag);
                 }
                 manager.attachMonitor(monitor);
             }
         } catch (Exception exception) {
+            exception.printStackTrace();
             throw new RuntimeException(exception);
         }
     }
@@ -159,7 +158,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
                         type2Managers.remove(type);
 
                         String tag = type2Tags.remove(type);
-                        session.basicCancel(tag);
+                        channel.basicCancel(tag);
                     }
                 }
             }
@@ -174,7 +173,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
             Class type = event.getClass();
             String key = type.getName();
             byte[] bytes = codec.encode(type, event);
-            session.basicPublish(name, key, null, bytes);
+            channel.basicPublish(name, key, null, bytes);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

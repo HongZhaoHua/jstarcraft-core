@@ -31,7 +31,7 @@ public class VertxEventChannelTestCase extends EventChannelTestCase {
     protected EventChannel getEventChannel(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new VertxEventChannel(mode, "VERTX" + mode, vertx.eventBus(), codec);
+        return new VertxEventChannel(mode, "Vertx" + mode, vertx.eventBus(), codec);
     }
 
 }

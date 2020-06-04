@@ -15,7 +15,7 @@ public class RocketEventChannelTestCase extends EventChannelTestCase {
     protected EventChannel getEventChannel(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
-        return new RocketEventChannel(mode, "Rocket" + mode, "localhost:9876", codec);
+        return new RocketEventChannel(mode, "RocketMQ" + mode, "localhost:9876", codec);
     }
 
 }
