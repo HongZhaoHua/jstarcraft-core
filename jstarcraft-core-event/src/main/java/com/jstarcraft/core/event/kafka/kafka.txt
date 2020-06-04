@@ -1,6 +1,9 @@
 Windows安装Kafka 2.10:
 https://www.jianshu.com/p/66d89376d9cd
 
+A library that provides an in-memory Kafka instance to run your tests against:
+https://github.com/embeddedkafka/embedded-kafka
+
 单元测试之embedded-kafka:
 https://www.jianshu.com/p/66ed08b3f155
 
