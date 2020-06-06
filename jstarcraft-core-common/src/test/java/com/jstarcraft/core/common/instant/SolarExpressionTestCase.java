@@ -1,7 +1,6 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -86,6 +85,17 @@ public class SolarExpressionTestCase {
             LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
             Assert.assertNull(dateTime);
         }
+
+        // TODO 此处cron-utils存在Bug,导致测试无法通过,等待修复.
+//        expression = new SolarExpression("0 0 12 29 6 ? 2000/10");
+//        LocalTime time = LocalTime.of(12, 0, 0);
+//        LocalDateTime dateTime = LocalDateTime.of(new SolarDate(2020, 6, 29).getDate(), time);
+//        {
+//            Assert.assertEquals(LocalDateTime.of(new SolarDate(2010, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+//        }
+//        {
+//            Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+//        }
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,16 @@ public class IslamicExpressionTestCase {
         {
             LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
             Assert.assertNull(dateTime);
+        }
+
+        expression = new IslamicExpression("0 0 12 29 6 1421/10");
+        LocalTime time = LocalTime.of(12, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time);
+        {
+            Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+        }
+        {
+            Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
         }
     }
 

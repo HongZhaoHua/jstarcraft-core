@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,16 @@ public class LunarExpressionTestCase {
         {
             LocalDateTime dateTime = expression.getNextDateTime(dateTimes.get(dateTimes.size() - 1));
             Assert.assertNull(dateTime);
+        }
+
+        expression = new LunarExpression("0 0 12 29 6 2000/10");
+        LocalTime time = LocalTime.of(12, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 29).getDate(), time);
+        {
+            Assert.assertEquals(LocalDateTime.of(new LunarDate(2010, false, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+        }
+        {
+            Assert.assertEquals(LocalDateTime.of(new LunarDate(2030, false, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
         }
     }
 
