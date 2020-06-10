@@ -1,5 +1,6 @@
 package com.jstarcraft.core.event.kafka;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -85,7 +86,7 @@ public class KafkaTestCase {
             // Pull records from kafka, keep polling until we get nothing back
             ConsumerRecords<String, String> consumerRecords;
             do {
-                consumerRecords = kafkaConsumer.poll(2000L);
+                consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(2));
                 for (ConsumerRecord<String, String> record : consumerRecords) {
                     // Validate
                     Assert.assertEquals(messageKey, record.key());
