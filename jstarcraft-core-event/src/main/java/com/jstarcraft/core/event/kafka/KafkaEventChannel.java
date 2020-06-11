@@ -1,5 +1,6 @@
 package com.jstarcraft.core.event.kafka;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
@@ -19,8 +20,11 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.common.utils.Time;
+import org.apache.kafka.common.utils.Timer;
 
 import com.jstarcraft.core.codec.ContentCodec;
+import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.event.AbstractEventChannel;
 import com.jstarcraft.core.event.EventManager;
 import com.jstarcraft.core.event.EventMode;
@@ -36,6 +40,8 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class KafkaEventChannel extends AbstractEventChannel {
 
+    private static final Method updateAssignmentMetadata;
+
     private static final Class<? extends Serializer<?>> keySerializer = StringSerializer.class;
 
     private static final Class<? extends Serializer<?>> valueSerializer = ByteArraySerializer.class;
@@ -43,6 +49,11 @@ public class KafkaEventChannel extends AbstractEventChannel {
     private static final Class<? extends Deserializer<?>> keyDeserializer = StringDeserializer.class;
 
     private static final Class<? extends Deserializer<?>> valueDeserializer = ByteArrayDeserializer.class;
+
+    static {
+        updateAssignmentMetadata = ReflectionUtility.getMethod(KafkaConsumer.class, "updateAssignmentMetadataIfNeeded", Timer.class);
+        updateAssignmentMetadata.setAccessible(true);
+    }
 
     private String connections;
 
@@ -70,10 +81,8 @@ public class KafkaEventChannel extends AbstractEventChannel {
             KafkaConsumer<String, byte[]> consumer = consumers.get(clazz);
             while (true) {
                 ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofMillis(1000L));
-                logger.info("records count = " + records.count());
                 for (ConsumerRecord<String, byte[]> record : records) {
                     byte[] bytes = record.value();
-                    logger.info("topic = " + record.topic() + ", partition = " + record.partition() + ", value = " + codec.decode(clazz, bytes));
                     try {
                         Object event = codec.decode(clazz, bytes);
                         switch (mode) {
@@ -107,8 +116,6 @@ public class KafkaEventChannel extends AbstractEventChannel {
                         // 记录日志
                         String message = StringUtility.format("编解码器[{}]处理Redis事件[{}]时异常", codec.getClass(), bytes);
                         logger.error(message, exception);
-                    } finally {
-                        consumer.commitSync();
                     }
                 }
             }
@@ -145,18 +152,19 @@ public class KafkaEventChannel extends AbstractEventChannel {
                     switch (mode) {
                     case QUEUE: {
                         properties.put("group.id", group);
+                        properties.put("auto.offset.reset", "earliest");
                         break;
                     }
                     case TOPIC: {
                         properties.put("group.id", group + UUID.randomUUID());
+                        properties.put("auto.offset.reset", "latest");
                         break;
                     }
                     }
-                    properties.put("auto.offset.reset", "earliest");
-                    // 把auto.commit.offset设为false，让应用程序决定何时提交偏移量
-                    properties.put("auto.commit.offset", false);
                     KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
                     consumer.subscribe(Collections.singleton(group));
+                    // TODO 此处是为了防止auto.offset.reset为latest时,可能会丢失第一次poll之前的消息.
+                    updateAssignmentMetadata.invoke(consumer, Time.SYSTEM.timer(Long.MAX_VALUE));
                     consumers.put(type, consumer);
                     EventThread thread = new EventThread(type, manager);
                     thread.start();
@@ -195,9 +203,6 @@ public class KafkaEventChannel extends AbstractEventChannel {
             byte[] bytes = codec.encode(type, event);
             ProducerRecord<String, byte[]> record = new ProducerRecord<>(group, bytes);
             producer.send(record);
-            // 同步阻塞发送
-//            Future<RecordMetadata> future = producer.send(record);
-//            future.get();
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
