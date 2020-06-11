@@ -17,6 +17,8 @@ import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.AbstractEventChannel;
@@ -34,11 +36,11 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class KafkaEventChannel extends AbstractEventChannel {
 
-    private static final Class<? extends Serializer<?>> keySerializer = ByteArraySerializer.class;
+    private static final Class<? extends Serializer<?>> keySerializer = StringSerializer.class;
 
     private static final Class<? extends Serializer<?>> valueSerializer = ByteArraySerializer.class;
 
-    private static final Class<? extends Deserializer<?>> keyDeserializer = ByteArrayDeserializer.class;
+    private static final Class<? extends Deserializer<?>> keyDeserializer = StringDeserializer.class;
 
     private static final Class<? extends Deserializer<?>> valueDeserializer = ByteArrayDeserializer.class;
 
@@ -46,9 +48,9 @@ public class KafkaEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private KafkaProducer<byte[], byte[]> producer;
+    private KafkaProducer<String, byte[]> producer;
 
-    private ConcurrentMap<Class, KafkaConsumer<byte[], byte[]>> consumers;
+    private ConcurrentMap<Class, KafkaConsumer<String, byte[]>> consumers;
 
     private ConcurrentMap<Class, EventThread> threads;
 
@@ -65,11 +67,11 @@ public class KafkaEventChannel extends AbstractEventChannel {
 
         @Override
         public void run() {
-            KafkaConsumer<byte[], byte[]> consumer = consumers.get(clazz);
+            KafkaConsumer<String, byte[]> consumer = consumers.get(clazz);
             while (true) {
-                ConsumerRecords<byte[], byte[]> records = consumer.poll(Duration.ofMillis(1000L));
+                ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofMillis(1000L));
                 logger.info("records count = " + records.count());
-                for (ConsumerRecord<byte[], byte[]> record : records) {
+                for (ConsumerRecord<String, byte[]> record : records) {
                     byte[] bytes = record.value();
                     logger.info("topic = " + record.topic() + ", partition = " + record.partition() + ", value = " + codec.decode(clazz, bytes));
                     try {
@@ -132,9 +134,7 @@ public class KafkaEventChannel extends AbstractEventChannel {
         try {
             for (Class type : types) {
                 EventManager manager = managers.get(type);
-                String consumerGroup = name + StringUtility.DOT + type.getName();
-                consumerGroup = consumerGroup.replace(StringUtility.DOT, StringUtility.DASH);
-                String topic = consumerGroup;
+                String group = name + StringUtility.DOT + type.getName();
                 if (manager == null) {
                     manager = new EventManager();
                     managers.put(type, manager);
@@ -144,19 +144,19 @@ public class KafkaEventChannel extends AbstractEventChannel {
                     properties.put("value.deserializer", valueDeserializer);
                     switch (mode) {
                     case QUEUE: {
-                        properties.put("group.id", consumerGroup);
+                        properties.put("group.id", group);
                         break;
                     }
                     case TOPIC: {
-                        properties.put("group.id", consumerGroup + UUID.randomUUID());
+                        properties.put("group.id", group + UUID.randomUUID());
                         break;
                     }
                     }
                     properties.put("auto.offset.reset", "earliest");
                     // 把auto.commit.offset设为false，让应用程序决定何时提交偏移量
                     properties.put("auto.commit.offset", false);
-                    KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(properties);
-                    consumer.subscribe(Collections.singleton(topic));
+                    KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
+                    consumer.subscribe(Collections.singleton(group));
                     consumers.put(type, consumer);
                     EventThread thread = new EventThread(type, manager);
                     thread.start();
@@ -177,7 +177,7 @@ public class KafkaEventChannel extends AbstractEventChannel {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
                     managers.remove(type);
-                    KafkaConsumer<byte[], byte[]> consumer = consumers.remove(type);
+                    KafkaConsumer<String, byte[]> consumer = consumers.remove(type);
                     consumer.unsubscribe();
                     consumer.close();
                     EventThread thread = threads.remove(type);
@@ -191,10 +191,9 @@ public class KafkaEventChannel extends AbstractEventChannel {
     public void triggerEvent(Object event) {
         try {
             Class type = event.getClass();
+            String group = name + StringUtility.DOT + type.getName();
             byte[] bytes = codec.encode(type, event);
-            String topic = name + StringUtility.DOT + type.getName();
-            topic = topic.replace(StringUtility.DOT, StringUtility.DASH);
-            ProducerRecord record = new ProducerRecord<>(topic, bytes);
+            ProducerRecord<String, byte[]> record = new ProducerRecord<>(group, bytes);
             producer.send(record);
             // 同步阻塞发送
 //            Future<RecordMetadata> future = producer.send(record);
