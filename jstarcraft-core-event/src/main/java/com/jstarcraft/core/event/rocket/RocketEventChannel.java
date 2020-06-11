@@ -33,7 +33,7 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class RocketEventChannel extends AbstractEventChannel {
 
-    private String addresses;
+    private String connections;
 
     private ContentCodec codec;
 
@@ -98,14 +98,14 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     };
 
-    public RocketEventChannel(EventMode mode, String name, String addresses, ContentCodec codec) {
+    public RocketEventChannel(EventMode mode, String name, String connections, ContentCodec codec) {
         super(mode, name);
         try {
-            this.addresses = addresses;
+            this.connections = connections;
             this.codec = codec;
             DefaultMQProducer producer = new DefaultMQProducer(name);
             producer.setInstanceName(name);
-            producer.setNamesrvAddr(addresses);
+            producer.setNamesrvAddr(connections);
             producer.start();
             this.producer = producer;
             this.consumers = new ConcurrentHashMap<>();
@@ -127,16 +127,17 @@ public class RocketEventChannel extends AbstractEventChannel {
                     address = address.replace(StringUtility.DOT, StringUtility.DASH);
                     DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(address);
                     consumer.setInstanceName(name);
-                    consumer.setNamesrvAddr(addresses);
-                    consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+                    consumer.setNamesrvAddr(connections);
                     consumer.setConsumeMessageBatchMaxSize(1000);
                     consumer.subscribe(address, "*");
                     switch (mode) {
                     case QUEUE: {
+                        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
                         consumer.setMessageModel(MessageModel.CLUSTERING);
                         break;
                     }
                     case TOPIC: {
+                        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
                         consumer.setMessageModel(MessageModel.BROADCASTING);
                         break;
                     }
