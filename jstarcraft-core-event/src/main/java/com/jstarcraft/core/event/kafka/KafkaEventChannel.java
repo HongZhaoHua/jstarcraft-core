@@ -1,9 +1,7 @@
 package com.jstarcraft.core.event.kafka;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
@@ -15,6 +13,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+import org.apache.kafka.common.serialization.Deserializer;
+import org.apache.kafka.common.serialization.Serializer;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.event.AbstractEventChannel;
@@ -32,14 +34,21 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class KafkaEventChannel extends AbstractEventChannel {
 
-    @Deprecated
-    private String addresses;
+    private static final Class<? extends Serializer<?>> keySerializer = ByteArraySerializer.class;
+
+    private static final Class<? extends Serializer<?>> valueSerializer = ByteArraySerializer.class;
+
+    private static final Class<? extends Deserializer<?>> keyDeserializer = ByteArrayDeserializer.class;
+
+    private static final Class<? extends Deserializer<?>> valueDeserializer = ByteArrayDeserializer.class;
+
+    private String connections;
 
     private ContentCodec codec;
 
-    private KafkaProducer producer;
+    private KafkaProducer<byte[], byte[]> producer;
 
-    private ConcurrentMap<Class, KafkaConsumer> consumers;
+    private ConcurrentMap<Class, KafkaConsumer<byte[], byte[]>> consumers;
 
     private ConcurrentMap<Class, EventThread> threads;
 
@@ -49,21 +58,18 @@ public class KafkaEventChannel extends AbstractEventChannel {
 
         private EventManager manager;
 
-        private KafkaConsumer consumer;
-
-        private EventThread(Class clazz, EventManager manager, KafkaConsumer consumer) {
+        private EventThread(Class clazz, EventManager manager) {
             this.clazz = clazz;
             this.manager = manager;
-            this.consumer = consumer;
         }
 
         @Override
         public void run() {
+            KafkaConsumer<byte[], byte[]> consumer = consumers.get(clazz);
             while (true) {
-                ConsumerRecords records = consumer.poll(Duration.ofMillis(1000));
+                ConsumerRecords<byte[], byte[]> records = consumer.poll(Duration.ofMillis(1000L));
                 logger.info("records count = " + records.count());
-                for (Iterator<ConsumerRecord<byte[], byte[]>> it = records.iterator(); it.hasNext();) {
-                    ConsumerRecord<byte[], byte[]> record = it.next();
+                for (ConsumerRecord<byte[], byte[]> record : records) {
                     byte[] bytes = record.value();
                     logger.info("topic = " + record.topic() + ", partition = " + record.partition() + ", value = " + codec.decode(clazz, bytes));
                     try {
@@ -107,15 +113,15 @@ public class KafkaEventChannel extends AbstractEventChannel {
         }
     };
 
-    public KafkaEventChannel(EventMode mode, String name, String addresses, ContentCodec codec) {
+    public KafkaEventChannel(EventMode mode, String name, String connections, ContentCodec codec) {
         super(mode, name);
-        this.addresses = addresses;
+        this.connections = connections;
         this.codec = codec;
-        Properties props = new Properties();
-        props.put("bootstrap.servers", addresses);
-        props.put("key.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
-        KafkaProducer producer = new KafkaProducer(props);
+        Properties properties = new Properties();
+        properties.put("bootstrap.servers", connections);
+        properties.put("key.serializer", keySerializer);
+        properties.put("value.serializer", valueSerializer);
+        KafkaProducer producer = new KafkaProducer(properties);
         this.producer = producer;
         this.consumers = new ConcurrentHashMap<>();
         this.threads = new ConcurrentHashMap<>();
@@ -132,30 +138,27 @@ public class KafkaEventChannel extends AbstractEventChannel {
                 if (manager == null) {
                     manager = new EventManager();
                     type2Managers.put(type, manager);
-                    Properties props = new Properties();
-                    props.put("bootstrap.servers", addresses);
-
+                    Properties properties = new Properties();
+                    properties.put("bootstrap.servers", connections);
+                    properties.put("key.deserializer", keyDeserializer);
+                    properties.put("value.deserializer", valueDeserializer);
                     switch (mode) {
                     case QUEUE: {
-                        props.put("group.id", consumerGroup);
+                        properties.put("group.id", consumerGroup);
                         break;
                     }
                     case TOPIC: {
-                        props.put("group.id", consumerGroup + UUID.randomUUID());
+                        properties.put("group.id", consumerGroup + UUID.randomUUID());
                         break;
                     }
                     }
-                    props.put("auto.offset.reset", "earliest");
+                    properties.put("auto.offset.reset", "earliest");
                     // 把auto.commit.offset设为false，让应用程序决定何时提交偏移量
-                    props.put("auto.commit.offset", false);
-                    props.put("key.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
-                    props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
-                    KafkaConsumer consumer = new KafkaConsumer<>(props);
-                    List<String> topics = new ArrayList<>();
-                    topics.add(topic);
-                    consumer.subscribe(topics);
+                    properties.put("auto.commit.offset", false);
+                    KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<>(properties);
+                    consumer.subscribe(Collections.singleton(topic));
                     consumers.put(type, consumer);
-                    EventThread thread = new EventThread(type, manager, consumer);
+                    EventThread thread = new EventThread(type, manager);
                     thread.start();
                     threads.put(type, thread);
                 }
@@ -174,7 +177,7 @@ public class KafkaEventChannel extends AbstractEventChannel {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
                     type2Managers.remove(type);
-                    KafkaConsumer consumer = consumers.remove(type);
+                    KafkaConsumer<byte[], byte[]> consumer = consumers.remove(type);
                     consumer.unsubscribe();
                     consumer.close();
                     EventThread thread = threads.remove(type);
