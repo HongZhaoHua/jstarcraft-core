@@ -39,7 +39,7 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     private MQProducer producer;
 
-    private ConcurrentMap<Class, MQPushConsumer> type2Consumers;
+    private ConcurrentMap<Class, MQPushConsumer> consumers;
 
     private class EventHandler implements MessageListenerConcurrently {
 
@@ -108,7 +108,7 @@ public class RocketEventChannel extends AbstractEventChannel {
             producer.setNamesrvAddr(addresses);
             producer.start();
             this.producer = producer;
-            this.type2Consumers = new ConcurrentHashMap<>();
+            this.consumers = new ConcurrentHashMap<>();
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
@@ -118,10 +118,10 @@ public class RocketEventChannel extends AbstractEventChannel {
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     // TODO 需要防止路径冲突
                     String address = name + StringUtility.DOT + type.getName();
                     address = address.replace(StringUtility.DOT, StringUtility.DASH);
@@ -144,7 +144,7 @@ public class RocketEventChannel extends AbstractEventChannel {
                     EventHandler handler = new EventHandler(type, manager);
                     consumer.registerMessageListener(handler);
                     consumer.start();
-                    type2Consumers.put(type, consumer);
+                    consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -156,12 +156,12 @@ public class RocketEventChannel extends AbstractEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
-                    MQPushConsumer consumer = type2Consumers.remove(type);
+                    managers.remove(type);
+                    MQPushConsumer consumer = consumers.remove(type);
                     consumer.shutdown();
                 }
             }
@@ -189,7 +189,7 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     @Override
     public void stop() {
-        for (MQPushConsumer cousumer : type2Consumers.values()) {
+        for (MQPushConsumer cousumer : consumers.values()) {
             cousumer.shutdown();
         }
         producer.shutdown();

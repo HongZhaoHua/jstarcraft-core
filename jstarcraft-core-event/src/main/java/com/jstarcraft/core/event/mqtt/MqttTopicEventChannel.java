@@ -42,7 +42,7 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
                 address = address.substring(name.length() + 1);
                 address = address.replace(StringUtility.FORWARD_SLASH, StringUtility.DOT);
                 Class clazz = address2Classes.get(address);
-                EventManager manager = type2Managers.get(clazz);
+                EventManager manager = managers.get(clazz);
                 Object event = codec.decode(clazz, data.payload().getBytes());
                 synchronized (manager) {
                     for (EventMonitor monitor : manager) {
@@ -76,10 +76,10 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     address2Classes.put(type.getName(), type);
                     // TODO 需要防止路径冲突
                     CountDownLatch latch = new CountDownLatch(1);
@@ -99,11 +99,11 @@ public class MqttTopicEventChannel extends AbstractEventChannel {
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        type2Managers.remove(type);
+                        managers.remove(type);
                         address2Classes.remove(type.getName());
                         // TODO 需要防止路径冲突
                         CountDownLatch latch = new CountDownLatch(1);

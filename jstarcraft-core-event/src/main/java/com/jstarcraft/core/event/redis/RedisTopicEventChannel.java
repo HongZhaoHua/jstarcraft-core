@@ -22,9 +22,9 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class RedisTopicEventChannel extends RedisEventChannel {
 
-    private ConcurrentMap<Class, EventHandler> type2Handlers;
+    private ConcurrentMap<Class, EventHandler> handlers;
 
-    private ConcurrentMap<Class, RTopic> type2Topics;
+    private ConcurrentMap<Class, RTopic> topics;
 
     private class EventHandler implements MessageListener<byte[]> {
 
@@ -61,15 +61,15 @@ public class RedisTopicEventChannel extends RedisEventChannel {
 
     public RedisTopicEventChannel(String name, Redisson redisson, ContentCodec codec) {
         super(EventMode.TOPIC, name, redisson, codec);
-        this.type2Handlers = new ConcurrentHashMap<>();
-        this.type2Topics = new ConcurrentHashMap<>();
+        this.handlers = new ConcurrentHashMap<>();
+        this.topics = new ConcurrentHashMap<>();
     }
 
     protected RTopic getTopic(Class type) {
-        RTopic topic = type2Topics.get(type);
+        RTopic topic = topics.get(type);
         if (topic == null) {
             topic = redisson.getTopic(name + StringUtility.DOT + type.getName(), byteCodec);
-            type2Topics.put(type, topic);
+            topics.put(type, topic);
         }
         return topic;
     }
@@ -77,15 +77,15 @@ public class RedisTopicEventChannel extends RedisEventChannel {
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                type2Managers.put(type, manager);
+                managers.put(type, manager);
                 // TODO 需要防止路径冲突
                 RTopic topic = getTopic(type);
                 EventHandler handler = new EventHandler(type, manager);
                 topic.addListener(byte[].class, handler);
-                type2Handlers.put(type, handler);
+                handlers.put(type, handler);
             }
             manager.attachMonitor(monitor);
         }
@@ -94,14 +94,14 @@ public class RedisTopicEventChannel extends RedisEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
+                    managers.remove(type);
                     // TODO 需要防止路径冲突
                     RTopic topic = getTopic(type);
-                    EventHandler handler = type2Handlers.remove(type);
+                    EventHandler handler = handlers.remove(type);
                     topic.removeListener(handler);
                 }
             }

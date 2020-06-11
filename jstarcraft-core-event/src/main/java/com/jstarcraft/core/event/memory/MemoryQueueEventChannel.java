@@ -28,9 +28,9 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
 
     private int size;
 
-    private ConcurrentMap<Class, BlockingQueue<Object>> type2Events;
+    private ConcurrentMap<Class, BlockingQueue<Object>> queues;
 
-    private ConcurrentMap<Class, EventThread> type2Threads;
+    private ConcurrentMap<Class, EventThread> threads;
 
     private class EventThread extends Thread {
 
@@ -70,15 +70,15 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
     public MemoryQueueEventChannel(String name, int size) {
         super(EventMode.QUEUE, name);
         this.size = size;
-        this.type2Events = new ConcurrentHashMap<>();
-        this.type2Threads = new ConcurrentHashMap<>();
+        this.queues = new ConcurrentHashMap<>();
+        this.threads = new ConcurrentHashMap<>();
     }
 
     private BlockingQueue<Object> getEvents(Class type) {
-        BlockingQueue<Object> events = type2Events.get(type);
+        BlockingQueue<Object> events = queues.get(type);
         if (events == null) {
             events = new ArrayBlockingQueue<>(size);
-            type2Events.put(type, events);
+            queues.put(type, events);
         }
         return events;
     }
@@ -86,14 +86,14 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                type2Managers.put(type, manager);
+                managers.put(type, manager);
                 BlockingQueue<Object> events = getEvents(type);
                 EventThread thread = new EventThread(manager, events);
                 thread.start();
-                type2Threads.put(type, thread);
+                threads.put(type, thread);
             }
             manager.attachMonitor(monitor);
         }
@@ -102,12 +102,12 @@ public class MemoryQueueEventChannel extends AbstractEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
-                    EventThread thread = type2Threads.remove(type);
+                    managers.remove(type);
+                    EventThread thread = threads.remove(type);
                     thread.interrupt();
                 }
             }

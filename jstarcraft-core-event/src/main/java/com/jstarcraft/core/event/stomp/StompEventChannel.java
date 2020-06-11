@@ -94,10 +94,10 @@ public class StompEventChannel extends AbstractEventChannel {
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     Map<String, String> metadatas = new HashMap<>();
                     // TODO 需要防止路径冲突
                     String address = name + StringUtility.DOT + type.getName();
@@ -128,11 +128,11 @@ public class StompEventChannel extends AbstractEventChannel {
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        type2Managers.remove(type);
+                        managers.remove(type);
                         Map<String, String> metadatas = new HashMap<>();
                         // TODO 需要防止路径冲突
                         String address = name + StringUtility.DOT + type.getName();

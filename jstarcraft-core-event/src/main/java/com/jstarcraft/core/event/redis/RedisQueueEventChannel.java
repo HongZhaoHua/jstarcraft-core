@@ -22,9 +22,9 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class RedisQueueEventChannel extends RedisEventChannel {
 
-    private ConcurrentMap<Class, EventThread> type2Threads;
+    private ConcurrentMap<Class, EventThread> threads;
 
-    private ConcurrentMap<Class, RBlockingQueue<byte[]>> type2Queues;
+    private ConcurrentMap<Class, RBlockingQueue<byte[]>> queues;
 
     private class EventThread extends Thread {
 
@@ -70,15 +70,15 @@ public class RedisQueueEventChannel extends RedisEventChannel {
 
     public RedisQueueEventChannel(String name, Redisson redisson, ContentCodec codec) {
         super(EventMode.QUEUE, name, redisson, codec);
-        this.type2Threads = new ConcurrentHashMap<>();
-        this.type2Queues = new ConcurrentHashMap<>();
+        this.threads = new ConcurrentHashMap<>();
+        this.queues = new ConcurrentHashMap<>();
     }
 
     protected RBlockingQueue<byte[]> getQueue(Class type) {
-        RBlockingQueue<byte[]> queue = type2Queues.get(type);
+        RBlockingQueue<byte[]> queue = queues.get(type);
         if (queue == null) {
             queue = redisson.getBlockingQueue(name + StringUtility.DOT + type.getName(), byteCodec);
-            type2Queues.put(type, queue);
+            queues.put(type, queue);
         }
         return queue;
     }
@@ -86,15 +86,15 @@ public class RedisQueueEventChannel extends RedisEventChannel {
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                type2Managers.put(type, manager);
+                managers.put(type, manager);
                 // TODO 需要防止路径冲突
                 RBlockingQueue<byte[]> events = getQueue(type);
                 EventThread thread = new EventThread(type, manager, events);
                 thread.start();
-                type2Threads.put(type, thread);
+                threads.put(type, thread);
             }
             manager.attachMonitor(monitor);
         }
@@ -103,12 +103,12 @@ public class RedisQueueEventChannel extends RedisEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
-                    EventThread thread = type2Threads.remove(type);
+                    managers.remove(type);
+                    EventThread thread = threads.remove(type);
                     thread.interrupt();
                 }
             }

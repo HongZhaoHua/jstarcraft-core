@@ -33,9 +33,9 @@ public class AmqpEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class, MessageProducer> type2Producers;
+    private ConcurrentMap<Class, MessageProducer> producers;
 
-    private ConcurrentMap<Class, MessageConsumer> type2Consumers;
+    private ConcurrentMap<Class, MessageConsumer> consumers;
 
     private class EventHandler implements MessageListener {
 
@@ -98,18 +98,18 @@ public class AmqpEventChannel extends AbstractEventChannel {
         Builder<Class, MessageProducer> builder = new Builder<>();
         builder.initialCapacity(1000);
         builder.maximumWeightedCapacity(1000);
-        this.type2Producers = builder.build();
-        this.type2Consumers = new ConcurrentHashMap<>();
+        this.producers = builder.build();
+        this.consumers = new ConcurrentHashMap<>();
     }
 
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     Destination address = null;
                     switch (mode) {
                     case QUEUE: {
@@ -126,7 +126,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
                     MessageConsumer consumer = session.createConsumer(address);
                     EventHandler handler = new EventHandler(type, manager);
                     consumer.setMessageListener(handler);
-                    type2Consumers.put(type, consumer);
+                    consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -139,12 +139,12 @@ public class AmqpEventChannel extends AbstractEventChannel {
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        type2Managers.remove(type);
-                        MessageConsumer consumer = type2Consumers.remove(type);
+                        managers.remove(type);
+                        MessageConsumer consumer = consumers.remove(type);
                         consumer.close();
                     }
                 }
@@ -159,8 +159,8 @@ public class AmqpEventChannel extends AbstractEventChannel {
         try {
             Class type = event.getClass();
             MessageProducer producer = null;
-            synchronized (type2Producers) {
-                producer = type2Producers.get(type);
+            synchronized (producers) {
+                producer = producers.get(type);
                 Destination address = null;
                 switch (mode) {
                 case QUEUE: {
@@ -175,7 +175,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
                 }
                 }
                 producer = session.createProducer(address);
-                type2Producers.put(type, producer);
+                producers.put(type, producer);
             }
             byte[] bytes = codec.encode(type, event);
             BytesMessage message = session.createBytesMessage();

@@ -36,7 +36,7 @@ public class JmsEventChannel extends AbstractEventChannel {
 
     private JMSProducer producer;
 
-    private ConcurrentMap<Class, JMSConsumer> type2Consumers;
+    private ConcurrentMap<Class, JMSConsumer> consumers;
 
     private class EventHandler implements MessageListener {
 
@@ -98,16 +98,16 @@ public class JmsEventChannel extends AbstractEventChannel {
         this.context = factory.createContext();
         this.codec = codec;
         this.producer = context.createProducer();
-        this.type2Consumers = new ConcurrentHashMap<>();
+        this.consumers = new ConcurrentHashMap<>();
     }
 
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager == null) {
                 manager = new EventManager();
-                type2Managers.put(type, manager);
+                managers.put(type, manager);
                 Destination address = null;
                 switch (mode) {
                 case QUEUE: {
@@ -126,7 +126,7 @@ public class JmsEventChannel extends AbstractEventChannel {
                 JMSConsumer consumer = context.createConsumer(address);
                 EventHandler handler = new EventHandler(type, manager);
                 consumer.setMessageListener(handler);
-                type2Consumers.put(type, consumer);
+                consumers.put(type, consumer);
             }
             manager.attachMonitor(monitor);
         }
@@ -135,12 +135,12 @@ public class JmsEventChannel extends AbstractEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
-                    JMSConsumer consumer = type2Consumers.remove(type);
+                    managers.remove(type);
+                    JMSConsumer consumer = consumers.remove(type);
                     consumer.close();
                 }
             }

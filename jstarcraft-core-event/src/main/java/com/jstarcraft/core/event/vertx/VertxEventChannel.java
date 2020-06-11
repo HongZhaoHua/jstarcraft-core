@@ -30,7 +30,7 @@ public class VertxEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class, MessageConsumer<byte[]>> type2Consumers;
+    private ConcurrentMap<Class, MessageConsumer<byte[]>> consumers;
 
     private class EventHandler implements Handler<Message<byte[]>> {
 
@@ -90,17 +90,17 @@ public class VertxEventChannel extends AbstractEventChannel {
         super(mode, name);
         this.bus = bus;
         this.codec = codec;
-        this.type2Consumers = new ConcurrentHashMap<>();
+        this.consumers = new ConcurrentHashMap<>();
     }
 
     @Override
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     // TODO 需要防止路径冲突
                     EventHandler handler = new EventHandler(type, manager);
                     MessageConsumer<byte[]> consumer = bus.consumer(name + StringUtility.DOT + type.getName(), handler);
@@ -109,7 +109,7 @@ public class VertxEventChannel extends AbstractEventChannel {
                         latch.countDown();
                     });
                     latch.await();
-                    type2Consumers.put(type, consumer);
+                    consumers.put(type, consumer);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -122,12 +122,12 @@ public class VertxEventChannel extends AbstractEventChannel {
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        type2Managers.remove(type);
-                        MessageConsumer<byte[]> consumer = type2Consumers.remove(type);
+                        managers.remove(type);
+                        MessageConsumer<byte[]> consumer = consumers.remove(type);
                         CountDownLatch latch = new CountDownLatch(1);
                         consumer.unregister((unregister) -> {
                             latch.countDown();

@@ -131,13 +131,13 @@ public class KafkaEventChannel extends AbstractEventChannel {
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 String consumerGroup = name + StringUtility.DOT + type.getName();
                 consumerGroup = consumerGroup.replace(StringUtility.DOT, StringUtility.DASH);
                 String topic = consumerGroup;
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
                     Properties properties = new Properties();
                     properties.put("bootstrap.servers", connections);
                     properties.put("key.deserializer", keyDeserializer);
@@ -172,11 +172,11 @@ public class KafkaEventChannel extends AbstractEventChannel {
     @Override
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         for (Class type : types) {
-            EventManager manager = type2Managers.get(type);
+            EventManager manager = managers.get(type);
             if (manager != null) {
                 manager.detachMonitor(monitor);
                 if (manager.getSize() == 0) {
-                    type2Managers.remove(type);
+                    managers.remove(type);
                     KafkaConsumer<byte[], byte[]> consumer = consumers.remove(type);
                     consumer.unsubscribe();
                     consumer.close();

@@ -30,7 +30,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
 
     private ContentCodec codec;
 
-    private ConcurrentMap<Class, String> type2Tags;
+    private ConcurrentMap<Class, String> tags;
 
     private class EventHandler extends DefaultConsumer {
 
@@ -100,7 +100,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
         super(mode, name);
         this.channel = channel;
         this.codec = codec;
-        this.type2Tags = new ConcurrentHashMap<>();
+        this.tags = new ConcurrentHashMap<>();
         try {
             channel.exchangeDeclare(name, BuiltinExchangeType.DIRECT);
         } catch (Exception exception) {
@@ -112,10 +112,10 @@ public class RabbitEventChannel extends AbstractEventChannel {
     public void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager == null) {
                     manager = new EventManager();
-                    type2Managers.put(type, manager);
+                    managers.put(type, manager);
 
                     String address = null;
                     switch (mode) {
@@ -137,7 +137,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
 
                     EventHandler handler = new EventHandler(channel, type, manager);
                     String tag = channel.basicConsume(address, false, handler);
-                    type2Tags.put(type, tag);
+                    tags.put(type, tag);
                 }
                 manager.attachMonitor(monitor);
             }
@@ -151,13 +151,13 @@ public class RabbitEventChannel extends AbstractEventChannel {
     public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
-                EventManager manager = type2Managers.get(type);
+                EventManager manager = managers.get(type);
                 if (manager != null) {
                     manager.detachMonitor(monitor);
                     if (manager.getSize() == 0) {
-                        type2Managers.remove(type);
+                        managers.remove(type);
 
-                        String tag = type2Tags.remove(type);
+                        String tag = tags.remove(type);
                         channel.basicCancel(tag);
                     }
                 }
