@@ -18,10 +18,10 @@ import com.jstarcraft.core.utility.StringUtility;
  * 通讯信息(TODO 既要支持序列化serialize,也要支持持久化persistence)
  * 
  * <pre>
- * 信息结构：[0xFFFFFFFF][长度(length)][信息头(head)][信息体(body)][信息尾(tail)]
- * 信息头:[长度(length)][序列(sequence)][时间(instant)][模块(module)][指令(command)]
- * 信息体:[长度(length)][格式(format)][内容(content)] TODO 考虑将异常整合到格式[异常(exception)][模块(module)][代号(code)]
- * 信息尾:[长度(length)][校验(check)][内容(content)]
+ * 信息结构：[0xFFFFFFFF][长度(length):4bytes][校验(check):8bytes][信息头(head)][信息体(body)][信息尾(tail)]
+ * 信息头:[长度(length):4bytes][序列(sequence):4bytes][时间(instant):8bytes][模块(module)][指令(command)]
+ * 信息体:[长度(length):4bytes][格式(format)1:bytes][内容(content)] TODO 考虑将异常整合到格式[异常(exception)][模块(module)][代号(code)]
+ * 信息尾:[长度(length):4bytes][校验(check):8bytes][内容(content)]
  * </pre>
  * 
  * @author Birdy
