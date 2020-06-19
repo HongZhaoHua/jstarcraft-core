@@ -2,22 +2,13 @@ package com.jstarcraft.core.common.instant;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.YearMonth;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinition;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
 
 public class SolarExpressionTestCase {
 
@@ -187,6 +178,17 @@ public class SolarExpressionTestCase {
             dateTime = expression.getPreviousDateTime(dateTime);
             Assert.assertEquals(LocalDateTime.of(2149, 12, 31, 12, 0, 0), dateTime);
         }
+    }
+
+    @Test
+    public void testSlash() {
+        SolarExpression leftExpression = new SolarExpression("0 0 12 1,6,11,16,21,26 * ?");
+        SolarExpression rightExpression = new SolarExpression("0 0 12 1/5 * ?");
+
+        LocalDateTime dateTime = LocalDateTime.of(2020, 6, 30, 0, 0, 0);
+
+        Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
+        Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
     }
 
 }
