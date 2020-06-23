@@ -3,11 +3,13 @@ package com.jstarcraft.core.storage.elasticsearch;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Document(indexName = "mock")
+@TypeAlias("Mock")
 public class Mock {
 
     @Id

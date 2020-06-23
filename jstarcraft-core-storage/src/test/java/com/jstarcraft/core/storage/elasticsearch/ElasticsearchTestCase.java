@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
 import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
@@ -67,9 +69,9 @@ public class ElasticsearchTestCase {
         ElasticsearchRepositoryFactory factory = new ElasticsearchRepositoryFactory(template);
 
         IndexOperations index = template.indexOps(Mock.class);
-        if (!index.exists()) {
-            index.create();
-        }
+        index.delete();
+        index.create();
+
         Document mapping = index.createMapping(Mock.class);
         index.putMapping(mapping);
 
@@ -83,11 +85,13 @@ public class ElasticsearchTestCase {
         Assert.assertEquals(mock, repository.findById(0L).get());
         Assert.assertEquals(1, repository.count());
 
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+        builder.withQuery(QueryBuilders.matchQuery("title", "title"));
+        Assert.assertEquals(1, repository.search(builder.build()).getSize());
+
         repository.delete(mock);
         Assert.assertFalse(repository.findById(0L).isPresent());
         Assert.assertEquals(0, repository.count());
-
-        index.delete();
     }
 
 }
