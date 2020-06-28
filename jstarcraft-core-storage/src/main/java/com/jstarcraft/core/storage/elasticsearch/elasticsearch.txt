@@ -8,6 +8,3 @@ Elasticsearch内核解析:
 https://zhuanlan.zhihu.com/p/34680841
 https://zhuanlan.zhihu.com/p/34669354
 https://zhuanlan.zhihu.com/p/34674517
-
-实时搜索引擎Elasticsearch:
-http://blog.csdn.net/xialei199023/article/details/47680401

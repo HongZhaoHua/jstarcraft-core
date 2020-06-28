@@ -3,3 +3,6 @@ https://www.cnblogs.com/ifme/p/12004660.html
 
 Spring Data Elasticsearch基本使用:
 https://www.cnblogs.com/ifme/p/12005026.html
+
+Spring Data Elasticsearch 聚合查询:
+https://www.cnblogs.com/steakliu/p/11558110.html
