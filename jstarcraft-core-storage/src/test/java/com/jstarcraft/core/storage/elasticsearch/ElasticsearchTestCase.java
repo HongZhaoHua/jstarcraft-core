@@ -6,6 +6,8 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMetricsAggregation;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
@@ -85,9 +88,22 @@ public class ElasticsearchTestCase {
         Assert.assertEquals(mock, repository.findById(0L).get());
         Assert.assertEquals(1, repository.count());
 
-        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
-        builder.withQuery(QueryBuilders.matchQuery("title", "title"));
-        Assert.assertEquals(1, repository.search(builder.build()).getSize());
+        {
+            NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+            builder.withQuery(QueryBuilders.matchQuery("title", "title"));
+            Assert.assertEquals(1, repository.search(builder.build()).getSize());
+        }
+
+        {
+            NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+            builder.addAggregation(AggregationBuilders.max("maximum").field("price"));
+            builder.addAggregation(AggregationBuilders.min("minimum").field("price"));
+            AggregatedPage<Mock> page = (AggregatedPage<Mock>) repository.search(builder.build());
+            ParsedSingleValueNumericMetricsAggregation maximum = (ParsedSingleValueNumericMetricsAggregation) page.getAggregation("maximum");
+            ParsedSingleValueNumericMetricsAggregation minimum = (ParsedSingleValueNumericMetricsAggregation) page.getAggregation("minimum");
+            Assert.assertEquals(1000D, maximum.value(), 0D);
+            Assert.assertEquals(1000D, minimum.value(), 0D);
+        }
 
         repository.delete(mock);
         Assert.assertFalse(repository.findById(0L).isPresent());
