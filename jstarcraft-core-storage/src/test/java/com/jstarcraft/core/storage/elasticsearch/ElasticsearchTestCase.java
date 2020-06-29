@@ -10,10 +10,13 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMetricsAggregation;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
@@ -109,6 +112,18 @@ public class ElasticsearchTestCase {
             ParsedSingleValueNumericMetricsAggregation minimum = (ParsedSingleValueNumericMetricsAggregation) page.getAggregation("minimum");
             Assert.assertEquals(999000D, maximum.value(), 0D);
             Assert.assertEquals(0D, minimum.value(), 0D);
+        }
+
+        {
+            NativeSearchQueryBuilder first = new NativeSearchQueryBuilder();
+            first.withPageable(PageRequest.of(0, 1));
+            first.withSort(SortBuilders.fieldSort("id").order(SortOrder.ASC));
+            Assert.assertEquals(Long.valueOf(0L), repository.search(first.build()).getContent().get(0).getId());
+
+            NativeSearchQueryBuilder last = new NativeSearchQueryBuilder();
+            last.withPageable(PageRequest.of(0, 1));
+            last.withSort(SortBuilders.fieldSort("id").order(SortOrder.DESC));
+            Assert.assertEquals(Long.valueOf(999L), repository.search(last.build()).getContent().get(0).getId());
         }
 
         repository.deleteAll(mocks);
