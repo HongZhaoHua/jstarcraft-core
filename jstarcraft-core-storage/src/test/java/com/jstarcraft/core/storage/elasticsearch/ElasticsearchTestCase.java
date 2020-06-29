@@ -1,6 +1,8 @@
 package com.jstarcraft.core.storage.elasticsearch;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
@@ -71,27 +73,31 @@ public class ElasticsearchTestCase {
         ElasticsearchOperations template = new ElasticsearchRestTemplate(elasticClient);
         ElasticsearchRepositoryFactory factory = new ElasticsearchRepositoryFactory(template);
 
-        IndexOperations index = template.indexOps(Mock.class);
-        index.delete();
-        index.create();
+        IndexOperations operation = template.indexOps(Mock.class);
+        operation.delete();
+        operation.create();
 
-        Document mapping = index.createMapping(Mock.class);
-        index.putMapping(mapping);
+        Document mapping = operation.createMapping(Mock.class);
+        operation.putMapping(mapping);
 
         ElasticsearchEntityInformation<Mock, Long> information = factory.getEntityInformation(Mock.class);
         SimpleElasticsearchRepository<Mock, Long> repository = new SimpleElasticsearchRepository<>(information, template);
         Assert.assertEquals(0, repository.count());
 
-        Mock mock = new Mock(0L, "title", "category", 1000D);
-
-        repository.save(mock);
-        Assert.assertEquals(mock, repository.findById(0L).get());
-        Assert.assertEquals(1, repository.count());
+        int size = 1000;
+        List<Mock> mocks = new ArrayList<>(size);
+        for (int index = 0; index < size; index++) {
+            long id = index;
+            Mock mock = new Mock(id, "title", "category", index * 1000D);
+            mocks.add(mock);
+        }
+        repository.saveAll(mocks);
+        Assert.assertEquals(size, repository.count());
 
         {
             NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
             builder.withQuery(QueryBuilders.matchQuery("title", "title"));
-            Assert.assertEquals(1, repository.search(builder.build()).getSize());
+            Assert.assertEquals(1000, repository.search(builder.build()).getSize());
         }
 
         {
@@ -101,12 +107,11 @@ public class ElasticsearchTestCase {
             AggregatedPage<Mock> page = (AggregatedPage<Mock>) repository.search(builder.build());
             ParsedSingleValueNumericMetricsAggregation maximum = (ParsedSingleValueNumericMetricsAggregation) page.getAggregation("maximum");
             ParsedSingleValueNumericMetricsAggregation minimum = (ParsedSingleValueNumericMetricsAggregation) page.getAggregation("minimum");
-            Assert.assertEquals(1000D, maximum.value(), 0D);
-            Assert.assertEquals(1000D, minimum.value(), 0D);
+            Assert.assertEquals(999000D, maximum.value(), 0D);
+            Assert.assertEquals(0D, minimum.value(), 0D);
         }
 
-        repository.delete(mock);
-        Assert.assertFalse(repository.findById(0L).isPresent());
+        repository.deleteAll(mocks);
         Assert.assertEquals(0, repository.count());
     }
 
