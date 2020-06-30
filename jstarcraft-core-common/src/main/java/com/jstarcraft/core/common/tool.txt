@@ -6,3 +6,6 @@ https://github.com/nutzam/nutz
 
 快速开发工具类收集,史上最全的开发工具类:
 https://github.com/AbrahamCaiJin/CommonUtilLibrary
+
+Bus 是一个微服务套件、基础框架，它基于Java8编写，参考、借鉴了大量已有框架、组件的设计，可以作为后端服务的开发基础中间件:
+https://github.com/aoju/bus
