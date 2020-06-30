@@ -22,6 +22,11 @@ import com.jstarcraft.core.utility.StringUtility;
 /**
  * Elasticsearch事务管理器
  * 
+ * <pre>
+ * 需要设置script.max_compilations_rate参数
+ * https://www.elastic.co/guide/en/elasticsearch/reference/current/circuit-breaker.html#script-compilation-circuit-breaker
+ * </pre>
+ * 
  * @author Birdy
  *
  */
