@@ -16,6 +16,7 @@ import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
@@ -42,7 +43,7 @@ import org.springframework.data.elasticsearch.repository.support.SimpleElasticse
 
 import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 
-public class ElasticsearchTestCase {
+public class ElasticsearchApiTestCase {
 
     private static final String EMBEDDED_ELASTIC_HOST = "localhost";
 
@@ -188,6 +189,7 @@ public class ElasticsearchTestCase {
         }
 
         {
+            // 分页与排序
             NativeSearchQueryBuilder first = new NativeSearchQueryBuilder();
             first.withPageable(PageRequest.of(0, 1));
             first.withSort(SortBuilders.fieldSort("id").order(SortOrder.ASC));
@@ -197,6 +199,25 @@ public class ElasticsearchTestCase {
             last.withPageable(PageRequest.of(0, 1));
             last.withSort(SortBuilders.fieldSort("id").order(SortOrder.DESC));
             Assert.assertEquals(Long.valueOf(999L), repository.search(last.build()).getContent().get(0).getId());
+        }
+
+        {
+            BoolQueryBuilder and = QueryBuilders.boolQuery();
+            and.must(QueryBuilders.termQuery("id", 500L));
+            and.must(QueryBuilders.termQuery("race", MockEnumeration.RANDOM));
+            NativeSearchQueryBuilder andBuilder = new NativeSearchQueryBuilder();
+            andBuilder.withQuery(and);
+
+            BoolQueryBuilder or = QueryBuilders.boolQuery();
+            or.should(QueryBuilders.termQuery("id", 500L));
+            or.should(QueryBuilders.termQuery("race", MockEnumeration.RANDOM));
+            NativeSearchQueryBuilder orBuilder = new NativeSearchQueryBuilder();
+            orBuilder.withQuery(or);
+
+            Assert.assertEquals(1, template.count(andBuilder.build(), Mock.class, template.getIndexCoordinatesFor(Mock.class)));
+            Assert.assertEquals(1000, template.count(orBuilder.build(), Mock.class, template.getIndexCoordinatesFor(Mock.class)));
+            Assert.assertEquals(1, repository.search(andBuilder.build()).getSize());
+            Assert.assertEquals(1000, repository.search(orBuilder.build()).getSize());
         }
 
         repository.deleteAll(mocks);

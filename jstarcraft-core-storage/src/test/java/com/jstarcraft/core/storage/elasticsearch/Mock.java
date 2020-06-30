@@ -27,6 +27,9 @@ public class Mock {
     @Field(type = FieldType.Double)
     private Double price;
 
+    @Field(type = FieldType.Keyword)
+    private MockEnumeration race;
+
     Mock() {
     }
 
@@ -35,6 +38,7 @@ public class Mock {
         this.title = title;
         this.categories = categories;
         this.price = price;
+        this.race = MockEnumeration.RANDOM;
     }
 
     public Long getId() {
