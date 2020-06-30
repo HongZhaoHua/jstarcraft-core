@@ -92,7 +92,7 @@ public class ElasticsearchTransactionManager extends TransactionManager {
         document.put(NAME, key);
         document.put(MOST, value);
         document.put(NOW, Instant.now().toEpochMilli());
-        UpdateRequest ur = new UpdateRequest().index(index).type(type)
+        UpdateRequest request = new UpdateRequest().index(index).type(type)
 
                 .id(key)
 
@@ -102,8 +102,8 @@ public class ElasticsearchTransactionManager extends TransactionManager {
 
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
         try {
-            UpdateResponse res = elastic.update(ur, RequestOptions.DEFAULT);
-            if (res.getResult() == DocWriteResponse.Result.NOOP) {
+            UpdateResponse response = elastic.update(request, RequestOptions.DEFAULT);
+            if (response.getResult() == DocWriteResponse.Result.NOOP) {
                 throw new TransactionLockException();
             }
         } catch (Exception exception) {
@@ -121,14 +121,14 @@ public class ElasticsearchTransactionManager extends TransactionManager {
         document.put(NAME, key);
         document.put(MOST, value);
         document.put(NOW, Instant.now().toEpochMilli());
-        UpdateRequest ur = new UpdateRequest().index(index).type(type)
+        UpdateRequest request = new UpdateRequest().index(index).type(type)
 
                 .id(key)
 
                 .script(new Script(ScriptType.INLINE, SCRIPT, UNLOCK_SCRIPT, document));
         try {
-            UpdateResponse res = elastic.update(ur, RequestOptions.DEFAULT);
-            if (res.getResult() == DocWriteResponse.Result.NOOP) {
+            UpdateResponse response = elastic.update(request, RequestOptions.DEFAULT);
+            if (response.getResult() == DocWriteResponse.Result.NOOP) {
                 throw new TransactionUnlockException();
             }
         } catch (Exception exception) {
