@@ -21,7 +21,7 @@ public class Mock {
 
     /** 类目 */
     @Field(type = FieldType.Keyword)
-    private String category;
+    private String[] categories;
 
     /** 价格 */
     @Field(type = FieldType.Double)
@@ -30,10 +30,10 @@ public class Mock {
     Mock() {
     }
 
-    public Mock(Long id, String title, String category, Double price) {
+    public Mock(Long id, String title, String[] categories, Double price) {
         this.id = id;
         this.title = title;
-        this.category = category;
+        this.categories = categories;
         this.price = price;
     }
 
@@ -45,8 +45,8 @@ public class Mock {
         return title;
     }
 
-    public String getCategory() {
-        return category;
+    public String[] getCategories() {
+        return categories;
     }
 
     public Double getPrice() {
@@ -55,7 +55,7 @@ public class Mock {
 
     @Override
     public int hashCode() {
-        return Objects.hash(category, id, price, title);
+        return Objects.hash(id, price, title, categories);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Mock {
         if (getClass() != object.getClass())
             return false;
         Mock that = (Mock) object;
-        return Objects.equals(this.category, that.category) && Objects.equals(this.id, that.id) && Objects.equals(this.price, that.price) && Objects.equals(this.title, that.title);
+        return Objects.equals(this.id, that.id) && Objects.equals(this.price, that.price) && Objects.equals(this.title, that.title) && Objects.equals(this.categories, that.categories);
     }
 
 }

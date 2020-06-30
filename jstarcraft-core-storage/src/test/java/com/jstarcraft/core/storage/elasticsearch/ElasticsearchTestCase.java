@@ -91,7 +91,7 @@ public class ElasticsearchTestCase {
         List<Mock> mocks = new ArrayList<>(size);
         for (int index = 0; index < size; index++) {
             long id = index;
-            Mock mock = new Mock(id, "title", "category", index * 1000D);
+            Mock mock = new Mock(id, "title", new String[] { "left", "right" }, index * 1000D);
             mocks.add(mock);
         }
         repository.saveAll(mocks);
@@ -101,6 +101,18 @@ public class ElasticsearchTestCase {
             NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
             builder.withQuery(QueryBuilders.matchQuery("title", "title"));
             Assert.assertEquals(1000, repository.search(builder.build()).getSize());
+        }
+        
+        {
+            NativeSearchQueryBuilder left = new NativeSearchQueryBuilder();
+            left.withQuery(QueryBuilders.termQuery("categories", "left"));
+            Assert.assertEquals(1000, repository.search(left.build()).getSize());
+            NativeSearchQueryBuilder right = new NativeSearchQueryBuilder();
+            right.withQuery(QueryBuilders.termQuery("categories", "right"));
+            Assert.assertEquals(1000, repository.search(right.build()).getSize());
+            NativeSearchQueryBuilder middle = new NativeSearchQueryBuilder();
+            middle.withQuery(QueryBuilders.termQuery("categories", "middle"));
+            Assert.assertEquals(0, repository.search(middle.build()).getSize());
         }
 
         {
