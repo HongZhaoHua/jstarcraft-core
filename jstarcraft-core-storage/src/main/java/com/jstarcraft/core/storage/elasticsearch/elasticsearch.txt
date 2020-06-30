@@ -8,3 +8,6 @@ Elasticsearch内核解析:
 https://zhuanlan.zhihu.com/p/34680841
 https://zhuanlan.zhihu.com/p/34669354
 https://zhuanlan.zhihu.com/p/34674517
+
+ElasticSearch-Nested嵌套类型解密:
+https://www.shenyanchao.cn/blog/2019/01/10/elasticsearch-nested
