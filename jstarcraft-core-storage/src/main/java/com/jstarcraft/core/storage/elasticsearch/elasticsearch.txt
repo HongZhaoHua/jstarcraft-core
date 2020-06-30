@@ -14,3 +14,6 @@ https://zhuanlan.zhihu.com/p/34674517
 
 ElasticSearch-Nested嵌套类型解密:
 https://www.shenyanchao.cn/blog/2019/01/10/elasticsearch-nested
+
+干货 | Elasticsearch Nested类型深入详解:
+https://blog.csdn.net/laoyang360/article/details/82950393
