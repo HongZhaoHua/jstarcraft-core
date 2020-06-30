@@ -90,10 +90,11 @@ public class ElasticsearchApiTestCase {
         ElasticsearchOperations template = new ElasticsearchRestTemplate(elasticClient);
         ElasticsearchRepositoryFactory factory = new ElasticsearchRepositoryFactory(template);
 
+        // 构建索引
         IndexOperations operation = template.indexOps(Mock.class);
         operation.delete();
         operation.create();
-
+        // 构建映射
         Document mapping = operation.createMapping(Mock.class);
         operation.putMapping(mapping);
 
@@ -178,6 +179,7 @@ public class ElasticsearchApiTestCase {
         }
 
         {
+            // 聚合查询
             NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
             builder.addAggregation(AggregationBuilders.max("maximum").field("price"));
             builder.addAggregation(AggregationBuilders.min("minimum").field("price"));
@@ -202,6 +204,7 @@ public class ElasticsearchApiTestCase {
         }
 
         {
+            // 组合查询
             BoolQueryBuilder and = QueryBuilders.boolQuery();
             and.must(QueryBuilders.termQuery("id", 500L));
             and.must(QueryBuilders.termQuery("race", MockEnumeration.RANDOM));
