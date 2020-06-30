@@ -2,16 +2,25 @@ package com.jstarcraft.core.storage.elasticsearch;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.admin.cluster.storedscripts.DeleteStoredScriptRequest;
+import org.elasticsearch.action.admin.cluster.storedscripts.PutStoredScriptRequest;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMetricsAggregation;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -119,14 +128,45 @@ public class ElasticsearchTestCase {
             Assert.assertEquals(1000, repository.search(middle.build()).getSize());
 
             try {
+                // 创建脚本
+                PutStoredScriptRequest request = new PutStoredScriptRequest();
+                request.id("update");
+                XContentBuilder builder = XContentFactory.jsonBuilder();
+                builder.startObject();
+                {
+                    builder.startObject("script");
+                    {
+                        builder.field("lang", "painless");
+                        builder.field("source", "ctx._source.categories.remove(ctx._source.categories.indexOf('middle'));");
+                    }
+                    builder.endObject();
+                }
+                builder.endObject();
+                request.content(BytesReference.bytes(builder), XContentType.JSON);
+                AcknowledgedResponse response = elasticClient.putScript(request, RequestOptions.DEFAULT);
+                Assert.assertTrue(response.isAcknowledged());
+            } catch (Exception exception) {
+                throw new RuntimeException(exception);
+            }
+
+            try {
                 // 批量更新
                 UpdateByQueryRequest request = new UpdateByQueryRequest("mock");
                 request.setQuery(QueryBuilders.termQuery("categories", "middle"));
-                request.setScript(new Script("ctx._source.categories.remove(ctx._source.categories.indexOf('middle'));"));
+                request.setScript(new Script(ScriptType.STORED, null, "update", Collections.EMPTY_MAP));
                 request.setRefresh(true);
                 BulkByScrollResponse response = elasticClient.updateByQuery(request, RequestOptions.DEFAULT);
                 long updated = response.getUpdated();
                 Assert.assertEquals(1000, updated);
+            } catch (Exception exception) {
+                throw new RuntimeException(exception);
+            }
+
+            try {
+                // 删除脚本
+                DeleteStoredScriptRequest request = new DeleteStoredScriptRequest("update");
+                AcknowledgedResponse response = elasticClient.deleteScript(request, RequestOptions.DEFAULT);
+                Assert.assertTrue(response.isAcknowledged());
             } catch (Exception exception) {
                 throw new RuntimeException(exception);
             }
