@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.UpdateByQueryRequest;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMetricsAggregation;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -91,7 +95,7 @@ public class ElasticsearchTestCase {
         List<Mock> mocks = new ArrayList<>(size);
         for (int index = 0; index < size; index++) {
             long id = index;
-            Mock mock = new Mock(id, "title", new String[] { "left", "right" }, index * 1000D);
+            Mock mock = new Mock(id, "title", new String[] { "left", "middle", "right" }, index * 1000D);
             mocks.add(mock);
         }
         repository.saveAll(mocks);
@@ -102,7 +106,7 @@ public class ElasticsearchTestCase {
             builder.withQuery(QueryBuilders.matchQuery("title", "title"));
             Assert.assertEquals(1000, repository.search(builder.build()).getSize());
         }
-        
+
         {
             NativeSearchQueryBuilder left = new NativeSearchQueryBuilder();
             left.withQuery(QueryBuilders.termQuery("categories", "left"));
@@ -112,6 +116,23 @@ public class ElasticsearchTestCase {
             Assert.assertEquals(1000, repository.search(right.build()).getSize());
             NativeSearchQueryBuilder middle = new NativeSearchQueryBuilder();
             middle.withQuery(QueryBuilders.termQuery("categories", "middle"));
+            Assert.assertEquals(1000, repository.search(middle.build()).getSize());
+
+            // 批量更新
+            UpdateByQueryRequest request = new UpdateByQueryRequest("mock");
+            request.setQuery(QueryBuilders.termQuery("categories", "middle"));
+            request.setScript(new Script("ctx._source['categories']=['center']"));
+            request.setRefresh(true);
+            try {
+                BulkByScrollResponse response = elasticClient.updateByQuery(request, RequestOptions.DEFAULT);
+                long updated = response.getUpdated();
+                Assert.assertEquals(1000, updated);
+            } catch (Exception exception) {
+                throw new RuntimeException(exception);
+            }
+
+            Assert.assertEquals(0, repository.search(left.build()).getSize());
+            Assert.assertEquals(0, repository.search(right.build()).getSize());
             Assert.assertEquals(0, repository.search(middle.build()).getSize());
         }
 
