@@ -34,8 +34,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
@@ -82,6 +84,49 @@ public class ElasticsearchApiTestCase {
 //            elasticServer.stop();
 //        }
 //    }
+
+    @Test
+    public void testRoute() {
+        ElasticsearchOperations template = new ElasticsearchRestTemplate(elasticClient);
+        for (int index = 0; index < 5; index++) {
+            // 构建索引
+            String name = "test" + index;
+            IndexCoordinates coordinate = IndexCoordinates.of(name);
+            IndexOperations operation = template.indexOps(coordinate);
+            operation.delete();
+            operation.create();
+            // 构建映射
+            Document mapping = operation.createMapping(Mock.class);
+            operation.putMapping(mapping);
+
+            int size = 1000;
+            List<Mock> mocks = new ArrayList<>(size);
+            for (int id = 0; id < size; id++) {
+                Mock mock = new Mock(index * 1000L + id, name, new String[] { "left", "middle", "right" }, index * 1000D + id);
+                mocks.add(mock);
+            }
+
+            template.save(mocks, coordinate);
+            operation.refresh();
+        }
+
+        for (int index = 0; index < 5; index++) {
+            // 构建索引
+            String name = "test" + index;
+            IndexCoordinates coordinate = IndexCoordinates.of(name);
+
+            // 聚合查询
+            NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+            builder.addAggregation(AggregationBuilders.max("maximum").field("price"));
+            builder.addAggregation(AggregationBuilders.min("minimum").field("price"));
+            SearchHits<Mock> searchHits = template.search(builder.build(), Mock.class, coordinate);
+
+            ParsedSingleValueNumericMetricsAggregation maximum = (ParsedSingleValueNumericMetricsAggregation) searchHits.getAggregations().get("maximum");
+            ParsedSingleValueNumericMetricsAggregation minimum = (ParsedSingleValueNumericMetricsAggregation) searchHits.getAggregations().get("minimum");
+            Assert.assertEquals(index * 1000D + 999, maximum.value(), 0D);
+            Assert.assertEquals(index * 1000D + 0, minimum.value(), 0D);
+        }
+    }
 
     @Test
     // TODO Spring Data Elasticsearch 3.2.7目前只兼容到Elasticsearch 6.8.8和Lucene 7.7.2
