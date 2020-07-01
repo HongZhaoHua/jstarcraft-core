@@ -95,7 +95,7 @@ public class ElasticsearchApiTestCase {
         operation.delete();
         operation.create();
         // 构建映射
-        Document mapping = operation.createMapping(Mock.class);
+        Document mapping = operation.createMapping();
         operation.putMapping(mapping);
 
         ElasticsearchEntityInformation<Mock, Long> information = factory.getEntityInformation(Mock.class);

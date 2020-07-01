@@ -57,7 +57,7 @@ public class ElasticsearchAccessorConfigurer {
             operation.delete();
             operation.create();
             // 构建映射
-            Document mapping = operation.createMapping(clazz);
+            Document mapping = operation.createMapping();
             operation.putMapping(mapping);
         }
 
