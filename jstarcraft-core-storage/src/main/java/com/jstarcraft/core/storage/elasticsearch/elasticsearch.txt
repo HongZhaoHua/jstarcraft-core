@@ -11,6 +11,9 @@ https://www.kaifaxueyuan.com/server/elasticsearch7.html
 Elasticsearch Java API 很全的整理以及架构剖析:
 https://www.cnblogs.com/laoqing/p/11693144.html
 
+ElasticSearch实战系列:
+https://www.cnblogs.com/xuwujing/tag/elasticsearch
+
 Elasticsearch技术研讨:
 https://zhuanlan.zhihu.com/Elasticsearch
 
