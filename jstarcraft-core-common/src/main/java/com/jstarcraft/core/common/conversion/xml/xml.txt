@@ -6,3 +6,6 @@ https://blog.csdn.net/xqhys/article/details/54344831
 
 Creating a Generic List Wrapper in JAXB:
 http://blog.bdoughan.com/2012/11/creating-generic-list-wrapper-in-jaxb.html
+
+如何解决XML：到未定义实体 'nbsp'的引用:
+https://www.cnblogs.com/HardChen/archive/2010/11/16/1878254.html
