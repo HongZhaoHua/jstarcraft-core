@@ -17,3 +17,6 @@ Java8新的异步编程方式 CompletableFuture:
 https://www.jianshu.com/p/dff9063e1ab6
 https://www.jianshu.com/p/d81cf0beb858
 https://www.jianshu.com/p/807e6822292a
+
+高级开发必须理解的Java中SPI机制:
+https://www.jianshu.com/p/46b42f7f593c
