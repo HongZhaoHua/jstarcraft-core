@@ -40,7 +40,7 @@ https://blog.csdn.net/laoyang360/article/details/82950393
 Elasticsearch：基于Vector的打分:
 https://elasticstack.blog.csdn.net/article/details/103651068
 
-***** 分片 *****
+***** 分片与路由 *****
 Elasticsearch之四种查询类型:
 https://yq.aliyun.com/articles/553839
 
@@ -49,6 +49,9 @@ https://www.jianshu.com/p/03e427fb5586
 
 Elasticsearch 集群分配多少分片合理:
 https://www.jianshu.com/p/297e13045605
+
+Elasticsearch Routing 路由详解:
+https://blog.csdn.net/ZYC88888/article/details/100727714
 
 ***** 模板 *****
 初探 Elasticsearch Index Template（索引模板):
