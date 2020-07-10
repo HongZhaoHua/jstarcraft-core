@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.cluster.storedscripts.DeleteStoredScriptRequest;
@@ -143,6 +144,15 @@ public class ElasticsearchApiTestCase {
         Document mapping = operation.createMapping();
         operation.putMapping(mapping);
 
+        Map<String, Map<String, Object>> properties = mapping.get("properties", Map.class);
+        // TODO 注意:在Spring Data Elasticsearch中
+        // 如果属性使用注解@Id或者名称为id,则无论@FiealdType如何声明,映射的type永远为keyword
+        Assert.assertEquals("keyword", properties.get("id").get("type"));
+        Assert.assertEquals("text", properties.get("title").get("type"));
+        Assert.assertEquals("keyword", properties.get("categories").get("type"));
+        Assert.assertEquals("double", properties.get("price").get("type"));
+        Assert.assertEquals("keyword", properties.get("race").get("type"));
+
         ElasticsearchEntityInformation<Mock, Long> information = factory.getEntityInformation(Mock.class);
         SimpleElasticsearchRepository<Mock, Long> repository = new SimpleElasticsearchRepository<>(information, template);
         Assert.assertEquals(0, repository.count());
@@ -156,6 +166,11 @@ public class ElasticsearchApiTestCase {
         }
         repository.saveAll(mocks);
         Assert.assertEquals(size, repository.count());
+
+        {
+            Assert.assertEquals(mocks.get(0), repository.findById(0L).get());
+            Assert.assertEquals(mocks.get(999), repository.findById(999L).get());
+        }
 
         {
             NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();

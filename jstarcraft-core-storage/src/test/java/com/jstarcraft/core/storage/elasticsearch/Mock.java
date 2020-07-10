@@ -1,5 +1,6 @@
 package com.jstarcraft.core.storage.elasticsearch;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
@@ -13,6 +14,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class Mock {
 
     @Id
+    @Field(type = FieldType.Long)
     private Long id;
 
     /** 标题 */
@@ -71,7 +73,7 @@ public class Mock {
         if (getClass() != object.getClass())
             return false;
         Mock that = (Mock) object;
-        return Objects.equals(this.id, that.id) && Objects.equals(this.price, that.price) && Objects.equals(this.title, that.title) && Objects.equals(this.categories, that.categories);
+        return Objects.equals(this.id, that.id) && Objects.equals(this.price, that.price) && Objects.equals(this.title, that.title) && Arrays.equals(this.categories, that.categories);
     }
 
 }
