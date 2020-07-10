@@ -22,6 +22,9 @@ https://zhuanlan.zhihu.com/p/34680841
 https://zhuanlan.zhihu.com/p/34669354
 https://zhuanlan.zhihu.com/p/34674517
 
+系统学Elasticsearch:
+http://mp.weixin.qq.com/mp/homepage?__biz=MzIxMjE3NjYwOQ==&hid=5&sn=b9c85139ca524fc7823379f4a2da99ba
+
 ***** 脚本 *****
 Elasticsearch Painless script编程:
 https://www.cnblogs.com/sanduzxcvbnm/p/12083590.html
