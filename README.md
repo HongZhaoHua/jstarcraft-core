@@ -45,6 +45,19 @@ JStarCraft Core是一个基于Java语言的核心编程工具包,涵盖了缓存
 JStarCraft Core框架各个模块之间的关系:
 ![core](https://github.com/HongZhaoHua/jstarcraft-tutorial/blob/master/core/JStarCraft%E6%A0%B8%E5%BF%83%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6%E5%9B%BE.png "JStarCraft Core架构")
 
+| 模块 | 功能 | 依赖 |
+| :----: | :----: | :----: |
+| core-cache | 提供各种缓存机制 | core-storage |
+| core-codec | 提供各种编解码机制 | core-common |
+| core-common | 提供各种通用工具 | |
+| core-communication | 提供各种通讯机制 | core-codec |
+| core-event | 提供各种事件机制 | core-codec |
+| core-monitor | 提供各种监控机制 | core-common |
+| core-resource | 提供各种资源机制 | core-codec |
+| core-script | 提供各种脚本机制 | core-common |
+| core-storage | 提供各种存储机制 | core-codec |
+| core-transaction | 提供各种事务机制 | core-common |
+
 ****
 
 ## 特性
