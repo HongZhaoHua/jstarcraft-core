@@ -3,3 +3,10 @@ https://www.cntofu.com/book/115/index.html
 
 ANTLR教程:
 https://www.crifan.com/files/doc/docbook/antlr_tutorial/release/html/antlr_tutorial.html
+
+ANTLR快餐教程:
+https://www.jianshu.com/p/4bedad8dd70a
+https://www.jianshu.com/p/1f5e72156075
+
+ANTLR4+Eclipse环境搭建以及创建实例:
+https://blog.csdn.net/zjq_1314520/article/details/65935718
