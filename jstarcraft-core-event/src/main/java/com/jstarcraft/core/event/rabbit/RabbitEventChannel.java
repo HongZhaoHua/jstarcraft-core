@@ -173,6 +173,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
             Class type = event.getClass();
             String key = type.getName();
             byte[] bytes = codec.encode(type, event);
+            // TODO 此处可能需要重构,RabbitMQ的Channel非线程安全
             channel.basicPublish(name, key, null, bytes);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
