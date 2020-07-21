@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsRequest;
+import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsResponse;
 import org.elasticsearch.action.admin.cluster.storedscripts.DeleteStoredScriptRequest;
 import org.elasticsearch.action.admin.cluster.storedscripts.PutStoredScriptRequest;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
@@ -14,6 +17,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -39,6 +43,8 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchEntityInformation;
 import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
@@ -285,6 +291,33 @@ public class ElasticsearchApiTestCase {
 
         repository.deleteAll(mocks);
         Assert.assertEquals(0, repository.count());
+    }
+
+    @Test
+    public void test1024Index() throws Exception {
+        // Elasticsearch 7版本及以上的,默认只允许1000个分片,需要修改配置
+        ClusterUpdateSettingsRequest request = new ClusterUpdateSettingsRequest();
+        Settings settings = Settings.builder().put("cluster.max_shards_per_node", 5000).build();
+        request.persistentSettings(settings);
+        ClusterUpdateSettingsResponse response = elasticClient.cluster().putSettings(request, RequestOptions.DEFAULT);
+        Assert.assertTrue(response.isAcknowledged());
+
+        ElasticsearchOperations template = new ElasticsearchRestTemplate(elasticClient);
+        for (int index = 0; index < 1024; index++) {
+            // 构建索引
+            String name = "test" + index;
+            IndexCoordinates coordinate = IndexCoordinates.of(name);
+            Mock mock = new Mock(index + 0L, name, new String[] { "left", "middle", "right" }, index * 1000D);
+            IndexQuery indexQuery = new IndexQueryBuilder().withId(String.valueOf(mock.getId())).withObject(mock).build();
+            template.index(indexQuery, coordinate);
+        }
+
+        for (int index = 0; index < 1024; index++) {
+            // 构建索引
+            String name = "test" + index;
+            IndexCoordinates coordinate = IndexCoordinates.of(name);
+            template.indexOps(coordinate).delete();
+        }
     }
 
 }
