@@ -18,5 +18,8 @@ https://www.jianshu.com/p/dff9063e1ab6
 https://www.jianshu.com/p/d81cf0beb858
 https://www.jianshu.com/p/807e6822292a
 
+很隐蔽的一个线程池死锁问题 CompletableFuture + ThreadPoolExecutor:
+https://blog.csdn.net/Siiiirius/article/details/107102724
+
 高级开发必须理解的Java中SPI机制:
 https://www.jianshu.com/p/46b42f7f593c
