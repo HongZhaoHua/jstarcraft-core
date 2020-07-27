@@ -18,7 +18,7 @@ public class Mock {
     private Long id;
 
     /** 标题 */
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "whitespace", searchAnalyzer = "whitespace")
     private String title;
 
     /** 类目 */

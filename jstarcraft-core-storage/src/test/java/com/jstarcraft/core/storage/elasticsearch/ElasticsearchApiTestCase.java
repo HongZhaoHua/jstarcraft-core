@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import org.apache.http.HttpHost;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsRequest;
 import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsResponse;
 import org.elasticsearch.action.admin.cluster.storedscripts.DeleteStoredScriptRequest;
@@ -22,6 +22,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
@@ -167,7 +168,7 @@ public class ElasticsearchApiTestCase {
         List<Mock> mocks = new ArrayList<>(size);
         for (int index = 0; index < size; index++) {
             long id = index;
-            Mock mock = new Mock(id, "title", new String[] { "left", "middle", "right" }, index * 1000D);
+            Mock mock = new Mock(id, ": title", new String[] { "left", "middle", "right" }, index * 1000D);
             mocks.add(mock);
         }
         repository.saveAll(mocks);
@@ -181,6 +182,14 @@ public class ElasticsearchApiTestCase {
         {
             NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
             builder.withQuery(QueryBuilders.matchQuery("title", "title"));
+            Assert.assertEquals(1000, repository.search(builder.build()).getSize());
+        }
+        
+        {
+            NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+            MatchQueryBuilder query = QueryBuilders.matchQuery("title", ":");
+            query.analyzer("whitespace");
+            builder.withQuery(query);
             Assert.assertEquals(1000, repository.search(builder.build()).getSize());
         }
 
