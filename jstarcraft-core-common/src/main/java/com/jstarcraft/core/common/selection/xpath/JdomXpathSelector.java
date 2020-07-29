@@ -2,7 +2,7 @@ package com.jstarcraft.core.common.selection.xpath;
 
 import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
-import org.jdom2.Parent;
+import org.jdom2.NamespaceAware;
 
 import com.jstarcraft.core.common.selection.XpathSelector;
 
@@ -12,7 +12,7 @@ import com.jstarcraft.core.common.selection.XpathSelector;
  * @author Birdy
  *
  */
-public class JdomXpathSelector extends XpathSelector<Parent> {
+public class JdomXpathSelector extends XpathSelector<NamespaceAware> {
 
     public JdomXpathSelector(String query) {
         super(query);
