@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.selection.xpath.swing;
+package com.jstarcraft.core.common.selection.xpath;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -12,6 +12,11 @@ import javax.swing.WindowConstants;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.jstarcraft.core.common.selection.xpath.swing.SwingAttributeNode;
+import com.jstarcraft.core.common.selection.xpath.swing.SwingComponentNode;
+import com.jstarcraft.core.common.selection.xpath.swing.SwingNode;
+import com.jstarcraft.core.common.selection.xpath.swing.SwingXPath;
 
 public class SwingXpathTestCase {
 
