@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.selection.xpath.swing;
 
 import java.awt.Container;
+import java.util.Objects;
 
 /**
  * Swing节点
@@ -58,5 +59,22 @@ public abstract class SwingNode<V> {
     }
 
     abstract Container getComponent();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        SwingNode that = (SwingNode) object;
+        return Objects.equals(this.value, that.value);
+    }
 
 }

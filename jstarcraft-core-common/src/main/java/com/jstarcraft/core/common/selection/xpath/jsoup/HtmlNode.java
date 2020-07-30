@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.selection.xpath.jsoup;
 
+import java.util.Objects;
+
 /**
  * HTML节点
  * 
@@ -49,6 +51,23 @@ public abstract class HtmlNode<V> {
      */
     public final V getValue() {
         return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null)
+            return false;
+        if (getClass() != object.getClass())
+            return false;
+        HtmlNode that = (HtmlNode) object;
+        return Objects.equals(this.value, that.value);
     }
 
 }
