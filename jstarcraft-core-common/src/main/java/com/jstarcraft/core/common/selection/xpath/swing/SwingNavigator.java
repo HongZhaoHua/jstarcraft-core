@@ -110,11 +110,6 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
     }
 
     @Override
-    public String getCommentStringValue(Object object) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getElementStringValue(Object object) {
         throw new UnsupportedOperationException();
     }
@@ -127,6 +122,11 @@ public class SwingNavigator extends DefaultNavigator implements NamedAccessNavig
 
     @Override
     public String getNamespaceStringValue(Object object) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getCommentStringValue(Object object) {
         throw new UnsupportedOperationException();
     }
 

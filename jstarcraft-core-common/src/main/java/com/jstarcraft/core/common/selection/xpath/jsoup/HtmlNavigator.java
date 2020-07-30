@@ -2,7 +2,6 @@ package com.jstarcraft.core.common.selection.xpath.jsoup;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.jaxen.DefaultNavigator;
 import org.jaxen.JaxenConstants;
@@ -11,8 +10,10 @@ import org.jaxen.NamedAccessNavigator;
 import org.jaxen.Navigator;
 import org.jaxen.XPath;
 import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 
 /**
  * HTML浏览器
@@ -30,38 +31,39 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public String getElementNamespaceUri(Object object) {
-        // Swing组件树不支持命名空间
+        // HTML不支持命名空间
         return "";
     }
 
     @Override
     public String getElementName(Object object) {
-        return ((Element) object).tagName();
+        return ((HtmlNode) object).getName();
     }
 
     @Override
     public String getElementQName(Object object) {
-        return ((Element) object).tagName();
+        return ((HtmlNode) object).getName();
     }
 
     @Override
     public String getAttributeNamespaceUri(Object object) {
-        // Swing组件树不支持命名空间
+        // HTML不支持命名空间
         return "";
     }
 
     @Override
     public String getAttributeName(Object object) {
-        return ((Attribute) object).getKey();
+        return ((HtmlNode) object).getName();
     }
 
     @Override
     public String getAttributeQName(Object object) {
-        return ((Attribute) object).getKey();
+        return ((HtmlNode) object).getName();
     }
 
     @Override
     public boolean isDocument(Object object) {
+        object = ((HtmlNode) object).getValue();
         if (object instanceof Document) {
             return true;
         } else {
@@ -71,6 +73,7 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public boolean isElement(Object object) {
+        object = ((HtmlNode) object).getValue();
         if (object instanceof Element) {
             return !isDocument(object);
         } else {
@@ -80,6 +83,7 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public boolean isAttribute(Object object) {
+        object = ((HtmlNode) object).getValue();
         if (object instanceof Attribute) {
             return true;
         } else {
@@ -89,42 +93,48 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public boolean isNamespace(Object object) {
-        // Swing组件树不支持命名空间
+        // HTML不支持命名空间
         return false;
     }
 
     @Override
     public boolean isComment(Object object) {
-        // Swing组件树不支持注释
-        return false;
+        object = ((HtmlNode) object).getValue();
+        if (object instanceof Comment) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean isText(Object object) {
-        // Swing组件树不支持文本
-        return false;
+        object = ((HtmlNode) object).getValue();
+        if (object instanceof TextNode) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean isProcessingInstruction(Object object) {
-        // Swing组件树不支持处理指令
+        // HTML不支持处理指令
         return false;
     }
 
     @Override
-    public String getCommentStringValue(Object object) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getElementStringValue(Object object) {
-        throw new UnsupportedOperationException();
+        Element element = (Element) ((HtmlNode) object).getValue();
+        String value = element.html();
+        return value;
     }
 
     @Override
     public String getAttributeStringValue(Object object) {
-        Object value = ((Attribute) object).getValue();
-        return value == null ? "" : value.toString();
+        Attribute attribute = (Attribute) ((HtmlNode) object).getValue();
+        String value = attribute.getValue();
+        return value;
     }
 
     @Override
@@ -133,8 +143,17 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
     }
 
     @Override
+    public String getCommentStringValue(Object object) {
+        Comment comment = (Comment) ((HtmlNode) object).getValue();
+        String value = comment.getData();
+        return value;
+    }
+
+    @Override
     public String getTextStringValue(Object object) {
-        throw new UnsupportedOperationException();
+        TextNode text = (TextNode) ((HtmlNode) object).getValue();
+        String value = text.text();
+        return value;
     }
 
     @Override
@@ -148,59 +167,52 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
     }
 
     @Override
-    public Iterator<Element> getParentAxisIterator(Object contextNode) {
-        Element node = ((Element) contextNode);
-        if (node.parent() != null) {
-            return Arrays.asList(node.parent()).iterator();
+    public Iterator<HtmlElementNode> getParentAxisIterator(Object contextNode) {
+        HtmlNode node = ((HtmlNode) contextNode);
+        if (node.getParent() != null) {
+            return Arrays.asList(node.getParent()).iterator();
         } else {
             return JaxenConstants.EMPTY_ITERATOR;
         }
     }
 
     @Override
-    public Iterator<Element> getChildAxisIterator(Object contextNode) {
-        Element node = ((Element) contextNode);
-        return node.children().iterator();
+    public Iterator<HtmlElementNode> getChildAxisIterator(Object contextNode) {
+        HtmlElementNode node = ((HtmlElementNode) contextNode);
+        return HtmlElementNode.getInstances(node).iterator();
     }
 
     @Override
-    public Iterator<Element> getChildAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
-        Element node = ((Element) contextNode);
-        LinkedList<Element> children = new LinkedList<>();
-        for (Element child : node.children()) {
-            if (localName.equals(child.tagName())) {
-                children.add(child);
-            }
+    public Iterator<HtmlElementNode> getChildAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
+        HtmlElementNode node = ((HtmlElementNode) contextNode);
+        return HtmlElementNode.getInstances(node, localName).iterator();
+    }
+
+    @Override
+    public Iterator<HtmlAttributeNode> getAttributeAxisIterator(Object contextNode) {
+        HtmlElementNode node = ((HtmlElementNode) contextNode);
+        return HtmlAttributeNode.getInstances(node).iterator();
+    }
+
+    @Override
+    public Iterator<HtmlAttributeNode> getAttributeAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
+        HtmlElementNode node = ((HtmlElementNode) contextNode);
+        return HtmlAttributeNode.getInstances(node, localName).iterator();
+    }
+
+    @Override
+    public HtmlElementNode getDocumentNode(Object contextNode) {
+        HtmlElementNode node = getParentNode(contextNode);
+        while (node != null) {
+            contextNode = node;
+            node = getParentNode(contextNode);
         }
-        return children.iterator();
+        return (HtmlElementNode) contextNode;
     }
 
     @Override
-    public Iterator<Attribute> getAttributeAxisIterator(Object contextNode) {
-        Element node = ((Element) contextNode);
-        return node.attributes().iterator();
-    }
-
-    @Override
-    public Iterator<Attribute> getAttributeAxisIterator(Object contextNode, String localName, String namespacePrefix, String namespaceURI) {
-        Element node = ((Element) contextNode);
-        LinkedList<Attribute> attributes = new LinkedList<>();
-        for (Attribute attribute : node.attributes()) {
-            if (localName.equals(attribute.getKey())) {
-                attributes.add(attribute);
-            }
-        }
-        return attributes.iterator();
-    }
-
-    @Override
-    public Element getDocumentNode(Object contextNode) {
-        return ((Element) contextNode).root();
-    }
-
-    @Override
-    public Element getParentNode(Object contextNode) {
-        return ((Element) contextNode).parent();
+    public HtmlElementNode getParentNode(Object contextNode) {
+        return ((HtmlNode) contextNode).getParent();
     }
 
 }

@@ -17,8 +17,8 @@ public class SwingComponentNode extends SwingNode<Component> {
         super(null, root.getClass().getSimpleName(), root);
     }
 
-    SwingComponentNode(SwingNode parent, Component node) {
-        super(parent, node.getClass().getSimpleName(), node);
+    SwingComponentNode(SwingNode parent, Component value) {
+        super(parent, value.getClass().getSimpleName(), value);
     }
 
     @Override
