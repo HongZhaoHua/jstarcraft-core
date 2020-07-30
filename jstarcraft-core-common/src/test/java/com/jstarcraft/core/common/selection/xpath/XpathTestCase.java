@@ -2,7 +2,6 @@ package com.jstarcraft.core.common.selection.xpath;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
-import java.util.Collection;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlElementNode;
-import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlNode;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class XpathTestCase {
@@ -23,7 +21,6 @@ public class XpathTestCase {
             JsoupXpathSelector selector;
 
             selector = new JsoupXpathSelector("//@id");
-            Collection<HtmlNode> nodes = selector.selectContent(root);
             Assert.assertEquals(6, selector.selectContent(root).size());
 
             selector = new JsoupXpathSelector("//*[text()='title']");
