@@ -63,32 +63,35 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public boolean isDocument(Object object) {
-        object = ((HtmlNode) object).getValue();
-        if (object instanceof Document) {
-            return true;
-        } else {
-            return false;
+        if (object instanceof HtmlNode) {
+            object = ((HtmlNode) object).getValue();
+            if (object instanceof Document) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
     public boolean isElement(Object object) {
-        object = ((HtmlNode) object).getValue();
-        if (object instanceof Element) {
-            return !isDocument(object);
-        } else {
-            return false;
+        if (object instanceof HtmlNode) {
+            object = ((HtmlNode) object).getValue();
+            if (object instanceof Element) {
+                return !isDocument(object);
+            }
         }
+        return false;
     }
 
     @Override
     public boolean isAttribute(Object object) {
-        object = ((HtmlNode) object).getValue();
-        if (object instanceof Attribute) {
-            return true;
-        } else {
-            return false;
+        if (object instanceof HtmlNode) {
+            object = ((HtmlNode) object).getValue();
+            if (object instanceof Attribute) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
@@ -99,22 +102,24 @@ public class HtmlNavigator extends DefaultNavigator implements NamedAccessNaviga
 
     @Override
     public boolean isComment(Object object) {
-        object = ((HtmlNode) object).getValue();
-        if (object instanceof Comment) {
-            return true;
-        } else {
-            return false;
+        if (object instanceof HtmlNode) {
+            object = ((HtmlNode) object).getValue();
+            if (object instanceof Comment) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
     public boolean isText(Object object) {
-        object = ((HtmlNode) object).getValue();
-        if (object instanceof TextNode) {
-            return true;
-        } else {
-            return false;
+        if (object instanceof HtmlNode) {
+            object = ((HtmlNode) object).getValue();
+            if (object instanceof TextNode) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
