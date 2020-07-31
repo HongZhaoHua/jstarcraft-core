@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.communication.exception.CommunicationException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -102,7 +103,7 @@ public class CommunicationMessage {
             throw new CommunicationException();
         }
         byte[] headData = new byte[headLength];
-        in.read(headData);
+        IoUtility.read(in, headData);
         checksum.update(headData, 0, headData.length);
         // 消息体长度以及数据
         int bodyLength = in.readInt();
@@ -111,7 +112,7 @@ public class CommunicationMessage {
             throw new CommunicationException();
         }
         byte[] bodyData = new byte[bodyLength];
-        in.read(bodyData);
+        IoUtility.read(in, bodyData);
         checksum.update(bodyData, 0, bodyData.length);
         // 消息尾长度以及数据
         int tailLength = in.readInt();
@@ -120,7 +121,7 @@ public class CommunicationMessage {
             throw new CommunicationException();
         }
         byte[] tailData = new byte[tailLength];
-        in.read(tailData);
+        IoUtility.read(in, tailData);
         checksum.update(tailData, 0, tailData.length);
         if (check != checksum.getValue()) {
             throw new CommunicationException();
@@ -156,11 +157,11 @@ public class CommunicationMessage {
         long check = checksum.getValue();
         out.writeLong(check);
         out.writeInt(headData.length);
-        out.write(headData);
+        IoUtility.write(headData, out);
         out.writeInt(bodyData.length);
-        out.write(bodyData);
+        IoUtility.write(bodyData, out);
         out.writeInt(tailData.length);
-        out.write(tailData);
+        IoUtility.write(tailData, out);
     }
 
     public static CommunicationMessage instanceOf(MessageHead head, MessageBody body, MessageTail tail) {

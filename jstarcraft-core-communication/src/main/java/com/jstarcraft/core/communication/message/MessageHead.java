@@ -10,6 +10,8 @@ import java.time.Instant;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.jstarcraft.core.common.io.IoUtility;
+
 /**
  * 信息头
  * 
@@ -89,7 +91,7 @@ public class MessageHead {
         value.instant = Instant.ofEpochMilli(dataInputStream.readLong());
         value.command = dataInputStream.readByte();
         value.module = new byte[dataInputStream.available()];
-        dataInputStream.read(value.module);
+        IoUtility.read(dataInputStream, value.module);
         return value;
     }
 
@@ -106,7 +108,7 @@ public class MessageHead {
         dataOutputStream.writeInt(value.sequence);
         dataOutputStream.writeLong(value.instant.toEpochMilli());
         dataOutputStream.writeByte(value.command);
-        dataOutputStream.write(value.module);
+        IoUtility.write(value.module, dataOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
         return data;
     }

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.utility.PressUtility;
 
 /**
@@ -82,7 +83,7 @@ public class MessageBody {
         value.zip = MessageFormat.isZip(information);
 
         byte[] content = new byte[dataInputStream.available()];
-        dataInputStream.read(content);
+        IoUtility.read(dataInputStream, content);
         if (value.zip) {
             content = PressUtility.unzip(content, 5, TimeUnit.SECONDS);
         }
@@ -102,7 +103,7 @@ public class MessageBody {
         if (value.zip) {
             content = PressUtility.zip(content, 5);
         }
-        dataOutputStream.write(content);
+        IoUtility.write(content, dataOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
         return data;
     }

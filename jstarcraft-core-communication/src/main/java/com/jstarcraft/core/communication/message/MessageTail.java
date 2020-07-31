@@ -9,6 +9,8 @@ import java.io.IOException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.jstarcraft.core.common.io.IoUtility;
+
 /**
  * 信息尾
  * 
@@ -57,7 +59,7 @@ public class MessageTail {
         MessageTail value = new MessageTail();
         value.check = dataInputStream.readLong();
         value.content = new byte[dataInputStream.available()];
-        dataInputStream.read(value.content);
+        IoUtility.read(dataInputStream, value.content);
         return value;
     }
 
@@ -68,7 +70,7 @@ public class MessageTail {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         dataOutputStream.writeLong(value.check);
-        dataOutputStream.write(value.content);
+        IoUtility.write(value.content, dataOutputStream);
         byte[] data = byteArrayOutputStream.toByteArray();
         return data;
     }
