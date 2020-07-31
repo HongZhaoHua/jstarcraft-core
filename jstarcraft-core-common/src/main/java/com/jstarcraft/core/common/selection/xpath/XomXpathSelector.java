@@ -3,8 +3,6 @@ package com.jstarcraft.core.common.selection.xpath;
 import org.jaxen.JaxenException;
 import org.jaxen.xom.XOMXPath;
 
-import com.jstarcraft.core.common.selection.XpathSelector;
-
 import nu.xom.Node;
 
 /**

@@ -2,7 +2,6 @@ package com.jstarcraft.core.common.selection.xpath;
 
 import org.jaxen.JaxenException;
 
-import com.jstarcraft.core.common.selection.XpathSelector;
 import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlNode;
 import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlXPath;
 

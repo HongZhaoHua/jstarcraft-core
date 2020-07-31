@@ -4,8 +4,6 @@ import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
 import org.jdom2.NamespaceAware;
 
-import com.jstarcraft.core.common.selection.XpathSelector;
-
 /**
  * JDOM-XPath选择器
  * 

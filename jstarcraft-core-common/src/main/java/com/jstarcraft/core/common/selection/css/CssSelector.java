@@ -1,9 +1,11 @@
-package com.jstarcraft.core.common.selection;
+package com.jstarcraft.core.common.selection.css;
 
 import java.util.Collection;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
+
+import com.jstarcraft.core.common.selection.AbstractSelector;
 
 /**
  * CSS选择器

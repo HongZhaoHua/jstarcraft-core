@@ -4,8 +4,6 @@ import org.dom4j.Node;
 import org.jaxen.JaxenException;
 import org.jaxen.dom4j.Dom4jXPath;
 
-import com.jstarcraft.core.common.selection.XpathSelector;
-
 /**
  * dom4j-XPath选择器
  * 

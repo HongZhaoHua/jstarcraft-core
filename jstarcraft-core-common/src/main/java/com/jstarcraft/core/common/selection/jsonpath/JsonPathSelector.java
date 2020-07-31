@@ -1,4 +1,6 @@
-package com.jstarcraft.core.common.selection;
+package com.jstarcraft.core.common.selection.jsonpath;
+
+import com.jstarcraft.core.common.selection.AbstractSelector;
 
 /**
  * JSONPath选择器

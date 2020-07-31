@@ -1,9 +1,11 @@
-package com.jstarcraft.core.common.selection;
+package com.jstarcraft.core.common.selection.regular;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.jstarcraft.core.common.selection.AbstractSelector;
 
 /**
  * 正则选择器

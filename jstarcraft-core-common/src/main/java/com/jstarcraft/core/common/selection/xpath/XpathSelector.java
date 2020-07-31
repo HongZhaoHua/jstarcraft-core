@@ -1,9 +1,11 @@
-package com.jstarcraft.core.common.selection;
+package com.jstarcraft.core.common.selection.xpath;
 
 import java.util.Collection;
 
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
+
+import com.jstarcraft.core.common.selection.AbstractSelector;
 
 /**
  * XPath选择器

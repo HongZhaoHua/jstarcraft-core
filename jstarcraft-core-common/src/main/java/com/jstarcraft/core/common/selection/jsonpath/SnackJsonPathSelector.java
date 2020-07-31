@@ -5,8 +5,6 @@ import java.util.Collection;
 
 import org.noear.snack.ONode;
 
-import com.jstarcraft.core.common.selection.JsonPathSelector;
-
 public class SnackJsonPathSelector extends JsonPathSelector<ONode> {
 
     public SnackJsonPathSelector(String query) {
