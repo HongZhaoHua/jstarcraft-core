@@ -25,6 +25,9 @@ public class JsonPathTestCase {
             selector = new SnackJsonPathSelector("$[0:3]");
             Assert.assertEquals(3, selector.selectContent(root).size());
 
+            selector = new SnackJsonPathSelector("$[-3:0]");
+            Assert.assertEquals(3, selector.selectContent(root).size());
+
             selector = new SnackJsonPathSelector("$..name");
             Assert.assertEquals(3, selector.selectContent(root).size());
 
@@ -33,10 +36,10 @@ public class JsonPathTestCase {
 
             selector = new SnackJsonPathSelector("$[?(age < 10)]");
             Assert.assertEquals(1, selector.selectContent(root).size());
-            
+
             selector = new SnackJsonPathSelector("$[?(sex == 'true')]");
             Assert.assertEquals(2, selector.selectContent(root).size());
-            
+
             selector = new SnackJsonPathSelector("$[?(sex == 'false')]");
             Assert.assertEquals(1, selector.selectContent(root).size());
         } catch (Exception exception) {
