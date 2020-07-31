@@ -29,6 +29,7 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class AmqpEventChannel extends AbstractEventChannel {
 
+    /** JMS的Session(非线程安全) */
     private Session session;
 
     private ContentCodec codec;
@@ -103,7 +104,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+    public synchronized void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
                 EventManager manager = managers.get(type);
@@ -136,7 +137,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+    public synchronized void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
                 EventManager manager = managers.get(type);
@@ -155,7 +156,7 @@ public class AmqpEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void triggerEvent(Object event) {
+    public synchronized void triggerEvent(Object event) {
         try {
             Class type = event.getClass();
             MessageProducer producer = null;

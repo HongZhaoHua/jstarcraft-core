@@ -26,6 +26,7 @@ import com.rabbitmq.client.Envelope;
  */
 public class RabbitEventChannel extends AbstractEventChannel {
 
+    /** RabbitMQ的Channel(非线程安全) */
     private Channel channel;
 
     private ContentCodec codec;
@@ -109,7 +110,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void registerMonitor(Set<Class> types, EventMonitor monitor) {
+    public synchronized void registerMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
                 EventManager manager = managers.get(type);
@@ -148,7 +149,7 @@ public class RabbitEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
+    public synchronized void unregisterMonitor(Set<Class> types, EventMonitor monitor) {
         try {
             for (Class type : types) {
                 EventManager manager = managers.get(type);
@@ -168,12 +169,11 @@ public class RabbitEventChannel extends AbstractEventChannel {
     }
 
     @Override
-    public void triggerEvent(Object event) {
+    public synchronized void triggerEvent(Object event) {
         try {
             Class type = event.getClass();
             String key = type.getName();
             byte[] bytes = codec.encode(type, event);
-            // TODO 此处可能需要重构,RabbitMQ的Channel非线程安全
             channel.basicPublish(name, key, null, bytes);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
