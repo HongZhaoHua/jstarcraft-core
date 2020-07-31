@@ -23,6 +23,7 @@ import com.jstarcraft.core.codec.annotation.IncludeProperty;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration;
 import com.jstarcraft.core.codec.annotation.ProtocolConfiguration.Mode;
 import com.jstarcraft.core.codec.exception.CodecDefinitionException;
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -268,7 +269,7 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
             byte specification = in.readByte();
             int length = in.readShort();
             byte[] bytes = new byte[length];
-            in.read(bytes);
+            IoUtility.read(in, bytes);
             String className = new String(bytes, StringUtility.CHARSET);
             Class<?> clazz = ClassUtility.getClass(className, false);
             length = in.readShort();
@@ -278,7 +279,7 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
                 short propertyCode = in.readShort();
                 length = in.readShort();
                 bytes = new byte[length];
-                in.read(bytes);
+                IoUtility.read(in, bytes);
                 String name = new String(bytes, StringUtility.CHARSET);
                 Type type = null;
                 Field field = ReflectionUtility.findField(clazz, name);
@@ -316,13 +317,13 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
             out.writeShort((short) code);
             out.writeByte(getCode(specification));
             out.writeShort((short) bytes.length);
-            out.write(bytes);
+            IoUtility.write(bytes, out);
             out.writeShort((short) definition.properties.length);
             for (PropertyDefinition property : definition.properties) {
                 bytes = property.getName().getBytes(StringUtility.CHARSET);
                 out.writeShort((short) property.getCode());
                 out.writeShort((short) bytes.length);
-                out.write(bytes);
+                IoUtility.write(bytes, out);
             }
         } catch (Exception exception) {
             throw new CodecDefinitionException(exception);

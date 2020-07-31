@@ -11,6 +11,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.PressUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -51,7 +52,7 @@ public class StringConverter extends ProtocolConverter<Object> {
                 throw new EOFException();
             }
             byte[] bytes = new byte[length];
-            in.read(bytes);
+            IoUtility.read(in, bytes);
             String value = new String(bytes, StringUtility.CHARSET);
             context.putStringValue(value);
             if (type == char.class || type == Character.class) {
@@ -73,7 +74,7 @@ public class StringConverter extends ProtocolConverter<Object> {
                 throw new EOFException();
             }
             byte[] bytes = new byte[length];
-            in.read(bytes);
+            IoUtility.read(in, bytes);
             bytes = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
             String value = new String(bytes, StringUtility.CHARSET);
             context.putStringValue(value);
@@ -117,7 +118,7 @@ public class StringConverter extends ProtocolConverter<Object> {
             out.write(information);
             int length = bytes.length;
             NumberConverter.writeNumber(out, length);
-            out.write(bytes);
+            IoUtility.write(bytes, out);
         }
     }
 

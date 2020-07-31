@@ -18,6 +18,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -122,7 +123,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
             information = (byte) in.read();
             if (information >= 0) {
                 byte[] data = new byte[information];
-                in.read(data);
+                IoUtility.read(in, data);
                 String decimal = new String(data, StringUtility.CHARSET);
                 BigDecimal value = new BigDecimal(decimal);
                 return switchMark ? value.negate() : value;
@@ -233,7 +234,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
                 throw new CodecConvertionException();
             }
             out.write(data.length);
-            out.write(data);
+            IoUtility.write(data, out);
         } else {
             throw new CodecConvertionException();
         }
@@ -271,7 +272,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
             return value;
         } else {
             byte[] data = new byte[length];
-            in.read(data);
+            IoUtility.read(in, data);
             BigInteger value = new BigInteger(data);
             return value;
         }
@@ -287,7 +288,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
                     throw new CodecConvertionException(message);
                 }
                 out.write(data.length | ~LENGTH_MASK);
-                out.write(data);
+                IoUtility.write(data, out);
             }
         } else {
             long number = value.longValue();

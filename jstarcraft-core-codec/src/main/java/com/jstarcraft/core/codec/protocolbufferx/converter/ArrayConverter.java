@@ -9,6 +9,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -49,7 +50,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
             if (definition.getType() == byte.class) {
                 // 对字节数组做特殊处理
                 byte[] data = new byte[size];
-                in.read(data);
+                IoUtility.read(in, data);
                 value = data;
                 context.putArrayValue(value);
             } else {
@@ -128,7 +129,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
                 if (clazz == byte.class) {
                     // 对字节数组做特殊处理
                     byte[] data = (byte[]) value;
-                    out.write(data);
+                    IoUtility.write(data, out);
                 } else {
                     Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
                     ProtocolConverter converter = context.getProtocolConverter(specification);
