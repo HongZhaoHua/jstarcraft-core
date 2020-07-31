@@ -14,7 +14,6 @@ import com.jstarcraft.core.common.selection.AbstractSelector;
  *
  * @param <T>
  */
-//TODO 目前仍存在问题,如何兼容节点与属性
 public abstract class XpathSelector<T> extends AbstractSelector<T> {
 
     protected BaseXPath xpath;
