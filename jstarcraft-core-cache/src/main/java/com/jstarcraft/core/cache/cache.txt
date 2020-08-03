@@ -4,6 +4,12 @@ https://coolshell.cn/articles/17416.html
 缓存穿透，缓存击穿，缓存雪崩解决方案分析:
 https://blog.csdn.net/zeb_perfect/article/details/54135506
 
+缓存穿透、缓存击穿和缓存雪崩实践:
+https://www.jianshu.com/p/d00348a9eb3b
+
+为监控而生的多级缓存框架 layering-cache:
+https://www.jianshu.com/p/c5b2617b83e2
+
 目前PersistenceStrategy思路的基本假设是在异步持久化过程中不存在缓存击穿,所以只检查删除.
 从完备性角度,存在一定问题.如果万一在异步持久化过程存在缓存击穿,则存在脏数据.
 
