@@ -2,7 +2,10 @@ Spring IOC 容器源码分析:
 https://javadoop.com/post/spring-ioc
 
 扩展Spring的几种方式:
-https://nobodyiam.com/2017/02/26/several-ways-to-extend-spring/
+https://nobodyiam.com/2017/02/26/several-ways-to-extend-spring
+
+spring.factories:
+https://www.cnblogs.com/itplay/p/9927892.html
 
 Spring Bean的生命周期:
 http://www.cnblogs.com/zrtqsk/p/3735273.html
