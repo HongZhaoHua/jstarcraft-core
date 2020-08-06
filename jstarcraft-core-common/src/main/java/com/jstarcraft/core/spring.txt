@@ -31,5 +31,8 @@ https://www.jianshu.com/p/cfb0d20bd063
 深入理解Spring Boot之自动装配:
 https://www.cnblogs.com/niechen/p/9027804.html
 
-SpringBoot自动配置的原理及实现:
+Spring Boot自动配置的原理及实现:
 https://blog.csdn.net/zjcjava/article/details/84028222
+
+Spring Boot条件注解:
+https://blog.csdn.net/yuanlaijike/article/details/101312164
