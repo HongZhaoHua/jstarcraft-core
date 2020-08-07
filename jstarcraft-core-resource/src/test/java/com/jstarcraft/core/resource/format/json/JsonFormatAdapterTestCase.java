@@ -89,9 +89,9 @@ public class JsonFormatAdapterTestCase {
         Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 
-    private static final String oldFileName = "Person-old.js";
-    private static final String personFileName = "Person.js";
-    private static final String newFileName = "Person-new.js";
+    private static final String oldFileName = "Person-old.json";
+    private static final String personFileName = "Person.json";
+    private static final String newFileName = "Person-new.json";
 
     private void setMonitor() {
         try {

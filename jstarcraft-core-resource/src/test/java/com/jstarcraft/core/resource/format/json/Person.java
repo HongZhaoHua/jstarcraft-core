@@ -5,7 +5,7 @@ import com.jstarcraft.core.resource.annotation.ResourceId;
 import com.jstarcraft.core.resource.annotation.ResourceIndex;
 import com.jstarcraft.core.utility.StringUtility;
 
-@ResourceConfiguration(prefix = "json/", suffix = ".js")
+@ResourceConfiguration(prefix = "json/", suffix = ".json")
 public class Person {
 
     public static final String INDEX_NAME = "name";
