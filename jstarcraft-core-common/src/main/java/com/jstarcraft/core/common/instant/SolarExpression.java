@@ -2,7 +2,6 @@ package com.jstarcraft.core.common.instant;
 
 import java.time.ZonedDateTime;
 
-import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronConstraintsFactory;
 import com.cronutils.model.definition.CronDefinition;
 import com.cronutils.model.definition.CronDefinitionBuilder;
