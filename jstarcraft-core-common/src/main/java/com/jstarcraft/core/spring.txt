@@ -33,3 +33,6 @@ https://www.cnblogs.com/niechen/p/9027804.html
 
 Spring Boot条件注解:
 https://blog.csdn.net/yuanlaijike/article/details/101312164
+
+SpEL表达式总结:
+https://www.jianshu.com/p/e0b50053b5d3
