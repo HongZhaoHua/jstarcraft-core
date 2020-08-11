@@ -66,6 +66,28 @@ public class IslamicExpression extends DateTimeExpression {
         }
     }
 
+    private int[] getRange(String field, int from, int to) {
+        int[] range = new int[2];
+        if (field.contains(StringUtility.ASTERISK)) {
+            // 处理星符
+            range[0] = from;
+            range[1] = to - 1;
+        } else {
+            // 处理连接符
+            if (!field.contains(StringUtility.DASH)) {
+                range[0] = range[1] = field.startsWith("L") ? -Integer.valueOf(field.substring(1)) : Integer.valueOf(field);
+            } else {
+                String[] split = field.split(StringUtility.DASH);
+                if (split.length > 2) {
+                    throw new IllegalArgumentException("Range has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
+                }
+                range[0] = split[0].startsWith("L") ? -Integer.valueOf(split[0].substring(1)) : Integer.valueOf(split[0]);
+                range[1] = split[1].startsWith("L") ? -Integer.valueOf(split[1].substring(1)) : Integer.valueOf(split[1]);
+            }
+        }
+        return range;
+    }
+
     private void setBits(BitSet bits, String value, int from, int to, int shift) {
         if (value.contains(StringUtility.QUESTION)) {
             value = StringUtility.ASTERISK;
@@ -104,28 +126,6 @@ public class IslamicExpression extends DateTimeExpression {
                 }
             }
         }
-    }
-
-    private int[] getRange(String field, int from, int to) {
-        int[] range = new int[2];
-        if (field.contains(StringUtility.ASTERISK)) {
-            // 处理星符
-            range[0] = from;
-            range[1] = to - 1;
-        } else {
-            // 处理连接符
-            if (!field.contains(StringUtility.DASH)) {
-                range[0] = range[1] = field.startsWith("L") ? -Integer.valueOf(field.substring(1)) : Integer.valueOf(field);
-            } else {
-                String[] split = field.split(StringUtility.DASH);
-                if (split.length > 2) {
-                    throw new IllegalArgumentException("Range has more than two fields: '" + field + "' in expression \"" + this.expression + "\"");
-                }
-                range[0] = split[0].startsWith("L") ? -Integer.valueOf(split[0].substring(1)) : Integer.valueOf(split[0]);
-                range[1] = split[1].startsWith("L") ? -Integer.valueOf(split[1].substring(1)) : Integer.valueOf(split[1]);
-            }
-        }
-        return range;
     }
 
     public BitSet getSeconds() {
