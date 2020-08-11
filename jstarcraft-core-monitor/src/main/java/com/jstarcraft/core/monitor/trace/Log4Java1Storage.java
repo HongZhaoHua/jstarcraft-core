@@ -17,7 +17,7 @@ import org.apache.log4j.spi.LoggingEvent;
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
-import com.jstarcraft.core.common.instant.SolarExpression;
+import com.jstarcraft.core.common.instant.CronExpression;
 import com.jstarcraft.core.monitor.trace.exception.LogException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -55,7 +55,7 @@ public class Log4Java1Storage extends FileAppender {
     }
 
     /** CRON表达式 */
-    private SolarExpression expression;
+    private CronExpression expression;
 
     /** 格式 */
     private Format format;
@@ -73,7 +73,7 @@ public class Log4Java1Storage extends FileAppender {
     private WeakHashMap<String, FileAppender> cache = new WeakHashMap<>();
 
     public void setCron(String cron) {
-        this.expression = new SolarExpression(cron);
+        this.expression = new CronExpression(cron);
     }
 
     public void setFormat(String format) {

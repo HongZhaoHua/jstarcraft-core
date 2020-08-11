@@ -24,7 +24,7 @@ import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.common.identification.IdentityObject;
-import com.jstarcraft.core.common.instant.SolarExpression;
+import com.jstarcraft.core.common.instant.CronExpression;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
@@ -69,7 +69,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 	/** 状态 */
 	private AtomicReference<CacheState> state = new AtomicReference<>(null);
 	/** CRON表达式 */
-	private SolarExpression expression;
+	private CronExpression expression;
 	/** 持久时间点 */
 	private Instant persistTime;
 	/** 监听器 */
@@ -92,7 +92,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 		this.accessor = accessor;
 		this.information = information;
 		this.state = state;
-		this.expression = new SolarExpression(cron);
+		this.expression = new CronExpression(cron);
 		this.persistTime = expression.getNextDateTime(Instant.now());
 	}
 

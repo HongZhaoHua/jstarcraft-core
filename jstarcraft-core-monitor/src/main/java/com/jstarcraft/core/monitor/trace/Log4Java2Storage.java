@@ -30,7 +30,7 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.Requi
 
 import com.jstarcraft.core.common.conversion.csv.CsvUtility;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
-import com.jstarcraft.core.common.instant.SolarExpression;
+import com.jstarcraft.core.common.instant.CronExpression;
 import com.jstarcraft.core.monitor.trace.exception.LogException;
 import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
@@ -97,7 +97,7 @@ public class Log4Java2Storage extends AbstractAppender {
     private static final String suffix = "}";
 
     /** CRON表达式 */
-    private SolarExpression expression;
+    private CronExpression expression;
 
     /** 格式 */
     private final Format format;
@@ -219,7 +219,7 @@ public class Log4Java2Storage extends AbstractAppender {
 
     Log4Java2Storage(final String name, final Filter filter, final Layout<? extends Serializable> layout, boolean ignores, String cron, String format, String names, String path, String zone, String period) {
         super(name, filter, layout, ignores, Property.EMPTY_ARRAY);
-        this.expression = new SolarExpression(cron);
+        this.expression = new CronExpression(cron);
         this.format = Format.valueOf(format);
         if (names.indexOf($) != -1) {
             throw new LogException(names);
