@@ -121,9 +121,7 @@ public class LunarExpression extends DateTimeExpression {
                 range[1] = to + range[1];
             }
             for (int index = range[0]; index <= range[1]; index += skip) {
-                if (index >= from && index < to) {
-                    bits.set(index - shift);
-                }
+                bits.set(index - shift);
             }
         }
     }
