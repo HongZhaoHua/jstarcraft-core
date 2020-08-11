@@ -23,15 +23,15 @@ public class SolarExpression extends DateTimeExpression {
     static {
         cronDefinition = CronDefinitionBuilder.defineCron()
 
-                .withSeconds().and()
+                .withSeconds().withValidRange(0, 59).and()
 
-                .withMinutes().and()
+                .withMinutes().withValidRange(0, 59).and()
 
-                .withHours().and()
+                .withHours().withValidRange(0, 23).and()
 
-                .withDayOfMonth().withValidRange(1, 32).supportsL().supportsW().supportsLW().supportsQuestionMark().and()
+                .withDayOfMonth().withValidRange(1, 31).supportsL().supportsW().supportsLW().supportsQuestionMark().and()
 
-                .withMonth().withValidRange(1, 13).and()
+                .withMonth().withValidRange(1, 12).and()
 
                 .withDayOfWeek().withValidRange(1, 7).withMondayDoWValue(2).supportsHash().supportsL().supportsQuestionMark().and()
 
