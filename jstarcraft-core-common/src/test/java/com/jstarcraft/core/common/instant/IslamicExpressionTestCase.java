@@ -79,12 +79,14 @@ public class IslamicExpressionTestCase {
         expression = new IslamicExpression("0 0 12 29 6 1421/10");
         LocalTime time = LocalTime.of(12, 0, 0);
         LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time);
-        {
-            Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
-        }
-        {
-            Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
-        }
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+
+        expression = new IslamicExpression("0 0 0 30 6 1441");
+        dateTime = LocalDateTime.of(new IslamicDate(1442, 12, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new IslamicDate(1440, 1, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getNextDateTime(dateTime));
     }
 
     @Test
@@ -98,11 +100,20 @@ public class IslamicExpressionTestCase {
 
     @Test
     public void testSlash() {
-        LunarExpression leftExpression = new LunarExpression("0 0 12 1,6,11,16,21,26 *");
-        LunarExpression rightExpression = new LunarExpression("0 0 12 1/5 *");
-
-        Assert.assertEquals(leftExpression.getBigDays(), rightExpression.getBigDays());
-        Assert.assertEquals(leftExpression.getSmallDays(), rightExpression.getSmallDays());
+        {
+            IslamicExpression leftExpression = new IslamicExpression("0 0 12 1,6,11,16,21,26 * ?");
+            IslamicExpression rightExpression = new IslamicExpression("0 0 12 1/5 * ?");
+            LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), LocalTime.of(0, 0, 0));
+            Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
+            Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
+        }
+        {
+            IslamicExpression leftExpression = new IslamicExpression("0 0 12 10,11,12,13,14,15,16,17,18,19 * ?");
+            IslamicExpression rightExpression = new IslamicExpression("0 0 12 10-19 * ?");
+            LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), LocalTime.of(0, 0, 0));
+            Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
+            Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
+        }
     }
 
 }

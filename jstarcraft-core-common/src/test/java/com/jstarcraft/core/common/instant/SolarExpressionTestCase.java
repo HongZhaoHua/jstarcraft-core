@@ -81,12 +81,14 @@ public class SolarExpressionTestCase {
         expression = new SolarExpression("0 0 12 29 6 ? 2000/10");
         LocalTime time = LocalTime.of(12, 0, 0);
         LocalDateTime dateTime = LocalDateTime.of(new SolarDate(2020, 6, 29).getDate(), time);
-        {
-            Assert.assertEquals(LocalDateTime.of(new SolarDate(2010, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
-        }
-        {
-            Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
-        }
+        Assert.assertEquals(LocalDateTime.of(new SolarDate(2010, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+
+        expression = new SolarExpression("0 0 0 30 6 ? 2020");
+        dateTime = LocalDateTime.of(2021, 12, 31, 0, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(2019, 1, 1, 0, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getNextDateTime(dateTime));
     }
 
     @Test
@@ -170,7 +172,7 @@ public class SolarExpressionTestCase {
         // 表达式无年份限制
         SolarExpression expression = new SolarExpression("0 0 12 * * ?");
         {
-            LocalDateTime dateTime = LocalDateTime.of(1849, 12, 31, 23, 59, 59);
+            LocalDateTime dateTime = LocalDateTime.of(1850, 1, 1, 0, 0, 0);
             dateTime = expression.getNextDateTime(dateTime);
             Assert.assertEquals(LocalDateTime.of(1850, 1, 1, 12, 0, 0), dateTime);
         }
@@ -183,13 +185,20 @@ public class SolarExpressionTestCase {
 
     @Test
     public void testSlash() {
-        SolarExpression leftExpression = new SolarExpression("0 0 12 1,6,11,16,21,26 * ?");
-        SolarExpression rightExpression = new SolarExpression("0 0 12 1/5 * ?");
-
-        LocalDateTime dateTime = LocalDateTime.of(2020, 6, 30, 0, 0, 0);
-
-        Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
-        Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
+        {
+            SolarExpression leftExpression = new SolarExpression("0 0 12 1,6,11,16,21,26 * ?");
+            SolarExpression rightExpression = new SolarExpression("0 0 12 1/5 * ?");
+            LocalDateTime dateTime = LocalDateTime.of(2020, 6, 15, 0, 0, 0);
+            Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
+            Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
+        }
+        {
+            SolarExpression leftExpression = new SolarExpression("0 0 12 10,11,12,13,14,15,16,17,18,19 * ?");
+            SolarExpression rightExpression = new SolarExpression("0 0 12 10-19 * ?");
+            LocalDateTime dateTime = LocalDateTime.of(2020, 6, 15, 0, 0, 0);
+            Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
+            Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
+        }
     }
 
 }

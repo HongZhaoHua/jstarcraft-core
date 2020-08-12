@@ -350,11 +350,34 @@ public class SolarExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
         SolarDate sloar = new SolarDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = sloar.getYear();
         int month = sloar.getMonth();
         int day = sloar.getDay();
+        if (!years.get(year - MINIMUM_YEAR)) {
+            year = years.previousSetBit(year - MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += MINIMUM_YEAR;
+            month = months.previousSetBit(12);
+            day = 31;
+            time = LocalTime.MAX;
+        } else if (!months.get(month)) {
+            month = months.previousSetBit(month);
+            if (month == -1) {
+                month = months.previousSetBit(12);
+                year--;
+                year = years.previousSetBit(year - MINIMUM_YEAR);
+                if (year == -1) {
+                    return null;
+                }
+                year += MINIMUM_YEAR;
+            }
+            day = 31;
+            time = LocalTime.MAX;
+        }
         BitSet days = getDays(year, month);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -410,11 +433,34 @@ public class SolarExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
         SolarDate sloar = new SolarDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = sloar.getYear();
         int month = sloar.getMonth();
         int day = sloar.getDay();
+        if (!years.get(year - MINIMUM_YEAR)) {
+            year = years.nextSetBit(year - MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += MINIMUM_YEAR;
+            month = months.nextSetBit(1);
+            day = 1;
+            time = LocalTime.MIN;
+        } else if (!months.get(month)) {
+            month = months.nextSetBit(month);
+            if (month == -1) {
+                month = months.nextSetBit(1);
+                year++;
+            }
+            year = years.nextSetBit(year - MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += MINIMUM_YEAR;
+            day = 1;
+            time = LocalTime.MIN;
+        }
         BitSet days = getDays(year, month);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();

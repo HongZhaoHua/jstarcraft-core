@@ -177,12 +177,12 @@ public class IslamicExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
         IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -239,12 +239,12 @@ public class IslamicExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
         IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();

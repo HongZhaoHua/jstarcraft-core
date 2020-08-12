@@ -177,13 +177,13 @@ public class LunarExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
         LunarDate lunar = new LunarDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = lunar.getYear();
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
         int size = LunarDate.getDaySize(year, leap, month);
         BitSet days = getDays(size);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -252,13 +252,13 @@ public class LunarExpression extends DateTimeExpression {
     @Override
     public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
         LunarDate lunar = new LunarDate(dateTime.toLocalDate());
+        LocalTime time = dateTime.toLocalTime();
         int year = lunar.getYear();
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
         int size = LunarDate.getDaySize(year, leap, month);
         BitSet days = getDays(size);
-        LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
