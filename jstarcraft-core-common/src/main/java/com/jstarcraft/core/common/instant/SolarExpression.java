@@ -354,6 +354,7 @@ public class SolarExpression extends DateTimeExpression {
         int year = sloar.getYear();
         int month = sloar.getMonth();
         int day = sloar.getDay();
+        boolean change = false;
         if (!years.get(year - MINIMUM_YEAR)) {
             year = years.previousSetBit(year - MINIMUM_YEAR);
             if (year == -1) {
@@ -363,6 +364,7 @@ public class SolarExpression extends DateTimeExpression {
             month = months.previousSetBit(12);
             day = 31;
             time = LocalTime.MAX;
+            change = true;
         } else if (!months.get(month)) {
             month = months.previousSetBit(month);
             if (month == -1) {
@@ -376,12 +378,35 @@ public class SolarExpression extends DateTimeExpression {
             }
             day = 31;
             time = LocalTime.MAX;
+            change = true;
         }
         BitSet days = getDays(year, month);
+        if (!days.get(day)) {
+            day = days.previousSetBit(day);
+            while (day == -1) {
+                month--;
+                if (!months.get(month)) {
+                    month = months.previousSetBit(month);
+                    if (month == -1) {
+                        month = months.previousSetBit(12);
+                        year--;
+                        year = years.previousSetBit(year - MINIMUM_YEAR);
+                        if (year == -1) {
+                            return null;
+                        }
+                        year += MINIMUM_YEAR;
+                    }
+                }
+                days = getDays(year, month);
+                day = days.previousSetBit(31);
+            }
+            time = LocalTime.MAX;
+            change = true;
+        }
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
-        second = seconds.previousSetBit(second - 1);
+        second = seconds.previousSetBit(second - (change ? 0 : 1));
         if (second == -1) {
             second = seconds.previousSetBit(59);
             minute--;
@@ -437,6 +462,7 @@ public class SolarExpression extends DateTimeExpression {
         int year = sloar.getYear();
         int month = sloar.getMonth();
         int day = sloar.getDay();
+        boolean change = false;
         if (!years.get(year - MINIMUM_YEAR)) {
             year = years.nextSetBit(year - MINIMUM_YEAR);
             if (year == -1) {
@@ -446,6 +472,7 @@ public class SolarExpression extends DateTimeExpression {
             month = months.nextSetBit(1);
             day = 1;
             time = LocalTime.MIN;
+            change = true;
         } else if (!months.get(month)) {
             month = months.nextSetBit(month);
             if (month == -1) {
@@ -459,12 +486,34 @@ public class SolarExpression extends DateTimeExpression {
             year += MINIMUM_YEAR;
             day = 1;
             time = LocalTime.MIN;
+            change = true;
         }
         BitSet days = getDays(year, month);
+        if (!days.get(day)) {
+            day = days.nextSetBit(day);
+            while (day == -1) {
+                month++;
+                if (!months.get(month)) {
+                    month = months.nextSetBit(month);
+                    if (month == -1) {
+                        month = months.nextSetBit(1);
+                        year++;
+                    }
+                    year = years.nextSetBit(year - MINIMUM_YEAR);
+                    if (year == -1) {
+                        return null;
+                    }
+                    year += MINIMUM_YEAR;
+                }
+                days = getDays(year, month);
+                day = days.nextSetBit(1);
+            }
+            change = true;
+        }
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
-        second = seconds.nextSetBit(second + 1);
+        second = seconds.nextSetBit(second + (change ? 0 : 1));
         if (second == -1) {
             second = seconds.nextSetBit(0);
             minute++;
@@ -515,10 +564,10 @@ public class SolarExpression extends DateTimeExpression {
 
     @Override
     public boolean isMatchDateTime(ZonedDateTime dateTime) {
-        SolarDate islamic = new SolarDate(dateTime.toLocalDate());
-        int year = islamic.getYear();
-        int month = islamic.getMonth();
-        int day = islamic.getDay();
+        SolarDate solar = new SolarDate(dateTime.toLocalDate());
+        int year = solar.getYear();
+        int month = solar.getMonth();
+        int day = solar.getDay();
         BitSet days = getDays(year, month);
         LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();

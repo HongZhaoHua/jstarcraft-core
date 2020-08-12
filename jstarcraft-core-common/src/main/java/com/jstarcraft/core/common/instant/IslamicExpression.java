@@ -155,12 +155,14 @@ public class IslamicExpression extends DateTimeExpression {
     }
 
     /**
-     * 按照大小月获取日位图
+     * 按照年月获取日位图
      * 
-     * @param size
+     * @param year
+     * @param month
      * @return
      */
-    private BitSet getDays(int size) {
+    private BitSet getDays(int year, int month) {
+        int size = IslamicDate.getDaySize(year, month);
         switch (size) {
         case 29: {
             return smallDays;
@@ -204,8 +206,7 @@ public class IslamicExpression extends DateTimeExpression {
             day = 30;
             time = LocalTime.MAX;
         }
-        int size = IslamicDate.getDaySize(year, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, month);
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -247,8 +248,7 @@ public class IslamicExpression extends DateTimeExpression {
                     year += IslamicDate.MINIMUM_YEAR;
                 }
             }
-            size = IslamicDate.getDaySize(year, month);
-            days = getDays(size);
+            days = getDays(year, month);
             day = days.previousSetBit(30);
         }
         if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
@@ -289,8 +289,7 @@ public class IslamicExpression extends DateTimeExpression {
             day = 1;
             time = LocalTime.MIN;
         }
-        int size = IslamicDate.getDaySize(year, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, month);
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -332,8 +331,7 @@ public class IslamicExpression extends DateTimeExpression {
                 }
                 year += IslamicDate.MINIMUM_YEAR;
             }
-            size = IslamicDate.getDaySize(year, month);
-            days = getDays(size);
+            days = getDays(year, month);
             day = days.nextSetBit(1);
         }
         if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
@@ -350,8 +348,7 @@ public class IslamicExpression extends DateTimeExpression {
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
-        int size = IslamicDate.getDaySize(year, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, month);
         LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();

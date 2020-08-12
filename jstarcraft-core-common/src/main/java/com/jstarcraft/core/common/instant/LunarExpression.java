@@ -155,12 +155,13 @@ public class LunarExpression extends DateTimeExpression {
     }
 
     /**
-     * 按照大小月获取日位图
+     * 按照年月获取日位图
      * 
      * @param size
      * @return
      */
-    private BitSet getDays(int size) {
+    private BitSet getDays(int year, boolean leap, int month) {
+        int size = LunarDate.getDaySize(year, leap, month);
         switch (size) {
         case 29: {
             return smallDays;
@@ -182,8 +183,7 @@ public class LunarExpression extends DateTimeExpression {
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
-        int size = LunarDate.getDaySize(year, leap, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, leap, month);
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -237,8 +237,7 @@ public class LunarExpression extends DateTimeExpression {
                 // 可能是闰月
                 leap = month == LunarDate.getLeapMonth(year);
             }
-            size = LunarDate.getDaySize(year, leap, month);
-            days = getDays(size);
+            days = getDays(year, leap, month);
             day = days.previousSetBit(30);
         }
         if (!years.get(year - LunarDate.MINIMUM_YEAR)) {
@@ -257,8 +256,7 @@ public class LunarExpression extends DateTimeExpression {
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
-        int size = LunarDate.getDaySize(year, leap, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, leap, month);
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
@@ -309,8 +307,7 @@ public class LunarExpression extends DateTimeExpression {
                 // 一定非闰月
                 leap = false;
             }
-            size = LunarDate.getDaySize(year, leap, month);
-            days = getDays(size);
+            days = getDays(year, leap, month);
             day = days.nextSetBit(1);
         }
         if (!years.get(year - LunarDate.MINIMUM_YEAR)) {
@@ -328,8 +325,7 @@ public class LunarExpression extends DateTimeExpression {
         boolean leap = lunar.isLeap();
         int month = lunar.getMonth();
         int day = lunar.getDay();
-        int size = LunarDate.getDaySize(year, leap, month);
-        BitSet days = getDays(size);
+        BitSet days = getDays(year, leap, month);
         LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
