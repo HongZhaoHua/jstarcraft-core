@@ -82,11 +82,11 @@ public class IslamicExpressionTestCase {
         Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
         Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
 
-        expression = new IslamicExpression("0 0 0 30 6 1441");
+        expression = new IslamicExpression("0 0 12 29 6 1441");
         dateTime = LocalDateTime.of(new IslamicDate(1442, 12, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
         dateTime = LocalDateTime.of(new IslamicDate(1440, 1, 1).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getNextDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
     }
 
     @Test

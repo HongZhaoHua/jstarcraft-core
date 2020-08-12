@@ -181,6 +181,29 @@ public class IslamicExpression extends DateTimeExpression {
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
+        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
+            year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += IslamicDate.MINIMUM_YEAR;
+            month = months.previousSetBit(12);
+            day = 30;
+            time = LocalTime.MAX;
+        } else if (!months.get(month)) {
+            month = months.previousSetBit(month);
+            if (month == -1) {
+                month = months.previousSetBit(12);
+                year--;
+                year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+                if (year == -1) {
+                    return null;
+                }
+                year += IslamicDate.MINIMUM_YEAR;
+            }
+            day = 30;
+            time = LocalTime.MAX;
+        }
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
         int hour = time.getHour();
@@ -243,6 +266,29 @@ public class IslamicExpression extends DateTimeExpression {
         int year = islamic.getYear();
         int month = islamic.getMonth();
         int day = islamic.getDay();
+        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
+            year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += IslamicDate.MINIMUM_YEAR;
+            month = months.nextSetBit(1);
+            day = 1;
+            time = LocalTime.MIN;
+        } else if (!months.get(month)) {
+            month = months.nextSetBit(month);
+            if (month == -1) {
+                month = months.nextSetBit(1);
+                year++;
+            }
+            year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+            if (year == -1) {
+                return null;
+            }
+            year += IslamicDate.MINIMUM_YEAR;
+            day = 1;
+            time = LocalTime.MIN;
+        }
         int size = IslamicDate.getDaySize(year, month);
         BitSet days = getDays(size);
         int hour = time.getHour();
