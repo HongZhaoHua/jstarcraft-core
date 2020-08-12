@@ -508,6 +508,7 @@ public class SolarExpression extends DateTimeExpression {
                 days = getDays(year, month);
                 day = days.nextSetBit(1);
             }
+            time = LocalTime.MIN;
             change = true;
         }
         int hour = time.getHour();
