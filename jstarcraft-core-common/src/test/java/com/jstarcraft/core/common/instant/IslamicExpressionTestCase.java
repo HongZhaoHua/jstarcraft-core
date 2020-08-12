@@ -65,7 +65,7 @@ public class IslamicExpressionTestCase {
     }
 
     @Test
-    public void testYear() {
+    public void testDate() {
         IslamicExpression expression = new IslamicExpression("0 0 12 1,L1 * 1432");
         {
             LocalDateTime dateTime = expression.getPreviousDateTime(dateTimes.get(0));
@@ -76,17 +76,27 @@ public class IslamicExpressionTestCase {
             Assert.assertNull(dateTime);
         }
 
-        expression = new IslamicExpression("0 0 12 29 6 1421/10");
+        expression = new IslamicExpression("0 0 12 15 6 1421/10");
         LocalTime time = LocalTime.of(12, 0, 0);
-        LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
-        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+        LocalDateTime dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1431, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1451, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
 
-        expression = new IslamicExpression("0 0 12 29 6 1441");
+        expression = new IslamicExpression("0 0 12 15 6 1441");
         dateTime = LocalDateTime.of(new IslamicDate(1442, 12, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
         dateTime = LocalDateTime.of(new IslamicDate(1440, 1, 1).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+
+        dateTime = LocalDateTime.of(new IslamicDate(1441, 12, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new IslamicDate(1441, 1, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+
+        dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new IslamicDate(1441, 6, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new IslamicDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
     }
 
     @Test
