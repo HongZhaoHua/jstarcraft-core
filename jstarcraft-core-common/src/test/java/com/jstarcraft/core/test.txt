@@ -39,10 +39,10 @@ https://blog.csdn.net/kiwi_coder/article/details/37873093
 如何对依赖ZooKeeper的代码写单元测试:
 https://segmentfault.com/a/1190000012571788
 
-jmeter：菜鸟入门到进阶系列：
+JMeter：菜鸟入门到进阶系列:
 https://www.cnblogs.com/imyalost/p/7062784.html?utm_source=itdadao&utm_medium=referral
 
-springmvc之单元测试(MockMvc)-独立测试:
+SpringMVC之单元测试(MockMvc)-独立测试:
 https://www.cnblogs.com/xd03122049/p/6001457.html
 
 SpringMVC测试MockMVC:
