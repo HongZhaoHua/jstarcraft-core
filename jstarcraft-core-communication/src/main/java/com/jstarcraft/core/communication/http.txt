@@ -1,6 +1,9 @@
 Spring RestTemplate配置拦截器打印请求URL和响应结果:
 https://blog.csdn.net/zhuzicc/article/details/105946400
 
+微服务中如何使用RestTemplate优雅调用API（拦截器、异常处理、消息转换）:
+https://segmentfault.com/a/1190000020864201
+
 Spring WebClient vs. RestTemplate:
 https://www.cnblogs.com/liululee/p/11275427.html
 
