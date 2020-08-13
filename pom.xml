@@ -525,6 +525,12 @@
                 <groupId>com.cronutils</groupId>
                 <artifactId>cron-utils</artifactId>
                 <version>9.1.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- CSS -->
