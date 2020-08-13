@@ -1,3 +1,6 @@
+Spring RestTemplate配置拦截器打印请求URL和响应结果:
+https://blog.csdn.net/zhuzicc/article/details/105946400
+
 Spring WebClient vs. RestTemplate:
 https://www.cnblogs.com/liululee/p/11275427.html
 
