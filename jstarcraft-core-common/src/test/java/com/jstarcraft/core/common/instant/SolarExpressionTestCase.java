@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -67,7 +68,7 @@ public class SolarExpressionTestCase {
     }
 
     @Test
-    public void testYear() {
+    public void testDate() {
         SolarExpression expression = new SolarExpression("0 0 12 1,30 * ? 2020");
         {
             LocalDateTime dateTime = expression.getPreviousDateTime(dateTimes.get(0));
@@ -78,17 +79,27 @@ public class SolarExpressionTestCase {
             Assert.assertNull(dateTime);
         }
 
-        expression = new SolarExpression("0 0 12 29 6 ? 2000/10");
+        expression = new SolarExpression("0 0 12 15 6 ? 2000/10");
         LocalTime time = LocalTime.of(12, 0, 0);
-        LocalDateTime dateTime = LocalDateTime.of(new SolarDate(2020, 6, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new SolarDate(2010, 6, 29).getDate(), time), expression.getPreviousDateTime(dateTime));
-        Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+        LocalDateTime dateTime = LocalDateTime.of(new SolarDate(2020, 6, 15).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new SolarDate(2010, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
 
-        expression = new SolarExpression("0 0 0 30 6 ? 2020");
-        dateTime = LocalDateTime.of(2021, 12, 31, 0, 0, 0);
-        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getPreviousDateTime(dateTime));
-        dateTime = LocalDateTime.of(2019, 1, 1, 0, 0, 0);
-        Assert.assertEquals(LocalDateTime.of(2020, 6, 30, 0, 0, 0), expression.getNextDateTime(dateTime));
+        expression = new SolarExpression("0 0 12 15 6 ? 2020");
+        dateTime = LocalDateTime.of(2021, 12, 31, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(2019, 1, 1, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getNextDateTime(dateTime));
+
+        dateTime = LocalDateTime.of(2020, 12, 31, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(2020, 1, 1, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getNextDateTime(dateTime));
+
+        dateTime = LocalDateTime.of(2020, 6, 30, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(2020, 6, 1, 12, 0, 0);
+        Assert.assertEquals(LocalDateTime.of(2020, 6, 15, 12, 0, 0), expression.getNextDateTime(dateTime));
     }
 
     @Test
@@ -199,6 +210,62 @@ public class SolarExpressionTestCase {
             Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
             Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
         }
+    }
+
+    @Test
+    public void test1() {
+        SolarExpression solarExpression = new SolarExpression("0 0 0 2,5,8,11 4 ? 2020");
+        CronExpression cronExpression = new CronExpression("0 0 0 2,5,8,11 4 ? 2020");
+
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.of(2020, 3, 30), LocalTime.of(0, 0));
+        LocalDateTime solarNextTime = solarExpression.getNextDateTime(startDateTime);
+        LocalDateTime cronNextTime = cronExpression.getNextDateTime(startDateTime);
+
+        System.out.println("solarNextTime:" + solarNextTime);
+        System.out.println("cronNextTime:" + cronNextTime);
+        Assert.assertEquals(solarNextTime, cronNextTime);
+    }
+
+    @Test
+    public void test2() {
+        SolarExpression solarExpression = new SolarExpression("0 0 0 1 8 ? 2020");
+        CronExpression cronExpression = new CronExpression("0 0 0 1 8 ? 2020");
+
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.of(1990, 1, 1), LocalTime.of(0, 0));
+        LocalDateTime solarNextTime = solarExpression.getNextDateTime(startDateTime);
+        LocalDateTime cronNextTime = cronExpression.getNextDateTime(startDateTime);
+
+        System.out.println("solarNextTime:" + solarNextTime);
+        System.out.println("cronNextTime:" + cronNextTime);
+        Assert.assertEquals(solarNextTime, cronNextTime);
+    }
+
+    @Test
+    public void test3() {
+        SolarExpression solarExpression = new SolarExpression("0 0 0 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 3 ? 2020");
+        CronExpression cronExpression = new CronExpression("0 0 0 1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31 3 ? 2020");
+
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.of(2020, 2, 28), LocalTime.of(0, 0));
+        LocalDateTime solarNextTime = solarExpression.getNextDateTime(startDateTime);
+        LocalDateTime cronNextTime = cronExpression.getNextDateTime(startDateTime);
+
+        System.out.println("solarNextTime:" + solarNextTime);
+        System.out.println("cronNextTime:" + cronNextTime);
+        Assert.assertEquals(solarNextTime, cronNextTime);
+    }
+
+    @Test
+    public void test4() {
+        SolarExpression solarExpression = new SolarExpression("0 0 10 ? * 1");
+        CronExpression cronExpression = new CronExpression("0 0 10 ? * 1");
+
+        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.of(2020, 8, 1), LocalTime.of(20, 20));
+        LocalDateTime solarNextTime = solarExpression.getNextDateTime(startDateTime);
+        LocalDateTime cronNextTime = cronExpression.getNextDateTime(startDateTime);
+
+        System.out.println("solarNextTime:" + solarNextTime);
+        System.out.println("cronNextTime:" + cronNextTime);
+        Assert.assertEquals(solarNextTime, cronNextTime);
     }
 
 }

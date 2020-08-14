@@ -1,8 +1,8 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.util.Collection;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 /**
  * 捆绑配置器
@@ -27,11 +27,13 @@ public class BundleConfigurator implements Configurator {
         this.keyValues = keyValues;
     }
 
+    @Override
     public String getString(String name) {
         return keyValues.getString(name);
     }
 
-    public Set<String> getKeys() {
+    @Override
+    public Collection<String> getKeys() {
         return keyValues.keySet();
     }
 

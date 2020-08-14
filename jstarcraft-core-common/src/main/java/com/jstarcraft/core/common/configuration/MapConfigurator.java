@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 映射配置器
@@ -19,11 +19,13 @@ public class MapConfigurator implements Configurator {
         this.keyValues = keyValues;
     }
 
+    @Override
     public String getString(String name) {
         return keyValues.get(name);
     }
 
-    public Set<String> getKeys() {
+    @Override
+    public Collection<String> getKeys() {
         return keyValues.keySet();
     }
 

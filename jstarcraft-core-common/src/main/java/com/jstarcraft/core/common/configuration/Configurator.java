@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.configuration;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -86,6 +86,6 @@ public interface Configurator {
 
     String getString(String name);
 
-    public Set<String> getKeys();
+    public Collection<String> getKeys();
 
 }
