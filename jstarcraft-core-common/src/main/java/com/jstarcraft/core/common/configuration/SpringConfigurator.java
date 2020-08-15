@@ -11,23 +11,23 @@ import org.springframework.core.env.EnumerablePropertySource;
  * @author Birdy
  *
  */
-public class PropertySourceConfigurator implements Configurator {
+public class SpringConfigurator implements Configurator {
 
     /** 配置项 */
-    private EnumerablePropertySource<?> propertySource;
+    private EnumerablePropertySource<?> source;
 
-    public PropertySourceConfigurator(EnumerablePropertySource<?> propertySource) {
-        this.propertySource = propertySource;
+    public SpringConfigurator(EnumerablePropertySource<?> source) {
+        this.source = source;
     }
 
     @Override
     public String getString(String name) {
-        return (String) propertySource.getProperty(name);
+        return (String) source.getProperty(name);
     }
 
     @Override
     public Collection<String> getKeys() {
-        return Arrays.asList(propertySource.getPropertyNames());
+        return Arrays.asList(source.getPropertyNames());
     }
 
 }
