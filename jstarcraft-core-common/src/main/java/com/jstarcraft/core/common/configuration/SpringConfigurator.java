@@ -14,20 +14,20 @@ import org.springframework.core.env.EnumerablePropertySource;
 public class SpringConfigurator implements Configurator {
 
     /** 配置项 */
-    private EnumerablePropertySource<?> source;
+    private EnumerablePropertySource<?> keyValues;
 
-    public SpringConfigurator(EnumerablePropertySource<?> source) {
-        this.source = source;
+    public SpringConfigurator(EnumerablePropertySource<?> keyValues) {
+        this.keyValues = keyValues;
     }
 
     @Override
     public String getString(String name) {
-        return (String) source.getProperty(name);
+        return (String) keyValues.getProperty(name);
     }
 
     @Override
     public Collection<String> getKeys() {
-        return Arrays.asList(source.getPropertyNames());
+        return Arrays.asList(keyValues.getPropertyNames());
     }
 
 }
