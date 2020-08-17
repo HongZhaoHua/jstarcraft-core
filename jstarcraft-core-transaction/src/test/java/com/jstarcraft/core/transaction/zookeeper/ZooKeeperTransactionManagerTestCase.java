@@ -16,7 +16,6 @@ import com.jstarcraft.core.transaction.TransactionDefinition;
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.TransactionManagerTestCase;
 import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
-import com.jstarcraft.core.transaction.zookeeper.ZooKeeperTransactionManager;
 
 public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestCase {
 
@@ -27,7 +26,15 @@ public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestC
     @Before
     public void testBefore() throws Exception {
         testZooKeeper = new TestingServer();
-        curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
+        curator = CuratorFrameworkFactory.builder()
+
+                .namespace("ZooKeeperDistributionManagerTestCase")
+
+                .connectString(testZooKeeper.getConnectString())
+
+                .retryPolicy(new RetryOneTime(2000))
+
+                .build();
         curator.start();
     }
 
