@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 
 import com.jstarcraft.core.utility.StringUtility;
@@ -87,6 +89,15 @@ public interface Configurator {
     default Long getLong(String name) {
         return getLong(name, null);
     }
+    
+    default LocalDateTime getLocalDateTime(String name, LocalDateTime instead) {
+        String value = getString(name);
+        return StringUtility.isBlank(value) ? instead : LocalDateTime.parse(value);
+    }
+
+    default LocalDateTime getLocalDateTime(String name) {
+        return getLocalDateTime(name, null);
+    }
 
     default String getString(String name, String instead) {
         String value = getString(name);
@@ -94,6 +105,15 @@ public interface Configurator {
     }
 
     String getString(String name);
+    
+    default ZonedDateTime getZonedDateTime(String name, ZonedDateTime instead) {
+        String value = getString(name);
+        return StringUtility.isBlank(value) ? instead : ZonedDateTime.parse(value);
+    }
+
+    default ZonedDateTime getZonedDateTime(String name) {
+        return getZonedDateTime(name, null);
+    }
 
     public Collection<String> getKeys();
 
