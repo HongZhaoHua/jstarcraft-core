@@ -11,7 +11,7 @@ import org.springframework.core.env.EnumerablePropertySource;
  * @author Birdy
  *
  */
-public class SpringConfigurator implements Configurator {
+public class SpringConfigurator implements ObjectProfile {
 
     /** 配置项 */
     private EnumerablePropertySource<?> keyValues;
@@ -21,8 +21,8 @@ public class SpringConfigurator implements Configurator {
     }
 
     @Override
-    public String getString(String name) {
-        return (String) keyValues.getProperty(name);
+    public <T> T getObject(Class<T> clazz, String name) {
+        return clazz.cast(keyValues.getProperty(name));
     }
 
     @Override

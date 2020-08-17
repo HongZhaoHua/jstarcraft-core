@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Birdy
  *
  */
-public class MapConfigurator implements Configurator {
+public class MapConfigurator implements StringProfile {
 
     /** 配置项 */
     private Map<String, String> keyValues;

@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
  * @author Birdy
  *
  */
-public class BundleConfigurator implements Configurator {
+public class BundleConfigurator implements StringProfile {
 
     /** 配置项 */
     private ResourceBundle keyValues;

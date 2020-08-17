@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
-import com.jstarcraft.core.utility.StringUtility;
-
 /**
  * 配置器
  * 
@@ -14,150 +12,58 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public interface Configurator {
 
-    default Boolean getBoolean(String name, Boolean instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Boolean.valueOf(value);
-    }
+    Boolean getBoolean(String name, Boolean instead);
 
-    default Boolean getBoolean(String name) {
-        return getBoolean(name, null);
-    }
+    Boolean getBoolean(String name);
 
-    default Byte getByte(String name, Byte instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Byte.valueOf(value);
-    }
+    Byte getByte(String name, Byte instead);
 
-    default Byte getByte(String name) {
-        return getByte(name, null);
-    }
+    Byte getByte(String name);
 
-    default Character getCharacter(String name, Character instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Character.valueOf(value.charAt(0));
-    }
+    Character getCharacter(String name, Character instead);
 
-    default Character getCharacter(String name) {
-        return getCharacter(name, null);
-    }
+    Character getCharacter(String name);
 
-    default Class getClass(String name, Class instead) {
-        String value = getString(name);
-        try {
-            return StringUtility.isBlank(value) ? instead : Class.forName(value);
-        } catch (ClassNotFoundException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
+    Class getClass(String name, Class instead);
 
-    default Class getClass(String name) {
-        return getClass(name, null);
-    }
+    Class getClass(String name);
 
-    default Double getDouble(String name, Double instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Double.valueOf(value);
-    }
+    Double getDouble(String name, Double instead);
 
-    default Double getDouble(String name) {
-        return getDouble(name, null);
-    }
+    Double getDouble(String name);
 
-    default Float getFloat(String name, Float instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Float.valueOf(value);
-    }
+    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String name, T instead);
 
-    default Float getFloat(String name) {
-        return getFloat(name, null);
-    }
+    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String name);
 
-    default Integer getInteger(String name, Integer instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Integer.valueOf(value);
-    }
+    Float getFloat(String name, Float instead);
 
-    default Integer getInteger(String name) {
-        return getInteger(name, null);
-    }
+    Float getFloat(String name);
 
-    default Long getLong(String name, Long instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : Long.valueOf(value);
-    }
+    Integer getInteger(String name, Integer instead);
 
-    default Long getLong(String name) {
-        return getLong(name, null);
-    }
+    Integer getInteger(String name);
 
-    default LocalDateTime getLocalDateTime(String name, LocalDateTime instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : LocalDateTime.parse(value);
-    }
+    Long getLong(String name, Long instead);
 
-    default LocalDateTime getLocalDateTime(String name) {
-        return getLocalDateTime(name, null);
-    }
+    Long getLong(String name);
 
-    default <T> T getObject(Class<T> clazz, String name, T instead) {
-        Object value = null;
-        if (clazz == Boolean.class || clazz == boolean.class) {
-            value = getBoolean(name);
-        }
-        if (clazz == Byte.class || clazz == byte.class) {
-            value = getByte(name);
-        }
-        if (clazz == Character.class || clazz == char.class) {
-            value = getCharacter(name);
-        }
-        if (clazz == Class.class) {
-            value = getClass(name);
-        }
-        if (clazz == Double.class || clazz == double.class) {
-            value = getDouble(name);
-        }
-        if (clazz == Float.class || clazz == float.class) {
-            value = getFloat(name);
-        }
-        if (clazz == Integer.class || clazz == int.class) {
-            value = getInteger(name);
-        }
-        if (clazz == Long.class || clazz == long.class) {
-            value = getLong(name);
-        }
-        if (clazz == LocalDateTime.class) {
-            value = getLocalDateTime(name);
-        }
-        if (clazz == String.class) {
-            value = getString(name);
-        }
-        if (clazz == ZonedDateTime.class) {
-            value = getZonedDateTime(name);
-        }
-        // TODO 不支持的类型
-        return value == null ? instead : (T) value;
-    }
+    LocalDateTime getLocalDateTime(String name, LocalDateTime instead);
 
-    default <T> T getObject(Class<T> clazz, String name) {
-        return getObject(clazz, name, null);
-    }
+    LocalDateTime getLocalDateTime(String name);
 
-    default String getString(String name, String instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : value;
-    }
+    <T> T getObject(Class<T> clazz, String name, T instead);
+
+    <T> T getObject(Class<T> clazz, String name);
+
+    String getString(String name, String instead);
 
     String getString(String name);
 
-    default ZonedDateTime getZonedDateTime(String name, ZonedDateTime instead) {
-        String value = getString(name);
-        return StringUtility.isBlank(value) ? instead : ZonedDateTime.parse(value);
-    }
+    ZonedDateTime getZonedDateTime(String name, ZonedDateTime instead);
 
-    default ZonedDateTime getZonedDateTime(String name) {
-        return getZonedDateTime(name, null);
-    }
+    ZonedDateTime getZonedDateTime(String name);
 
-    public Collection<String> getKeys();
+    Collection<String> getKeys();
 
 }
