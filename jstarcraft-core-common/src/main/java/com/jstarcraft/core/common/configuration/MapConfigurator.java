@@ -13,7 +13,6 @@ public class MapConfigurator implements StringProfile {
 
     /** 配置项 */
     private Map<String, String> keyValues;
-    
 
     public MapConfigurator(Map keyValues) {
         this.keyValues = keyValues;
