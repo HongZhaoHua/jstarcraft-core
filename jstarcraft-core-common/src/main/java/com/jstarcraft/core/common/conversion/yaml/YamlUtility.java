@@ -1,20 +1,15 @@
 package com.jstarcraft.core.common.conversion.yaml;
 
 import java.lang.reflect.Type;
-import java.util.List;
-
-import org.apache.commons.text.StringEscapeUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -76,18 +71,18 @@ public class YamlUtility {
     /**
      * 将YAML字符串转换为对象
      * 
-     * @param json
+     * @param yaml
      * @param type
      * @return
      */
-    public static <T> T string2Object(String json, Type type) {
-        if (StringUtility.isBlank(json)) {
+    public static <T> T string2Object(String yaml, Type type) {
+        if (StringUtility.isBlank(yaml)) {
             return null;
         }
         try {
-            return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
+            return (T) TYPE_CONVERTER.readValue(yaml, TYPE_FACTORY.constructType(type));
         } catch (Exception exception) {
-            String message = StringUtility.format("将YAML字符串[{}]转换为对象时异常", json);
+            String message = StringUtility.format("将YAML字符串[{}]转换为对象时异常", yaml);
             throw new RuntimeException(message, exception);
         }
     }
