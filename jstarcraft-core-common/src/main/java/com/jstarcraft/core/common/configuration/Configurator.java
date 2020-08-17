@@ -34,6 +34,15 @@ public interface Configurator {
         return getBoolean(name, null);
     }
 
+    default Byte getByte(String name, Byte instead) {
+        String value = getString(name);
+        return StringUtility.isBlank(value) ? instead : Byte.valueOf(value);
+    }
+
+    default Byte getByte(String name) {
+        return getByte(name, null);
+    }
+
     default Character getCharacter(String name, Character instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Character.valueOf(value.charAt(0));
