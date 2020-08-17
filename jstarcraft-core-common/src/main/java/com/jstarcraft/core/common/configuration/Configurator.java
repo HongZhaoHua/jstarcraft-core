@@ -14,19 +14,6 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public interface Configurator {
 
-    default Class getClass(String name, Class instead) {
-        String value = getString(name);
-        try {
-            return StringUtility.isBlank(value) ? instead : Class.forName(value);
-        } catch (ClassNotFoundException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    default Class getClass(String name) {
-        return getClass(name, null);
-    }
-
     default Boolean getBoolean(String name, Boolean instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : Boolean.valueOf(value);
@@ -52,6 +39,19 @@ public interface Configurator {
 
     default Character getCharacter(String name) {
         return getCharacter(name, null);
+    }
+
+    default Class getClass(String name, Class instead) {
+        String value = getString(name);
+        try {
+            return StringUtility.isBlank(value) ? instead : Class.forName(value);
+        } catch (ClassNotFoundException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    default Class getClass(String name) {
+        return getClass(name, null);
     }
 
     default Double getDouble(String name, Double instead) {
@@ -89,7 +89,7 @@ public interface Configurator {
     default Long getLong(String name) {
         return getLong(name, null);
     }
-    
+
     default LocalDateTime getLocalDateTime(String name, LocalDateTime instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : LocalDateTime.parse(value);
@@ -99,13 +99,56 @@ public interface Configurator {
         return getLocalDateTime(name, null);
     }
 
+    default <T> T getObject(Class<T> clazz, String name, T instead) {
+        Object value = null;
+        if (clazz == Boolean.class || clazz == boolean.class) {
+            value = getBoolean(name);
+        }
+        if (clazz == Byte.class || clazz == byte.class) {
+            value = getByte(name);
+        }
+        if (clazz == Character.class || clazz == char.class) {
+            value = getCharacter(name);
+        }
+        if (clazz == Class.class) {
+            value = getClass(name);
+        }
+        if (clazz == Double.class || clazz == double.class) {
+            value = getDouble(name);
+        }
+        if (clazz == Float.class || clazz == float.class) {
+            value = getFloat(name);
+        }
+        if (clazz == Integer.class || clazz == int.class) {
+            value = getInteger(name);
+        }
+        if (clazz == Long.class || clazz == long.class) {
+            value = getLong(name);
+        }
+        if (clazz == LocalDateTime.class) {
+            value = getLocalDateTime(name);
+        }
+        if (clazz == String.class) {
+            value = getString(name);
+        }
+        if (clazz == ZonedDateTime.class) {
+            value = getZonedDateTime(name);
+        }
+        // TODO 不支持的类型
+        return value == null ? instead : (T) value;
+    }
+
+    default <T> T getObject(Class<T> clazz, String name) {
+        return getObject(clazz, name, null);
+    }
+
     default String getString(String name, String instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : value;
     }
 
     String getString(String name);
-    
+
     default ZonedDateTime getZonedDateTime(String name, ZonedDateTime instead) {
         String value = getString(name);
         return StringUtility.isBlank(value) ? instead : ZonedDateTime.parse(value);
