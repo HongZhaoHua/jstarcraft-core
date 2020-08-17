@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
-import com.jstarcraft.core.utility.StringUtility;
-
 public interface ObjectProfile extends Configurator {
 
     default Boolean getBoolean(String name, Boolean instead) {
