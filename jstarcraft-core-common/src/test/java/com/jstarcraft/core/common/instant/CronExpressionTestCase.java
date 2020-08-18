@@ -1,7 +1,9 @@
 package com.jstarcraft.core.common.instant;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -86,6 +88,19 @@ public class CronExpressionTestCase {
 //        }
 //        {
 //            Assert.assertEquals(LocalDateTime.of(new SolarDate(2030, 6, 29).getDate(), time), expression.getNextDateTime(dateTime));
+//        }
+
+        expression = new CronExpression("0 0 12 1,31 * ? 2010");
+        {
+            LocalDateTime dateTime = LocalDateTime.of(2008, 10, 31, 23, 59, 59);
+            dateTime = expression.getNextDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2010, 1, 1, 12, 0, 0), dateTime);
+        }
+        // TODO 此处cron-utils存在Bug,导致测试无法通过,等待修复.
+//        {
+//            LocalDateTime dateTime = LocalDateTime.of(2012, 2, 1, 0, 0, 0);
+//            dateTime = expression.getPreviousDateTime(dateTime);
+//            Assert.assertEquals(LocalDateTime.of(2010, 12, 31, 12, 0, 0), dateTime);
 //        }
     }
 
