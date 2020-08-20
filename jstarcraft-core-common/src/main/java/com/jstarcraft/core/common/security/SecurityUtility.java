@@ -108,9 +108,18 @@ public class SecurityUtility {
      * @return
      */
     public static byte[] getAes() {
+        return getAes(new SecureRandom());
+    }
+
+    /**
+     * 获取AES对称秘钥
+     * 
+     * @param random
+     * @return
+     */
+    public static byte[] getAes(SecureRandom random) {
         try {
             KeyGenerator aes = KeyGenerator.getInstance(AES);
-            SecureRandom random = new SecureRandom();
             aes.init(random);
             SecretKey key = aes.generateKey();
             return key.getEncoded();
