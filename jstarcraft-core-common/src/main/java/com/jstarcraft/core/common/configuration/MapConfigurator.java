@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.configuration;
 
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Birdy
  *
  */
-public class MapConfigurator implements StringProfile {
+public class MapConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -19,13 +19,13 @@ public class MapConfigurator implements StringProfile {
     }
 
     @Override
-    public String getString(String name) {
-        return keyValues.get(name);
+    public String getString(String key) {
+        return keyValues.get(key);
     }
 
     @Override
-    public Collection<String> getKeys() {
-        return keyValues.keySet();
+    public Iterator<String> getKeys() {
+        return keyValues.keySet().iterator();
     }
 
 }

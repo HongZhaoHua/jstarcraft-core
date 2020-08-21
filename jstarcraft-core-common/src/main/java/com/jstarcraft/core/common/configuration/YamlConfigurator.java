@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class YamlConfigurator implements StringProfile {
+public class YamlConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -53,13 +53,13 @@ public class YamlConfigurator implements StringProfile {
     }
 
     @Override
-    public String getString(String name) {
-        return keyValues.get(name);
+    public String getString(String key) {
+        return keyValues.get(key);
     }
 
     @Override
-    public Collection<String> getKeys() {
-        return keyValues.keySet();
+    public Iterator<String> getKeys() {
+        return keyValues.keySet().iterator();
     }
 
 }

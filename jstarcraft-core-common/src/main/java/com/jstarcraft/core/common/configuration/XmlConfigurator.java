@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
 import java.io.StringReader;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class XmlConfigurator implements StringProfile {
+public class XmlConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -90,13 +90,13 @@ public class XmlConfigurator implements StringProfile {
     }
 
     @Override
-    public String getString(String name) {
-        return keyValues.get(name);
+    public String getString(String key) {
+        return keyValues.get(key);
     }
 
     @Override
-    public Collection<String> getKeys() {
-        return keyValues.keySet();
+    public Iterator<String> getKeys() {
+        return keyValues.keySet().iterator();
     }
 
 }

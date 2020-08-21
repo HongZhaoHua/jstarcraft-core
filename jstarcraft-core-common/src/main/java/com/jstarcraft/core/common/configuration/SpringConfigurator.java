@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Iterator;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
@@ -11,7 +11,7 @@ import org.springframework.core.env.EnumerablePropertySource;
  * @author Birdy
  *
  */
-public class SpringConfigurator implements ObjectProfile {
+public class SpringConfigurator implements ObjectConfigurator {
 
     /** 配置项 */
     private EnumerablePropertySource<?> keyValues;
@@ -21,13 +21,13 @@ public class SpringConfigurator implements ObjectProfile {
     }
 
     @Override
-    public <T> T getObject(Class<T> clazz, String name) {
-        return clazz.cast(keyValues.getProperty(name));
+    public <T> T getObject(Class<T> clazz, String key) {
+        return clazz.cast(keyValues.getProperty(key));
     }
 
     @Override
-    public Collection<String> getKeys() {
-        return Arrays.asList(keyValues.getPropertyNames());
+    public Iterator<String> getKeys() {
+        return Arrays.asList(keyValues.getPropertyNames()).iterator();
     }
 
 }

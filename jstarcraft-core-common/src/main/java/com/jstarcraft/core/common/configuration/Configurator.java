@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * 配置器
@@ -12,69 +12,69 @@ import java.util.Collection;
  * @author Birdy
  *
  */
-// TODO 准备兼容Apache Commons Configuration
+// TODO 考虑改名Option
 public interface Configurator {
 
-    BigDecimal getBigDecimal(String name, BigDecimal instead);
+    BigDecimal getBigDecimal(String key, BigDecimal instead);
 
-    BigDecimal getBigDecimal(String name);
+    BigDecimal getBigDecimal(String key);
 
-    BigInteger getBigInteger(String name, BigInteger instead);
+    BigInteger getBigInteger(String key, BigInteger instead);
 
-    BigInteger getBigInteger(String name);
+    BigInteger getBigInteger(String key);
 
-    Boolean getBoolean(String name, Boolean instead);
+    Boolean getBoolean(String key, Boolean instead);
 
-    Boolean getBoolean(String name);
+    Boolean getBoolean(String key);
 
-    Byte getByte(String name, Byte instead);
+    Byte getByte(String key, Byte instead);
 
-    Byte getByte(String name);
+    Byte getByte(String key);
 
-    Character getCharacter(String name, Character instead);
+    Character getCharacter(String key, Character instead);
 
-    Character getCharacter(String name);
+    Character getCharacter(String key);
 
-    Class getClass(String name, Class instead);
+    Class getClass(String key, Class instead);
 
-    Class getClass(String name);
+    Class getClass(String key);
 
-    Double getDouble(String name, Double instead);
+    Double getDouble(String key, Double instead);
 
-    Double getDouble(String name);
+    Double getDouble(String key);
 
-    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String name, T instead);
+    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String key, T instead);
 
-    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String name);
+    <T extends Enum<T>> T getEnumeration(Class<T> clazz, String key);
 
-    Float getFloat(String name, Float instead);
+    Float getFloat(String key, Float instead);
 
-    Float getFloat(String name);
+    Float getFloat(String key);
 
-    Integer getInteger(String name, Integer instead);
+    Integer getInteger(String key, Integer instead);
 
-    Integer getInteger(String name);
+    Integer getInteger(String key);
 
-    Long getLong(String name, Long instead);
+    Long getLong(String key, Long instead);
 
-    Long getLong(String name);
+    Long getLong(String key);
 
-    LocalDateTime getLocalDateTime(String name, LocalDateTime instead);
+    LocalDateTime getLocalDateTime(String key, LocalDateTime instead);
 
-    LocalDateTime getLocalDateTime(String name);
+    LocalDateTime getLocalDateTime(String key);
 
-    <T> T getObject(Class<T> clazz, String name, T instead);
+    <T> T getObject(Class<T> clazz, String key, T instead);
 
-    <T> T getObject(Class<T> clazz, String name);
+    <T> T getObject(Class<T> clazz, String key);
 
-    String getString(String name, String instead);
+    String getString(String key, String instead);
 
-    String getString(String name);
+    String getString(String key);
 
-    ZonedDateTime getZonedDateTime(String name, ZonedDateTime instead);
+    ZonedDateTime getZonedDateTime(String key, ZonedDateTime instead);
 
-    ZonedDateTime getZonedDateTime(String name);
+    ZonedDateTime getZonedDateTime(String key);
 
-    Collection<String> getKeys();
+    Iterator<String> getKeys();
 
 }
