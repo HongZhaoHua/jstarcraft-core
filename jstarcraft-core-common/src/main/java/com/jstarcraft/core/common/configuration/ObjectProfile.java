@@ -1,10 +1,30 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
 public interface ObjectProfile extends Configurator {
+
+    default BigDecimal getBigDecimal(String name, BigDecimal instead) {
+        BigDecimal value = getObject(BigDecimal.class, name, instead);
+        return value == null ? instead : value;
+    }
+
+    default BigDecimal getBigDecimal(String name) {
+        return getBigDecimal(name, null);
+    }
+
+    default BigInteger getBigInteger(String name, BigInteger instead) {
+        BigInteger value = getObject(BigInteger.class, name, instead);
+        return value == null ? instead : value;
+    }
+
+    default BigInteger getBigInteger(String name) {
+        return getBigInteger(name, null);
+    }
 
     default Boolean getBoolean(String name, Boolean instead) {
         Boolean value = getObject(Boolean.class, name, instead);

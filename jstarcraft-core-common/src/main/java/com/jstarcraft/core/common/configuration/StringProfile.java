@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -13,6 +15,24 @@ import com.jstarcraft.core.utility.StringUtility;
  *
  */
 public interface StringProfile extends Configurator {
+    
+    default BigDecimal getBigDecimal(String name, BigDecimal instead) {
+        String value = getString(name);
+        return StringUtility.isBlank(value) ? instead : new BigDecimal(value);
+    }
+
+    default BigDecimal getBigDecimal(String name) {
+        return getBigDecimal(name, null);
+    }
+    
+    default BigInteger getBigInteger(String name, BigInteger instead) {
+        String value = getString(name);
+        return StringUtility.isBlank(value) ? instead : new BigInteger(value);
+    }
+
+    default BigInteger getBigInteger(String name) {
+        return getBigInteger(name, null);
+    }
 
     default Boolean getBoolean(String name, Boolean instead) {
         String value = getString(name);

@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.configuration;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -10,7 +12,16 @@ import java.util.Collection;
  * @author Birdy
  *
  */
+// TODO 准备兼容Apache Commons Configuration
 public interface Configurator {
+
+    BigDecimal getBigDecimal(String name, BigDecimal instead);
+
+    BigDecimal getBigDecimal(String name);
+
+    BigInteger getBigInteger(String name, BigInteger instead);
+
+    BigInteger getBigInteger(String name);
 
     Boolean getBoolean(String name, Boolean instead);
 
