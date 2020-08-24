@@ -1,0 +1,5 @@
+Commons-Configuration2简介、使用方式、代码范例:
+https://blog.csdn.net/wanghantong/article/details/79072474
+
+使用Netflix Archaius进行配置管理:
+https://www.jianshu.com/p/f9d7500920a9
