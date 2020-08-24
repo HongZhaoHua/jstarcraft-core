@@ -1,9 +1,5 @@
 package com.jstarcraft.core.storage.identification;
 
-import com.jstarcraft.core.storage.identification.CacheIdentityFactory;
-import com.jstarcraft.core.storage.identification.IdentityDefinition;
-import com.jstarcraft.core.storage.identification.IdentityFactory;
-
 public class CacheIdentityFactoryTestCase extends IdentityFactoryTestCase {
 
     @Override

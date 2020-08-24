@@ -4,10 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import com.jstarcraft.core.storage.identification.IdentityDefinition;
-import com.jstarcraft.core.storage.identification.IdentityFactory;
-import com.jstarcraft.core.storage.identification.InstantIdentityFactory;
-
 public class InstantIdentityFactoryTestCase extends IdentityFactoryTestCase {
 
     @Override

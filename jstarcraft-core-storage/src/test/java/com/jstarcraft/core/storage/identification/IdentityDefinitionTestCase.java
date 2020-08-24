@@ -6,8 +6,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.storage.identification.IdentityDefinition;
-import com.jstarcraft.core.storage.identification.IdentitySection;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class IdentityDefinitionTestCase {

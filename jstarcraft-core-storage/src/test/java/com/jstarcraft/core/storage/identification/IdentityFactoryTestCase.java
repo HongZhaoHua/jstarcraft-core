@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.storage.identification.IdentityFactory;
 import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class IdentityFactoryTestCase {
