@@ -1,3 +1,6 @@
+Curator Recipes教程:
+https://www.cnblogs.com/lay2017/category/1297462.html
+
 Zookeeper客户端Curator使用详解:
 https://www.jianshu.com/p/70151fc0ef5d
 
@@ -6,3 +9,4 @@ http://www.dczou.com/viemall/tag/zookeeper
 
 Zookeeper Curator 事件监听 - 10分钟看懂:
 https://blog.csdn.net/crazymakercircle/article/details/85922561
+
