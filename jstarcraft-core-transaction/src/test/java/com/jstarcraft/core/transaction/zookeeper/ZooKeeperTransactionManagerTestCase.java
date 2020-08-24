@@ -19,18 +19,18 @@ import com.jstarcraft.core.transaction.exception.TransactionUnlockException;
 
 public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestCase {
 
-    private TestingServer testZooKeeper;
+    private TestingServer zookeeper;
 
     private CuratorFramework curator;
 
     @Before
     public void testBefore() throws Exception {
-        testZooKeeper = new TestingServer();
+        zookeeper = new TestingServer();
         curator = CuratorFrameworkFactory.builder()
 
                 .namespace("ZooKeeperDistributionManagerTestCase")
 
-                .connectString(testZooKeeper.getConnectString())
+                .connectString(zookeeper.getConnectString())
 
                 .retryPolicy(new RetryOneTime(2000))
 
@@ -41,7 +41,7 @@ public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestC
     @After
     public void testAfter() throws Exception {
         curator.close();
-        testZooKeeper.stop();
+        zookeeper.stop();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ZooKeeperTransactionManagerTestCase extends TransactionManagerTestC
         }
 
         {
-            curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(testZooKeeper.getConnectString()).build();
+            curator = CuratorFrameworkFactory.builder().namespace("ZooKeeperDistributionManagerTestCase").retryPolicy(new RetryOneTime(2000)).connectString(zookeeper.getConnectString()).build();
             curator.start();
             ZooKeeperTransactionManager manager = new ZooKeeperTransactionManager(curator);
             Instant most = Instant.now().plus(10, ChronoUnit.SECONDS);

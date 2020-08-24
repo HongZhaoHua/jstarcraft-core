@@ -2,11 +2,11 @@ package com.jstarcraft.core.storage.identification;
 
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicLong;
 
-public class ZooKeeperAtomicIdentityFactor extends MiddlewareIdentityFactory {
+public class ZooKeeperAtomicIdentityFactory extends MiddlewareIdentityFactory {
 
     private DistributedAtomicLong middleware;
 
-    public ZooKeeperAtomicIdentityFactor(DistributedAtomicLong middleware, IdentityDefinition definition, int partition, long step) {
+    public ZooKeeperAtomicIdentityFactory(DistributedAtomicLong middleware, IdentityDefinition definition, int partition, long step) {
         super(definition, partition, step);
         this.middleware = middleware;
     }
