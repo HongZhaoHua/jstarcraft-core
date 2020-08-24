@@ -1,7 +1,7 @@
 package com.jstarcraft.core.storage.exception;
 
 /**
- * ORM查询异常
+ * 仓储查询异常
  * 
  * @author Birdy
  */

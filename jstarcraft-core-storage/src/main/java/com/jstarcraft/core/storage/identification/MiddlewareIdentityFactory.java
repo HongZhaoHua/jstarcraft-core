@@ -6,14 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 基于Redis标识管理器
+ * 基于中间件标识管理器
  * 
  * @author Birdy
  *
  */
-public abstract class RedisIdentityFactory implements IdentityFactory {
+public abstract class MiddlewareIdentityFactory implements IdentityFactory {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(RedisIdentityFactory.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(MiddlewareIdentityFactory.class);
 
     public final static long MAXIMUM_LONG_VALUE = 0x7FFFFFFFFFFFFFFFL;
 
@@ -38,7 +38,7 @@ public abstract class RedisIdentityFactory implements IdentityFactory {
 
     abstract protected long getLimit(long step);
 
-    protected RedisIdentityFactory(IdentityDefinition definition, int partition, long step) {
+    protected MiddlewareIdentityFactory(IdentityDefinition definition, int partition, long step) {
         List<IdentitySection> sections = definition.getSections();
         assert sections.size() == 2;
         this.definition = definition;

@@ -2,18 +2,18 @@ package com.jstarcraft.core.storage.identification;
 
 import org.redisson.api.RAtomicLong;
 
-public class RedisAtomicIdentityFactory extends RedisIdentityFactory {
+public class RedisAtomicIdentityFactory extends MiddlewareIdentityFactory {
 
-    private RAtomicLong redisson;
+    private RAtomicLong middleware;
 
-    public RedisAtomicIdentityFactory(RAtomicLong redisson, IdentityDefinition definition, int partition, long step) {
+    public RedisAtomicIdentityFactory(RAtomicLong middleware, IdentityDefinition definition, int partition, long step) {
         super(definition, partition, step);
-        this.redisson = redisson;
+        this.middleware = middleware;
     }
 
     @Override
     protected long getLimit(long step) {
-        return redisson.addAndGet(step);
+        return middleware.addAndGet(step);
     }
 
 }
