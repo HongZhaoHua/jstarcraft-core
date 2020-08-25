@@ -116,7 +116,7 @@ JStarCraft Core框架各个模块之间的关系:
         * STOMP
         * Vert.x
 * 6.监控(monitor)
-    * 追踪(trace)
+    * 链路(link)
         * 日志(log)
             * Commons Logging
             * Console
@@ -126,11 +126,11 @@ JStarCraft Core框架各个模块之间的关系:
             * Log4j 2.x
             * SLF4J
             * tinylog
-    * 统计(statistics)
-    * 节流(throttle)
+    * 度量(measure)
     * 路由(route)
         * 数据路由
         * 一致性哈希
+    * 节流(throttle)
 * 7.资源(resource)
     * 格式
         * CSV
