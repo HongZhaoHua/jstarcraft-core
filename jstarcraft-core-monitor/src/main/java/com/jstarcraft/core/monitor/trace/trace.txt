@@ -1,3 +1,6 @@
+ThreadLocal系列:
+https://www.cnblogs.com/hama1993/tag/ThreadLocal
+
 Transmittable ThreadLocal(TTL):
 https://github.com/alibaba/transmittable-thread-local
 
