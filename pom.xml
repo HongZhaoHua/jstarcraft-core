@@ -220,6 +220,13 @@
                 <version>2.13.3</version>
             </dependency>
 
+            <!-- 度量框架依赖 -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>1.5.3</version>
+            </dependency>
+
             <!-- 路由框架依赖 -->
             <dependency>
                 <groupId>org.springframework</groupId>
