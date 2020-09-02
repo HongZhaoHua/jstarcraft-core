@@ -47,10 +47,10 @@ public class MyBatisAccessor implements StorageAccessor {
 	/** MyBatis元信息 */
 	protected Map<Class, MyBatisMetadata> metadatas = new ConcurrentHashMap<>();
 
-	/** HQL查询语句(查询指定范围的最大主键标识),用于IdentityManager */
+	/** SQL查询语句(查询指定范围的最大主键标识),用于IdentityManager */
 	private Map<Class, String> maximumIdSqls = new ConcurrentHashMap<>();
 
-	/** HQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
+	/** SQL查询语句(查询指定范围的最小主键标识),用于IdentityManager */
 	private Map<Class, String> minimumIdSqls = new ConcurrentHashMap<>();
 
 	private StorageCaseStrategy caseStrategy;
