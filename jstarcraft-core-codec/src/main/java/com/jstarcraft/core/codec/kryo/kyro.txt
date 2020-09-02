@@ -1,0 +1,2 @@
+Kryo序列化及反序列化对象:
+http://nettm.blog.51cto.com/4841905/1702453

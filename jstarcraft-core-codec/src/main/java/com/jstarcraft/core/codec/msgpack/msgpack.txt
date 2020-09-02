@@ -1,0 +1,5 @@
+MessagePack 二进制序列化格式 开发入门详解:
+https://blog.csdn.net/wangmx1993328/article/details/84477073
+
+Netty 整合 MessagePack 序列化框架 + LengthFieldBasedFrameDecoder 自定义解码器:
+https://blog.csdn.net/wangmx1993328/article/details/84486516

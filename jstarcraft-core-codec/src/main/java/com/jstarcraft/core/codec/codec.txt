@@ -6,11 +6,11 @@
 Java Type详解:
 http://loveshisong.cn/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/2016-02-16-Type%E8%AF%A6%E8%A7%A3.html
 
-Kryo序列化及反序列化对象:
-http://nettm.blog.51cto.com/4841905/1702453
+Java 序列化与主流编解码技术框架介绍:
+https://blog.csdn.net/wangmx1993328/article/details/84429134
 
 Java序列化框架性能比较:
-http://colobu.com/2014/08/26/java-serializer-comparison/
+http://colobu.com/2014/08/26/java-serializer-comparison
 
 透过byte数组简单分析Java序列化、Kryo、ProtoBuf序列化:
 http://www.solinx.co/archives/377
