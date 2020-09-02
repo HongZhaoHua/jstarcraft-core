@@ -4,6 +4,9 @@ https://www.cnblogs.com/hama1993/tag/ThreadLocal
 Transmittable ThreadLocal(TTL):
 https://github.com/alibaba/transmittable-thread-local
 
+SpringBoot下Brave方式集成Zipkin实现分布式全链路监控:
+https://www.cnblogs.com/haixiang/p/11498439.html
+
 基于SLF4J MDC机制实现日志的链路追踪:
 https://www.jianshu.com/p/3dca4aeb6edd
 
