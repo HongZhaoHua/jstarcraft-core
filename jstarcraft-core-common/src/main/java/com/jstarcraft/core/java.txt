@@ -1,3 +1,6 @@
+Java Type详解:
+http://loveshisong.cn/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/2016-02-16-Type%E8%AF%A6%E8%A7%A3.html
+
 How To Do In Java:
 https://howtodoinjava.com
 
