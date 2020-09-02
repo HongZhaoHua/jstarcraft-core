@@ -18,15 +18,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.storage.StorageCaseStrategy;
 import com.jstarcraft.core.storage.StorageCondition;
-import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.StorageMetadata;
 import com.jstarcraft.core.storage.StoragePagination;
 import com.jstarcraft.core.storage.exception.StorageException;
-import com.jstarcraft.core.storage.exception.StorageQueryException;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -46,7 +45,7 @@ public class MyBatisAccessor implements StorageAccessor {
 	private SqlSessionTemplate template;
 
 	/** MyBatis元信息 */
-	protected Map<Class<? extends BaseMapper<?>>, MyBatisMetadata> metadatas = new ConcurrentHashMap<>();
+	protected Map<Class, MyBatisMetadata> metadatas = new ConcurrentHashMap<>();
 
 	/** HQL查询语句(查询指定范围的最大主键标识),用于IdentityManager */
 	private Map<Class, String> maximumIdSqls = new ConcurrentHashMap<>();
