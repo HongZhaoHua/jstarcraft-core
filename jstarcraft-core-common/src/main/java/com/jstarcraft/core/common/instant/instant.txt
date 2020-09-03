@@ -16,6 +16,9 @@ https://blog.csdn.net/hspingcc/article/details/73332526
 LocalDateTime 获取当前是第几周:
 https://blog.csdn.net/MariaOzawa/article/details/104329172
 
+香港天文台 公历与农历对照表:
+http://www.weather.gov.hk/sc/gts/time/conversion.htm
+
 中国农历的Java实现，支持约300年公历范围：1850-02-12到2150-12-31:
 https://github.com/heqiao2010/LunarCalendar
 
