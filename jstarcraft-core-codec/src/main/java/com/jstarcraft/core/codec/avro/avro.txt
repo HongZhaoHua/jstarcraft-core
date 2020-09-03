@@ -1,2 +1,5 @@
 Java对象与Avro相互转换:
 https://blog.csdn.net/cherlshall/article/details/98964706
+
+Apache Avro 序列化与反序列化 (Java 实现):
+https://blog.csdn.net/kypfos/article/details/54588985
