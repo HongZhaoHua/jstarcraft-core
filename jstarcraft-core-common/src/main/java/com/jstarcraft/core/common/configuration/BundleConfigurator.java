@@ -15,12 +15,12 @@ public class BundleConfigurator implements StringConfigurator {
     /** 配置项 */
     private ResourceBundle keyValues;
 
-    public BundleConfigurator(String key) {
-        this.keyValues = ResourceBundle.getBundle(key);
+    public BundleConfigurator(String name) {
+        this.keyValues = ResourceBundle.getBundle(name);
     }
 
-    public BundleConfigurator(String key, Locale locale) {
-        this.keyValues = ResourceBundle.getBundle(key, locale);
+    public BundleConfigurator(String name, Locale locale) {
+        this.keyValues = ResourceBundle.getBundle(name, locale);
     }
 
     public BundleConfigurator(ResourceBundle keyValues) {
