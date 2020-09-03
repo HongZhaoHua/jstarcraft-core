@@ -1,0 +1,2 @@
+将Java对象序列化成XML格式，将XML反序列化还原为Java对象:
+https://blog.csdn.net/sxdtzhaoxinguo/article/details/81980228
