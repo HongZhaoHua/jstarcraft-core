@@ -1,0 +1,5 @@
+使用JYaml实现Java对象与Yaml间的序列化与反序列化:
+https://my.oschina.net/Tsybius2014/blog/619948
+
+Java Yaml 读取和写入对象（YamlBeans）:
+https://www.jianshu.com/p/93f962bccfcd
