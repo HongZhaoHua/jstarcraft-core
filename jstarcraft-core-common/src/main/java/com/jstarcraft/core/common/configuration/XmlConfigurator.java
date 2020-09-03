@@ -54,8 +54,8 @@ public class XmlConfigurator implements StringConfigurator {
             return;
         }
         path = path == null ? "" : path;
-        for (int i = 0; i < nodes.getLength(); i++) {
-            Node node = nodes.item(i);
+        for (int index = 0, size = nodes.getLength(); index < size; index++) {
+            Node node = nodes.item(index);
             String value = node.getNodeValue();
             value = value == null ? "" : value.trim();
             String name = node.getNodeName();
