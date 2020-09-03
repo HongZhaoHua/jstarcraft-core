@@ -10,6 +10,12 @@ https://www.jianshu.com/p/7a10e572501a
 System Properties Comparison JanusGraph vs. Neo4j vs. OrientDB:
 https://db-engines.com/en/system/JanusGraph%3BNeo4j%3BOrientDB
 
+ArangoDB、Neo4j、OrientDB单机性能比较:
+https://www.jianshu.com/p/38b70768380c
+
+主流图数据库Neo4J、ArangoDB、OrientDB综合对比:
+https://www.jianshu.com/p/6cab7a150755
+
 Neo4j教程:
 https://www.w3cschool.cn/neo4j
 https://www.cnblogs.com/ljhdo/tag/Neo4j
