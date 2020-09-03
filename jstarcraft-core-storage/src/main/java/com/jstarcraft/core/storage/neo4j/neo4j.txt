@@ -16,6 +16,9 @@ https://www.jianshu.com/p/38b70768380c
 主流图数据库Neo4J、ArangoDB、OrientDB综合对比:
 https://www.jianshu.com/p/6cab7a150755
 
+ArangoDB 教程:
+https://www.it1352.com/OnLineTutorial/arangodb/index.html
+
 OrientDB 教程:
 https://www.w3cschool.cn/orientdb
 
