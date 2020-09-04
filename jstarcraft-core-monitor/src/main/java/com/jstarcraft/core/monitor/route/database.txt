@@ -3,3 +3,6 @@ http://www.mycat.org.cn/
 
 业界难题-“跨库分页”的四种方案:
 https://mp.weixin.qq.com/s/h99sXP4mvVFsJw6Oh3aU5A
+
+数据库中间件详解 | 珍藏版:
+https://www.cnblogs.com/jpfss/p/11577780.html
