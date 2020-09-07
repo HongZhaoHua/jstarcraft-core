@@ -23,58 +23,68 @@
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-amqp-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- JMS框架依赖 -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>artemis-jms-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Kafka框架依赖 -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- MQTT框架依赖 -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-mqtt</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- RabbitMQ框架依赖 -->
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.rabbitmq.jms</groupId>
             <artifactId>rabbitmq-jms</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- RocketMQ框架依赖 -->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- STOMP框架依赖 -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-stomp</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Vert.x框架依赖 -->
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-core</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- 测试框架依赖 -->
