@@ -11,13 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.storage.StorageCondition;
-import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -52,7 +52,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
 	/** 缓存类型信息 */
 	private CacheInformation information;
 	/** 状态 */
-	private AtomicReference<CacheState> state;
+	private AtomicReference<LifecycleState> state;
 	/** 监听器 */
 	private PersistenceMonitor monitor;
 	/** 创建统计 */
@@ -64,7 +64,7 @@ public class PromptPersistenceManager<K extends Comparable, T extends IdentityOb
 	/** 异常统计 */
 	private final AtomicLong exceptionCount = new AtomicLong();
 
-	PromptPersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<CacheState> state) {
+	PromptPersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<LifecycleState> state) {
 		this.name = name;
 		this.cacheClass = cacheClass;
 		this.accessor = accessor;

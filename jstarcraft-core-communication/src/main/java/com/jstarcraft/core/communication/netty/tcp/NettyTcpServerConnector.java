@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.exception.CommunicationException;
 import com.jstarcraft.core.communication.message.CommunicationMessage;
 import com.jstarcraft.core.communication.netty.NettyServerConnector;
@@ -81,7 +81,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
     private LinkedBlockingQueue<CommunicationSession<Channel>> sendSessions = new LinkedBlockingQueue<>();
 
     /** 状态 */
-    private AtomicReference<CommunicationState> state = new AtomicReference<>(CommunicationState.STOPPED);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(LifecycleState.STOPPED);
     /** 定时队列 */
     private final SensitivityQueue<DelayElement<CommunicationSession<Channel>>> queue = new SensitivityQueue<>(FIX_TIME);
     /** 清理者线程 */
@@ -97,7 +97,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
                         sessionManager.detachSession(content.getKey());
                     }
                 } catch (InterruptedException exception) {
-                    if (state.get() == CommunicationState.STARTED) {
+                    if (state.get() == LifecycleState.STARTED) {
                         LOGGER.error("清理者异常", exception);
                     } else {
                         // 中断
@@ -146,7 +146,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
                         }
                     }
                 } catch (InterruptedException exception) {
-                    if (state.get() == CommunicationState.STARTED) {
+                    if (state.get() == LifecycleState.STARTED) {
                         LOGGER.error("发送者异常", exception);
                     } else {
                         return;
@@ -243,13 +243,13 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
     }
 
     @Override
-    public CommunicationState getState() {
+    public LifecycleState getState() {
         return state.get();
     }
 
     @Override
     public void start() {
-        if (!state.compareAndSet(CommunicationState.STOPPED, CommunicationState.STARTED)) {
+        if (!state.compareAndSet(LifecycleState.STOPPED, LifecycleState.STARTED)) {
             throw new CommunicationException();
         }
         connector = new ServerBootstrap();
@@ -298,7 +298,7 @@ public class NettyTcpServerConnector extends ChannelInboundHandlerAdapter implem
 
     @Override
     public void stop() {
-        if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CommunicationException();
         }
         if (channel != null) {

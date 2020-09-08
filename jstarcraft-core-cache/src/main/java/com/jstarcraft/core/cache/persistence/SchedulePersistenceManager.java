@@ -19,12 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.exception.CacheOperationException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.common.identification.IdentityObject;
 import com.jstarcraft.core.common.instant.CronExpression;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
@@ -67,7 +67,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 	/** 缓存类型信息 */
 	private CacheInformation information;
 	/** 状态 */
-	private AtomicReference<CacheState> state = new AtomicReference<>(null);
+	private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 	/** CRON表达式 */
 	private CronExpression expression;
 	/** 持久时间点 */
@@ -86,7 +86,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 	/** 异常统计 */
 	private final AtomicInteger exceptionCount = new AtomicInteger();
 
-	SchedulePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, String cron) {
+	SchedulePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<LifecycleState> state, String cron) {
 		this.name = name;
 		this.cacheClass = cacheClass;
 		this.accessor = accessor;
@@ -297,7 +297,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 		if (element == null) {
 			return;
 		}
-		if (!state.get().equals(CacheState.STARTED)) {
+		if (!state.get().equals(LifecycleState.STARTED)) {
 			String message = StringUtility.format("定时策略[{}]已经停止,拒绝接收元素[{}]", name, element);
 			LOGGER.error(message);
 			throw new CacheException(message);
@@ -384,7 +384,7 @@ public class SchedulePersistenceManager<K extends Comparable, T extends Identity
 	@Override
 	public synchronized void run() {
 		while (true) {
-			if (state.get().equals(CacheState.STOPPED)) {
+			if (state.get().equals(LifecycleState.STOPPED)) {
 				if (newElements.isEmpty()) {
 					break;
 				}

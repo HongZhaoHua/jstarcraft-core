@@ -2,7 +2,7 @@ package com.jstarcraft.core.communication.netty.tcp;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.message.CommunicationMessage;
 import com.jstarcraft.core.communication.netty.NettyConnector;
 
@@ -21,7 +21,7 @@ public class MockConnector implements NettyConnector<Channel> {
     }
 
     @Override
-    public CommunicationState getState() {
+    public LifecycleState getState() {
         throw new UnsupportedOperationException();
     }
 

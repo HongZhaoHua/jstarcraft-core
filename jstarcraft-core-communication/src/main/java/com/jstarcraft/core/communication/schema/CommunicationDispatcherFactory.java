@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.annotation.CommunicationModule.ModuleSide;
 import com.jstarcraft.core.communication.command.CommandDefinition;
 import com.jstarcraft.core.communication.command.CommandDispatcher;
@@ -69,7 +69,7 @@ public class CommunicationDispatcherFactory implements FactoryBean<CommandDispat
         }
 
         if (event instanceof ContextClosedEvent) {
-            if (commandDispatcher.getState() == CommunicationState.STARTED) {
+            if (commandDispatcher.getState() == LifecycleState.STARTED) {
                 commandDispatcher.stop();
             }
             return;

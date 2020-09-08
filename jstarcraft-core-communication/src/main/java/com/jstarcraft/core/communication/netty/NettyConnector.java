@@ -1,6 +1,6 @@
 package com.jstarcraft.core.communication.netty;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.message.CommunicationMessage;
 
 /**
@@ -14,7 +14,7 @@ public interface NettyConnector<T> {
 
     void checkData(T context, CommunicationMessage message);
 
-    CommunicationState getState();
+    LifecycleState getState();
 
     void start();
 

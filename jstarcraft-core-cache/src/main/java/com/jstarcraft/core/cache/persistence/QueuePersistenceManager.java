@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy.PersistenceOperation;
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
@@ -65,7 +65,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
 	/** 缓存类型信息 */
 	private CacheInformation information;
 	/** 状态 */
-	private AtomicReference<CacheState> state = new AtomicReference<>(null);
+	private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 	/** 监听器 */
 	private PersistenceMonitor monitor;
 	/** 创建统计 */
@@ -77,7 +77,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
 	/** 异常统计 */
 	private final AtomicLong exceptionCount = new AtomicLong();
 
-	QueuePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<CacheState> state, int size) {
+	QueuePersistenceManager(String name, Class cacheClass, StorageAccessor accessor, CacheInformation information, AtomicReference<LifecycleState> state, int size) {
 		this.name = name;
 		this.cacheClass = cacheClass;
 		this.accessor = accessor;
@@ -241,7 +241,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
 		if (element == null) {
 			return;
 		}
-		if (!state.get().equals(CacheState.STARTED)) {
+		if (!state.get().equals(LifecycleState.STARTED)) {
 			String message = StringUtility.format("持久策略[{}]已经停止,拒绝接收元素[{}]", name, element);
 			LOGGER.error(message);
 			throw new CacheException(message);
@@ -290,7 +290,7 @@ public class QueuePersistenceManager<K extends Comparable, T extends IdentityObj
 			PersistenceElement element = null;
 			Object cacheId = null;
 			try {
-				if (state.get().equals(CacheState.STOPPED) && elementQueue.isEmpty()) {
+				if (state.get().equals(LifecycleState.STOPPED) && elementQueue.isEmpty()) {
 					break;
 				}
 				element = elementQueue.take();

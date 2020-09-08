@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.exception.CommunicationException;
 import com.jstarcraft.core.communication.message.CommunicationMessage;
 import com.jstarcraft.core.communication.netty.NettyBufferInputStream;
@@ -88,7 +88,7 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
     private LinkedBlockingQueue<CommunicationSession<InetSocketAddress>> sendSessions = new LinkedBlockingQueue<>();
 
     /** 状态 */
-    private AtomicReference<CommunicationState> state = new AtomicReference<>(CommunicationState.STOPPED);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(LifecycleState.STOPPED);
     /** 定时队列 */
     private final SensitivityQueue<DelayElement<CommunicationSession<InetSocketAddress>>> queue = new SensitivityQueue<>(FIX_TIME);
     /** 清理者 */
@@ -101,7 +101,7 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
                     CommunicationSession<InetSocketAddress> content = element.getContent();
                     sessionManager.detachSession(content.getKey());
                 } catch (InterruptedException exception) {
-                    if (state.get() == CommunicationState.STARTED) {
+                    if (state.get() == LifecycleState.STARTED) {
                         LOGGER.error("清理者异常", exception);
                     } else {
                         // 中断
@@ -155,7 +155,7 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
                         }
                     }
                 } catch (InterruptedException exception) {
-                    if (state.get() == CommunicationState.STARTED) {
+                    if (state.get() == LifecycleState.STARTED) {
                         LOGGER.error("发送者异常", exception);
                     } else {
                         return;
@@ -223,13 +223,13 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
     }
 
     @Override
-    public CommunicationState getState() {
+    public LifecycleState getState() {
         return state.get();
     }
 
     @Override
     public void start() {
-        if (!state.compareAndSet(CommunicationState.STOPPED, CommunicationState.STARTED)) {
+        if (!state.compareAndSet(LifecycleState.STOPPED, LifecycleState.STARTED)) {
             throw new CommunicationException();
         }
         connector = new Bootstrap();
@@ -273,7 +273,7 @@ public class NettyUdpClientConnector extends MessageToMessageDecoder<DatagramPac
 
     @Override
     public void stop() {
-        if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CommunicationException();
         }
         if (channel != null) {

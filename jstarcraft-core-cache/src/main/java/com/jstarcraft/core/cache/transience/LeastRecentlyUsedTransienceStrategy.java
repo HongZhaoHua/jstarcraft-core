@@ -3,8 +3,8 @@ package com.jstarcraft.core.cache.transience;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 
 /**
  * 最近最少使用瞬时策略
@@ -29,7 +29,7 @@ public class LeastRecentlyUsedTransienceStrategy extends AbstractTransienceStrat
     private int concurrencyLevel;
 
     /** 状态 */
-    private AtomicReference<CacheState> state = new AtomicReference<>(null);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 
     public LeastRecentlyUsedTransienceStrategy(String name, Map<String, String> configuration) {
         super(name, configuration);
@@ -37,7 +37,7 @@ public class LeastRecentlyUsedTransienceStrategy extends AbstractTransienceStrat
 
     @Override
     public void start() {
-        if (!state.compareAndSet(null, CacheState.STARTED)) {
+        if (!state.compareAndSet(null, LifecycleState.STARTED)) {
             throw new CacheConfigurationException();
         }
         this.minimunSize = Integer.parseInt(configuration.get(PARAMETER_MINIMUN_SIZE));
@@ -51,7 +51,7 @@ public class LeastRecentlyUsedTransienceStrategy extends AbstractTransienceStrat
 
     @Override
     public synchronized void stop() {
-        if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CacheConfigurationException();
         }
     }

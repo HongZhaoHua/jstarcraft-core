@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.storage.StorageCondition;
 import com.jstarcraft.core.storage.StorageIterator;
@@ -85,7 +86,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     private ThreadLocal<BerkeleyTransactor> transactors = new ThreadLocal<>();
 
     /** 状态 */
-    private AtomicReference<BerkeleyState> state = new AtomicReference<>(BerkeleyState.STOPPED);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(LifecycleState.STOPPED);
 
     /** 版本缓存 */
     private HashMap<BerkeleyIdentification, BerkeleyVersion> versionCache = new HashMap<>();
@@ -144,12 +145,12 @@ public class BerkeleyAccessor implements StorageAccessor {
         this.writeDelay = writeDelay;
     }
 
-    public BerkeleyState getState() {
+    public LifecycleState getState() {
         return state.get();
     }
 
     public void start() {
-        if (!state.compareAndSet(BerkeleyState.STOPPED, BerkeleyState.STARTED)) {
+        if (!state.compareAndSet(LifecycleState.STOPPED, LifecycleState.STARTED)) {
             throw new BerkeleyStateException();
         }
 
@@ -215,7 +216,7 @@ public class BerkeleyAccessor implements StorageAccessor {
     }
 
     public void stop() {
-        if (!state.compareAndSet(BerkeleyState.STARTED, BerkeleyState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new BerkeleyStateException();
         }
         // 中断线程

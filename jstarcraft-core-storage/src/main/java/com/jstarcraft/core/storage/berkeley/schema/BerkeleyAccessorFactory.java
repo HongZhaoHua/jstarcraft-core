@@ -17,8 +17,8 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.Resource;
 
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.storage.berkeley.BerkeleyAccessor;
-import com.jstarcraft.core.storage.berkeley.BerkeleyState;
 
 /**
  * Berkeley访问器工厂
@@ -53,14 +53,14 @@ public class BerkeleyAccessorFactory implements FactoryBean<BerkeleyAccessor>, A
         getObject();
 
         if (event instanceof ContextRefreshedEvent) {
-            if (accessor.getState() == BerkeleyState.STOPPED) {
+            if (accessor.getState() == LifecycleState.STOPPED) {
                 accessor.start();
             }
             return;
         }
 
         if (event instanceof ContextClosedEvent) {
-            if (accessor.getState() == BerkeleyState.STARTED) {
+            if (accessor.getState() == LifecycleState.STARTED) {
                 accessor.stop();
             }
             return;

@@ -3,8 +3,8 @@ package com.jstarcraft.core.cache.transience;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 
 /**
  * 定时瞬时策略
@@ -25,7 +25,7 @@ public class DelayedTransienceStrategy extends AbstractTransienceStrategy {
     private int segment;
 
     /** 状态 */
-    private AtomicReference<CacheState> state = new AtomicReference<>(null);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 
     public DelayedTransienceStrategy(String name, Map<String, String> configuration) {
         super(name, configuration);
@@ -33,7 +33,7 @@ public class DelayedTransienceStrategy extends AbstractTransienceStrategy {
 
     @Override
     public void start() {
-        if (!state.compareAndSet(null, CacheState.STARTED)) {
+        if (!state.compareAndSet(null, LifecycleState.STARTED)) {
             throw new CacheConfigurationException();
         }
         this.expire = Integer.parseInt(configuration.get(PARAMETER_EXPIRE));
@@ -46,7 +46,7 @@ public class DelayedTransienceStrategy extends AbstractTransienceStrategy {
 
     @Override
     public synchronized void stop() {
-        if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CacheConfigurationException();
         }
     }

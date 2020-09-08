@@ -16,6 +16,7 @@ import com.jstarcraft.core.cache.exception.CacheException;
 import com.jstarcraft.core.cache.persistence.PersistenceStrategy;
 import com.jstarcraft.core.cache.transience.TransienceStrategy;
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
@@ -44,7 +45,7 @@ public class CacheService implements CacheMonitor {
     private final Map<Class<? extends IdentityObject>, RegionCacheManager> regionManagers = new HashMap<>();
 
     /** 状态 */
-    private AtomicReference<CacheState> state = new AtomicReference<>(null);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 
     public CacheService(Set<Class<? extends IdentityObject>> cacheClasses, StorageAccessor accessor, Set<TransienceStrategy> transienceStrategies, Set<PersistenceStrategy> persistenceStrategies) {
         if (cacheClasses == null || accessor == null) {
@@ -73,7 +74,7 @@ public class CacheService implements CacheMonitor {
      * 启动缓存服务
      */
     public void start() {
-        if (!state.compareAndSet(null, CacheState.STARTED)) {
+        if (!state.compareAndSet(null, LifecycleState.STARTED)) {
             throw new CacheConfigurationException();
         }
         for (TransienceStrategy strategy : transienceStrategies.values()) {
@@ -88,7 +89,7 @@ public class CacheService implements CacheMonitor {
      * 停止缓存服务
      */
     public void stop() {
-        if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CacheConfigurationException();
         }
         for (TransienceStrategy strategy : transienceStrategies.values()) {
@@ -102,7 +103,7 @@ public class CacheService implements CacheMonitor {
     /**
      * 获取缓存服务状态
      */
-    public CacheState getState() {
+    public LifecycleState getState() {
         return state.get();
     }
 

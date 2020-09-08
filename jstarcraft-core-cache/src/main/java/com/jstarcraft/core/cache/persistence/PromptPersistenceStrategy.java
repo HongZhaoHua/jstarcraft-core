@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.cache.CacheInformation;
-import com.jstarcraft.core.cache.CacheState;
 import com.jstarcraft.core.cache.exception.CacheConfigurationException;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.storage.StorageAccessor;
 
 /**
@@ -28,7 +28,7 @@ public class PromptPersistenceStrategy extends AbstractPersistenceStrategy {
     /** 缓存类型信息 */
     private Map<Class<?>, CacheInformation> informations;
     /** 状态 */
-    private AtomicReference<CacheState> state = new AtomicReference<>(null);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 
     private Map<Class, PromptPersistenceManager> managers = new HashMap<>();
 
@@ -38,7 +38,7 @@ public class PromptPersistenceStrategy extends AbstractPersistenceStrategy {
 
     @Override
     public synchronized void start(StorageAccessor accessor, Map<Class<?>, CacheInformation> informations) {
-        if (!state.compareAndSet(null, CacheState.STARTED)) {
+        if (!state.compareAndSet(null, LifecycleState.STARTED)) {
             throw new CacheConfigurationException();
         }
         this.accessor = accessor;
@@ -53,7 +53,7 @@ public class PromptPersistenceStrategy extends AbstractPersistenceStrategy {
 
     @Override
     public synchronized void stop() {
-        if (!state.compareAndSet(CacheState.STARTED, CacheState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CacheConfigurationException();
         }
         this.managers.clear();

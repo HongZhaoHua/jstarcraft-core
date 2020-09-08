@@ -21,7 +21,7 @@ import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.kryo.KryoContentCodec;
 import com.jstarcraft.core.codec.protocolbufferx.ProtocolContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.annotation.CommunicationCommand;
 import com.jstarcraft.core.communication.annotation.CommunicationModule;
 import com.jstarcraft.core.communication.annotation.CommunicationModule.ModuleSide;
@@ -101,7 +101,7 @@ public class CommandDispatcher<T> {
     private SessionSender<T> sender;
 
     /** 状态 */
-    private AtomicReference<CommunicationState> state = new AtomicReference<>(null);
+    private AtomicReference<LifecycleState> state = new AtomicReference<>(null);
 
     /** 调度工厂 */
     private NameThreadFactory dispatchFactory = new NameThreadFactory("CommandDispatcher");
@@ -109,7 +109,7 @@ public class CommandDispatcher<T> {
     private Runnable dispatchTask = new Runnable() {
         @Override
         public void run() {
-            while (CommunicationState.STARTED.equals(state.get())) {
+            while (LifecycleState.STARTED.equals(state.get())) {
                 try {
                     CommunicationSession<T> session = receiver.pullSession();
                     if (session != null) {
@@ -194,7 +194,7 @@ public class CommandDispatcher<T> {
         if (contextWait <= 0) {
             throw new CommunicationConfigurationException();
         }
-        if (!state.compareAndSet(null, CommunicationState.STARTED)) {
+        if (!state.compareAndSet(null, LifecycleState.STARTED)) {
             throw new CommunicationStateException();
         }
         for (Object object : objects) {
@@ -223,7 +223,7 @@ public class CommandDispatcher<T> {
      * 停止调度器
      */
     public void stop() {
-        if (!state.compareAndSet(CommunicationState.STARTED, CommunicationState.STOPPED)) {
+        if (!state.compareAndSet(LifecycleState.STARTED, LifecycleState.STOPPED)) {
             throw new CommunicationStateException();
         }
     }
@@ -237,7 +237,7 @@ public class CommandDispatcher<T> {
      * 
      * @return
      */
-    public CommunicationState getState() {
+    public LifecycleState getState() {
         return state.get();
     }
 
@@ -266,7 +266,7 @@ public class CommandDispatcher<T> {
 
     // Worker或者CommandManager调用
     CommandContext sendRequest(CommandDefinition definition, CommunicationSession<T> session, MessageBody body) {
-        if (!CommunicationState.STARTED.equals(state.get())) {
+        if (!LifecycleState.STARTED.equals(state.get())) {
             throw new CommunicationStateException();
         }
         int sequence = sequenceManager.incrementAndGet();
@@ -295,7 +295,7 @@ public class CommandDispatcher<T> {
 
     // Worker调用
     void sendResponse(CommandDefinition definition, CommunicationSession<T> session, int sequence, MessageBody body) {
-        if (!CommunicationState.STARTED.equals(state.get())) {
+        if (!LifecycleState.STARTED.equals(state.get())) {
             throw new CommunicationStateException();
         }
         if (ModuleSide.SERVER.equals(side)) {

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.jstarcraft.core.communication.CommunicationState;
+import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.annotation.CommunicationModule;
 import com.jstarcraft.core.communication.annotation.CommunicationModule.ModuleSide;
 import com.jstarcraft.core.communication.command.CommandDispatcher;
@@ -190,16 +190,16 @@ public abstract class NettyTestCase<T> {
     public void testState() {
         // 在停止服务器和启动服务器过程中,绝对不允许有其它操作(读写锁).
         nettyClientConnector.stop();
-        Assert.assertThat(nettyClientConnector.getState(), CoreMatchers.equalTo(CommunicationState.STOPPED));
+        Assert.assertThat(nettyClientConnector.getState(), CoreMatchers.equalTo(LifecycleState.STOPPED));
 
         nettyServerConnector.stop();
-        Assert.assertThat(nettyServerConnector.getState(), CoreMatchers.equalTo(CommunicationState.STOPPED));
+        Assert.assertThat(nettyServerConnector.getState(), CoreMatchers.equalTo(LifecycleState.STOPPED));
 
         nettyServerConnector.start();
-        Assert.assertThat(nettyServerConnector.getState(), CoreMatchers.equalTo(CommunicationState.STARTED));
+        Assert.assertThat(nettyServerConnector.getState(), CoreMatchers.equalTo(LifecycleState.STARTED));
 
         nettyClientConnector.start();
-        Assert.assertThat(nettyClientConnector.getState(), CoreMatchers.equalTo(CommunicationState.STARTED));
+        Assert.assertThat(nettyClientConnector.getState(), CoreMatchers.equalTo(LifecycleState.STARTED));
     }
 
 }
