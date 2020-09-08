@@ -1,15 +1,16 @@
-package com.jstarcraft.core.cache;
+package com.jstarcraft.core.common.lifecycle;
 
 /**
- * 缓存状态
+ * 生命周期
  * 
  * @author Birdy
  *
  */
-public enum CacheState {
+public enum LifecycleState {
 
     /** 启动 */
     STARTED,
+
     /** 停止 */
     STOPPED;
 
