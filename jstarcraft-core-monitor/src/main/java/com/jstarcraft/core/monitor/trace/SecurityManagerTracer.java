@@ -6,7 +6,7 @@ package com.jstarcraft.core.monitor.trace;
  * @author Birdy
  *
  */
-public class SecurityManagerTracer extends SecurityManager implements Tracer {
+public class SecurityManagerTracer extends SecurityManager implements CallTracer {
 
     public static final int DEFAULT_OFFSET = 1;
 

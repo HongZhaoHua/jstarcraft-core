@@ -6,7 +6,7 @@ package com.jstarcraft.core.monitor.trace;
  * @author Birdy
  *
  */
-public class ThrowableStackTracer implements Tracer {
+public class ThrowableStackTracer implements CallTracer {
 
     public static final int DEFAULT_OFFSET = 1;
 

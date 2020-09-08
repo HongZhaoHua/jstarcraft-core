@@ -2,9 +2,9 @@ package com.jstarcraft.core.monitor.trace;
 
 import org.junit.Test;
 
-public class SecurityManagerTracerTestCase extends TracerTestCase {
+public class SecurityManagerTracerTestCase extends CallTracerTestCase {
 
-    protected Tracer getTracer() {
+    protected CallTracer getTracer() {
         SecurityManagerTracer tracer = new SecurityManagerTracer();
         return tracer;
     }

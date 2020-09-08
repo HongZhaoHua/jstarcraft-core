@@ -1,8 +1,8 @@
 package com.jstarcraft.core.monitor.trace;
 
-public class ThreadStackTracerTestCase extends TracerTestCase {
+public class ThreadStackTracerTestCase extends CallTracerTestCase {
 
-    protected Tracer getTracer() {
+    protected CallTracer getTracer() {
         ThreadStackTracer tracer = new ThreadStackTracer();
         return tracer;
     }

@@ -12,6 +12,6 @@ import org.junit.runners.Suite.SuiteClasses;
         ThreadStackTracerTestCase.class,
 
         ThrowableStackTracerTestCase.class })
-public class TracerTestSuite {
+public class CallTracerTestSuite {
 
 }

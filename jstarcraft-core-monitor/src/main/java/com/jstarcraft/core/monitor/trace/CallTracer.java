@@ -6,7 +6,7 @@ package com.jstarcraft.core.monitor.trace;
  * @author Birdy
  *
  */
-public interface Tracer {
+public interface CallTracer {
 
     /**
      * 获取调用层数量
