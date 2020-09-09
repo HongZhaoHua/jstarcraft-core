@@ -1,6 +1,9 @@
 hessian binary web service protocol:
 http://hessian.caucho.com
 
+Java序列化之Hessian:
+https://www.jianshu.com/p/6a36dd1fcca8
+
 Hessian的使用以及理解:
 https://www.cnblogs.com/a8457013/p/8329756.html
 
