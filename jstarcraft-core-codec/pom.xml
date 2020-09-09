@@ -24,13 +24,14 @@
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- MessagePack -->
         <dependency>
             <groupId>org.msgpack</groupId>
             <artifactId>jackson-dataformat-msgpack</artifactId>
-            <version>0.8.20</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- 测试框架依赖 -->
