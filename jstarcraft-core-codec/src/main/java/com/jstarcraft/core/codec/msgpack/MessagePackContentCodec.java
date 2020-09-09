@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.json;
+package com.jstarcraft.core.codec.msgpack;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 import org.slf4j.Logger;
@@ -36,13 +37,13 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
- * JSON格式编解码器
+ * MessagePack格式编解码器
  * 
  * @author Birdy
  */
-public class JsonContentCodec implements ContentCodec {
+public class MessagePackContentCodec implements ContentCodec {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonContentCodec.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessagePackContentCodec.class);
 
     private final ThreadLocal<Type> currentTypes = new ThreadLocal<>();
 
@@ -50,7 +51,7 @@ public class JsonContentCodec implements ContentCodec {
     /** 类型转换器(基于Jackson) */
     private final ObjectMapper typeConverter = new ObjectMapper();
 
-    public JsonContentCodec(CodecDefinition definition) {
+    public MessagePackContentCodec(CodecDefinition definition) {
         this.codecDefinition = definition;
         // 修改为基于JsonSerializer和JsonDeserializer
         typeConverter.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -146,10 +147,28 @@ public class JsonContentCodec implements ContentCodec {
             }
 
         };
+
+        JsonDeserializer<BigDecimal> bigDecimalDeserializer = new JsonDeserializer<BigDecimal>() {
+
+            public BigDecimal deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+                return new BigDecimal(parser.getValueAsString());
+            }
+
+        };
+
+        JsonSerializer<BigDecimal> bigDecimalSerializer = new JsonSerializer<BigDecimal>() {
+
+            public void serialize(BigDecimal value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
+                generator.writeString(value.toString());
+            }
+
+        };
         JavaTimeModule module = new JavaTimeModule();
         typeConverter.registerModule(module);
         module.addDeserializer(Type.class, typeDeserializer);
         module.addSerializer(Type.class, typeSerializer);
+        module.addDeserializer(BigDecimal.class, bigDecimalDeserializer);
+        module.addSerializer(BigDecimal.class, bigDecimalSerializer);
     }
 
     @Override
