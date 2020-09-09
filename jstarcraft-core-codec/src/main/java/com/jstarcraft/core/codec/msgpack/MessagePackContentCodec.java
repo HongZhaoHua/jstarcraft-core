@@ -187,7 +187,7 @@ public class MessagePackContentCodec implements ContentCodec {
                 return typeConverter.readValue(content, JsonUtility.type2Java(type));
             }
         } catch (Exception exception) {
-            String message = "JSON解码异常";
+            String message = "MessagePack解码异常";
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -206,7 +206,7 @@ public class MessagePackContentCodec implements ContentCodec {
                 return typeConverter.readValue(stream, JsonUtility.type2Java(type));
             }
         } catch (Exception exception) {
-            String message = "JSON解码异常";
+            String message = "MessagePack解码异常";
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -223,7 +223,7 @@ public class MessagePackContentCodec implements ContentCodec {
             currentTypes.remove();
             return value;
         } catch (Exception exception) {
-            String message = "JSON编码异常";
+            String message = "MessagePack编码异常";
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -236,7 +236,7 @@ public class MessagePackContentCodec implements ContentCodec {
             typeConverter.writeValue(stream, content);
             currentTypes.remove();
         } catch (Exception exception) {
-            String message = "JSON编码异常";
+            String message = "MessagePack编码异常";
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
