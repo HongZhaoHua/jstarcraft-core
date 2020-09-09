@@ -70,7 +70,9 @@ JStarCraft Core框架各个模块之间的关系:
     * CSV
     * JSON
     * Kryo
+    * MessagePack
     * ProtocolBufferX
+    * YAML
 * 3.通用(common)
     * 编译(compilation)
     * 转换(conversion)
