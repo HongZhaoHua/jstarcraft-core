@@ -222,7 +222,7 @@ public abstract class ContentCodecTestCase {
     }
 
     @Test
-    public void testTime() throws Exception {
+    public void testInstant() throws Exception {
         // 基于时间的协议测试
         Date date = new Date(0L);
         testConvert(Date.class, date);
