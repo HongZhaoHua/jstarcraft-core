@@ -76,6 +76,19 @@ public abstract class ContentCodecTestCase {
     }
 
     @Test
+    public void testInstant() throws Exception {
+        // 基于时间的协议测试
+        Date date = new Date(0L);
+        testConvert(Date.class, date);
+        date = new Date();
+        testConvert(Date.class, date);
+        Instant instant = Instant.ofEpochMilli(0L);
+        testConvert(Instant.class, instant);
+        instant = Instant.now();
+        testConvert(Instant.class, instant);
+    }
+
+    @Test
     public void testComplex() throws Exception {
         // 基于对象的协议测试
         MockComplexObject object = MockComplexObject.instanceOf(0, "birdy", "hong", 10, Instant.now(), MockEnumeration.TERRAN);
@@ -219,19 +232,6 @@ public abstract class ContentCodecTestCase {
         testConvert(char.class, ' ');
         testConvert(Character.class, ' ');
         testConvert(String.class, "string");
-    }
-
-    @Test
-    public void testInstant() throws Exception {
-        // 基于时间的协议测试
-        Date date = new Date(0L);
-        testConvert(Date.class, date);
-        date = new Date();
-        testConvert(Date.class, date);
-        Instant instant = Instant.ofEpochMilli(0L);
-        testConvert(Instant.class, instant);
-        instant = Instant.now();
-        testConvert(Instant.class, instant);
     }
 
     @Test
