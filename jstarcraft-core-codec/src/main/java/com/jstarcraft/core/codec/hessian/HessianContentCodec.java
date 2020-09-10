@@ -7,15 +7,19 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caucho.hessian.io.ExtSerializerFactory;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.SerializerFactory;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
+import com.jstarcraft.core.codec.hessian.converter.InstantDeserializer;
+import com.jstarcraft.core.codec.hessian.converter.InstantSerializer;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -30,7 +34,11 @@ public class HessianContentCodec implements ContentCodec {
 
     private static final SerializerFactory hessianFactory = new SerializerFactory();
     {
+        ExtSerializerFactory factory = new ExtSerializerFactory();
+        factory.addDeserializer(Instant.class, new InstantDeserializer());
+        factory.addSerializer(Instant.class, new InstantSerializer());
         hessianFactory.setAllowNonSerializable(true);
+        hessianFactory.addFactory(factory);
     }
 
     private CodecDefinition codecDefinition;
