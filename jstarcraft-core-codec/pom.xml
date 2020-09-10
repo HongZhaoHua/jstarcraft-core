@@ -20,6 +20,13 @@
         </dependency>
 
         <!-- 编解码框架依赖 -->
+        <!-- Hessian -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>4.0.63</version>
+        </dependency>
+
         <!-- Kryo -->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
