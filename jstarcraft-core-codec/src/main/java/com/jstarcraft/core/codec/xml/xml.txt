@@ -1,5 +1,8 @@
 将Java对象序列化成XML格式，将XML反序列化还原为Java对象:
 https://blog.csdn.net/sxdtzhaoxinguo/article/details/81980228
 
+XStream 简介:
+https://www.jianshu.com/p/d8e6c5488353
+
 Jackson实现XML序列化和反序列化:
 https://blog.csdn.net/neweastsun/article/details/100044167
