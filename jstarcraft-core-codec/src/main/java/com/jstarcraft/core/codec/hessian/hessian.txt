@@ -15,3 +15,9 @@ https://github.com/cytle/blog/blob/master/source/_posts/Hessian-2-0%E5%BA%8F%E5%
 
 浅析Hessian协议:
 https://www.jianshu.com/p/e800d8af4e22
+
+详解Serializable:
+https://www.jianshu.com/p/0c13d146ecd0
+
+[疯狂Java]I/O：其它自定义序列化的方法（transient、writeReplace、readResolve、Externalizable）:
+https://blog.csdn.net/Lirx_Tech/article/details/51303966
