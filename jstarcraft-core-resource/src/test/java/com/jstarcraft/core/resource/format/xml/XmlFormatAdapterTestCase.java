@@ -61,4 +61,5 @@ public class XmlFormatAdapterTestCase {
         assertThat(ignore, CoreMatchers.nullValue());
         assertThat(unknow, CoreMatchers.nullValue());
     }
+
 }
