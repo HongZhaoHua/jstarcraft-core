@@ -72,6 +72,7 @@ JStarCraft Core框架各个模块之间的关系:
     * Kryo
     * MessagePack
     * ProtocolBufferX
+    * XML
     * YAML
 * 3.通用(common)
     * 编译(compilation)
@@ -136,6 +137,7 @@ JStarCraft Core框架各个模块之间的关系:
 * 7.资源(resource)
     * 格式
         * CSV
+        * Excel
         * JSON
         * Properties
         * XLSX
