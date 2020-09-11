@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.hessian.converter.InstantDeserializer;
 import com.jstarcraft.core.codec.hessian.converter.InstantSerializer;
+import com.jstarcraft.core.codec.hessian.converter.LocalDateTimeDeserializer;
+import com.jstarcraft.core.codec.hessian.converter.LocalDateTimeSerializer;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -37,6 +40,8 @@ public class HessianContentCodec implements ContentCodec {
         ExtSerializerFactory factory = new ExtSerializerFactory();
         factory.addDeserializer(Instant.class, new InstantDeserializer());
         factory.addSerializer(Instant.class, new InstantSerializer());
+        factory.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+        factory.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
         hessianFactory.setAllowNonSerializable(true);
         hessianFactory.addFactory(factory);
     }
