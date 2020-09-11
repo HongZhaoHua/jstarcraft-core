@@ -15,6 +15,15 @@ public final class RandomUtility {
     }
 
     /**
+     * 获取随机引擎
+     * 
+     * @return
+     */
+    public static Random getRandom() {
+        return random;
+    }
+
+    /**
      * 设置随机引擎
      * 
      * @param engine

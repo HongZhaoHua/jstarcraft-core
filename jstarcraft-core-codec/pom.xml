@@ -20,11 +20,18 @@
         </dependency>
 
         <!-- 编解码框架依赖 -->
+        <!-- Avro -->
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Hessian -->
         <dependency>
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
-            <version>4.0.63</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Kryo -->
@@ -38,6 +45,13 @@
         <dependency>
             <groupId>org.msgpack</groupId>
             <artifactId>jackson-dataformat-msgpack</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Thrift -->
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
             <optional>true</optional>
         </dependency>
 

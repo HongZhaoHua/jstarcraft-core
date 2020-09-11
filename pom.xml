@@ -91,6 +91,20 @@
             </dependency>
 
             <!-- 编解码框架依赖 -->
+            <!-- Avro -->
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <version>1.10.0</version>
+            </dependency>
+
+            <!-- Hessian -->
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>4.0.63</version>
+            </dependency>
+
             <!-- Kryo -->
             <dependency>
                 <groupId>com.esotericsoftware</groupId>
@@ -103,6 +117,13 @@
                 <groupId>org.msgpack</groupId>
                 <artifactId>jackson-dataformat-msgpack</artifactId>
                 <version>0.8.20</version>
+            </dependency>
+
+            <!-- Thrift -->
+            <dependency>
+                <groupId>org.apache.thrift</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>0.13.0</version>
             </dependency>
 
             <!-- XML -->
