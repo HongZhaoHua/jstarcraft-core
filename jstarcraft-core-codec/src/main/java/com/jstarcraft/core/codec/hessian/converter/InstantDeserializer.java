@@ -14,19 +14,19 @@ public class InstantDeserializer extends AbstractDeserializer {
 
     @Override
     public Object readObject(AbstractHessianInput in, Object[] fields) throws IOException {
-        String[] fieldNames = (String[]) fields;
+        String[] names = (String[]) fields;
         int reference = in.addRef(null);
-        long instant = 0L;
-        for (int index = 0; index < fieldNames.length; index++) {
-            if ("data".equals(fieldNames[index])) {
-                instant = in.readUTCDate();
+        long data = 0L;
+        for (int index = 0; index < names.length; index++) {
+            if ("data".equals(names[index])) {
+                data = in.readUTCDate();
             } else {
                 in.readObject();
             }
         }
-        Object value = Instant.ofEpochMilli(instant);
-        in.setRef(reference, value);
-        return value;
+        Instant instant = Instant.ofEpochMilli(data);
+        in.setRef(reference, instant);
+        return instant;
     }
 
 }

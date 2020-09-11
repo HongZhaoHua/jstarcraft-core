@@ -10,16 +10,17 @@ public class InstantSerializer extends AbstractSerializer {
 
     @Override
     public void writeObject(Object object, AbstractHessianOutput out) throws IOException {
-        Instant instant = (Instant) object;
-        if (instant == null) {
+        if (object == null) {
             out.writeNull();
         } else if (out.addRef(object)) {
             return;
         } else {
+            Instant instant = (Instant) object;
+            long data = instant.toEpochMilli();
             int reference = out.writeObjectBegin(Instant.class.getName());
             if (reference < -1) {
                 out.writeString("data");
-                out.writeUTCDate(instant.toEpochMilli());
+                out.writeUTCDate(data);
                 out.writeMapEnd();
             } else {
                 if (reference == -1) {
@@ -27,7 +28,7 @@ public class InstantSerializer extends AbstractSerializer {
                     out.writeString("data");
                     out.writeObjectBegin(Instant.class.getName());
                 }
-                out.writeUTCDate(instant.toEpochMilli());
+                out.writeUTCDate(data);
             }
         }
     }
