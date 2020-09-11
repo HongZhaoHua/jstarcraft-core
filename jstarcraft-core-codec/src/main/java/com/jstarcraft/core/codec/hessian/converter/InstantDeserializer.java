@@ -15,11 +15,8 @@ public class InstantDeserializer extends AbstractDeserializer {
     @Override
     public Object readObject(AbstractHessianInput in, Object[] fields) throws IOException {
         String[] fieldNames = (String[]) fields;
-
         int reference = in.addRef(null);
-
         long instant = 0L;
-
         for (int index = 0; index < fieldNames.length; index++) {
             if ("data".equals(fieldNames[index])) {
                 instant = in.readUTCDate();
@@ -27,11 +24,8 @@ public class InstantDeserializer extends AbstractDeserializer {
                 in.readObject();
             }
         }
-
         Object value = Instant.ofEpochMilli(instant);
-
         in.setRef(reference, value);
-
         return value;
     }
 
