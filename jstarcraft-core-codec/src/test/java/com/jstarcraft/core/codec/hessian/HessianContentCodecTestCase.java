@@ -3,6 +3,8 @@ package com.jstarcraft.core.codec.hessian;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.YearMonth;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
@@ -24,6 +26,11 @@ public class HessianContentCodecTestCase extends ContentCodecTestCase {
         LocalTime time = LocalTime.of(12, 0, 0);
         LocalDateTime dateTime = LocalDateTime.of(date, time);
         testConvert(LocalDateTime.class, dateTime);
+
+        MonthDay monthDay = MonthDay.of(6, 15);
+        testConvert(MonthDay.class, monthDay);
+        YearMonth yearMonth = YearMonth.of(2020, 6);
+        testConvert(YearMonth.class, yearMonth);
     }
 
 }

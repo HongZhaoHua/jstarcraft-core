@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.MonthDay;
+import java.time.YearMonth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,10 @@ import com.jstarcraft.core.codec.hessian.converter.InstantDeserializer;
 import com.jstarcraft.core.codec.hessian.converter.InstantSerializer;
 import com.jstarcraft.core.codec.hessian.converter.LocalDateTimeDeserializer;
 import com.jstarcraft.core.codec.hessian.converter.LocalDateTimeSerializer;
+import com.jstarcraft.core.codec.hessian.converter.MonthDayDeserializer;
+import com.jstarcraft.core.codec.hessian.converter.MonthDaySerializer;
+import com.jstarcraft.core.codec.hessian.converter.YearMonthDeserializer;
+import com.jstarcraft.core.codec.hessian.converter.YearMonthSerializer;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -42,6 +48,10 @@ public class HessianContentCodec implements ContentCodec {
         factory.addSerializer(Instant.class, new InstantSerializer());
         factory.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
         factory.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        factory.addDeserializer(MonthDay.class, new MonthDayDeserializer());
+        factory.addSerializer(MonthDay.class, new MonthDaySerializer());
+        factory.addDeserializer(YearMonth.class, new YearMonthDeserializer());
+        factory.addSerializer(YearMonth.class, new YearMonthSerializer());
         hessianFactory.setAllowNonSerializable(true);
         hessianFactory.addFactory(factory);
     }
