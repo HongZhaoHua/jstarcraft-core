@@ -1,2 +1,5 @@
 Thrift 对象序列化、反序列化-字节数组分析:
 https://www.jianshu.com/p/1b322180d011
+
+Apache Thrift学习系列:
+https://blog.csdn.net/baidu_22254181/category_8077995.html
