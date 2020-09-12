@@ -6,6 +6,14 @@ import java.util.function.Function;
 /**
  * 历法类型
  * 
+ * <pre>
+ * TODO
+ * 考虑历法类型调整为:
+ * 太阴历(Lunar)
+ * 阴阳历(Lunisolar)
+ * 太阳历(Solar)
+ * </pre>
+ * 
  * @author Birdy
  *
  */

@@ -13,11 +13,21 @@ https://github.com/6tail/lunar-java
 20世纪至22世纪二十四节气的计算公式:
 http://blog.sina.com.cn/s/blog_65c178a801017czv.html
 
+Time4J - Advanced date, time and interval library for Java:
+https://github.com/MenoData/Time4J
+
 A Java library for calculating prayer (salat) times, Hijri date, and qibla direction, based on ITL (Islamic Tools and Libraries):
 https://github.com/fikr4n/itl-java
 
 A Hijri (Islamic) Calendar Library:
 https://github.com/sahaab/HijriCalendar-master
+
+hebcal - A perpetual Jewish Calendar:
+https://github.com/hebcal/hebcal
+https://github.com/hebcal/hebcal-java
+https://github.com/hebcal/hebcal-js
+
+
 
 新月满月时间表(2010-2049):
 https://wenku.baidu.com/view/0463ce0c4a7302768e993990.html
