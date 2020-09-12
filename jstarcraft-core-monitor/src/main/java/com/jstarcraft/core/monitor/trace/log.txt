@@ -3,7 +3,10 @@ https://zhuanlan.zhihu.com/p/24272450
 https://zhuanlan.zhihu.com/p/24275518
 
 log4j日志封装说明—slf4j对于log4j的日志封装-正确获取调用堆栈:
-http://www.coderli.com/log4j-slf4j-logger-linenumber/
+http://www.coderli.com/log4j-slf4j-logger-linenumber
+
+浅谈Log4j2日志框架及使用:
+https://www.cnblogs.com/wuqinglong/p/9516529.html
 
 Log4j2的日志配置文件(log4j2.xml文件的配置-实现控制台输出,各级别分别文件输出,自动压缩等...):
 http://www.cnblogs.com/hyyq/p/7171227.html
@@ -15,7 +18,7 @@ Log4j2使用教程
 http://www.cnblogs.com/leo-lsw/p/log4j2tutorial.html
 
 Logback log4j Log4j2 性能实测:
-https://blog.souche.com/logback-log4j-log4j2shi-ce/
+https://blog.souche.com/logback-log4j-log4j2shi-ce
 
 如何获取请求与响应并记录到日志?
 https://stackoverflow.com/questions/33744875/spring-boot-how-to-log-all-requests-and-responses-with-exceptions-in-single-pl/43155103
