@@ -11,8 +11,12 @@ https://www.cnblogs.com/wuqinglong/p/9516529.html
 Log4j2的日志配置文件(log4j2.xml文件的配置-实现控制台输出,各级别分别文件输出,自动压缩等...):
 http://www.cnblogs.com/hyyq/p/7171227.html
 
-Log4j2配置手册
+Log4j2手册:
 https://logging.apache.org/log4j/2.x/manual/configuration.html
+https://logging.apache.org/log4j/2.x/manual/appenders.html
+http://logging.apache.org/log4j/2.x/manual/filters.html
+http://logging.apache.org/log4j/2.x/manual/layouts.html
+http://logging.apache.org/log4j/2.x/manual/lookups.html
 
 Log4j2使用教程
 http://www.cnblogs.com/leo-lsw/p/log4j2tutorial.html
