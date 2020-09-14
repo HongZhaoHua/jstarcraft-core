@@ -1,6 +1,21 @@
 分布式定时任务调度系统技术选型:
 http://www.expectfly.com/2017/08/15/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%96%B9%E6%A1%88%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B
 
+一口气说出 6种 延时队列的实现方案，面试稳稳的:
+https://juejin.im/post/6844904150703013901
+
+schedule-test:
+https://github.com/xuda27/schedule-test
+
+几种任务调度的 Java 实现方法与比较:
+https://www.cnblogs.com/shenliang123/p/3231312.html
+
+Java定时任务:
+https://www.cnblogs.com/zhangbin1989/p/9294114.html
+
+Java定时任务的几种实现方式:
+https://blog.csdn.net/kegumingxin2626/article/details/72854823
+
 ***** ActiveMQ *****
 
 ActiveMQ 延迟消息与定时消息传递:
@@ -32,29 +47,8 @@ https://blog.csdn.net/zhongwumao/article/details/81077503
 分布式任务调度平台XXL-JOB:
 https://www.xuxueli.com/xxl-job
 
-6个延时队列的实现方案:
-http://www.dockone.io/article/10139
+***** Spring Task *****
 
-细说延时任务的处理:
-https://www.jianshu.com/p/7beebbc61229
+Spring的任务执行器（TaskExecutor）和任务调度器（TaskScheduler）:
+https://blog.csdn.net/sinat_37807255/article/details/89635793
 
-几种任务调度的 Java 实现方法与比较:
-https://www.cnblogs.com/shenliang123/p/3231312.html
-
-Java定时任务:
-https://www.cnblogs.com/zhangbin1989/p/9294114.html
-
-Java定时任务的几种实现方式:
-https://blog.csdn.net/kegumingxin2626/article/details/72854823
-
-定时任务Timer/SpringSchedule/Quartz:
-https://github.com/xuda27/schedule-test
-
-Spring Boot 定时任务之Scheduled Task
-https://blog.csdn.net/qq_34125349/article/details/77430956
-
-Spring Task原理及使用:
-https://blog.csdn.net/weixin_43777983/article/details/99685666
-
-深入浅出Spring Task定时任务:
-https://blog.csdn.net/u011116672/article/details/52517247
