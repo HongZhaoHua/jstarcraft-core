@@ -18,6 +18,9 @@ https://www.cnblogs.com/vianzhang/p/7756159.html
 
 ***** Quartz *****
 
+一文揭秘定时任务调度框架Quartz:
+https://www.cnblogs.com/davidwang456/p/10329616.html
+
 Quartz集群原理及配置应用:
 https://www.cnblogs.com/zhenyuyaodidiao/p/4755649.html
 
