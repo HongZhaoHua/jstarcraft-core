@@ -1,6 +1,9 @@
 定时和延时消息:
 https://help.aliyun.com/document_detail/43349.html
 
+Java实现Redis超时失效key的监听触发:
+https://www.cnblogs.com/vianzhang/p/7756159.html
+
 6个延时队列的实现方案:
 http://www.dockone.io/article/10139
 

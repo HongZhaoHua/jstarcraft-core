@@ -1,7 +1,7 @@
 ShedLock:
 https://github.com/lukas-krecan/ShedLock
 
-基于redis和zookeeper分布式工具集-包括:分布式锁实现,分布式速率限制器,分布式序列等:
+基于Redis和ZooKeeper分布式工具集-包括:分布式锁实现,分布式速率限制器,分布式序列等:
 https://github.com/yujiasun/Distributed-Kit
 
 分布式锁看这篇就够了:
