@@ -3,3 +3,6 @@ https://www.jianshu.com/p/1b322180d011
 
 Apache Thrift学习系列:
 https://blog.csdn.net/baidu_22254181/category_8077995.html
+
+Thrift原理简析:
+https://www.iteye.com/blog/shift-alt-ctrl-1987416
