@@ -1,11 +1,17 @@
 定时和延时消息:
 https://help.aliyun.com/document_detail/43349.html
 
+6个延时队列的实现方案:
+http://www.dockone.io/article/10139
+
 ActiveMQ 延迟消息与定时消息传递:
 https://blog.csdn.net/relax_hb/article/details/84974120
 
 细说延时任务的处理:
 https://www.jianshu.com/p/7beebbc61229
+
+几种任务调度的 Java 实现方法与比较:
+https://www.cnblogs.com/shenliang123/p/3231312.html
 
 Java定时任务:
 https://www.cnblogs.com/zhangbin1989/p/9294114.html
