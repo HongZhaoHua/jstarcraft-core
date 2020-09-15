@@ -48,6 +48,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Protocol Buffers -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Thrift -->
         <dependency>
             <groupId>org.apache.thrift</groupId>

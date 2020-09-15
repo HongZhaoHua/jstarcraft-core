@@ -119,6 +119,13 @@
                 <version>0.8.20</version>
             </dependency>
 
+            <!-- Protocol Buffers -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>3.13.0</version>
+            </dependency>
+
             <!-- Thrift -->
             <dependency>
                 <groupId>org.apache.thrift</groupId>
