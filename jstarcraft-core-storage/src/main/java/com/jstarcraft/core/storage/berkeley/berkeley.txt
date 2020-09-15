@@ -7,3 +7,6 @@ https://www.iteye.com/category/112496
 
 Oracle Berkeley DB Java Edition:
 https://docs.oracle.com/cd/E17277_02/html/index.html
+
+System Properties Comparison EJDB vs. Oracle Berkeley DB vs. RocksDB:
+https://db-engines.com/en/system/EJDB%3BOracle+Berkeley+DB%3BRocksDB
