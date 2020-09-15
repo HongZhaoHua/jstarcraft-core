@@ -52,41 +52,41 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
     /** 规范 */
     private Specification specification;
 
-    private static final byte[] codes = new byte[Specification.values().length];
+    private static final byte[] marks = new byte[Specification.values().length];
 
     static {
         /** 数组 */
-        codes[Specification.ARRAY.ordinal()] = (byte) 0x00;
+        marks[Specification.ARRAY.ordinal()] = (byte) 0x00;
         /** 布尔 */
-        codes[Specification.BOOLEAN.ordinal()] = (byte) 0x10;
+        marks[Specification.BOOLEAN.ordinal()] = (byte) 0x10;
         /** 集合 */
-        codes[Specification.COLLECTION.ordinal()] = (byte) 0x20;
+        marks[Specification.COLLECTION.ordinal()] = (byte) 0x20;
         /** 枚举 */
-        codes[Specification.ENUMERATION.ordinal()] = (byte) 0x30;
+        marks[Specification.ENUMERATION.ordinal()] = (byte) 0x30;
         /** 时间 */
-        codes[Specification.INSTANT.ordinal()] = (byte) 0x40;
+        marks[Specification.INSTANT.ordinal()] = (byte) 0x40;
         /** 映射 */
-        codes[Specification.MAP.ordinal()] = (byte) 0x50;
+        marks[Specification.MAP.ordinal()] = (byte) 0x50;
         /** 数值 */
-        codes[Specification.NUMBER.ordinal()] = (byte) 0x60;
+        marks[Specification.NUMBER.ordinal()] = (byte) 0x60;
         /** 对象 */
-        codes[Specification.OBJECT.ordinal()] = (byte) 0x70;
+        marks[Specification.OBJECT.ordinal()] = (byte) 0x70;
         /** 字符串 */
-        codes[Specification.STRING.ordinal()] = (byte) 0x80;
+        marks[Specification.STRING.ordinal()] = (byte) 0x80;
         /** 类型 */
-        codes[Specification.TYPE.ordinal()] = (byte) 0x90;
+        marks[Specification.TYPE.ordinal()] = (byte) 0x90;
         /** 未知 */
-        codes[Specification.VOID.ordinal()] = (byte) 0xA0;
+        marks[Specification.VOID.ordinal()] = (byte) 0xA0;
     }
 
     /**
-     * 通过指定规范获取代号
+     * 通过指定规范获取记号
      * 
      * @param specification
      * @return
      */
-    public static byte getCode(Specification specification) {
-        return codes[specification.ordinal()];
+    public static byte getMark(Specification specification) {
+        return marks[specification.ordinal()];
     }
 
     private ClassDefinition(int code, Class<?> clazz, TreeSet<PropertyDefinition> properties, Specification specification) {
@@ -315,7 +315,7 @@ public class ClassDefinition implements Comparable<ClassDefinition> {
             String name = definition.getName();
             byte[] bytes = name.getBytes(StringUtility.CHARSET);
             out.writeShort((short) code);
-            out.writeByte(getCode(specification));
+            out.writeByte(getMark(specification));
             out.writeShort((short) bytes.length);
             IoUtility.write(bytes, out);
             out.writeShort((short) definition.properties.length);

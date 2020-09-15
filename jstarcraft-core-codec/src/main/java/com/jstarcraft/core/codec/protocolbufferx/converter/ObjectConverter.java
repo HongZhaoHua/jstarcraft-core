@@ -77,7 +77,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.OBJECT);
+        byte information = ClassDefinition.getMark(Specification.OBJECT);
         if (value == null) {
             out.write(information);
             return;

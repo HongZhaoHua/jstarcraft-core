@@ -56,7 +56,7 @@ public class BooleanConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.BOOLEAN);
+        byte information = ClassDefinition.getMark(Specification.BOOLEAN);
         if (value == null) {
             out.write(information);
             return;

@@ -73,7 +73,7 @@ public class TypeConverter extends ProtocolConverter<Type> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Type value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.TYPE);
+        byte information = ClassDefinition.getMark(Specification.TYPE);
         if (value == null) {
             out.write(information);
             return;

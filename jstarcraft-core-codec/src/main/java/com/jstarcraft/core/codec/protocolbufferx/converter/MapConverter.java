@@ -105,7 +105,7 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.MAP);
+        byte information = ClassDefinition.getMark(Specification.MAP);
         if (value == null) {
             out.write(information);
             return;

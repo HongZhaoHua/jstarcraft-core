@@ -52,7 +52,7 @@ public class InstantConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.INSTANT);
+        byte information = ClassDefinition.getMark(Specification.INSTANT);
         if (value == null) {
             out.write(information);
             return;

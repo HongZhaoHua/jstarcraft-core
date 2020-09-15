@@ -138,7 +138,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Number value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.NUMBER);
+        byte information = ClassDefinition.getMark(Specification.NUMBER);
         if (value == null) {
             out.write(information);
             return;

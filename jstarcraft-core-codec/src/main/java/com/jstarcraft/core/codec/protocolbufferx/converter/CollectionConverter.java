@@ -86,7 +86,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.COLLECTION);
+        byte information = ClassDefinition.getMark(Specification.COLLECTION);
         if (value == null) {
             out.write(information);
             return;

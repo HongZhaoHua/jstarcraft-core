@@ -90,7 +90,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
     @Override
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.ARRAY);
+        byte information = ClassDefinition.getMark(Specification.ARRAY);
         if (value == null) {
             out.write(information);
             return;

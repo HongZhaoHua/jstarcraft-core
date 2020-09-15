@@ -90,7 +90,7 @@ public class StringConverter extends ProtocolConverter<Object> {
 
     public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
-        byte information = ClassDefinition.getCode(Specification.STRING);
+        byte information = ClassDefinition.getMark(Specification.STRING);
         if (value == null) {
             out.write(information);
             return;
