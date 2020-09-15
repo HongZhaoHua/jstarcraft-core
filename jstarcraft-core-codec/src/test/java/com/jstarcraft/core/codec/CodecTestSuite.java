@@ -9,7 +9,7 @@ import com.jstarcraft.core.codec.hessian.HessianContentCodecTestCase;
 import com.jstarcraft.core.codec.json.JsonContentCodecTestCase;
 import com.jstarcraft.core.codec.kryo.KryoContentCodecTestCase;
 import com.jstarcraft.core.codec.msgpack.MessagePackContentCodecTestCase;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolBufferXContentCodecTestCase;
+import com.jstarcraft.core.codec.standard.StandardContentCodecTestCase;
 import com.jstarcraft.core.codec.xml.XmlContentCodecTestCase;
 import com.jstarcraft.core.codec.yaml.YamlContentCodecTestCase;
 
@@ -28,7 +28,7 @@ import com.jstarcraft.core.codec.yaml.YamlContentCodecTestCase;
 
         MessagePackContentCodecTestCase.class,
 
-        ProtocolBufferXContentCodecTestCase.class,
+        StandardContentCodecTestCase.class,
 
         XmlContentCodecTestCase.class,
 

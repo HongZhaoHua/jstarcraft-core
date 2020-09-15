@@ -25,7 +25,7 @@ public enum MessageFormat {
     KRYO((byte) 0x04),
 
     /** 框架 */
-    PROTOCOL_BUFFER_X((byte) 0x05);
+    STANDARD((byte) 0x05);
 
     /** Zip掩码 */
     public final static byte ZIP_MASK = (byte) 0x80;
@@ -62,7 +62,7 @@ public enum MessageFormat {
         case 0x04:
             return KRYO;
         case 0x05:
-            return PROTOCOL_BUFFER_X;
+            return STANDARD;
         default:
             return null;
         }

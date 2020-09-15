@@ -19,8 +19,8 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.csv.CsvContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.kryo.KryoContentCodec;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.StandardContentCodec;
 import com.jstarcraft.core.common.lifecycle.LifecycleState;
 import com.jstarcraft.core.communication.annotation.CommunicationCommand;
 import com.jstarcraft.core.communication.annotation.CommunicationModule;
@@ -173,7 +173,7 @@ public class CommandDispatcher<T> {
         codecs.put(MessageFormat.CSV.getMark(), new CsvContentCodec(codecDefinition));
         codecs.put(MessageFormat.JSON.getMark(), new JsonContentCodec(codecDefinition));
         codecs.put(MessageFormat.KRYO.getMark(), new KryoContentCodec(codecDefinition));
-        codecs.put(MessageFormat.PROTOCOL_BUFFER_X.getMark(), new ProtocolContentCodec(codecDefinition));
+        codecs.put(MessageFormat.STANDARD.getMark(), new StandardContentCodec(codecDefinition));
         this.codecs = codecs;
 
         this.wait = wait;

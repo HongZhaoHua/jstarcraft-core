@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,9 +7,9 @@ import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -31,7 +31,7 @@ public class BooleanConverter extends ProtocolConverter<Object> {
     private static final byte TRUE_MARK = (byte) 0x02;
 
     @Override
-    public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
+    public Object readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws IOException {
         InputStream in = context.getInputStream();
         byte information = (byte) in.read();
         byte mark = getMark(information);
@@ -54,7 +54,7 @@ public class BooleanConverter extends ProtocolConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.BOOLEAN);
         if (value == null) {

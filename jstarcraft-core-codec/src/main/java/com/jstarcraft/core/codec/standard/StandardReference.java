@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.standard;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * @param <T>
  */
-public class ProtocolReference<T> {
+public class StandardReference<T> {
 
     private final ArrayList<T> references = new ArrayList<>();
 

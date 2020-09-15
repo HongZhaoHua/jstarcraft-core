@@ -1,9 +1,9 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.standard;
 
 import java.io.OutputStream;
 
-import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.converter.ProtocolContext;
 
 /**
  * 协议写出器
@@ -14,11 +14,11 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  * 
  * @author Birdy
  */
-public class ProtocolWriter extends ProtocolContext {
+public class StandardWriter extends ProtocolContext {
 
     private OutputStream outputStream;
 
-    public ProtocolWriter(OutputStream outputStream, CodecDefinition definition) {
+    public StandardWriter(OutputStream outputStream, CodecDefinition definition) {
         super(definition);
         this.outputStream = outputStream;
     }

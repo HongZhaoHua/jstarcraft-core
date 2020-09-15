@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.PressUtility;
@@ -39,7 +39,7 @@ public class StringConverter extends ProtocolConverter<Object> {
     /** Zip限制 */
     private static final Integer ZIP_LIMIT = 1024;
 
-    public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
+    public Object readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws IOException {
         InputStream in = context.getInputStream();
         byte information = (byte) in.read();
         byte mark = getMark(information);
@@ -88,7 +88,7 @@ public class StringConverter extends ProtocolConverter<Object> {
         throw new CodecConvertionException(message);
     }
 
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.STRING);
         if (value == null) {

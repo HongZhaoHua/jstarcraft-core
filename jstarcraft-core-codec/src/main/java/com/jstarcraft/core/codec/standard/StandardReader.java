@@ -1,9 +1,9 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.standard;
 
 import java.io.InputStream;
 
-import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.converter.ProtocolContext;
 
 /**
  * 协议读入器
@@ -14,11 +14,11 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  * 
  * @author Birdy
  */
-public class ProtocolReader extends ProtocolContext {
+public class StandardReader extends ProtocolContext {
 
     private InputStream inputStream;
 
-    public ProtocolReader(InputStream inputStream, CodecDefinition definition) {
+    public StandardReader(InputStream inputStream, CodecDefinition definition) {
         super(definition);
         this.inputStream = inputStream;
     }

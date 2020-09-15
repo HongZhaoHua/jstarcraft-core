@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.standard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,12 +7,13 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
 import com.jstarcraft.core.codec.MockEnumeration;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.StandardContentCodec;
 
-public class ProtocolBufferXContentCodecTestCase extends ContentCodecTestCase {
+public class StandardContentCodecTestCase extends ContentCodecTestCase {
 
     @Override
     protected ContentCodec getContentCodec(CodecDefinition protocolDefinition) {
-        ProtocolContentCodec codec = new ProtocolContentCodec(protocolDefinition);
+        StandardContentCodec codec = new StandardContentCodec(protocolDefinition);
         return codec;
     }
 

@@ -1,13 +1,13 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 
 /**
  * 枚举转换器
@@ -21,7 +21,7 @@ public class EnumerationConverter extends ProtocolConverter<Object> {
     private static final byte NULL_MARK = (byte) 0x00;
 
     @Override
-    public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
+    public Object readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws IOException {
         InputStream in = context.getInputStream();
         int ordinal = NumberConverter.readNumber(in).intValue();
         if (ordinal == NULL_MARK) {
@@ -35,7 +35,7 @@ public class EnumerationConverter extends ProtocolConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
         OutputStream out = context.getOutputStream();
         if (value == null) {
             out.write(NULL_MARK);

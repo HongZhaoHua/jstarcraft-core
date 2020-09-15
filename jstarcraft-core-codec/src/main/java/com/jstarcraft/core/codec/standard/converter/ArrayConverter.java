@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -6,9 +6,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -35,7 +35,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
     private static final byte REFERENCE_MARK = (byte) 0x03;
 
     @Override
-    public Object readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws Exception {
+    public Object readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws Exception {
         InputStream in = context.getInputStream();
         byte information = (byte) in.read();
         byte mark = getMark(information);
@@ -88,7 +88,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.ARRAY);
         if (value == null) {

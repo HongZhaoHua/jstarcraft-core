@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.utility.StringUtility;
@@ -72,7 +72,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
     private static final byte LONG_BIT = 64;
 
     @Override
-    public Number readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws IOException {
+    public Number readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws IOException {
         InputStream in = context.getInputStream();
         byte information = (byte) in.read();
         byte mark = getMark(information);
@@ -136,7 +136,7 @@ public class NumberConverter extends ProtocolConverter<Number> {
     }
 
     @Override
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Number value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Number value) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.NUMBER);
         if (value == null) {

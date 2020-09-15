@@ -1,10 +1,10 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.util.EnumMap;
 
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReference;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.StandardReference;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**
@@ -35,15 +35,15 @@ public abstract class ProtocolContext {
     private final CodecDefinition definition;
 
     /** 读写上下文过程的数组引用 */
-    protected ProtocolReference<Object> arrayReference = new ProtocolReference<Object>();
+    protected StandardReference<Object> arrayReference = new StandardReference<Object>();
     /** 读写上下文过程的集合引用 */
-    protected ProtocolReference<Object> collectionReference = new ProtocolReference<Object>();
+    protected StandardReference<Object> collectionReference = new StandardReference<Object>();
     /** 读写上下文过程的映射引用 */
-    protected ProtocolReference<Object> mapReference = new ProtocolReference<Object>();
+    protected StandardReference<Object> mapReference = new StandardReference<Object>();
     /** 读写上下文过程的对象引用 */
-    protected ProtocolReference<Object> objectReference = new ProtocolReference<Object>();
+    protected StandardReference<Object> objectReference = new StandardReference<Object>();
     /** 读写上下文过程的字符串引用 */
-    protected ProtocolReference<String> stringReference = new ProtocolReference<String>();
+    protected StandardReference<String> stringReference = new StandardReference<String>();
 
     public ProtocolContext(CodecDefinition definition) {
         this.definition = definition;

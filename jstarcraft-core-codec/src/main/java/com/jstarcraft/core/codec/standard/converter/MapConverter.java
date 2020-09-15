@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -36,7 +36,7 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
     private static final byte REFERENCE_MARK = (byte) 0x03;
 
     @Override
-    public Map<Object, Object> readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws Exception {
+    public Map<Object, Object> readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws Exception {
         InputStream in = context.getInputStream();
         byte information = (byte) in.read();
         byte mark = getMark(information);
@@ -103,7 +103,7 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
     }
 
     @Override
-    public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.MAP);
         if (value == null) {

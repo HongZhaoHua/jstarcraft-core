@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.protocolbufferx;
+package com.jstarcraft.core.codec.standard;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
-import com.jstarcraft.core.codec.protocolbufferx.converter.ProtocolConverter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.converter.ProtocolConverter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -24,13 +24,13 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * 
  * @author Birdy
  */
-public class ProtocolContentCodec implements ContentCodec {
+public class StandardContentCodec implements ContentCodec {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProtocolContentCodec.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StandardContentCodec.class);
 
     private CodecDefinition codecDefinition;
 
-    public ProtocolContentCodec(CodecDefinition definition) {
+    public StandardContentCodec(CodecDefinition definition) {
         this.codecDefinition = definition;
     }
 
@@ -48,7 +48,7 @@ public class ProtocolContentCodec implements ContentCodec {
     @Override
     public Object decode(Type type, InputStream stream) {
         try {
-            ProtocolReader context = new ProtocolReader(stream, codecDefinition);
+            StandardReader context = new StandardReader(stream, codecDefinition);
             ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
@@ -74,7 +74,7 @@ public class ProtocolContentCodec implements ContentCodec {
     @Override
     public void encode(Type type, Object content, OutputStream stream) {
         try {
-            ProtocolWriter context = new ProtocolWriter(stream, codecDefinition);
+            StandardWriter context = new StandardWriter(stream, codecDefinition);
             ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);

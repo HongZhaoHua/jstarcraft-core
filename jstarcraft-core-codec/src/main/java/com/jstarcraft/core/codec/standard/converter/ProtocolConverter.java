@@ -1,10 +1,10 @@
-package com.jstarcraft.core.codec.protocolbufferx.converter;
+package com.jstarcraft.core.codec.standard.converter;
 
 import java.lang.reflect.Type;
 
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolReader;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.standard.StandardReader;
+import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**
@@ -55,7 +55,7 @@ public abstract class ProtocolConverter<T> {
      * @param information
      * @return
      */
-    abstract public T readValueFrom(ProtocolReader context, Type type, ClassDefinition definition) throws Exception;
+    abstract public T readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws Exception;
 
     /**
      * 将指定内容写到上下文
@@ -64,6 +64,6 @@ public abstract class ProtocolConverter<T> {
      * @param value
      * @throws Exception
      */
-    abstract public void writeValueTo(ProtocolWriter context, Type type, ClassDefinition definition, T value) throws Exception;
+    abstract public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, T value) throws Exception;
 
 }

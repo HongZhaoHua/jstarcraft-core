@@ -17,8 +17,8 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.csv.CsvContentCodec;
 import com.jstarcraft.core.codec.json.JsonContentCodec;
 import com.jstarcraft.core.codec.kryo.KryoContentCodec;
-import com.jstarcraft.core.codec.protocolbufferx.ProtocolContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.standard.StandardContentCodec;
 import com.jstarcraft.core.communication.annotation.CommandVariable;
 import com.jstarcraft.core.communication.annotation.CommandVariable.VariableType;
 import com.jstarcraft.core.communication.annotation.CommunicationCommand;
@@ -36,7 +36,7 @@ public class CommandDefinitionTestCase {
 
     // 合法的模块接口
     @CommunicationModule(code = 0x01, side = ModuleSide.SERVER)
-    @MessageCodec(inputFormat = MessageFormat.PROTOCOL_BUFFER_X, outputFormat = MessageFormat.PROTOCOL_BUFFER_X)
+    @MessageCodec(inputFormat = MessageFormat.STANDARD, outputFormat = MessageFormat.STANDARD)
     interface LegalModuleInterface {
 
         @CommunicationCommand(code = 0)
@@ -119,8 +119,8 @@ public class CommandDefinitionTestCase {
         codecs.put(MessageFormat.JSON.getMark(), jsonContentCodec);
         KryoContentCodec kyroContentCodec = new KryoContentCodec(protocolDefinition);
         codecs.put(MessageFormat.KRYO.getMark(), kyroContentCodec);
-        ProtocolContentCodec protocolContentCodec = new ProtocolContentCodec(protocolDefinition);
-        codecs.put(MessageFormat.PROTOCOL_BUFFER_X.getMark(), protocolContentCodec);
+        StandardContentCodec protocolContentCodec = new StandardContentCodec(protocolDefinition);
+        codecs.put(MessageFormat.STANDARD.getMark(), protocolContentCodec);
 
         MessageCodec codec = LegalModuleInterface.class.getAnnotation(MessageCodec.class);
         for (Method method : LegalModuleInterface.class.getMethods()) {
@@ -150,7 +150,7 @@ public class CommandDefinitionTestCase {
 
     // 非法的模块接口
     @CommunicationModule(code = 0x01, side = ModuleSide.SERVER)
-    @MessageCodec(inputFormat = MessageFormat.PROTOCOL_BUFFER_X, outputFormat = MessageFormat.PROTOCOL_BUFFER_X)
+    @MessageCodec(inputFormat = MessageFormat.STANDARD, outputFormat = MessageFormat.STANDARD)
     interface IllegalModuleInterface {
 
         // 没有参数与返回,不能指定输入类型与输出类型
@@ -185,7 +185,7 @@ public class CommandDefinitionTestCase {
 
     // 非法的模块类
     @CommunicationModule(code = 0x01, side = ModuleSide.SERVER)
-    @MessageCodec(inputFormat = MessageFormat.PROTOCOL_BUFFER_X, outputFormat = MessageFormat.PROTOCOL_BUFFER_X)
+    @MessageCodec(inputFormat = MessageFormat.STANDARD, outputFormat = MessageFormat.STANDARD)
     abstract class IllegalModuleClass {
 
         // 没有参数与返回,不能指定输入类型与输出类型
