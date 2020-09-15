@@ -24,6 +24,24 @@ https://github.com/nameof/delay-task
 ActiveMQ 延迟消息与定时消息传递:
 https://blog.csdn.net/relax_hb/article/details/84974120
 
+***** NSQ *****
+
+带你入门Go的消息队列NSQ:
+https://www.cnblogs.com/smartrui/p/12549562.html
+
+NSQ中的优先级队列:
+https://www.dazhuanlan.com/2019/12/20/5dfc1f05607d6
+
+***** QMQ *****
+
+延时/定时消息:
+https://github.com/qunarcorp/qmq/blob/master/docs/cn/delay.md
+
+***** RabbitMQ *****
+
+【RabbitMQ】一文带你搞定RabbitMQ延迟队列:
+https://www.cnblogs.com/mfrank/p/11260355.html
+
 ***** RocketMQ *****
 
 定时和延时消息:
