@@ -1,2 +1,5 @@
+深入Protobuf源码－编码实现:
+http://www.blogjava.net/DLevin/archive/2015/04/01/424011.html
+
 Protobuf基础(Java使用,Windows代码生成):
 https://www.cnblogs.com/ziyue7575/p/11593374.html
