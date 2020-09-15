@@ -72,7 +72,7 @@ JStarCraft Core框架各个模块之间的关系:
     * JSON
     * Kryo
     * MessagePack
-    * ProtocolBufferX
+    * Standard
     * XML
     * YAML
 * 3.通用(common)
