@@ -11,7 +11,7 @@ import com.jstarcraft.core.common.reflection.Specification;
  * Standard转换器
  * 
  * <pre>
- * 参考ProtocolBuffer协议与ASF3协议
+ * 参考ProtocolBuffer协议与AMF3协议
  * </pre>
  * 
  * @author Birdy
