@@ -42,6 +42,9 @@ https://github.com/qunarcorp/qmq/blob/master/docs/cn/delay.md
 
 ***** RabbitMQ *****
 
+RabbitMQ延迟消息示例:
+https://segmentfault.com/a/1190000013311069
+
 【RabbitMQ】一文带你搞定RabbitMQ延迟队列:
 https://www.cnblogs.com/mfrank/p/11260355.html
 
