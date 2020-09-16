@@ -20,7 +20,7 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
- * Prorocol格式编解码器
+ * Standard格式编解码器
  * 
  * @author Birdy
  */
@@ -39,7 +39,7 @@ public class StandardContentCodec implements ContentCodec {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content); DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream)) {
             return decode(type, dataInputStream);
         } catch (Exception exception) {
-            String message = "Protocol解码失败:" + exception.getMessage();
+            String message = "Standard解码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -53,7 +53,7 @@ public class StandardContentCodec implements ContentCodec {
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
-            String message = "Protocol解码失败:" + exception.getMessage();
+            String message = "Standard解码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -65,7 +65,7 @@ public class StandardContentCodec implements ContentCodec {
             encode(type, content, dataOutputStream);
             return byteArrayOutputStream.toByteArray();
         } catch (Exception exception) {
-            String message = "Protocol编码失败:" + exception.getMessage();
+            String message = "Standard编码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -79,7 +79,7 @@ public class StandardContentCodec implements ContentCodec {
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {
-            String message = "Protocol编码失败:" + exception.getMessage();
+            String message = "Standard编码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }

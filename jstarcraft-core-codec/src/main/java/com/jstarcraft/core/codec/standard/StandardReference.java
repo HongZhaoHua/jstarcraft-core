@@ -3,7 +3,7 @@ package com.jstarcraft.core.codec.standard;
 import java.util.ArrayList;
 
 /**
- * 编解码引用
+ * Standard编解码引用
  * 
  * @author Birdy
  *

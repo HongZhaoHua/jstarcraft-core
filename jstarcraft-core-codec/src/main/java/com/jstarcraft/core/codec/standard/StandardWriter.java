@@ -6,7 +6,7 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.standard.converter.ProtocolContext;
 
 /**
- * 协议写出器
+ * Standard协议写出器
  * 
  * <pre>
  * 每次编码都必须使用
