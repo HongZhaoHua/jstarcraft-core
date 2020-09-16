@@ -8,14 +8,14 @@ import com.jstarcraft.core.codec.standard.StandardReference;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**
- * 协议上下文
+ * Standard上下文
  * 
  * @author Birdy
  *
  */
-public abstract class ProtocolContext {
+public abstract class StandardContext {
 
-    protected static final EnumMap<Specification, ProtocolConverter<?>> converters = new EnumMap<>(Specification.class);
+    protected static final EnumMap<Specification, StandardConverter<?>> converters = new EnumMap<>(Specification.class);
 
     static {
         converters.put(Specification.ARRAY, new ArrayConverter());
@@ -45,12 +45,12 @@ public abstract class ProtocolContext {
     /** 读写上下文过程的字符串引用 */
     protected StandardReference<String> stringReference = new StandardReference<String>();
 
-    public ProtocolContext(CodecDefinition definition) {
+    public StandardContext(CodecDefinition definition) {
         this.definition = definition;
     }
 
-    public ProtocolConverter getProtocolConverter(Specification specification) {
-        ProtocolConverter converter = converters.get(specification);
+    public StandardConverter getProtocolConverter(Specification specification) {
+        StandardConverter converter = converters.get(specification);
         return converter;
     }
 

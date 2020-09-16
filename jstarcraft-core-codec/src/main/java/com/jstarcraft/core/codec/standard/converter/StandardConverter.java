@@ -8,7 +8,7 @@ import com.jstarcraft.core.codec.standard.StandardWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**
- * 协议转换器
+ * Standard转换器
  * 
  * <pre>
  * 参考ProtocolBuffer协议与ASF3协议
@@ -18,7 +18,7 @@ import com.jstarcraft.core.common.reflection.Specification;
  *
  * @param <T>
  */
-public abstract class ProtocolConverter<T> {
+public abstract class StandardConverter<T> {
 
     /** 1111 0000(类型掩码) */
     public static final byte TYPE_MASK = (byte) 0xF0;

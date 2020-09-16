@@ -20,7 +20,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ArrayConverter extends ProtocolConverter<Object> {
+public class ArrayConverter extends StandardConverter<Object> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;
@@ -59,7 +59,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
                 value = Array.newInstance(clazz, size);
                 context.putArrayValue(value);
                 Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-                ProtocolConverter converter = context.getProtocolConverter(specification);
+                StandardConverter converter = context.getProtocolConverter(specification);
                 for (int index = 0; index < size; index++) {
                     Object object = converter.readValueFrom(context, clazz, definition);
                     Array.set(value, index, object);
@@ -73,7 +73,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
             for (int index = 0; index < size; index++) {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
-                ProtocolConverter converter = context.getProtocolConverter(definition.getSpecification());
+                StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
                 Object object = converter.readValueFrom(context, definition.getType(), definition);
                 Array.set(value, index, object);
             }
@@ -114,7 +114,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
                     definition = context.getClassDefinition(object == null ? Object.class : object.getClass());
                     int code = definition.getCode();
                     NumberConverter.writeNumber(out, code);
-                    ProtocolConverter converter = context.getProtocolConverter(definition.getSpecification());
+                    StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
                     converter.writeValueTo(context, definition.getType(), definition, object);
                 }
             } else {
@@ -132,7 +132,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
                     IoUtility.write(data, out);
                 } else {
                     Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-                    ProtocolConverter converter = context.getProtocolConverter(specification);
+                    StandardConverter converter = context.getProtocolConverter(specification);
                     for (int index = 0; index < size; index++) {
                         Object object = Array.get(value, index);
                         converter.writeValueTo(context, clazz, definition, object);

@@ -13,7 +13,7 @@ import com.jstarcraft.core.codec.standard.StandardWriter;
  * @author Birdy
  *
  */
-public class VoidConverter extends ProtocolConverter<Object> {
+public class VoidConverter extends StandardConverter<Object> {
 
     @Override
     public Object readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws IOException {

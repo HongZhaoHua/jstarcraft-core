@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ObjectConverter extends ProtocolConverter<Object> {
+public class ObjectConverter extends StandardConverter<Object> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;
@@ -51,7 +51,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
             // int length = PROPERTY_LIMIT & (byte) in.read();
             for (int index = 0; index < properties.length; index++) {
                 PropertyDefinition property = properties[index];
-                ProtocolConverter converter = context.getProtocolConverter(property.getSpecification());
+                StandardConverter converter = context.getProtocolConverter(property.getSpecification());
                 definition = context.getClassDefinition(property.getCode());
                 Object value = converter.readValueFrom(context, property.getType(), definition);
                 if (value == null) {
@@ -107,7 +107,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
                 Object object;
                 try {
                     object = property.getValue(value);
-                    ProtocolConverter converter = context.getProtocolConverter(property.getSpecification());
+                    StandardConverter converter = context.getProtocolConverter(property.getSpecification());
                     definition = context.getClassDefinition(property.getCode());
                     converter.writeValueTo(context, property.getType(), definition, object);
                 } catch (Exception exception) {

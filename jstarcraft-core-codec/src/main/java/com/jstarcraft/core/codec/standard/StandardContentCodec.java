@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.standard.converter.ProtocolConverter;
+import com.jstarcraft.core.codec.standard.converter.StandardConverter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -49,7 +49,7 @@ public class StandardContentCodec implements ContentCodec {
     public Object decode(Type type, InputStream stream) {
         try {
             StandardReader context = new StandardReader(stream, codecDefinition);
-            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
@@ -75,7 +75,7 @@ public class StandardContentCodec implements ContentCodec {
     public void encode(Type type, Object content, OutputStream stream) {
         try {
             StandardWriter context = new StandardWriter(stream, codecDefinition);
-            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {

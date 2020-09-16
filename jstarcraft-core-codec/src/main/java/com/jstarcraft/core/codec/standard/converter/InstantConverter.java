@@ -19,7 +19,7 @@ import com.jstarcraft.core.common.reflection.Specification;
  * @author Birdy
  *
  */
-public class InstantConverter extends ProtocolConverter<Object> {
+public class InstantConverter extends StandardConverter<Object> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;

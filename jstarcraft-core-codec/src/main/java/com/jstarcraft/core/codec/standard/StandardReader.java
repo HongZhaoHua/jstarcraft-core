@@ -3,7 +3,7 @@ package com.jstarcraft.core.codec.standard;
 import java.io.InputStream;
 
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.standard.converter.ProtocolContext;
+import com.jstarcraft.core.codec.standard.converter.StandardContext;
 
 /**
  * Standard协议读入器
@@ -14,7 +14,7 @@ import com.jstarcraft.core.codec.standard.converter.ProtocolContext;
  * 
  * @author Birdy
  */
-public class StandardReader extends ProtocolContext {
+public class StandardReader extends StandardContext {
 
     private InputStream inputStream;
 

@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.standard.StandardWriter;
  * @author Birdy
  *
  */
-public class EnumerationConverter extends ProtocolConverter<Object> {
+public class EnumerationConverter extends StandardConverter<Object> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;
