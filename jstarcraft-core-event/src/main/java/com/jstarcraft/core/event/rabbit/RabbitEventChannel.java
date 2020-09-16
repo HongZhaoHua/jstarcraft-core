@@ -121,13 +121,13 @@ public class RabbitEventChannel extends AbstractEventChannel {
                     String address = null;
                     switch (mode) {
                     case QUEUE: {
-                        // 共享名称,不独占队列
+                        // 共享地址,不独占队列
                         address = name + StringUtility.DOT + type.getName();
                         channel.queueDeclare(address, true, false, false, null);
                         break;
                     }
                     case TOPIC: {
-                        // 不共享名称,独占队列
+                        // 不共享地址,独占队列
                         address = name + StringUtility.DOT + type.getName() + UUID.randomUUID();
                         channel.queueDeclare(address, true, true, true, null);
                         break;
