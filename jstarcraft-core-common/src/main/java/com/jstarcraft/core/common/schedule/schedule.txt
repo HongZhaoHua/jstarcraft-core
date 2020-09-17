@@ -30,6 +30,11 @@ https://blog.csdn.net/relax_hb/article/details/84974120
 Delay and Schedule Message Delivery:
 http://activemq.apache.org/delay-and-schedule-message-delivery.html
 
+***** JMS *****
+
+What's New in JMS 2.0, Part Two—New Messaging Features:
+https://www.oracle.com/technical-resources/articles/java/jms2messaging.html
+
 ***** NSQ *****
 
 带你入门Go的消息队列NSQ:
