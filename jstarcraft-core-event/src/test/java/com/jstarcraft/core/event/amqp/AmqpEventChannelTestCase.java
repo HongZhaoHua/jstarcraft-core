@@ -15,7 +15,7 @@ import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
 import com.jstarcraft.core.event.MockEvent;
 
-public class AmqpEventBusTestCase extends EventChannelTestCase {
+public class AmqpEventChannelTestCase extends EventChannelTestCase {
 
     private JmsConnectionFactory factory;
 

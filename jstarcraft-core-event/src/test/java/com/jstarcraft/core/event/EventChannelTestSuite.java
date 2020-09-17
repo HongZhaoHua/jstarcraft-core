@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.jstarcraft.core.event.amqp.AmqpEventBusTestCase;
+import com.jstarcraft.core.event.amqp.AmqpEventChannelTestCase;
 import com.jstarcraft.core.event.jms.JmsEventChannelTestCase;
 import com.jstarcraft.core.event.kafka.KafkaEventChannelTestCase;
 import com.jstarcraft.core.event.memory.MemoryEventChannelTestCase;
@@ -18,7 +18,7 @@ import com.jstarcraft.core.event.vertx.VertxEventChannelTestCase;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-        AmqpEventBusTestCase.class,
+        AmqpEventChannelTestCase.class,
 
         JmsEventChannelTestCase.class,
 
