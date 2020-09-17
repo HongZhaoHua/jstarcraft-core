@@ -58,6 +58,14 @@ https://help.aliyun.com/document_detail/43349.html
 Java实现Redis超时失效key的监听触发:
 https://www.cnblogs.com/vianzhang/p/7756159.html
 
+***** Elastic Job *****
+
+ElasticJob 是一个分布式调度解决方案:
+https://shardingsphere.apache.org/elasticjob/current/cn/overview
+
+Elastic Job 入门教程系列:
+https://blog.csdn.net/kangkanglou/article/details/82881725
+
 ***** Quartz *****
 
 一文揭秘定时任务调度框架Quartz:
