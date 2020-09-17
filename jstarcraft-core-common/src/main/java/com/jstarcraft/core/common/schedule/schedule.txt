@@ -27,6 +27,9 @@ https://github.com/nameof/delay-task
 ActiveMQ 延迟消息与定时消息传递:
 https://blog.csdn.net/relax_hb/article/details/84974120
 
+Delay and Schedule Message Delivery:
+http://activemq.apache.org/delay-and-schedule-message-delivery.html
+
 ***** NSQ *****
 
 带你入门Go的消息队列NSQ:
