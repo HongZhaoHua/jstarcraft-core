@@ -5,6 +5,9 @@ JMS2.0中的新内容:
 https://www.oracle.com/technetwork/cn/articles/java/jms20-1947669-zhs.html
 https://www.oracle.com/technetwork/cn/articles/java/jms2messaging-1954190-zhs.html
 
+Java消息服务-JMS:
+https://www.cnblogs.com/Zender/p/9098410.html
+
 JMS系列:
 https://www.jianshu.com/p/4cf35814fd9b
 https://www.jianshu.com/p/a7449f5e7ced
