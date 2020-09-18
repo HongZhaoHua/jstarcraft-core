@@ -163,6 +163,7 @@ public class KafkaEventChannel extends AbstractEventChannel {
                     }
                     KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(properties);
                     consumer.subscribe(Collections.singleton(group));
+                    // updateAssignmentMetadata会触发更新分配元数据
                     // TODO 此处是为了防止auto.offset.reset为latest时,可能会丢失第一次poll之前的消息.
                     updateAssignmentMetadata.invoke(consumer, Time.SYSTEM.timer(Long.MAX_VALUE));
                     consumers.put(type, consumer);
