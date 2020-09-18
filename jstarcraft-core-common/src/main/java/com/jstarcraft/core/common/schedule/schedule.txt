@@ -84,6 +84,10 @@ https://shardingsphere.apache.org/elasticjob/current/cn/overview
 Elastic Job 入门教程系列:
 https://blog.csdn.net/kangkanglou/article/details/82881725
 
+***** LTS *****
+
+LTS(light-task-scheduler)主要用于解决分布式任务调度问题，支持实时任务，定时任务和Cron任务。
+
 ***** Quartz *****
 
 一文揭秘定时任务调度框架Quartz:
