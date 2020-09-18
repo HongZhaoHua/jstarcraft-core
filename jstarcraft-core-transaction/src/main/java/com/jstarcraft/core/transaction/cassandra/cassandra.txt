@@ -14,3 +14,8 @@ Cassandra高级操作之Java实现（有项目具体需求）:
 https://www.cnblogs.com/youzhibing/p/6653129.html
 Cassandra高级操作之JMX操作:
 https://www.cnblogs.com/youzhibing/p/6674995.html
+
+java：Cassandra入门与实战:
+https://blog.csdn.net/itcast_cn/article/details/107559490
+https://blog.csdn.net/itcast_cn/article/details/107559499
+https://blog.csdn.net/itcast_cn/article/details/107559525
