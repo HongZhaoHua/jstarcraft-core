@@ -1,12 +1,13 @@
 package com.jstarcraft.core.codec.hessian.converter;
 
 import java.io.IOException;
-import java.time.MonthDay;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializer;
 
-public class MonthDaySerializer extends AbstractSerializer {
+public class ZonedDateTimeSerializer extends AbstractSerializer {
 
     @Override
     public void writeObject(Object object, AbstractHessianOutput out) throws IOException {
@@ -15,23 +16,23 @@ public class MonthDaySerializer extends AbstractSerializer {
         } else if (out.addRef(object)) {
             return;
         } else {
-            MonthDay monthDay = (MonthDay) object;
-            int month = monthDay.getMonthValue();
-            int day = monthDay.getDayOfMonth();
-            int reference = out.writeObjectBegin(MonthDay.class.getName());
+            ZonedDateTime dateTime = (ZonedDateTime) object;
+            long instant = dateTime.toInstant().toEpochMilli();
+            String zone = dateTime.getZone().getId();
+            int reference = out.writeObjectBegin(ZonedDateTime.class.getName());
             if (reference < -1) {
                 out.writeString("data");
-                out.writeInt(month);
-                out.writeInt(day);
+                out.writeUTCDate(instant);
+                out.writeString(zone);
                 out.writeMapEnd();
             } else {
                 if (reference == -1) {
                     out.writeInt(1);
                     out.writeString("data");
-                    out.writeObjectBegin(MonthDay.class.getName());
+                    out.writeObjectBegin(ZonedDateTime.class.getName());
                 }
-                out.writeInt(month);
-                out.writeInt(day);
+                out.writeUTCDate(instant);
+                out.writeString(zone);
             }
         }
     }
