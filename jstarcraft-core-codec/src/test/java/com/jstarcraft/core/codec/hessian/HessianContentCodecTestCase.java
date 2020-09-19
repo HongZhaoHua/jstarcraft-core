@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.MonthDay;
+import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -27,12 +28,12 @@ public class HessianContentCodecTestCase extends ContentCodecTestCase {
         LocalDate date = LocalDate.of(2020, 6, 15);
         LocalTime time = LocalTime.of(12, 0, 0);
         ZoneOffset zone = ZoneOffset.UTC;
-        ZonedDateTime dateTime = ZonedDateTime.of(date, time, zone);
         testConvert(LocalDate.class, date);
         testConvert(LocalTime.class, time);
         testConvert(ZoneOffset.class, zone);
-        testConvert(LocalDateTime.class, dateTime.toLocalDateTime());
-        testConvert(ZonedDateTime.class, dateTime);
+        testConvert(LocalDateTime.class, LocalDateTime.of(date, time));
+        testConvert(OffsetDateTime.class, OffsetDateTime.of(date, time, zone));
+        testConvert(ZonedDateTime.class, ZonedDateTime.of(date, time, zone));
 
         MonthDay monthDay = MonthDay.of(6, 15);
         testConvert(MonthDay.class, monthDay);
