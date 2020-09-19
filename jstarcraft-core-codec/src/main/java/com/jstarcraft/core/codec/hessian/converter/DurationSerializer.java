@@ -16,11 +16,11 @@ public class DurationSerializer extends AbstractSerializer {
             return;
         } else {
             Duration duration = (Duration) object;
-            long seconds = duration.getSeconds();
+            long data = duration.getSeconds();
             int reference = out.writeObjectBegin(Duration.class.getName());
             if (reference < -1) {
                 out.writeString("data");
-                out.writeLong(seconds);
+                out.writeLong(data);
                 out.writeMapEnd();
             } else {
                 if (reference == -1) {
@@ -28,7 +28,7 @@ public class DurationSerializer extends AbstractSerializer {
                     out.writeString("data");
                     out.writeObjectBegin(Duration.class.getName());
                 }
-                out.writeLong(seconds);
+                out.writeLong(data);
             }
         }
     }
