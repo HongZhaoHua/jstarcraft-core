@@ -1,12 +1,12 @@
 package com.jstarcraft.core.codec.hessian.converter;
 
 import java.io.IOException;
-import java.time.LocalTime;
+import java.time.Duration;
 
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.AbstractSerializer;
 
-public class LocalTimeSerializer extends AbstractSerializer {
+public class DurationSerializer extends AbstractSerializer {
 
     @Override
     public void writeObject(Object object, AbstractHessianOutput out) throws IOException {
@@ -15,26 +15,20 @@ public class LocalTimeSerializer extends AbstractSerializer {
         } else if (out.addRef(object)) {
             return;
         } else {
-            LocalTime time = (LocalTime) object;
-            int hour = time.getHour();
-            int minute = time.getMinute();
-            int second = time.getSecond();
-            int reference = out.writeObjectBegin(LocalTime.class.getName());
+            Duration duration = (Duration) object;
+            long seconds = duration.getSeconds();
+            int reference = out.writeObjectBegin(Duration.class.getName());
             if (reference < -1) {
                 out.writeString("data");
-                out.writeInt(hour);
-                out.writeInt(minute);
-                out.writeInt(second);
+                out.writeLong(seconds);
                 out.writeMapEnd();
             } else {
                 if (reference == -1) {
                     out.writeInt(1);
                     out.writeString("data");
-                    out.writeObjectBegin(LocalTime.class.getName());
+                    out.writeObjectBegin(Duration.class.getName());
                 }
-                out.writeInt(hour);
-                out.writeInt(minute);
-                out.writeInt(second);
+                out.writeLong(seconds);
             }
         }
     }

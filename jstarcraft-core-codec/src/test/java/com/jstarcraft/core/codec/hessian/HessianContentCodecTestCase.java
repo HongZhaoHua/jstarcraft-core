@@ -1,10 +1,12 @@
 package com.jstarcraft.core.codec.hessian;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.OffsetDateTime;
+import java.time.Period;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -25,9 +27,13 @@ public class HessianContentCodecTestCase extends ContentCodecTestCase {
     public void testInstant() throws Exception {
         super.testInstant();
 
+        Duration duration = Duration.ofSeconds(1000L);
+        Period period = Period.of(10, 10, 10);
         LocalDate date = LocalDate.of(2020, 6, 15);
         LocalTime time = LocalTime.of(12, 0, 0);
         ZoneOffset zone = ZoneOffset.UTC;
+        testConvert(Duration.class, duration);
+        testConvert(Period.class, period);
         testConvert(LocalDate.class, date);
         testConvert(LocalTime.class, time);
         testConvert(ZoneOffset.class, zone);

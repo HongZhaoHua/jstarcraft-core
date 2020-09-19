@@ -1,36 +1,32 @@
 package com.jstarcraft.core.codec.hessian.converter;
 
 import java.io.IOException;
-import java.time.LocalTime;
+import java.time.Duration;
 
 import com.caucho.hessian.io.AbstractDeserializer;
 import com.caucho.hessian.io.AbstractHessianInput;
 
-public class LocalTimeDeserializer extends AbstractDeserializer {
+public class DurationDeserializer extends AbstractDeserializer {
 
     public Class<?> getType() {
-        return LocalTime.class;
+        return Duration.class;
     }
 
     @Override
     public Object readObject(AbstractHessianInput in, Object[] fields) throws IOException {
         String[] names = (String[]) fields;
         int reference = in.addRef(null);
-        int hour = 0;
-        int minute = 0;
-        int second = 0;
+        long seconds = 0L;
         for (int index = 0; index < names.length; index++) {
             if ("data".equals(names[index])) {
-                hour = in.readInt();
-                minute = in.readInt();
-                second = in.readInt();
+                seconds = in.readLong();
             } else {
                 in.readObject();
             }
         }
-        LocalTime time = LocalTime.of(hour, minute, second);
-        in.setRef(reference, time);
-        return time;
+        Duration duration = Duration.ofSeconds(seconds);
+        in.setRef(reference, duration);
+        return duration;
     }
 
 }
