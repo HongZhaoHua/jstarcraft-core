@@ -46,6 +46,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- QMQ框架依赖 -->
+        <dependency>
+            <groupId>com.qunar.qmq</groupId>
+            <artifactId>qmq</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- MQTT框架依赖 -->
         <dependency>
             <groupId>io.vertx</groupId>
