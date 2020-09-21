@@ -9,7 +9,8 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.event.EventChannel;
 import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
-import com.jstarcraft.core.event.MockEvent;
+import com.jstarcraft.core.event.MockBroadcastEvent;
+import com.jstarcraft.core.event.MockUnicastEvent;
 
 import io.vertx.core.Vertx;
 
@@ -29,7 +30,7 @@ public class VertxEventChannelTestCase extends EventChannelTestCase {
 
     @Override
     protected EventChannel getEventChannel(EventMode mode) {
-        CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+        CodecDefinition definition = CodecDefinition.instanceOf(MockUnicastEvent.class, MockBroadcastEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
         return new VertxEventChannel(mode, "Vertx" + mode, vertx.eventBus(), codec);
     }

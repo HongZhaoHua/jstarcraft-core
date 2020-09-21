@@ -13,7 +13,8 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.event.EventChannel;
 import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
-import com.jstarcraft.core.event.MockEvent;
+import com.jstarcraft.core.event.MockBroadcastEvent;
+import com.jstarcraft.core.event.MockUnicastEvent;
 
 public class AmqpEventChannelTestCase extends EventChannelTestCase {
 
@@ -50,7 +51,7 @@ public class AmqpEventChannelTestCase extends EventChannelTestCase {
     protected EventChannel getEventChannel(EventMode mode) {
         try {
             Session session = connection.createSession();
-            CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+            CodecDefinition definition = CodecDefinition.instanceOf(MockUnicastEvent.class, MockBroadcastEvent.class);
             ContentCodec codec = new JsonContentCodec(definition);
             return new AmqpEventChannel(mode, "AMQP" + mode, session, codec);
         } catch (Exception exception) {

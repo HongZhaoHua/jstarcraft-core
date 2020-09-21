@@ -86,7 +86,6 @@ public class QmqEventChannel extends AbstractEventChannel {
                         break;
                     }
                     case TOPIC: {
-                        boolean throwable = false;
                         for (EventMonitor monitor : manager) {
                             try {
                                 monitor.onEvent(event);

@@ -1,13 +1,13 @@
 package com.jstarcraft.core.event;
 
-public class MockEvent {
+public class MockUnicastEvent {
 
     private int data;
 
-    MockEvent() {
+    MockUnicastEvent() {
     }
 
-    public MockEvent(int data) {
+    public MockUnicastEvent(int data) {
         this.data = data;
     }
 

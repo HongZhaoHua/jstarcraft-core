@@ -3,7 +3,7 @@ package com.jstarcraft.core.event;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MockMonitor implements EventMonitor<MockEvent> {
+public class MockUnicastMonitor implements EventMonitor<MockUnicastEvent> {
 
     private int index;
 
@@ -11,14 +11,14 @@ public class MockMonitor implements EventMonitor<MockEvent> {
 
     private Semaphore semaphore;
 
-    public MockMonitor(int index, Semaphore semaphore) {
+    public MockUnicastMonitor(int index, Semaphore semaphore) {
         this.index = index;
         this.count = new AtomicInteger();
         this.semaphore = semaphore;
     }
 
     @Override
-    public void onEvent(MockEvent event) {
+    public void onEvent(MockUnicastEvent event) {
         count.incrementAndGet();
         semaphore.release(1);
     }
@@ -47,7 +47,7 @@ public class MockMonitor implements EventMonitor<MockEvent> {
             return false;
         if (getClass() != object.getClass())
             return false;
-        MockMonitor that = (MockMonitor) object;
+        MockUnicastMonitor that = (MockUnicastMonitor) object;
         if (this.index != that.index)
             return false;
         return true;

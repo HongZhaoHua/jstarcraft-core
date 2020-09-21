@@ -16,7 +16,8 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.event.EventChannel;
 import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
-import com.jstarcraft.core.event.MockEvent;
+import com.jstarcraft.core.event.MockBroadcastEvent;
+import com.jstarcraft.core.event.MockUnicastEvent;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class JmsEventChannelTestCase extends EventChannelTestCase {
@@ -31,7 +32,7 @@ public class JmsEventChannelTestCase extends EventChannelTestCase {
     @After
     public void stop() throws Exception {
         JMSContext context = factory.createContext();
-        Destination channel = context.createQueue(MockEvent.class.getName());
+        Destination channel = context.createQueue(MockUnicastEvent.class.getName());
         JMSConsumer consumer = context.createConsumer(channel);
         // 清理测试消息
         logger.info("清理JMS测试消息开始");
@@ -47,7 +48,7 @@ public class JmsEventChannelTestCase extends EventChannelTestCase {
 
     @Override
     protected EventChannel getEventChannel(EventMode mode) {
-        CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+        CodecDefinition definition = CodecDefinition.instanceOf(MockUnicastEvent.class, MockBroadcastEvent.class);
         ContentCodec codec = new JsonContentCodec(definition);
         return new JmsEventChannel(mode, "JMS" + mode, factory, codec);
     }

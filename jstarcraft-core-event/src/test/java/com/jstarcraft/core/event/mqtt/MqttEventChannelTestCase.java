@@ -11,7 +11,8 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.event.EventChannel;
 import com.jstarcraft.core.event.EventChannelTestCase;
 import com.jstarcraft.core.event.EventMode;
-import com.jstarcraft.core.event.MockEvent;
+import com.jstarcraft.core.event.MockBroadcastEvent;
+import com.jstarcraft.core.event.MockUnicastEvent;
 
 import io.vertx.core.Vertx;
 import io.vertx.mqtt.MqttClient;
@@ -46,7 +47,7 @@ public class MqttEventChannelTestCase extends EventChannelTestCase {
     @Override
     protected EventChannel getEventChannel(EventMode mode) {
         if (mode == EventMode.TOPIC) {
-            CodecDefinition definition = CodecDefinition.instanceOf(MockEvent.class);
+            CodecDefinition definition = CodecDefinition.instanceOf(MockUnicastEvent.class, MockBroadcastEvent.class);
             ContentCodec codec = new JsonContentCodec(definition);
             return new MqttTopicEventChannel("MQTT" + mode, session, codec);
         } else {
