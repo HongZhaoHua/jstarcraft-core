@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntAVLTreeMap;
 import it.unimi.dsi.fastutil.ints.Int2IntSortedMap;
 
 /**
- * 阴历日期
+ * 阴阳历日期
  * 
  * @author Birdy
  *

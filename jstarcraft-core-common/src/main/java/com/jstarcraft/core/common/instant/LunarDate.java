@@ -6,7 +6,7 @@ import java.time.temporal.ChronoField;
 import java.util.Objects;
 
 /**
- * 伊斯兰历日期
+ * 阴历日期
  * 
  * @author Birdy
  *

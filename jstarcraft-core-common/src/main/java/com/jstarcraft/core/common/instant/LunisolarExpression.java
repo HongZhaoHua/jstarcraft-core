@@ -8,7 +8,7 @@ import java.util.BitSet;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 阴历表达式
+ * 阴阳历表达式
  * 
  * @author Birdy
  *
