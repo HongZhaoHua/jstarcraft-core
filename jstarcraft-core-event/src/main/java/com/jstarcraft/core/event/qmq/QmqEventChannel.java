@@ -1,17 +1,5 @@
 package com.jstarcraft.core.event.qmq;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.Closeable;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +7,15 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 
-import com.google.common.io.CharStreams;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.common.security.SecurityUtility;
 import com.jstarcraft.core.event.AbstractEventChannel;
@@ -43,6 +39,8 @@ import qunar.tc.qmq.MessageSendStateListener;
  *
  */
 public class QmqEventChannel extends AbstractEventChannel {
+
+    private static RestTemplate template = new RestTemplate();
 
     private MessageProducer producer;
 
@@ -135,34 +133,34 @@ public class QmqEventChannel extends AbstractEventChannel {
                 }
                 }
                 String key = type.getName();
+                if (mode == EventMode.TOPIC) {
+                    // 使用空消息触发通道建立
+                    CountDownLatch latch = new CountDownLatch(1);
+                    Message envelope = producer.generateMessage(key);
+                    producer.sendMessage(envelope, new MessageSendStateListener() {
+
+                        @Override
+                        public void onSuccess(Message message) {
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(Message message) {
+                        }
+
+                    });
+                    latch.await();
+                    // 设置通道(LATEST=1, EARLIEST=2)
+                    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
+                    parameters.add("action", "ResetOffset");
+                    parameters.add("subject", key);
+                    parameters.add("group", address);
+                    parameters.add("code", String.valueOf(1));
+                    management("127.0.0.1:8080", "token", parameters);
+                }
                 EventHandler handler = new EventHandler(type);
                 holder = consumer.addListener(key, address, handler, Executors.newFixedThreadPool(1));
                 holders.put(type, holder);
-
-                // 保证通道建立
-                CountDownLatch latch = new CountDownLatch(1);
-                Message envelope = producer.generateMessage(key);
-                producer.sendMessage(envelope, new MessageSendStateListener() {
-
-                    @Override
-                    public void onSuccess(Message message) {
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onFailed(Message message) {
-                    }
-
-                });
-                latch.await();
-                if (mode == EventMode.TOPIC) {
-                    Map<String, String> parameters = new HashMap<>();
-                    parameters.put("action", "ResetOffset");
-                    parameters.put("subject", key);
-                    parameters.put("group", address);
-                    parameters.put("code", String.valueOf(1));
-                    management("127.0.0.1:8080", "token", parameters);
-                }
             }
             return holder;
         }
@@ -226,54 +224,14 @@ public class QmqEventChannel extends AbstractEventChannel {
         }
     }
 
-    public String management(String metaServer, String token, Map<String, String> parameters) throws Exception {
-        BufferedWriter writer = null;
-        BufferedReader reader = null;
-        try {
-            final String url = String.format("http://%s/management", metaServer);
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("X-Api-Token", token);
-            connection.setRequestMethod("POST");
-            writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), StringUtility.CHARSET));
-            writer.write(getParameters(parameters));
-            writer.flush();
-
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StringUtility.CHARSET));
-            String content = CharStreams.toString(reader);
-            if (connection.getResponseCode() != 200) {
-                throw new RuntimeException("send request failed");
-            }
-            return content.trim();
-        } catch (Exception exception) {
-            throw new RuntimeException("send request meta server failed.", exception);
-        } finally {
-            closeQuietly(writer);
-            closeQuietly(reader);
-        }
-    }
-
-    private void closeQuietly(Closeable closeable) {
-        if (closeable == null)
-            return;
-        try {
-            closeable.close();
-        } catch (Exception ignore) {
-        }
-    }
-
-    private String getParameters(Map<String, String> parameters) throws UnsupportedEncodingException {
-        StringBuilder buffer = new StringBuilder();
-        for (Entry<String, String> entry : parameters.entrySet()) {
-            buffer.append(URLEncoder.encode(entry.getKey(), StringUtility.CHARSET.name()));
-            buffer.append("=");
-            buffer.append(URLEncoder.encode(entry.getValue(), StringUtility.CHARSET.name()));
-            buffer.append("&");
-        }
-        return buffer.substring(0, buffer.length() - 1);
+    public String management(String metaServer, String token, MultiValueMap<String, String> parameters) throws Exception {
+        final String url = String.format("http://%s/management", metaServer);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("X-Api-Token", token);
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
+        ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, request, String.class);
+        return response.getBody();
     }
 
 }
