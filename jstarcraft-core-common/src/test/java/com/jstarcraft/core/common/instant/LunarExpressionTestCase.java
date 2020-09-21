@@ -12,40 +12,37 @@ public class LunarExpressionTestCase {
 
     private List<LocalDateTime> dateTimes = new ArrayList<>();
     {
-        dateTimes.add(LocalDateTime.of(2020, 1, 24, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 1, 25, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 2, 22, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 2, 23, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 3, 23, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 3, 24, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 4, 22, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 4, 23, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 5, 22, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 5, 23, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 6, 20, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 6, 21, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 7, 20, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 7, 21, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 8, 18, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 8, 19, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 9, 16, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 9, 17, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 10, 16, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 10, 17, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 11, 14, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 11, 15, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 12, 14, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2020, 12, 15, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2021, 1, 12, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2021, 1, 13, 12, 0, 0));
-        dateTimes.add(LocalDateTime.of(2021, 2, 11, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2010, 12, 07, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 1, 4, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 1, 5, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 2, 3, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 2, 4, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 3, 5, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 3, 6, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 4, 4, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 4, 5, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 5, 3, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 5, 4, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 6, 2, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 6, 3, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 7, 1, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 7, 2, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 7, 31, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 8, 1, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 8, 29, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 8, 30, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 9, 28, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 9, 29, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 10, 27, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 10, 28, 12, 0, 0));
+        dateTimes.add(LocalDateTime.of(2011, 11, 25, 12, 0, 0));
     }
 
     @Test
     public void testGetPreviousDateTime() {
         LunarExpression expression = new LunarExpression("0 0 12 1,L1 *");
 
-        LocalDateTime dateTime = LocalDateTime.of(2021, 2, 11, 23, 59, 59);
+        LocalDateTime dateTime = LocalDateTime.of(2011, 11, 25, 23, 59, 59);
         Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = dateTimes.size() - 1; index > 0; index--) {
             dateTime = expression.getPreviousDateTime(dateTime);
@@ -58,7 +55,7 @@ public class LunarExpressionTestCase {
     public void testGetNextDateTime() {
         LunarExpression expression = new LunarExpression("0 0 12 1,L1 *");
 
-        LocalDateTime dateTime = LocalDateTime.of(2020, 1, 24, 0, 0, 0);
+        LocalDateTime dateTime = LocalDateTime.of(2010, 12, 7, 0, 0, 0);
         Assert.assertFalse(expression.isMatchDateTime(dateTime));
         for (int index = 0, size = dateTimes.size(); index < size; index++) {
             dateTime = expression.getNextDateTime(dateTime);
@@ -69,7 +66,7 @@ public class LunarExpressionTestCase {
 
     @Test
     public void testDate() {
-        LunarExpression expression = new LunarExpression("0 0 12 1,L1 * 2020");
+        LunarExpression expression = new LunarExpression("0 0 12 1,L1 * 1432");
         {
             LocalDateTime dateTime = expression.getPreviousDateTime(dateTimes.get(0));
             Assert.assertNull(dateTime);
@@ -79,27 +76,27 @@ public class LunarExpressionTestCase {
             Assert.assertNull(dateTime);
         }
 
-        expression = new LunarExpression("0 0 12 15 6 2000/10");
+        expression = new LunarExpression("0 0 12 15 6 1421/10");
         LocalTime time = LocalTime.of(12, 0, 0);
-        LocalDateTime dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2010, false, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2030, false, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+        LocalDateTime dateTime = LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1431, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1451, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
 
-        expression = new LunarExpression("0 0 12 15 6 2020");
-        dateTime = LocalDateTime.of(new LunarDate(2021, false, 12, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
-        dateTime = LocalDateTime.of(new LunarDate(2019, false, 1, 1).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+        expression = new LunarExpression("0 0 12 15 6 1441");
+        dateTime = LocalDateTime.of(new LunarDate(1442, 12, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new LunarDate(1440, 1, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
 
-        dateTime = LocalDateTime.of(new LunarDate(2020, false, 12, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
-        dateTime = LocalDateTime.of(new LunarDate(2020, false, 1, 1).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+        dateTime = LocalDateTime.of(new LunarDate(1441, 12, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new LunarDate(1441, 1, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
 
-        dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 29).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
-        dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 1).getDate(), time);
-        Assert.assertEquals(LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
+        dateTime = LocalDateTime.of(new LunarDate(1441, 6, 29).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getPreviousDateTime(dateTime));
+        dateTime = LocalDateTime.of(new LunarDate(1441, 6, 1).getDate(), time);
+        Assert.assertEquals(LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), time), expression.getNextDateTime(dateTime));
     }
 
     @Test
@@ -116,14 +113,14 @@ public class LunarExpressionTestCase {
         {
             LunarExpression leftExpression = new LunarExpression("0 0 12 1,6,11,16,21,26 * ?");
             LunarExpression rightExpression = new LunarExpression("0 0 12 1/5 * ?");
-            LocalDateTime dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), LocalTime.of(0, 0, 0));
+            LocalDateTime dateTime = LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), LocalTime.of(0, 0, 0));
             Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
             Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
         }
         {
             LunarExpression leftExpression = new LunarExpression("0 0 12 10,11,12,13,14,15,16,17,18,19 * ?");
             LunarExpression rightExpression = new LunarExpression("0 0 12 10-19 * ?");
-            LocalDateTime dateTime = LocalDateTime.of(new LunarDate(2020, false, 6, 15).getDate(), LocalTime.of(0, 0, 0));
+            LocalDateTime dateTime = LocalDateTime.of(new LunarDate(1441, 6, 15).getDate(), LocalTime.of(0, 0, 0));
             Assert.assertEquals(leftExpression.getNextDateTime(dateTime), rightExpression.getNextDateTime(dateTime));
             Assert.assertEquals(leftExpression.getPreviousDateTime(dateTime), rightExpression.getPreviousDateTime(dateTime));
         }

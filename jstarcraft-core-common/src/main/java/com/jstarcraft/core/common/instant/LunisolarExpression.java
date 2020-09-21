@@ -8,12 +8,12 @@ import java.util.BitSet;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * 伊斯兰历表达式
+ * 阴历表达式
  * 
  * @author Birdy
  *
  */
-public class IslamicExpression extends DateTimeExpression {
+public class LunisolarExpression extends DateTimeExpression {
 
     /** 秒位图 */
     private final BitSet seconds;
@@ -36,7 +36,7 @@ public class IslamicExpression extends DateTimeExpression {
     /** 年位图 */
     private final BitSet years;
 
-    public IslamicExpression(String expression) {
+    public LunisolarExpression(String expression) {
         super(expression);
 
         this.seconds = new BitSet(60);
@@ -46,7 +46,7 @@ public class IslamicExpression extends DateTimeExpression {
         this.bigDays = new BitSet(31);
         this.smallDays = new BitSet(30);
         this.months = new BitSet(13);
-        this.years = new BitSet(IslamicDate.MAXIMUM_YEAR - IslamicDate.MINIMUM_YEAR);
+        this.years = new BitSet(LunisolarDate.MAXIMUM_YEAR - LunisolarDate.MINIMUM_YEAR);
 
         String[] fields = expression.split(StringUtility.SPACE);
         if (fields.length != 5 && fields.length != 6) {
@@ -59,9 +59,9 @@ public class IslamicExpression extends DateTimeExpression {
             this.setBits(this.smallDays, fields[3], 1, 30, 0);
             this.setBits(this.months, fields[4], 1, 13, 0);
             if (fields.length == 6) {
-                this.setBits(this.years, fields[5], IslamicDate.MINIMUM_YEAR, IslamicDate.MAXIMUM_YEAR, IslamicDate.MINIMUM_YEAR);
+                this.setBits(this.years, fields[5], LunisolarDate.MINIMUM_YEAR, LunisolarDate.MAXIMUM_YEAR, LunisolarDate.MINIMUM_YEAR);
             } else {
-                this.setBits(this.years, StringUtility.ASTERISK, IslamicDate.MINIMUM_YEAR, IslamicDate.MAXIMUM_YEAR, IslamicDate.MINIMUM_YEAR);
+                this.setBits(this.years, StringUtility.ASTERISK, LunisolarDate.MINIMUM_YEAR, LunisolarDate.MAXIMUM_YEAR, LunisolarDate.MINIMUM_YEAR);
             }
         }
     }
@@ -157,12 +157,11 @@ public class IslamicExpression extends DateTimeExpression {
     /**
      * 按照年月获取日位图
      * 
-     * @param year
-     * @param month
+     * @param size
      * @return
      */
-    private BitSet getDays(int year, int month) {
-        int size = IslamicDate.getDaySize(year, month);
+    private BitSet getDays(int year, boolean leap, int month) {
+        int size = LunisolarDate.getDaySize(year, leap, month);
         switch (size) {
         case 29: {
             return smallDays;
@@ -178,19 +177,22 @@ public class IslamicExpression extends DateTimeExpression {
 
     @Override
     public ZonedDateTime getPreviousDateTime(ZonedDateTime dateTime) {
-        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
+        LunisolarDate lunar = new LunisolarDate(dateTime.toLocalDate());
         LocalTime time = dateTime.toLocalTime();
-        int year = islamic.getYear();
-        int month = islamic.getMonth();
-        int day = islamic.getDay();
+        int year = lunar.getYear();
+        boolean leap = lunar.isLeap();
+        int month = lunar.getMonth();
+        int day = lunar.getDay();
         boolean change = false;
-        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
-            year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+        if (!years.get(year - LunisolarDate.MINIMUM_YEAR)) {
+            year = years.previousSetBit(year - LunisolarDate.MINIMUM_YEAR);
             if (year == -1) {
                 return null;
             }
-            year += IslamicDate.MINIMUM_YEAR;
+            year += LunisolarDate.MINIMUM_YEAR;
             month = months.previousSetBit(12);
+            // 可能是闰月
+            leap = month == LunisolarDate.getLeapMonth(year);
             day = 30;
             time = LocalTime.MAX;
             change = true;
@@ -199,34 +201,48 @@ public class IslamicExpression extends DateTimeExpression {
             if (month == -1) {
                 month = months.previousSetBit(12);
                 year--;
-                year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+                year = years.previousSetBit(year - LunisolarDate.MINIMUM_YEAR);
                 if (year == -1) {
                     return null;
                 }
-                year += IslamicDate.MINIMUM_YEAR;
+                year += LunisolarDate.MINIMUM_YEAR;
             }
+            // 可能是闰月
+            leap = month == LunisolarDate.getLeapMonth(year);
             day = 30;
             time = LocalTime.MAX;
             change = true;
         }
-        BitSet days = getDays(year, month);
+        BitSet days = getDays(year, leap, month);
         if (!days.get(day)) {
             day = days.previousSetBit(day);
             while (day == -1) {
-                month--;
+                // 从是闰月到非闰月
+                if (leap && month == LunisolarDate.getLeapMonth(year)) {
+                    leap = false;
+                } else {
+                    month--;
+                    // 从非闰月到是闰月
+                    if (month == LunisolarDate.getLeapMonth(year)) {
+                        leap = true;
+                    }
+                }
+                // 月份是否变化
                 if (!months.get(month)) {
                     month = months.previousSetBit(month);
                     if (month == -1) {
                         month = months.previousSetBit(12);
                         year--;
-                        year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+                        year = years.previousSetBit(year - LunisolarDate.MINIMUM_YEAR);
                         if (year == -1) {
                             return null;
                         }
-                        year += IslamicDate.MINIMUM_YEAR;
+                        year += LunisolarDate.MINIMUM_YEAR;
                     }
+                    // 可能是闰月
+                    leap = month == LunisolarDate.getLeapMonth(year);
                 }
-                days = getDays(year, month);
+                days = getDays(year, leap, month);
                 day = days.previousSetBit(30);
             }
             time = LocalTime.MAX;
@@ -260,45 +276,60 @@ public class IslamicExpression extends DateTimeExpression {
             hour = hours.previousSetBit(23);
         }
         while (day == -1) {
-            month--;
+            // 从是闰月到非闰月
+            if (leap && month == LunisolarDate.getLeapMonth(year)) {
+                leap = false;
+            } else {
+                month--;
+                // 从非闰月到是闰月
+                if (month == LunisolarDate.getLeapMonth(year)) {
+                    leap = true;
+                }
+            }
+            // 月份是否变化
             if (!months.get(month)) {
                 month = months.previousSetBit(month);
                 if (month == -1) {
                     month = months.previousSetBit(12);
                     year--;
-                    year = years.previousSetBit(year - IslamicDate.MINIMUM_YEAR);
+                    year = years.previousSetBit(year - LunisolarDate.MINIMUM_YEAR);
                     if (year == -1) {
                         return null;
                     }
-                    year += IslamicDate.MINIMUM_YEAR;
+                    year += LunisolarDate.MINIMUM_YEAR;
                 }
+                // 可能是闰月
+                leap = month == LunisolarDate.getLeapMonth(year);
             }
-            days = getDays(year, month);
+            days = getDays(year, leap, month);
             day = days.previousSetBit(30);
         }
-        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
+        if (!years.get(year - LunisolarDate.MINIMUM_YEAR)) {
             return null;
         }
-        islamic = new IslamicDate(year, month, day);
-        LocalDate date = islamic.getDate();
+        lunar = new LunisolarDate(year, leap, month, day);
+        LocalDate date = lunar.getDate();
         return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
     }
 
     @Override
     public ZonedDateTime getNextDateTime(ZonedDateTime dateTime) {
-        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
+        LunisolarDate lunar = new LunisolarDate(dateTime.toLocalDate());
         LocalTime time = dateTime.toLocalTime();
-        int year = islamic.getYear();
-        int month = islamic.getMonth();
-        int day = islamic.getDay();
+        int year = lunar.getYear();
+        boolean leap = lunar.isLeap();
+        int month = lunar.getMonth();
+        int day = lunar.getDay();
         boolean change = false;
-        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
-            year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+        if (!years.get(year - LunisolarDate.MINIMUM_YEAR)) {
+            year = years.nextSetBit(year - LunisolarDate.MINIMUM_YEAR);
             if (year == -1) {
                 return null;
             }
-            year += IslamicDate.MINIMUM_YEAR;
-            month = months.nextSetBit(1);
+            year += LunisolarDate.MINIMUM_YEAR;
+            month = months.nextSetBit(month);
+            // 一定非闰月
+            leap = false;
             day = 1;
             time = LocalTime.MIN;
             change = true;
@@ -308,33 +339,44 @@ public class IslamicExpression extends DateTimeExpression {
                 month = months.nextSetBit(1);
                 year++;
             }
-            year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+            year = years.nextSetBit(year - LunisolarDate.MINIMUM_YEAR);
             if (year == -1) {
                 return null;
             }
-            year += IslamicDate.MINIMUM_YEAR;
+            year += LunisolarDate.MINIMUM_YEAR;
+            // 一定非闰月
+            leap = false;
             day = 1;
             time = LocalTime.MIN;
             change = true;
         }
-        BitSet days = getDays(year, month);
+        BitSet days = getDays(year, leap, month);
         if (!days.get(day)) {
             day = days.nextSetBit(day);
             while (day == -1) {
-                month++;
+                // 从非闰月到是闰月
+                if (!leap && month == LunisolarDate.getLeapMonth(year)) {
+                    leap = true;
+                } else {
+                    month++;
+                    leap = false;
+                }
+                // 月份是否变化
                 if (!months.get(month)) {
                     month = months.nextSetBit(month);
                     if (month == -1) {
                         month = months.nextSetBit(1);
                         year++;
                     }
-                    year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+                    year = years.nextSetBit(year - LunisolarDate.MINIMUM_YEAR);
                     if (year == -1) {
                         return null;
                     }
-                    year += IslamicDate.MINIMUM_YEAR;
+                    year += LunisolarDate.MINIMUM_YEAR;
+                    // 一定非闰月
+                    leap = false;
                 }
-                days = getDays(year, month);
+                days = getDays(year, leap, month);
                 day = days.nextSetBit(1);
             }
             time = LocalTime.MIN;
@@ -368,43 +410,53 @@ public class IslamicExpression extends DateTimeExpression {
             hour = hours.nextSetBit(0);
         }
         while (day == -1) {
-            month++;
+            // 从非闰月到是闰月
+            if (!leap && month == LunisolarDate.getLeapMonth(year)) {
+                leap = true;
+            } else {
+                month++;
+                leap = false;
+            }
+            // 月份是否变化
             if (!months.get(month)) {
                 month = months.nextSetBit(month);
                 if (month == -1) {
                     month = months.nextSetBit(1);
                     year++;
                 }
-                year = years.nextSetBit(year - IslamicDate.MINIMUM_YEAR);
+                year = years.nextSetBit(year - LunisolarDate.MINIMUM_YEAR);
                 if (year == -1) {
                     return null;
                 }
-                year += IslamicDate.MINIMUM_YEAR;
+                year += LunisolarDate.MINIMUM_YEAR;
+                // 一定非闰月
+                leap = false;
             }
-            days = getDays(year, month);
+            days = getDays(year, leap, month);
             day = days.nextSetBit(1);
         }
-        if (!years.get(year - IslamicDate.MINIMUM_YEAR)) {
+        if (!years.get(year - LunisolarDate.MINIMUM_YEAR)) {
             return null;
         }
-        islamic = new IslamicDate(year, month, day);
-        LocalDate date = islamic.getDate();
+        lunar = new LunisolarDate(year, leap, month, day);
+        LocalDate date = lunar.getDate();
         return ZonedDateTime.of(date, LocalTime.of(hour, minute, second), dateTime.getZone());
     }
 
     @Override
     public boolean isMatchDateTime(ZonedDateTime dateTime) {
-        IslamicDate islamic = new IslamicDate(dateTime.toLocalDate());
-        int year = islamic.getYear();
-        int month = islamic.getMonth();
-        int day = islamic.getDay();
-        BitSet days = getDays(year, month);
+        LunisolarDate lunar = new LunisolarDate(dateTime.toLocalDate());
+        int year = lunar.getYear();
+        boolean leap = lunar.isLeap();
+        int month = lunar.getMonth();
+        int day = lunar.getDay();
+        BitSet days = getDays(year, leap, month);
         LocalTime time = dateTime.toLocalTime();
         int hour = time.getHour();
         int minute = time.getMinute();
         int second = time.getSecond();
         if (seconds.get(second) && minutes.get(minute) && hours.get(hour)) {
-            if (days.get(day) && months.get(month) && years.get(year - IslamicDate.MINIMUM_YEAR)) {
+            if (days.get(day) && months.get(month) && years.get(year - LunisolarDate.MINIMUM_YEAR)) {
                 return true;
             }
         }
