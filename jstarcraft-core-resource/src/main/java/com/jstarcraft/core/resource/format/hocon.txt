@@ -1,2 +1,5 @@
 HOCON-CN-Translation:
 https://github.com/ustc-zzzz/HOCON-CN-Translation
+
+configuration library for JVM languages using HOCON files:
+https://github.com/lightbend/config
