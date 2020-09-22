@@ -27,10 +27,10 @@ import com.jstarcraft.core.utility.StringUtility;
 
 import qunar.tc.qmq.ListenerHolder;
 import qunar.tc.qmq.Message;
-import qunar.tc.qmq.MessageConsumer;
 import qunar.tc.qmq.MessageListener;
-import qunar.tc.qmq.MessageProducer;
 import qunar.tc.qmq.MessageSendStateListener;
+import qunar.tc.qmq.consumer.MessageConsumerProvider;
+import qunar.tc.qmq.producer.MessageProducerProvider;
 
 /**
  * QMQ事件管道
@@ -40,11 +40,21 @@ import qunar.tc.qmq.MessageSendStateListener;
  */
 public class QmqEventChannel extends AbstractEventChannel {
 
-    private static RestTemplate template = new RestTemplate();
+    private static final String metaUrl = "http://{}:{}/meta/address";
 
-    private MessageProducer producer;
+    private static final String managementUrl = "http://{}:{}/management";
 
-    private MessageConsumer consumer;
+    private static final RestTemplate template = new RestTemplate();
+
+    private String host;
+
+    private int port;
+
+    private String token;
+
+    private MessageProducerProvider producer;
+
+    private MessageConsumerProvider consumer;
 
     private ContentCodec codec;
 
@@ -107,10 +117,11 @@ public class QmqEventChannel extends AbstractEventChannel {
 
     };
 
-    public QmqEventChannel(EventMode mode, String name, MessageProducer producer, MessageConsumer consumer, ContentCodec codec) {
+    public QmqEventChannel(EventMode mode, String name, String host, int port, String token, ContentCodec codec) {
         super(mode, name);
-        this.producer = producer;
-        this.consumer = consumer;
+        this.host = host;
+        this.port = port;
+        this.token = token;
         this.codec = codec;
         this.holders = new ConcurrentHashMap<>();
     }
@@ -156,7 +167,13 @@ public class QmqEventChannel extends AbstractEventChannel {
                     parameters.add("subject", key);
                     parameters.add("group", address);
                     parameters.add("code", String.valueOf(1));
-                    management("127.0.0.1:8080", "token", parameters);
+                    String url = StringUtility.format(managementUrl, host, port);
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                    headers.add("X-Api-Token", token);
+                    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
+                    ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, request, String.class);
+                    logger.info(response.getBody());
                 }
                 EventHandler handler = new EventHandler(type);
                 holder = consumer.addListener(key, address, handler, Executors.newFixedThreadPool(1));
@@ -224,14 +241,23 @@ public class QmqEventChannel extends AbstractEventChannel {
         }
     }
 
-    public String management(String metaServer, String token, MultiValueMap<String, String> parameters) throws Exception {
-        final String url = String.format("http://%s/management", metaServer);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("X-Api-Token", token);
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
-        ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, request, String.class);
-        return response.getBody();
+    @Override
+    public synchronized void start() {
+        String url = StringUtility.format(metaUrl, host, port);
+        producer = new MessageProducerProvider();
+        producer.setAppCode(name);
+        producer.setMetaServer(url);
+        producer.init();
+        consumer = new MessageConsumerProvider();
+        consumer.setAppCode(name);
+        consumer.setMetaServer(url);
+        consumer.init();
+    }
+
+    @Override
+    public synchronized void stop() {
+        producer.destroy();
+        consumer.destroy();
     }
 
 }
