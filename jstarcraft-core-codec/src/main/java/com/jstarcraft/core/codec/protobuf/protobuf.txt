@@ -7,6 +7,9 @@ https://www.cnblogs.com/ziyue7575/p/11593374.html
 Protobuf3 系列:
 https://blog.csdn.net/hry2015/category_6885899.html
 
+Protobuf原理分析小结:
+https://www.jianshu.com/p/522f13206ba1
+
 JProtobuf - jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用:
 https://github.com/jhunters/jprotobuf
 
