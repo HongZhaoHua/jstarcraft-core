@@ -3,3 +3,6 @@ http://www.blogjava.net/DLevin/archive/2015/04/01/424011.html
 
 Protobuf基础(Java使用,Windows代码生成):
 https://www.cnblogs.com/ziyue7575/p/11593374.html
+
+JProtobuf - jprotobuf是针对Java程序开发一套简易类库，目的是简化java语言对protobuf类库的使用:
+https://github.com/jhunters/jprotobuf
