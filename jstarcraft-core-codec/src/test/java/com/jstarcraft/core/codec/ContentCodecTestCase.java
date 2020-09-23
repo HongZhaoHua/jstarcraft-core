@@ -27,7 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,25 @@ public abstract class ContentCodecTestCase {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected abstract ContentCodec getContentCodec(CodecDefinition protocolDefinition);
+
+    protected ContentCodec contentCodec;
+
+    {
+        Collection<Type> protocolClasses = new LinkedList<>();
+        protocolClasses.add(Object.class);
+        protocolClasses.add(MockComplexObject.class);
+        protocolClasses.add(MockEnumeration.class);
+        protocolClasses.add(MockMatrix.class);
+        protocolClasses.add(MockSimpleObject.class);
+
+        protocolClasses.add(ArrayList.class);
+        protocolClasses.add(HashSet.class);
+        protocolClasses.add(TreeSet.class);
+        protocolClasses.add(Byte2BooleanOpenHashMap.class);
+        protocolClasses.add(ByteArrayList.class);
+        CodecDefinition definition = CodecDefinition.instanceOf(protocolClasses);
+        contentCodec = this.getContentCodec(definition);
+    }
 
     @Test
     public void testArray() throws Exception {
@@ -418,21 +439,6 @@ public abstract class ContentCodecTestCase {
     }
 
     protected void testConvert(Type type, Object value) throws Exception {
-        Collection<Type> protocolClasses = new LinkedList<>();
-        protocolClasses.add(Object.class);
-        protocolClasses.add(MockComplexObject.class);
-        protocolClasses.add(MockEnumeration.class);
-        protocolClasses.add(MockMatrix.class);
-        protocolClasses.add(MockSimpleObject.class);
-
-        protocolClasses.add(ArrayList.class);
-        protocolClasses.add(HashSet.class);
-        protocolClasses.add(TreeSet.class);
-        protocolClasses.add(Byte2BooleanOpenHashMap.class);
-        protocolClasses.add(ByteArrayList.class);
-        CodecDefinition definition = CodecDefinition.instanceOf(protocolClasses);
-        ContentCodec contentCodec = this.getContentCodec(definition);
-
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
             contentCodec.encode(type, value, dataOutputStream);
             byte[] data = byteArrayOutputStream.toByteArray();
