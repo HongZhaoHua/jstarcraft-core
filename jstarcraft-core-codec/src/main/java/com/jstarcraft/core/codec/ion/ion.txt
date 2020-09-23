@@ -1,0 +1,2 @@
+Jackson data format module for reading and writing Ion encoded data:
+https://github.com/FasterXML/jackson-dataformats-binary/tree/master/ion
