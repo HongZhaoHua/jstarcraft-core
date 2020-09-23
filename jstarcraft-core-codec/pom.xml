@@ -34,6 +34,8 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- HOCON -->
+
         <!-- Kryo -->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
@@ -61,6 +63,8 @@
             <artifactId>libthrift</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- TOML -->
 
         <!-- XML -->
         <dependency>

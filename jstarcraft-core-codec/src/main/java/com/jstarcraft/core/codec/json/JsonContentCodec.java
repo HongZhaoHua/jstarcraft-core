@@ -22,9 +22,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
@@ -48,7 +48,7 @@ public class JsonContentCodec implements ContentCodec {
 
     private final CodecDefinition codecDefinition;
     /** 类型转换器(基于Jackson) */
-    private final ObjectMapper typeConverter = new ObjectMapper();
+    private final JsonMapper typeConverter = new JsonMapper();
 
     public JsonContentCodec(CodecDefinition definition) {
         this.codecDefinition = definition;

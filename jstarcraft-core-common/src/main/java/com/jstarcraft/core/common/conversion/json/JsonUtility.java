@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -25,7 +25,7 @@ import com.jstarcraft.core.utility.StringUtility;
 public class JsonUtility {
 
     /** 类型转换器(基于Jackson) */
-    private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
+    private static final JsonMapper TYPE_CONVERTER = new JsonMapper();
 
     /** 类型工厂(基于Jackson) */
     private static final TypeFactory TYPE_FACTORY = TypeFactory.defaultInstance();

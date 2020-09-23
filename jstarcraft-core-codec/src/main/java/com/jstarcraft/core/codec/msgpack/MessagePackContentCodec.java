@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.Iterator;
 
+import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ public class MessagePackContentCodec implements ContentCodec {
 
     private final CodecDefinition codecDefinition;
     /** 类型转换器(基于Jackson) */
-    private final ObjectMapper typeConverter = new ObjectMapper();
+    private final ObjectMapper typeConverter = new ObjectMapper(new MessagePackFactory());
 
     public MessagePackContentCodec(CodecDefinition definition) {
         this.codecDefinition = definition;

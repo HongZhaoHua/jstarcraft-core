@@ -8,7 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
@@ -22,7 +22,7 @@ import com.jstarcraft.core.resource.exception.StorageException;
 public class JsonFormatAdapter implements FormatAdapter {
 
     /** 类型转换器(基于Jackson) */
-    private static final ObjectMapper TYPE_CONVERTER = new ObjectMapper();
+    private static final JsonMapper TYPE_CONVERTER = new JsonMapper();
 
     static {
         TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
