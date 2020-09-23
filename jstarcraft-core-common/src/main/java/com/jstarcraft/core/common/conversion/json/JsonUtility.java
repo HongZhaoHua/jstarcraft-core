@@ -92,11 +92,31 @@ public class JsonUtility {
         }
     }
 
+    /**
+     * Type转JavaType
+     * 
+     * <pre>
+     * TODO 准备转移到CodecUtility,TypeUtility或者JacksonUtility
+     * </pre>
+     * 
+     * @param type
+     * @return
+     */
     public static JavaType type2Java(Type type) {
         JavaType java = TYPE_FACTORY.constructType(type);
         return java;
     }
 
+    /**
+     * JavaType转Type
+     * 
+     * <pre>
+     * TODO 准备转移到CodecUtility,TypeUtility或者JacksonUtility
+     * </pre>
+     * 
+     * @param type
+     * @return
+     */
     public static Type java2Type(JavaType java) {
         Type type = null;
         if (java.isArrayType()) {
