@@ -84,7 +84,7 @@ public abstract class ContentCodecTestCase {
         testConvert(Date.class, date);
         Instant instant = Instant.ofEpochMilli(0L);
         testConvert(Instant.class, instant);
-        instant = Instant.now();
+        instant = Instant.ofEpochMilli(System.currentTimeMillis());
         testConvert(Instant.class, instant);
     }
 
