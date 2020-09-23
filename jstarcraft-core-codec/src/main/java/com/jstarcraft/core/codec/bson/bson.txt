@@ -1,0 +1,2 @@
+BSON for Jackson:
+https://github.com/michel-kraemer/bson4jackson
