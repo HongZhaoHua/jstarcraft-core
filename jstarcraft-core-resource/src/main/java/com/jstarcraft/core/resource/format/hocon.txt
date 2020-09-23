@@ -3,3 +3,6 @@ https://github.com/ustc-zzzz/HOCON-CN-Translation
 
 configuration library for JVM languages using HOCON files:
 https://github.com/lightbend/config
+
+Convert HOCON string into Java object:
+https://stackoverflow.com/questions/58288713/convert-hocon-string-into-java-object
