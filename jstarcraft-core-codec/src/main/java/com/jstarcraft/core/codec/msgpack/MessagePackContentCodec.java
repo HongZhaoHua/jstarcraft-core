@@ -31,6 +31,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.exception.CodecException;
+import com.jstarcraft.core.codec.jackson.BigDecimalJacksonDeserializer;
+import com.jstarcraft.core.codec.jackson.BigDecimalJacksonSerializer;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
@@ -94,6 +96,7 @@ public class MessagePackContentCodec implements ContentCodec {
                 }
             }
 
+            @Override
             public Type deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
                 ObjectCodec objectCodec = parser.getCodec();
                 JsonNode node = objectCodec.readTree(parser);
@@ -141,6 +144,7 @@ public class MessagePackContentCodec implements ContentCodec {
                 }
             }
 
+            @Override
             public void serialize(Type value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
                 generator.writeStartArray();
                 writeValueTo(generator, value);
@@ -148,28 +152,12 @@ public class MessagePackContentCodec implements ContentCodec {
             }
 
         };
-
-        JsonDeserializer<BigDecimal> bigDecimalDeserializer = new JsonDeserializer<BigDecimal>() {
-
-            public BigDecimal deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
-                return new BigDecimal(parser.getValueAsString());
-            }
-
-        };
-
-        JsonSerializer<BigDecimal> bigDecimalSerializer = new JsonSerializer<BigDecimal>() {
-
-            public void serialize(BigDecimal value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
-                generator.writeString(value.toString());
-            }
-
-        };
         JavaTimeModule module = new JavaTimeModule();
         typeConverter.registerModule(module);
         module.addDeserializer(Type.class, typeDeserializer);
         module.addSerializer(Type.class, typeSerializer);
-        module.addDeserializer(BigDecimal.class, bigDecimalDeserializer);
-        module.addSerializer(BigDecimal.class, bigDecimalSerializer);
+        module.addDeserializer(BigDecimal.class, new BigDecimalJacksonDeserializer());
+        module.addSerializer(BigDecimal.class, new BigDecimalJacksonSerializer());
     }
 
     @Override

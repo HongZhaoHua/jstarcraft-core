@@ -92,6 +92,7 @@ public class JsonContentCodec implements ContentCodec {
                 }
             }
 
+            @Override
             public Type deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
                 ObjectCodec objectCodec = parser.getCodec();
                 JsonNode node = objectCodec.readTree(parser);
@@ -139,6 +140,7 @@ public class JsonContentCodec implements ContentCodec {
                 }
             }
 
+            @Override
             public void serialize(Type value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
                 generator.writeStartArray();
                 writeValueTo(generator, value);
