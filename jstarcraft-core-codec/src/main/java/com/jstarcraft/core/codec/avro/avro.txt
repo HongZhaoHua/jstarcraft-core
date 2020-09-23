@@ -3,3 +3,6 @@ https://blog.csdn.net/cherlshall/article/details/98964706
 
 Apache Avro 序列化与反序列化 (Java 实现):
 https://blog.csdn.net/kypfos/article/details/54588985
+
+This project contains Jackson extension component for reading and writing data encoded using Apache Avro data format:
+https://github.com/FasterXML/jackson-dataformats-binary/tree/master/avro
