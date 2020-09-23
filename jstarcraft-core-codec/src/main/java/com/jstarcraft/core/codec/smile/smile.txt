@@ -1,0 +1,2 @@
+"Smile" is a binary data format that defines a binary equivalent of standard JSON data format:
+https://github.com/FasterXML/smile-format-specification
