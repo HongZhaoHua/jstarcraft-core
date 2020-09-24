@@ -19,7 +19,7 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.thrift.converter.ProtocolConverter;
+import com.jstarcraft.core.codec.thrift.converter.ThriftConverter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -68,7 +68,7 @@ public class ThriftContentCodec implements ContentCodec {
             }
             TIOStreamTransport transport = new TIOStreamTransport(stream);
             ThriftReader context = new ThriftReader(codecDefinition, protocolFactory.apply(transport));
-            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
@@ -101,7 +101,7 @@ public class ThriftContentCodec implements ContentCodec {
         try {
             TIOStreamTransport transport = new TIOStreamTransport(stream);
             ThriftWriter context = new ThriftWriter(codecDefinition, protocolFactory.apply(transport));
-            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {

@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @description
  *
  */
-public class ExceptionConverter extends ProtocolConverter<Object> {
+public class ExceptionConverter extends ThriftConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException {

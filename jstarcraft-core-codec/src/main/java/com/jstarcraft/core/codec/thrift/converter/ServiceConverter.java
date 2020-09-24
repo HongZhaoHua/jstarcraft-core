@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @description
  *
  */
-public class ServiceConverter extends ProtocolConverter<Object> {
+public class ServiceConverter extends ThriftConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException {

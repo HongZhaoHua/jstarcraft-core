@@ -18,7 +18,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @author Birdy
  *
  */
-public class InstantConverter extends ProtocolConverter<Object> {
+public class InstantConverter extends ThriftConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {

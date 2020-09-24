@@ -19,7 +19,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  *
  * @param <T>
  */
-public abstract class ProtocolConverter<T> {
+public abstract class ThriftConverter<T> {
 
     protected TProtocol protocol;
 

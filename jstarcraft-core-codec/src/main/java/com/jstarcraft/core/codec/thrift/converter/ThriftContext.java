@@ -15,9 +15,9 @@ import com.jstarcraft.core.common.reflection.Specification;
  * @author Birdy
  *
  */
-public abstract class ProtocolContext {
+public abstract class ThriftContext {
 
-    protected static final EnumMap<Specification, ProtocolConverter<?>> converters = new EnumMap<>(Specification.class);
+    protected static final EnumMap<Specification, ThriftConverter<?>> converters = new EnumMap<>(Specification.class);
 
     static {
         converters.put(Specification.ARRAY, new ArrayConverter());
@@ -52,12 +52,12 @@ public abstract class ProtocolContext {
     /** 读写上下文过程的字符串引用 */
     protected ThriftReference<String> stringReference = new ThriftReference<String>();
 
-    public ProtocolContext(CodecDefinition definition) {
+    public ThriftContext(CodecDefinition definition) {
         this.definition = definition;
     }
 
-    public ProtocolConverter getProtocolConverter(Specification specification) {
-        ProtocolConverter converter = converters.get(specification);
+    public ThriftConverter getProtocolConverter(Specification specification) {
+        ThriftConverter converter = converters.get(specification);
         converter.setProtocol(protocol);
         return converter;
     }

@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class CollectionConverter extends ProtocolConverter<Collection<?>> {
+public class CollectionConverter extends ThriftConverter<Collection<?>> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;
@@ -46,7 +46,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
-            ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
             for (int index = 0; index < size; index++) {
                 Object object = converter.readValueFrom(context, elementType, definition);
@@ -60,7 +60,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
             for (int index = 0; index < size; index++) {
                 int code = protocol.readI32();
                 definition = context.getClassDefinition(code);
-                ProtocolConverter converter = context.getProtocolConverter(definition.getSpecification());
+                ThriftConverter converter = context.getProtocolConverter(definition.getSpecification());
                 Object object = converter.readValueFrom(context, definition.getType(), definition);
                 collection.add(object);
             }
@@ -96,7 +96,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
                 for (Object object : value) {
                     definition = context.getClassDefinition(object == null ? void.class : object.getClass());
                     protocol.writeI32(definition.getCode());
-                    ProtocolConverter converter = context.getProtocolConverter(definition.getSpecification());
+                    ThriftConverter converter = context.getProtocolConverter(definition.getSpecification());
                     converter.writeValueTo(context, definition.getType(), definition, object);
                 }
             } else {
@@ -108,7 +108,7 @@ public class CollectionConverter extends ProtocolConverter<Collection<?>> {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type elementType = types[0];
-                ProtocolConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+                ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
                 definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
                 for (Object object : value) {
                     converter.writeValueTo(context, elementType, definition, object);

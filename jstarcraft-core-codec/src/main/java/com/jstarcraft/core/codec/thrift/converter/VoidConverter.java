@@ -13,7 +13,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @author Birdy
  *
  */
-public class VoidConverter extends ProtocolConverter<Object> {
+public class VoidConverter extends ThriftConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException {

@@ -21,7 +21,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Birdy
  *
  */
-public class TypeConverter extends ProtocolConverter<Type> {
+public class TypeConverter extends ThriftConverter<Type> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;

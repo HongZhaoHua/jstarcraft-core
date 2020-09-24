@@ -15,7 +15,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @author Birdy
  *
  */
-public class EnumerationConverter extends ProtocolConverter<Object> {
+public class EnumerationConverter extends ThriftConverter<Object> {
 
     /**
      * 空标记

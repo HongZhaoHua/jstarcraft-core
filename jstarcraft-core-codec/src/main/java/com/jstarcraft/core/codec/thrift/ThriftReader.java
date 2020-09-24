@@ -3,7 +3,7 @@ package com.jstarcraft.core.codec.thrift;
 import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.thrift.converter.ProtocolContext;
+import com.jstarcraft.core.codec.thrift.converter.ThriftContext;
 
 /**
  * 协议读入器
@@ -14,7 +14,7 @@ import com.jstarcraft.core.codec.thrift.converter.ProtocolContext;
  * 
  * @author Birdy
  */
-public class ThriftReader extends ProtocolContext {
+public class ThriftReader extends ThriftContext {
 
     public ThriftReader(CodecDefinition definition, TProtocol protocol) {
         super(definition);

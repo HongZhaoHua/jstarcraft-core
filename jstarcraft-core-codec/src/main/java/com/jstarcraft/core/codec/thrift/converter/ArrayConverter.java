@@ -15,7 +15,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Birdy
  *
  */
-public class ArrayConverter extends ProtocolConverter<Object> {
+public class ArrayConverter extends ThriftConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception {
@@ -24,7 +24,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
         clazz = clazz.getComponentType();
         Object value = Array.newInstance(clazz, _list0.size);
         Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-        ProtocolConverter converter = context.getProtocolConverter(specification);
+        ThriftConverter converter = context.getProtocolConverter(specification);
         for (int index = 0; index < _list0.size; index++) {
             Object object = converter.readValueFrom(context, clazz, definition);
             Array.set(value, index, object);
@@ -45,7 +45,7 @@ public class ArrayConverter extends ProtocolConverter<Object> {
         } else {
             specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
         }
-        ProtocolConverter converter = context.getProtocolConverter(specification);
+        ThriftConverter converter = context.getProtocolConverter(specification);
         for (int index = 0; index < length; index++) {
             Object object = Array.get(value, index);
             definition = context.getClassDefinition(object == null ? clazz : object.getClass());

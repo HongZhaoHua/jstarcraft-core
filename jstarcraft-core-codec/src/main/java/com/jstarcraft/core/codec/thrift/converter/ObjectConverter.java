@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ObjectConverter extends ProtocolConverter<Object> {
+public class ObjectConverter extends ThriftConverter<Object> {
 
     /**
      * 空标记
@@ -44,7 +44,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
         for (int index = 0; index < properties.length; index++) {
             PropertyDefinition property = properties[index];
             protocol.readFieldBegin();
-            ProtocolConverter converter = context.getProtocolConverter(property.getSpecification());
+            ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
             definition = context.getClassDefinition(property.getCode());
             Object value = converter.readValueFrom(context, property.getType(), definition);
             try {
@@ -86,7 +86,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
             protocol.writeFieldBegin(new TField(property.getName(), context.getThriftType(property.getType()), (short) (index + 1)));
             Object object;
             try {
-                ProtocolConverter converter = context.getProtocolConverter(property.getSpecification());
+                ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
                 definition = context.getClassDefinition(property.getCode());
                 object = property.getValue(value);
                 converter.writeValueTo(context, property.getType(), definition, object);

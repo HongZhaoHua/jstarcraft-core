@@ -21,7 +21,7 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
  * @author Birdy
  *
  */
-public class NumberConverter extends ProtocolConverter<Number> {
+public class NumberConverter extends ThriftConverter<Number> {
 
     /**
      * 空标记

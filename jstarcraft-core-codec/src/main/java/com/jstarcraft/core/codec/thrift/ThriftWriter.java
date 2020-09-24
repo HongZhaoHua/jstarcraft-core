@@ -12,7 +12,7 @@ import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.thrift.converter.ProtocolContext;
+import com.jstarcraft.core.codec.thrift.converter.ThriftContext;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
@@ -24,7 +24,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * 
  * @author Birdy
  */
-public class ThriftWriter extends ProtocolContext {
+public class ThriftWriter extends ThriftContext {
 
     private static Map<Class, Byte> typeReference = new HashMap<>();
 

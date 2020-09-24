@@ -19,7 +19,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
+public class MapConverter extends ThriftConverter<Map<Object, Object>> {
 
     /** 0000 0000(Null标记) */
     private static final byte NULL_MARK = (byte) 0x00;
@@ -44,15 +44,15 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
             int size = protocol.readI32();
             Map map = (Map) definition.getInstance();
             context.putMapValue(map);
-            ProtocolConverter converter = context.getProtocolConverter(Specification.TYPE);
+            ThriftConverter converter = context.getProtocolConverter(Specification.TYPE);
 
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
             Type valueType = types[1];
 
-            ProtocolConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-            ProtocolConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+            ThriftConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
+            ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
             for (int index = 0; index < size; index++) {
@@ -71,11 +71,11 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
                 code = protocol.readI32();
                 definition = context.getClassDefinition(code);
                 Type keyType = definition.getType();
-                ProtocolConverter keyConverter = context.getProtocolConverter(definition.getSpecification());
+                ThriftConverter keyConverter = context.getProtocolConverter(definition.getSpecification());
                 code = protocol.readI32();
                 definition = context.getClassDefinition(code);
                 Type valueType = definition.getType();
-                ProtocolConverter valueConverter = context.getProtocolConverter(definition.getSpecification());
+                ThriftConverter valueConverter = context.getProtocolConverter(definition.getSpecification());
                 ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 Object key = keyConverter.readValueFrom(context, keyType, keyDefinition);
@@ -116,10 +116,10 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
                 for (Entry<Object, Object> keyValue : value.entrySet()) {
                     ClassDefinition keyDefinition = context.getClassDefinition(keyValue.getKey().getClass());
                     protocol.writeI32(keyDefinition.getCode());
-                    ProtocolConverter keyConverter = context.getProtocolConverter(keyDefinition.getSpecification());
+                    ThriftConverter keyConverter = context.getProtocolConverter(keyDefinition.getSpecification());
                     ClassDefinition valueDefinition = context.getClassDefinition(keyValue.getValue() == null ? void.class : keyValue.getValue().getClass());
                     protocol.writeI32(valueDefinition.getCode());
-                    ProtocolConverter valueConverter = context.getProtocolConverter(valueDefinition.getSpecification());
+                    ThriftConverter valueConverter = context.getProtocolConverter(valueDefinition.getSpecification());
                     keyConverter.writeValueTo(context, keyValue.getKey().getClass(), keyDefinition, keyValue.getKey());
                     valueConverter.writeValueTo(context, keyValue.getValue() == null ? void.class : keyValue.getValue().getClass(), valueDefinition, keyValue.getValue());
                 }
@@ -134,8 +134,8 @@ public class MapConverter extends ProtocolConverter<Map<Object, Object>> {
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type keyType = types[0];
                 Type valueType = types[1];
-                ProtocolConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-                ProtocolConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+                ThriftConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
+                ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
                 ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 for (Entry<Object, Object> keyValue : value.entrySet()) {
