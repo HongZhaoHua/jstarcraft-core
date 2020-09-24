@@ -11,7 +11,8 @@ package com.jstarcraft.core.codec.thrift;
 public enum ThriftEnumeration implements org.apache.thrift.TEnum {
   PROTOSS(0),
   TERRAN(1),
-  ZERG(2);
+  ZERG(2),
+  RANDOM(3);
 
   private final int value;
 
@@ -39,6 +40,8 @@ public enum ThriftEnumeration implements org.apache.thrift.TEnum {
         return TERRAN;
       case 2:
         return ZERG;
+      case 3:
+        return RANDOM;
       default:
         return null;
     }

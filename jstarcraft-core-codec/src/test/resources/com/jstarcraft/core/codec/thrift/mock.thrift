@@ -4,6 +4,7 @@ enum ThriftEnumeration {
     PROTOSS = 0,
     TERRAN = 1,
     ZERG = 2,
+    RANDOM = 3,
 }
 
 struct ThriftComplexObject {

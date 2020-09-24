@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.function.Function;
 
-import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TIOStreamTransport;
 import org.apache.thrift.transport.TTransport;
@@ -37,13 +36,9 @@ public class ThriftContentCodec implements ContentCodec {
 
     private Function<TTransport, TProtocol> protocolFactory;
 
-    public ThriftContentCodec(CodecDefinition codecDefinition) {
-        this(codecDefinition, TBinaryProtocol::new);
-    }
-
-    public ThriftContentCodec(CodecDefinition codecDefinition, Function<TTransport, TProtocol> factory) {
+    public ThriftContentCodec(CodecDefinition codecDefinition, Function<TTransport, TProtocol> protocolFactory) {
         this.codecDefinition = codecDefinition;
-        this.protocolFactory = factory;
+        this.protocolFactory = protocolFactory;
     }
 
     @Override
