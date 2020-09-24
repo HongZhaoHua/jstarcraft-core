@@ -16,27 +16,22 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  */
 public class EnumerationConverter extends ThriftConverter<Object> {
 
-    /**
-     * 空标记
-     */
-    private static final byte NULL = 0;
-
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        int value = protocol.readI32();
-        if (value == NULL) {
+        int ordinal = protocol.readI32();
+        if (ordinal == 0) {
             return null;
         }
         Class<?> clazz = definition.getType();
-        return clazz.getEnumConstants()[value - 1];
+        return clazz.getEnumConstants()[ordinal - 1];
     }
 
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
         if (value == null) {
-            protocol.writeI32(NULL);
+            protocol.writeI32(0);
             return;
         }
         Enum<?> enumeration = (Enum<?>) value;
