@@ -1,13 +1,21 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TType;
 
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReference;
 import com.jstarcraft.core.common.reflection.Specification;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * 协议上下文
@@ -15,7 +23,7 @@ import com.jstarcraft.core.common.reflection.Specification;
  * @author Birdy
  *
  */
-public abstract class ThriftContext {
+public class ThriftContext {
 
     protected static final EnumMap<Specification, ThriftConverter<?>> converters = new EnumMap<>(Specification.class);
 
@@ -31,34 +39,48 @@ public abstract class ThriftContext {
         converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.TYPE, new TypeConverter());
         converters.put(Specification.VOID, new VoidConverter());
-        // 暂时无用,且无相关key
-        // converters.put(Specification.OBJECT, new ExceptionConverter());
-        // converters.put(Specification.OBJECT, new ServiceConverter());
+    }
+
+    private static Map<Class, Byte> typeReference = new HashMap<>();
+
+    static {
+        // typeReference.put(STOP.class, TType.STOP);
+        typeReference.put(Void.class, TType.VOID);
+        typeReference.put(void.class, TType.VOID);
+        typeReference.put(Boolean.class, TType.BOOL);
+        typeReference.put(boolean.class, TType.BOOL);
+        typeReference.put(Byte.class, TType.BYTE);
+        typeReference.put(byte.class, TType.BYTE);
+        typeReference.put(Double.class, TType.DOUBLE);
+        typeReference.put(double.class, TType.DOUBLE);
+        typeReference.put(Short.class, TType.I16);
+        typeReference.put(short.class, TType.I16);
+        typeReference.put(Integer.class, TType.I32);
+        typeReference.put(int.class, TType.I32);
+        typeReference.put(Long.class, TType.I64);
+        typeReference.put(long.class, TType.I64);
+        typeReference.put(String.class, TType.STRING);
+        // typeReference.put(Struct.class,TType.STRUCT);
+        typeReference.put(Map.class, TType.MAP);
+        typeReference.put(Set.class, TType.SET);
+        typeReference.put(List.class, TType.LIST);
+        typeReference.put(Collection.class, TType.LIST);
+        typeReference.put(Object.class, TType.STRUCT);
+        typeReference.put(Enum.class, TType.ENUM);
     }
 
     /** 协议定义 */
     private final CodecDefinition definition;
 
-    protected TProtocol protocol;
+    private final TProtocol protocol;
 
-    /** 读写上下文过程的数组引用 */
-    protected ThriftReference<Object> arrayReference = new ThriftReference<Object>();
-    /** 读写上下文过程的集合引用 */
-    protected ThriftReference<Object> collectionReference = new ThriftReference<Object>();
-    /** 读写上下文过程的映射引用 */
-    protected ThriftReference<Object> mapReference = new ThriftReference<Object>();
-    /** 读写上下文过程的对象引用 */
-    protected ThriftReference<Object> objectReference = new ThriftReference<Object>();
-    /** 读写上下文过程的字符串引用 */
-    protected ThriftReference<String> stringReference = new ThriftReference<String>();
-
-    public ThriftContext(CodecDefinition definition) {
+    public ThriftContext(CodecDefinition definition, TProtocol protocol) {
         this.definition = definition;
+        this.protocol = protocol;
     }
 
     public ThriftConverter getProtocolConverter(Specification specification) {
         ThriftConverter converter = converters.get(specification);
-        converter.setProtocol(protocol);
         return converter;
     }
 
@@ -70,64 +92,24 @@ public abstract class ThriftContext {
         return definition.getClassDefinition(clazz);
     }
 
-    protected Object getArrayValue(int index) {
-        return arrayReference.getValue(index);
+    public TProtocol getProtocol() {
+        return protocol;
     }
 
-    protected int getArrayIndex(Object value) {
-        return arrayReference.getIndex(value);
-    }
-
-    protected int putArrayValue(Object value) {
-        return arrayReference.putValue(value);
-    }
-
-    protected Object getCollectionValue(int index) {
-        return collectionReference.getValue(index);
-    }
-
-    protected int getCollectionIndex(Object value) {
-        return collectionReference.getIndex(value);
-    }
-
-    protected int putCollectionValue(Object value) {
-        return collectionReference.putValue(value);
-    }
-
-    protected Object getMapValue(int index) {
-        return mapReference.getValue(index);
-    }
-
-    protected int getMapIndex(Object value) {
-        return mapReference.getIndex(value);
-    }
-
-    protected int putMapValue(Object value) {
-        return mapReference.putValue(value);
-    }
-
-    protected Object getObjectValue(int index) {
-        return objectReference.getValue(index);
-    }
-
-    protected int getObjectIndex(Object value) {
-        return objectReference.getIndex(value);
-    }
-
-    protected int putObjectValue(Object value) {
-        return objectReference.putValue(value);
-    }
-
-    protected String getStringValue(int index) {
-        return stringReference.getValue(index);
-    }
-
-    protected int getStringIndex(String value) {
-        return stringReference.getIndex(value);
-    }
-
-    protected int putStringValue(String value) {
-        return stringReference.putValue(value);
+    @Deprecated
+    // TODO 考虑重构
+    public byte getThriftType(Type type) {
+        Class<?> clazz = TypeUtility.getRawType(type, null);
+        if (clazz.isArray()) {
+            return TType.LIST;
+        }
+        if (type.getClass().getClassLoader() == null) {
+            return TType.STRUCT;
+        }
+        if (!typeReference.containsKey(type)) {
+            throw new CodecConvertionException();
+        }
+        return typeReference.get(type);
     }
 
 }

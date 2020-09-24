@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 字符串转换器
@@ -27,7 +26,8 @@ public class StringConverter extends ThriftConverter<Object> {
     private static final byte NOT_NULL = 0;
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         byte nil = protocol.readByte();
         String value = protocol.readString();
         if (nil == NULL) {
@@ -41,7 +41,8 @@ public class StringConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         if (value == null) {
             protocol.writeByte(NULL);
         } else {

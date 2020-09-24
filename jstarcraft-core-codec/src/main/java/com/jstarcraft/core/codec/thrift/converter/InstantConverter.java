@@ -6,11 +6,10 @@ import java.time.Instant;
 import java.util.Date;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 时间转换器
@@ -21,7 +20,8 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
 public class InstantConverter extends ThriftConverter<Object> {
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         long time = protocol.readI64();
         if (type == Date.class) {
             return new Date(time);
@@ -32,7 +32,8 @@ public class InstantConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         if (value == null) {
             protocol.writeI64(0);
             return;

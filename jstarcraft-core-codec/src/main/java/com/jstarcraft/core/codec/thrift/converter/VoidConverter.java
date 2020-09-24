@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * Void转换器
@@ -16,12 +14,12 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
 public class VoidConverter extends ThriftConverter<Object> {
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException {
         return null;
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException {
 
     }
 

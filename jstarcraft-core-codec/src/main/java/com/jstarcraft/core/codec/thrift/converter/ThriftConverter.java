@@ -2,34 +2,16 @@ package com.jstarcraft.core.codec.thrift.converter;
 
 import java.lang.reflect.Type;
 
-import org.apache.thrift.protocol.TProtocol;
-
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 协议转换器
- * 
- * <pre>
- * 参考ProtocolBuffer协议与ASF3协议
- * </pre>
  * 
  * @author Birdy
  *
  * @param <T>
  */
 public abstract class ThriftConverter<T> {
-
-    protected TProtocol protocol;
-
-    public TProtocol getProtocol() {
-        return this.protocol;
-    }
-
-    public void setProtocol(TProtocol protocol) {
-        this.protocol = protocol;
-    }
 
     /**
      * 从指定上下文读取内容
@@ -40,7 +22,7 @@ public abstract class ThriftConverter<T> {
      * @throws Exception
      * @return
      */
-    abstract public T readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception;
+    abstract public T readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception;
 
     /**
      * 将指定内容写到上下文
@@ -49,7 +31,7 @@ public abstract class ThriftConverter<T> {
      * @param value
      * @throws Exception
      */
-    abstract public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, T value) throws Exception;
+    abstract public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, T value) throws Exception;
 
     /** 1111 0000(类型掩码) */
     public static final byte TYPE_MASK = (byte) 0xF0;

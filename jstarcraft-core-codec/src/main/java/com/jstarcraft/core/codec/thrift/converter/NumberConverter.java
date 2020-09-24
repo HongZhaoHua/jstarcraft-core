@@ -9,11 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 数值转换器
@@ -33,7 +32,8 @@ public class NumberConverter extends ThriftConverter<Number> {
     private static final byte NOT_NULL = 0;
 
     @Override
-    public Number readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException, ParseException {
+    public Number readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException, ParseException {
+        TProtocol protocol = context.getProtocol();
         // 获取空标记
         byte nil = protocol.readByte();
         if (nil == NULL) {
@@ -78,7 +78,8 @@ public class NumberConverter extends ThriftConverter<Number> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Number value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Number value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         if (value == null) {
             protocol.writeByte(NULL);
             protocol.writeByte((byte) 0);

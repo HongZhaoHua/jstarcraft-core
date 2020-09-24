@@ -5,10 +5,9 @@ import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 布尔转换器
@@ -19,7 +18,8 @@ import com.jstarcraft.core.codec.thrift.ThriftWriter;
 public class BooleanConverter extends ThriftConverter<Object> {
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         boolean value = protocol.readBool();
         if (type == AtomicBoolean.class) {
             return new AtomicBoolean(value);
@@ -28,7 +28,8 @@ public class BooleanConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         protocol.writeBool(Boolean.valueOf(String.valueOf(value)));
     }
 

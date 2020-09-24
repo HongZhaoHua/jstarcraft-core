@@ -7,11 +7,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -36,7 +35,8 @@ public class TypeConverter extends ThriftConverter<Type> {
     private static final byte GENERIC_MARK = (byte) 0x03;
 
     @Override
-    public Type readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Type readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         byte information = protocol.readByte();
         byte mark = getMark(information);
         if (mark == NULL_MARK) {
@@ -70,7 +70,8 @@ public class TypeConverter extends ThriftConverter<Type> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Type value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         byte information = ClassDefinition.getMark(Specification.TYPE);
         if (value == null) {
             protocol.writeByte(information);

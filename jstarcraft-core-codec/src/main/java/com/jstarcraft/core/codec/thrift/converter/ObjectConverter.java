@@ -3,13 +3,12 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.Type;
 
 import org.apache.thrift.protocol.TField;
+import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TStruct;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -30,7 +29,8 @@ public class ObjectConverter extends ThriftConverter<Object> {
     private static final byte NOT_NULL = 0;
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
+        TProtocol protocol = context.getProtocol();
         byte nil = protocol.readByte();
         protocol.readStructBegin();
         PropertyDefinition[] properties = definition.getProperties();
@@ -65,7 +65,8 @@ public class ObjectConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
+        TProtocol protocol = context.getProtocol();
         if (value == null) {
             protocol.writeByte(NULL);
         } else {

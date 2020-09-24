@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 枚举转换器
@@ -23,7 +22,8 @@ public class EnumerationConverter extends ThriftConverter<Object> {
     private static final byte NULL = 0;
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         int value = protocol.readI32();
         if (value == NULL) {
             return null;
@@ -33,7 +33,8 @@ public class EnumerationConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+        TProtocol protocol = context.getProtocol();
         if (value == null) {
             protocol.writeI32(NULL);
             return;

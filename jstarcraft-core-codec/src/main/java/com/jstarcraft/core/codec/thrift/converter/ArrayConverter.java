@@ -3,9 +3,10 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
+import org.apache.thrift.protocol.TList;
+import org.apache.thrift.protocol.TProtocol;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -18,8 +19,9 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
 public class ArrayConverter extends ThriftConverter<Object> {
 
     @Override
-    public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception {
-        org.apache.thrift.protocol.TList _list0 = protocol.readListBegin();
+    public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
+        TProtocol protocol = context.getProtocol();
+        TList _list0 = protocol.readListBegin();
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
         Object value = Array.newInstance(clazz, _list0.size);
@@ -34,7 +36,8 @@ public class ArrayConverter extends ThriftConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
+        TProtocol protocol = context.getProtocol();
         int length = value == null ? 0 : Array.getLength(value);
         protocol.writeListBegin(new org.apache.thrift.protocol.TList(context.getThriftType(type), length));
         Class<?> clazz = TypeUtility.getRawType(type, null);

@@ -4,10 +4,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import org.apache.thrift.protocol.TProtocol;
+
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
@@ -29,11 +29,9 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
     /** 0000 0002(隐式标记) */
     private static final byte IMPLICIT_MARK = (byte) 0x02;
 
-    /** 0000 0003(引用标记) */
-    private static final byte REFERENCE_MARK = (byte) 0x03;
-
     @Override
-    public Collection<?> readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception {
+    public Collection<?> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
+        TProtocol protocol = context.getProtocol();
         byte information = protocol.readByte();
         byte mark = getMark(information);
         if (mark == NULL_MARK) {
@@ -42,7 +40,6 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
         if (mark == EXPLICIT_MARK) {
             int size = protocol.readI32();
             Collection collection = (Collection) definition.getInstance();
-            context.putCollectionValue(collection);
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
@@ -56,7 +53,6 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
         } else if (mark == IMPLICIT_MARK) {
             int size = protocol.readI32();
             Collection collection = (Collection) definition.getInstance();
-            context.putCollectionValue(collection);
             for (int index = 0; index < size; index++) {
                 int code = protocol.readI32();
                 definition = context.getClassDefinition(code);
@@ -65,54 +61,42 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
                 collection.add(object);
             }
             return collection;
-        } else if (mark == REFERENCE_MARK) {
-            int reference = protocol.readI32();
-            Collection collection = (Collection) context.getCollectionValue(reference);
-            return collection;
         }
         String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
         throw new CodecConvertionException(message);
     }
 
     @Override
-    public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
+        TProtocol protocol = context.getProtocol();
         byte information = ClassDefinition.getMark(Specification.COLLECTION);
         if (value == null) {
             protocol.writeByte(information);
             return;
         }
-        int reference = context.getCollectionIndex(value);
-        if (reference != -1) {
-            information |= REFERENCE_MARK;
+        if (type instanceof Class) {
+            information |= IMPLICIT_MARK;
             protocol.writeByte(information);
-            protocol.writeI32(reference);
+            int size = value.size();
+            protocol.writeI32(size);
+            for (Object object : value) {
+                definition = context.getClassDefinition(object == null ? void.class : object.getClass());
+                protocol.writeI32(definition.getCode());
+                ThriftConverter converter = context.getProtocolConverter(definition.getSpecification());
+                converter.writeValueTo(context, definition.getType(), definition, object);
+            }
         } else {
-            if (type instanceof Class) {
-                information |= IMPLICIT_MARK;
-                context.putCollectionValue(value);
-                protocol.writeByte(information);
-                int size = value.size();
-                protocol.writeI32(size);
-                for (Object object : value) {
-                    definition = context.getClassDefinition(object == null ? void.class : object.getClass());
-                    protocol.writeI32(definition.getCode());
-                    ThriftConverter converter = context.getProtocolConverter(definition.getSpecification());
-                    converter.writeValueTo(context, definition.getType(), definition, object);
-                }
-            } else {
-                information |= EXPLICIT_MARK;
-                context.putCollectionValue(value);
-                protocol.writeByte(information);
-                int size = value.size();
-                protocol.writeI32(size);
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                Type[] types = parameterizedType.getActualTypeArguments();
-                Type elementType = types[0];
-                ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
-                definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
-                for (Object object : value) {
-                    converter.writeValueTo(context, elementType, definition, object);
-                }
+            information |= EXPLICIT_MARK;
+            protocol.writeByte(information);
+            int size = value.size();
+            protocol.writeI32(size);
+            ParameterizedType parameterizedType = (ParameterizedType) type;
+            Type[] types = parameterizedType.getActualTypeArguments();
+            Type elementType = types[0];
+            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+            definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
+            for (Object object : value) {
+                converter.writeValueTo(context, elementType, definition, object);
             }
         }
     }
