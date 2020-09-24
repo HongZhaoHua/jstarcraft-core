@@ -30,7 +30,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  */
 public class ThriftContentCodec implements ContentCodec {
 
-    private static final Logger log = LoggerFactory.getLogger(ThriftContentCodec.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ThriftContentCodec.class);
 
     private CodecDefinition codecDefinition;
 
@@ -50,7 +50,7 @@ public class ThriftContentCodec implements ContentCodec {
             return decode(type, byteArrayInputStream);
         } catch (Exception exception) {
             String message = "Thrift解码失败:" + exception.getMessage();
-            log.error(message, exception);
+            LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
     }
@@ -68,7 +68,7 @@ public class ThriftContentCodec implements ContentCodec {
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
             String message = "Thrift解码失败:" + exception.getMessage();
-            log.error(message, exception);
+            LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
     }
@@ -83,7 +83,7 @@ public class ThriftContentCodec implements ContentCodec {
             return byteArrayOutputStream.toByteArray();
         } catch (Exception exception) {
             String message = "Thrift编码失败:" + exception.getMessage();
-            log.error(message, exception);
+            LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
     }
@@ -101,7 +101,7 @@ public class ThriftContentCodec implements ContentCodec {
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {
             String message = "Thrift编码失败:" + exception.getMessage();
-            log.error(message, exception);
+            LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
     }

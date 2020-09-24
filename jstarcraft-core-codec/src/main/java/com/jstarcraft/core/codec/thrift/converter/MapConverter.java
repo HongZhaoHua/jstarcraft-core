@@ -42,12 +42,10 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             int size = protocol.readI32();
             Map map = (Map) definition.getInstance();
             ThriftConverter converter = context.getProtocolConverter(Specification.TYPE);
-
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
             Type valueType = types[1];
-
             ThriftConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
             ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
@@ -60,11 +58,9 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             return map;
         } else if (mark == IMPLICIT_MARK) {
             int size = protocol.readI32();
-            int code = protocol.readI32();
-            definition = context.getClassDefinition(code);
             Map map = (Map) definition.getInstance();
             for (int index = 0; index < size; index++) {
-                code = protocol.readI32();
+                int code = protocol.readI32();
                 definition = context.getClassDefinition(code);
                 Type keyType = definition.getType();
                 ThriftConverter keyConverter = context.getProtocolConverter(definition.getSpecification());
@@ -97,8 +93,6 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             protocol.writeByte(information);
             int size = value.size();
             protocol.writeI32(size);
-            int code = definition.getCode();
-            protocol.writeI32(code);
             for (Entry<Object, Object> keyValue : value.entrySet()) {
                 ClassDefinition keyDefinition = context.getClassDefinition(keyValue.getKey().getClass());
                 protocol.writeI32(keyDefinition.getCode());
