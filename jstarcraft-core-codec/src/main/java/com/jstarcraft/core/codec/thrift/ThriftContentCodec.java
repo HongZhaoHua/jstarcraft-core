@@ -1,8 +1,7 @@
 package com.jstarcraft.core.codec.thrift;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -52,8 +51,8 @@ public class ThriftContentCodec implements ContentCodec {
         if (content == null || content.length == 0) {
             return null;
         }
-        try {
-            return decode(type, nullInputStream());
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
+            return decode(type, byteArrayInputStream);
         } catch (Exception exception) {
             String message = "Thrift解码失败:" + exception.getMessage();
             log.error(message, exception);
@@ -84,8 +83,8 @@ public class ThriftContentCodec implements ContentCodec {
         if (content == null) {
             return new byte[] {};
         }
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
-            encode(type, content, dataOutputStream);
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            encode(type, content, byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();
         } catch (Exception exception) {
             String message = "Thrift编码失败:" + exception.getMessage();
@@ -110,20 +109,6 @@ public class ThriftContentCodec implements ContentCodec {
             log.error(message, exception);
             throw new CodecException(message, exception);
         }
-    }
-
-    /**
-     * 构建一个空的InputStream对象
-     * 
-     * @return
-     */
-    public static InputStream nullInputStream() {
-        return new InputStream() {
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-        };
     }
 
 }
