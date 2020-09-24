@@ -38,7 +38,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
             PropertyDefinition[] properties = definition.getProperties();
             while (true) {
                 TField field = protocol.readFieldBegin();
-                if (field.type == org.apache.thrift.protocol.TType.STOP) {
+                if (field.type == TType.STOP) {
                     break;
                 }
                 PropertyDefinition property = properties[field.id - 2];
@@ -53,6 +53,8 @@ public class ObjectConverter extends ThriftConverter<Object> {
                 }
                 protocol.readFieldEnd();
             }
+        } else {
+            protocol.readFieldBegin();
         }
         protocol.readStructEnd();
         return object;
@@ -74,7 +76,8 @@ public class ObjectConverter extends ThriftConverter<Object> {
                 try {
                     object = property.getValue(value);
                     if (object != null) {
-                        protocol.writeFieldBegin(new TField(property.getName(), context.getThriftType(property.getType()), (short) (index + 2)));
+                        TField field = new TField(property.getName(), context.getThriftType(property.getType()), (short) (index + 2));
+                        protocol.writeFieldBegin(field);
                         ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
                         definition = context.getClassDefinition(property.getCode());
                         converter.writeValueTo(context, property.getType(), definition, object);

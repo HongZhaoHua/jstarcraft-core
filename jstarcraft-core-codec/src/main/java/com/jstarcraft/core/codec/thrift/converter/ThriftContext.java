@@ -44,7 +44,6 @@ public class ThriftContext {
     private static Map<Class, Byte> typeReference = new HashMap<>();
 
     static {
-        // typeReference.put(STOP.class, TType.STOP);
         typeReference.put(Void.class, TType.VOID);
         typeReference.put(void.class, TType.VOID);
         typeReference.put(Boolean.class, TType.BOOL);
@@ -60,7 +59,6 @@ public class ThriftContext {
         typeReference.put(Long.class, TType.I64);
         typeReference.put(long.class, TType.I64);
         typeReference.put(String.class, TType.STRING);
-        // typeReference.put(Struct.class,TType.STRUCT);
         typeReference.put(Map.class, TType.MAP);
         typeReference.put(Set.class, TType.SET);
         typeReference.put(List.class, TType.LIST);
