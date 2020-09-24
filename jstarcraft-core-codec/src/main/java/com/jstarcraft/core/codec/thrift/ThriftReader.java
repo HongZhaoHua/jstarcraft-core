@@ -1,8 +1,9 @@
 package com.jstarcraft.core.codec.thrift;
 
+import org.apache.thrift.protocol.TProtocol;
+
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.thrift.converter.ProtocolContext;
-import org.apache.thrift.protocol.TProtocol;
 
 /**
  * 协议读入器
@@ -17,7 +18,7 @@ public class ThriftReader extends ProtocolContext {
 
     public ThriftReader(CodecDefinition definition, TProtocol protocol) {
         super(definition);
-        super.protocol=protocol;
+        super.protocol = protocol;
     }
 
 }

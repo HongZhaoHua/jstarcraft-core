@@ -1,11 +1,11 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
 
 /**
  * Void转换器

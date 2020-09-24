@@ -1,15 +1,13 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.LinkedList;
-import java.util.Optional;
 
 /**
  * 数组转换器
@@ -37,14 +35,14 @@ public class ArrayConverter extends ProtocolConverter<Object> {
 
     @Override
     public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
-        int length= value==null?0:Array.getLength(value);
-        protocol.writeListBegin(new org.apache.thrift.protocol.TList(context.getThriftType(type),length));
+        int length = value == null ? 0 : Array.getLength(value);
+        protocol.writeListBegin(new org.apache.thrift.protocol.TList(context.getThriftType(type), length));
         Class<?> clazz = TypeUtility.getRawType(type, null);
-        clazz=clazz.getComponentType();
+        clazz = clazz.getComponentType();
         Specification specification;
-        if(clazz==null){
-            specification=definition.getSpecification();
-        }else{
+        if (clazz == null) {
+            specification = definition.getSpecification();
+        } else {
             specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
         }
         ProtocolConverter converter = context.getProtocolConverter(specification);

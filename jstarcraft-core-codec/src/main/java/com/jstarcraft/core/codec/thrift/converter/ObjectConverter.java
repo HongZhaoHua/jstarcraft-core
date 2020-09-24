@@ -1,16 +1,16 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.lang.reflect.Type;
+
+import org.apache.thrift.protocol.TField;
+import org.apache.thrift.protocol.TStruct;
+
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.utility.StringUtility;
-import org.apache.thrift.protocol.TField;
-import org.apache.thrift.protocol.TStruct;
-import org.springframework.util.StringUtils;
-
-import java.lang.reflect.Type;
 
 /**
  * 对象转换器
@@ -23,15 +23,15 @@ public class ObjectConverter extends ProtocolConverter<Object> {
     /**
      * 空标记
      */
-    private static final byte NULL=1;
+    private static final byte NULL = 1;
     /**
      * 非空标记
      */
-    private static final byte NOT_NULL=0;
+    private static final byte NOT_NULL = 0;
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws Exception {
-        byte nil=protocol.readByte();
+        byte nil = protocol.readByte();
         protocol.readStructBegin();
         PropertyDefinition[] properties = definition.getProperties();
         Object object;
@@ -55,10 +55,10 @@ public class ObjectConverter extends ProtocolConverter<Object> {
             }
             protocol.readFieldEnd();
         }
-        //多读一次field,该属性类型为TType.STOP
+        // 多读一次field,该属性类型为TType.STOP
         protocol.readFieldBegin();
         protocol.readStructEnd();
-        if(nil==NULL){
+        if (nil == NULL) {
             return null;
         }
         return object;
@@ -66,14 +66,14 @@ public class ObjectConverter extends ProtocolConverter<Object> {
 
     @Override
     public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
-        if(value==null){
+        if (value == null) {
             protocol.writeByte(NULL);
-        }else{
+        } else {
             protocol.writeByte(NOT_NULL);
         }
         protocol.writeStructBegin(new TStruct(definition.getName()));
         PropertyDefinition[] properties = definition.getProperties();
-        if(value==null){
+        if (value == null) {
             try {
                 value = definition.getInstance();
             } catch (Exception exception) {
@@ -83,7 +83,7 @@ public class ObjectConverter extends ProtocolConverter<Object> {
         }
         for (int index = 0; index < properties.length; index++) {
             PropertyDefinition property = properties[index];
-            protocol.writeFieldBegin(new TField(property.getName(),context.getThriftType(property.getType()),(short)(index+1)));
+            protocol.writeFieldBegin(new TField(property.getName(), context.getThriftType(property.getType()), (short) (index + 1)));
             Object object;
             try {
                 ProtocolConverter converter = context.getProtocolConverter(property.getSpecification());

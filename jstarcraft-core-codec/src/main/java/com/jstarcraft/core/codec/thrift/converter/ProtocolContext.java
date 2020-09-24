@@ -1,12 +1,13 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.util.EnumMap;
+
+import org.apache.thrift.protocol.TProtocol;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReference;
 import com.jstarcraft.core.common.reflection.Specification;
-import org.apache.thrift.protocol.TProtocol;
-
-import java.util.EnumMap;
 
 /**
  * 协议上下文
@@ -30,9 +31,9 @@ public abstract class ProtocolContext {
         converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.TYPE, new TypeConverter());
         converters.put(Specification.VOID, new VoidConverter());
-        //暂时无用,且无相关key
-        //converters.put(Specification.OBJECT, new ExceptionConverter());
-        //converters.put(Specification.OBJECT, new ServiceConverter());
+        // 暂时无用,且无相关key
+        // converters.put(Specification.OBJECT, new ExceptionConverter());
+        // converters.put(Specification.OBJECT, new ServiceConverter());
     }
 
     /** 协议定义 */

@@ -1,11 +1,12 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.lang.reflect.Type;
+
+import org.apache.thrift.protocol.TProtocol;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
-import org.apache.thrift.protocol.TProtocol;
-
-import java.lang.reflect.Type;
 
 /**
  * 协议转换器
@@ -22,12 +23,12 @@ public abstract class ProtocolConverter<T> {
 
     protected TProtocol protocol;
 
-    public TProtocol getProtocol(){
+    public TProtocol getProtocol() {
         return this.protocol;
     }
 
-    public void setProtocol(TProtocol protocol){
-        this.protocol=protocol;
+    public void setProtocol(TProtocol protocol) {
+        this.protocol = protocol;
     }
 
     /**

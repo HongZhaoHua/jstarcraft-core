@@ -1,13 +1,14 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
-import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.thrift.ThriftReader;
-import com.jstarcraft.core.codec.thrift.ThriftWriter;
-import org.apache.thrift.TException;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.thrift.TException;
+
+import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.thrift.ThriftReader;
+import com.jstarcraft.core.codec.thrift.ThriftWriter;
 
 /**
  * 布尔转换器
@@ -19,8 +20,8 @@ public class BooleanConverter extends ProtocolConverter<Object> {
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
-        boolean value=protocol.readBool();
-        if(type== AtomicBoolean.class){
+        boolean value = protocol.readBool();
+        if (type == AtomicBoolean.class) {
             return new AtomicBoolean(value);
         }
         return value;

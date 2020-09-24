@@ -1,24 +1,16 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
+
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.codec.standard.converter.NumberConverter;
-import com.jstarcraft.core.codec.standard.converter.StandardConverter;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import org.apache.thrift.protocol.TSet;
-import org.apache.thrift.protocol.TType;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * 集合转换器

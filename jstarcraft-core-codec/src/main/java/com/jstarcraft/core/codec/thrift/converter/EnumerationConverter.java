@@ -1,12 +1,13 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
+import org.apache.thrift.TException;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.thrift.ThriftReader;
 import com.jstarcraft.core.codec.thrift.ThriftWriter;
-import org.apache.thrift.TException;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
 
 /**
  * 枚举转换器
@@ -19,12 +20,12 @@ public class EnumerationConverter extends ProtocolConverter<Object> {
     /**
      * 空标记
      */
-    private static final byte NULL=0;
+    private static final byte NULL = 0;
 
     @Override
     public Object readValueFrom(ThriftReader context, Type type, ClassDefinition definition) throws IOException, TException {
-        int value=protocol.readI32();
-        if(value==NULL){
+        int value = protocol.readI32();
+        if (value == NULL) {
             return null;
         }
         Class<?> clazz = definition.getType();
@@ -33,7 +34,7 @@ public class EnumerationConverter extends ProtocolConverter<Object> {
 
     @Override
     public void writeValueTo(ThriftWriter context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
-        if(value==null){
+        if (value == null) {
             protocol.writeI32(NULL);
             return;
         }
