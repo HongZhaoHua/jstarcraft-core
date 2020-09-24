@@ -44,12 +44,8 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
         }
         if (mark == EXPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
-//			int code = NumberConverter.readNumber(in).intValue();
-//			definition = context.getClassDefinition(code);
             Collection collection = (Collection) definition.getInstance();
             context.putCollectionValue(collection);
-//			ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.TYPE);
-//			Type elementType = (Type) converter.readValueFrom(context, Type.class, null);
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
@@ -62,8 +58,6 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
             return collection;
         } else if (mark == IMPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
-//			int code = NumberConverter.readNumber(in).intValue();
-//			definition = context.getClassDefinition(code);
             Collection collection = (Collection) definition.getInstance();
             context.putCollectionValue(collection);
             for (int index = 0; index < size; index++) {
