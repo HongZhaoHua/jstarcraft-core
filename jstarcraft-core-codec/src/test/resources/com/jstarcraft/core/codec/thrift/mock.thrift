@@ -1,12 +1,12 @@
 namespace java com.jstarcraft.core.codec.thrift
 
-enum MockEnumeration {
+enum ThriftEnumeration {
     PROTOSS = 0,
     TERRAN = 1,
     ZERG = 2,
 }
 
-struct MockComplexObject {
+struct ThriftComplexObject {
     1:i32 id,
     2:string firstName,
     3:string lastName,
@@ -14,18 +14,18 @@ struct MockComplexObject {
     5:i32 money,
     6:list<i32> currencies,
     7:i64 instant,
-    8:MockEnumeration race,
+    8:ThriftEnumeration race,
     9:list<i32> type,
-    10:list<MockSimpleObject> mockList,
-    11:map<i32, MockSimpleObject> mockMap,
+    10:list<ThriftSimpleObject> mockList,
+    11:map<i32, ThriftSimpleObject> mockMap,
 }
 
-struct MockSimpleObject {
+struct ThriftSimpleObject {
     1:i32 id,
     2:string name,
 }
 
-struct MockMatrix {
+struct ThriftMatrix {
     1:i32 rowSize,
     2:i32 columnSize,
     3:list<i32> rowPoints,
