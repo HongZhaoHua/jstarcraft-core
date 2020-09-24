@@ -25,10 +25,10 @@ public class ObjectConverter extends ThriftConverter<Object> {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
         protocol.readFieldBegin();
-        boolean nullable = protocol.readBool();
+        boolean mark = protocol.readBool();
         protocol.readFieldEnd();
         Object object = null;
-        if (!nullable) {
+        if (!mark) {
             try {
                 object = definition.getInstance();
             } catch (Exception exception) {
@@ -61,12 +61,12 @@ public class ObjectConverter extends ThriftConverter<Object> {
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
         TProtocol protocol = context.getProtocol();
-        boolean nullable = value == null;
+        boolean mark = value == null;
         protocol.writeStructBegin(new TStruct(definition.getName()));
-        protocol.writeFieldBegin(new TField("_nullable", TType.BOOL, (short) (1)));
-        protocol.writeBool(nullable);
+        protocol.writeFieldBegin(new TField("_mark", TType.BOOL, (short) (1)));
+        protocol.writeBool(mark);
         protocol.writeFieldEnd();
-        if (!nullable) {
+        if (!mark) {
             PropertyDefinition[] properties = definition.getProperties();
             for (int index = 0; index < properties.length; index++) {
                 PropertyDefinition property = properties[index];
