@@ -21,13 +21,14 @@ public class ArrayConverter extends ThriftConverter<Object> {
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        TList _list0 = protocol.readListBegin();
+        TList list = protocol.readListBegin();
+        int length = list.size;
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
-        Object value = Array.newInstance(clazz, _list0.size);
+        Object value = Array.newInstance(clazz, length);
         Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
         ThriftConverter converter = context.getProtocolConverter(specification);
-        for (int index = 0; index < _list0.size; index++) {
+        for (int index = 0; index < length; index++) {
             Object object = converter.readValueFrom(context, clazz, definition);
             Array.set(value, index, object);
         }
@@ -39,7 +40,7 @@ public class ArrayConverter extends ThriftConverter<Object> {
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
         TProtocol protocol = context.getProtocol();
         int length = value == null ? 0 : Array.getLength(value);
-        protocol.writeListBegin(new org.apache.thrift.protocol.TList(context.getThriftType(type), length));
+        protocol.writeListBegin(new TList(context.getThriftType(type), length));
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
         Specification specification;
