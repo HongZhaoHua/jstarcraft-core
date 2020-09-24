@@ -55,7 +55,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
             }
             protocol.readFieldEnd();
         }
-        // 多读一次field,该属性类型为TType.STOP
+        // 读TType.STOP
         protocol.readFieldBegin();
         protocol.readStructEnd();
         if (nil == NULL) {
@@ -97,6 +97,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
             }
             protocol.writeFieldEnd();
         }
+        // 写TType.STOP
         protocol.writeFieldStop();
         protocol.writeStructEnd();
     }
