@@ -7,16 +7,24 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.Period;
+import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -84,11 +92,18 @@ public enum Specification {
         type2Specifitions.put(String.class, Specification.STRING);
 
         // 日期时间规范
+        type2Specifitions.put(Calendar.class, Specification.INSTANT);
         type2Specifitions.put(Date.class, Specification.INSTANT);
+        type2Specifitions.put(Duration.class, Specification.INSTANT);
         type2Specifitions.put(Instant.class, Specification.INSTANT);
         type2Specifitions.put(LocalDate.class, Specification.INSTANT);
         type2Specifitions.put(LocalTime.class, Specification.INSTANT);
         type2Specifitions.put(LocalDateTime.class, Specification.INSTANT);
+        type2Specifitions.put(MonthDay.class, Specification.INSTANT);
+        type2Specifitions.put(OffsetTime.class, Specification.INSTANT);
+        type2Specifitions.put(OffsetDateTime.class, Specification.INSTANT);
+        type2Specifitions.put(Period.class, Specification.INSTANT);
+        type2Specifitions.put(YearMonth.class, Specification.INSTANT);
         type2Specifitions.put(ZonedDateTime.class, Specification.INSTANT);
         type2Specifitions.put(ZoneOffset.class, Specification.INSTANT);
 
@@ -130,8 +145,12 @@ public enum Specification {
         if (Map.class.isAssignableFrom(clazz)) {
             return Specification.MAP;
         }
-        Specification specification = type2Specifitions.get(clazz);
-        return specification != null ? specification : Specification.OBJECT;
+        for (Entry<Class<?>, Specification> keyValue : type2Specifitions.entrySet()) {
+            if (keyValue.getKey().isAssignableFrom(clazz)) {
+                return keyValue.getValue();
+            }
+        }
+        return Specification.OBJECT;
     }
 
 }
