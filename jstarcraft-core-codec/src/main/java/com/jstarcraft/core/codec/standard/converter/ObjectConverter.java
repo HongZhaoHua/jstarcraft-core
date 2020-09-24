@@ -38,7 +38,6 @@ public class ObjectConverter extends StandardConverter<Object> {
             return null;
         }
         if (mark == OBJECT_MARK) {
-            // #### 0000
             PropertyDefinition[] properties = definition.getProperties();
             Object object;
             try {
@@ -48,7 +47,6 @@ public class ObjectConverter extends StandardConverter<Object> {
                 throw new CodecConvertionException(message, exception);
             }
             context.putObjectValue(object);
-            // int length = PROPERTY_LIMIT & (byte) in.read();
             for (int index = 0; index < properties.length; index++) {
                 PropertyDefinition property = properties[index];
                 StandardConverter converter = context.getProtocolConverter(property.getSpecification());
@@ -91,18 +89,7 @@ public class ObjectConverter extends StandardConverter<Object> {
             information |= OBJECT_MARK;
             out.write(information);
             context.putObjectValue(value);
-
-            // int code = definition.getCode();
-            // NumberConverter.writeNumber(out, code);
             PropertyDefinition[] properties = definition.getProperties();
-            // int size = properties.size();
-            // if (size > PROPERTY_LIMIT) {
-            // String message = StringUtility.format("类型[{}]属性数量[{}]超过最大值[{}]",
-            // definition.getClass(), size, PROPERTY_LIMIT);
-            // throw new ProtocolConverterException(message, new
-            // RuntimeException(message));
-            // }
-            // out.write((byte) size);
             for (PropertyDefinition property : properties) {
                 Object object;
                 try {
