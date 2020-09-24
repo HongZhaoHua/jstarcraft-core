@@ -1,2 +1,0 @@
-spring框架的XML扩展特性：让spring加载和解析你自定义的XML文件:
-http://blog.csdn.net/aitangyong/article/details/23592789?utm_source=tuicool&utm_medium=referral

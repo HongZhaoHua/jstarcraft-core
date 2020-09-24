@@ -6,3 +6,10 @@ https://blog.csdn.net/baidu_22254181/category_8077995.html
 
 Thrift原理简析:
 https://www.iteye.com/blog/shift-alt-ctrl-1987416
+
+Apache Thrift系列详解(一) - 概述与入门
+https://blog.csdn.net/baidu_22254181/article/details/82814489
+Apache Thrift系列详解(二) - 网络服务模型
+https://blog.csdn.net/baidu_22254181/article/details/82814498
+Apache Thrift系列详解(三) - 序列化机制
+https://blog.csdn.net/baidu_22254181/article/details/82814508

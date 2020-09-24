@@ -103,8 +103,6 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
                 out.write(information);
                 int size = value.size();
                 NumberConverter.writeNumber(out, size);
-//				int code = definition.getCode();
-//				NumberConverter.writeNumber(out, code);
                 for (Object object : value) {
                     definition = context.getClassDefinition(object == null ? void.class : object.getClass());
                     NumberConverter.writeNumber(out, definition.getCode());
@@ -117,13 +115,9 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
                 out.write(information);
                 int size = value.size();
                 NumberConverter.writeNumber(out, size);
-//				int code = definition.getCode();
-//				NumberConverter.writeNumber(out, code);
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type elementType = types[0];
-//				ProtocolConverter converter = context.getProtocolConverter(CodecSpecification.TYPE);
-//				converter.writeValueTo(context, Type.class, null, elementType);
                 StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
                 definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
                 for (Object object : value) {
