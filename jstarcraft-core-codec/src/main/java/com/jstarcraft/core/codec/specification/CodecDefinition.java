@@ -37,10 +37,12 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 public class CodecDefinition {
 
     private static final Comparator<Type> typeComparator = new Comparator<Type>() {
+
         @Override
         public int compare(Type left, Type right) {
             return left.getTypeName().compareTo(right.getTypeName());
         }
+
     };
 
     /** 代号管理器 */
