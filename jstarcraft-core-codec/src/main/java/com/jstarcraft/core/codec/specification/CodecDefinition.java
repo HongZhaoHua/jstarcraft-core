@@ -25,7 +25,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.jstarcraft.core.codec.exception.CodecDefinitionException;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.common.reflection.Specification;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -169,7 +168,6 @@ public class CodecDefinition {
         CodecDefinition definition = new CodecDefinition();
         // 遍历与排序所有依赖的类型
         TreeSet<Class<?>> classes = new TreeSet<>(typeComparator);
-        classes.addAll(Specification.type2Specifitions.keySet());
         for (Type type : types) {
             findDependentClasses(type, classes);
         }

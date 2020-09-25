@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
@@ -53,6 +55,49 @@ public abstract class ContentCodecTestCase {
 
     {
         Collection<Type> protocolClasses = new LinkedList<>();
+        // 布尔规范
+        protocolClasses.add(AtomicBoolean.class);
+        protocolClasses.add(boolean.class);
+        protocolClasses.add(Boolean.class);
+
+        // 数值规范
+        protocolClasses.add(AtomicInteger.class);
+        protocolClasses.add(AtomicLong.class);
+        protocolClasses.add(byte.class);
+        protocolClasses.add(short.class);
+        protocolClasses.add(int.class);
+        protocolClasses.add(long.class);
+        protocolClasses.add(float.class);
+        protocolClasses.add(double.class);
+        protocolClasses.add(Byte.class);
+        protocolClasses.add(Short.class);
+        protocolClasses.add(Integer.class);
+        protocolClasses.add(Long.class);
+        protocolClasses.add(Float.class);
+        protocolClasses.add(Double.class);
+        protocolClasses.add(BigInteger.class);
+        protocolClasses.add(BigDecimal.class);
+
+        // 字符规范
+        protocolClasses.add(char.class);
+        protocolClasses.add(Character.class);
+        protocolClasses.add(String.class);
+
+        // 日期时间规范
+        protocolClasses.add(Date.class);
+        protocolClasses.add(Instant.class);
+
+        // 类型规范
+        protocolClasses.add(Class.class);
+        protocolClasses.add(GenericArrayType.class);
+        protocolClasses.add(ParameterizedType.class);
+        protocolClasses.add(TypeVariable.class);
+        protocolClasses.add(WildcardType.class);
+
+        // 未知规范
+        protocolClasses.add(void.class);
+        protocolClasses.add(Void.class);
+
         protocolClasses.add(Object.class);
         protocolClasses.add(MockComplexObject.class);
         protocolClasses.add(MockEnumeration.class);
@@ -375,7 +420,7 @@ public abstract class ContentCodecTestCase {
         logger.debug(message);
 
         Instant now = null;
-        int times = 100000;
+        int times = 1000;
         now = Instant.now();
         for (int index = 0; index < times; index++) {
             contentCodec.encode(type, instance);
@@ -391,21 +436,10 @@ public abstract class ContentCodecTestCase {
 
     @Test
     public void testPerformance() {
-        Collection<Type> protocolClasses = new LinkedList<>();
-        protocolClasses.add(MockComplexObject.class);
-        protocolClasses.add(MockEnumeration.class);
-        protocolClasses.add(MockSimpleObject.class);
-
-        protocolClasses.add(ArrayList.class);
-        protocolClasses.add(HashSet.class);
-        protocolClasses.add(TreeSet.class);
-        CodecDefinition definition = CodecDefinition.instanceOf(protocolClasses);
-        ContentCodec contentCodec = this.getContentCodec(definition);
-
         String message = StringUtility.format("[{}]编解码性能测试", contentCodec.getClass().getName());
         logger.debug(message);
 
-        int size = 100;
+        int size = 1000;
 
         Type type = MockComplexObject.class;
         Object instance = MockComplexObject.instanceOf(Integer.MAX_VALUE, "birdy", "hong", size, Instant.now(), MockEnumeration.TERRAN);

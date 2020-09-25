@@ -164,10 +164,6 @@ public class LuceneContext {
         this.storeKeyValues = new HashMap<>();
         for (CodecDefinition codecDefinition : definitions) {
             for (ClassDefinition classDefinition : codecDefinition.getClassDefinitions()) {
-                // 预定义的规范类型不需要分析
-                if (Specification.type2Specifitions.containsKey(classDefinition.getType())) {
-                    continue;
-                }
                 parse(classDefinition);
             }
         }
