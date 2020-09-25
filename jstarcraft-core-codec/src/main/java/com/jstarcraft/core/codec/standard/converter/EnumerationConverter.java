@@ -27,9 +27,6 @@ public class EnumerationConverter extends StandardConverter<Object> {
         if (ordinal == NULL_MARK) {
             return null;
         }
-        // byte information = (byte) in.read();
-        // int code = NumberConverter.readNumber(in).intValue();
-
         Class<?> clazz = definition.getType();
         return clazz.getEnumConstants()[ordinal - 1];
     }
@@ -41,15 +38,8 @@ public class EnumerationConverter extends StandardConverter<Object> {
             out.write(NULL_MARK);
             return;
         }
-        // byte information = CodecSpecification.ENUMERATION.getCode();
-        // out.write(information);
         Enum<?> enumeration = (Enum<?>) value;
-        // Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>)
-        // enumeration.getClass();
-
-        // int code = definition.getCode();
         int ordinal = enumeration.ordinal() + 1;
-        // NumberConverter.writeNumber(out, code);
         NumberConverter.writeNumber(out, ordinal);
     }
 
