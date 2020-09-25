@@ -1,5 +1,5 @@
 Java日期时间API系列:
-https://zzk.cnblogs.com/s?w=blog%3Axkzhangsanx%20%20Java%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4API%E7%B3%BB%E5%88%97
+https://www.cnblogs.com/xkzhangsanx/category/1448577.html
 
 ICU User Guide:
 http://userguide.icu-project.org/
