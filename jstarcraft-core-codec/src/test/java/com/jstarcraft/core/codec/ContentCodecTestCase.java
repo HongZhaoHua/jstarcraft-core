@@ -471,25 +471,26 @@ public abstract class ContentCodecTestCase {
     }
 
     protected void testConvert(Type type, Object value) throws Exception {
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(); DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream)) {
-            contentCodec.encode(type, value, dataOutputStream);
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             byte[] data = byteArrayOutputStream.toByteArray();
-            try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data); DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream)) {
+            contentCodec.encode(type, value, byteArrayOutputStream);
+            data = byteArrayOutputStream.toByteArray();
+            try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data)) {
                 if (type == AtomicBoolean.class) {
                     AtomicBoolean left = (AtomicBoolean) value;
-                    AtomicBoolean right = (AtomicBoolean) contentCodec.decode(type, dataInputStream);
+                    AtomicBoolean right = (AtomicBoolean) contentCodec.decode(type, byteArrayInputStream);
                     Assert.assertTrue(TypeUtility.isInstance(left, type));
                     Assert.assertTrue(TypeUtility.isInstance(right, type));
                     Assert.assertThat(right.get(), CoreMatchers.equalTo(left.get()));
                 } else if (type == AtomicInteger.class || type == AtomicLong.class) {
                     Number left = (Number) value;
-                    Number right = (Number) contentCodec.decode(type, dataInputStream);
+                    Number right = (Number) contentCodec.decode(type, byteArrayInputStream);
                     Assert.assertTrue(TypeUtility.isInstance(left, type));
                     Assert.assertTrue(TypeUtility.isInstance(right, type));
                     Assert.assertThat(right.longValue(), CoreMatchers.equalTo(left.longValue()));
                 } else {
                     Object left = value;
-                    Object right = contentCodec.decode(type, dataInputStream);
+                    Object right = contentCodec.decode(type, byteArrayInputStream);
                     if (value != null) {
                         Assert.assertTrue(TypeUtility.isInstance(left, type));
                         Assert.assertTrue(TypeUtility.isInstance(right, type));
