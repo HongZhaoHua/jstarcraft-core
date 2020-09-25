@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -136,7 +137,7 @@ public class HashUtilityTestCase {
         return variance / size;
     }
 
-    private void test32Collision(String message, Method method, Object[] datas, Collection<Object> hashes, TreeMap<Integer, Integer> counts) throws Exception {
+    private void test32Collision(String message, Function<Object, Integer> function, Object[] datas, Collection<Object> hashes, TreeMap<Integer, Integer> counts) throws Exception {
         double size = 1000D;
         double step = Integer.MAX_VALUE;
         step -= Integer.MIN_VALUE;
@@ -149,7 +150,7 @@ public class HashUtilityTestCase {
         long time = System.currentTimeMillis();
         int collision = 0;
         for (Object data : datas) {
-            Integer hash = Integer.class.cast(method.invoke(null, data));
+            Integer hash = function.apply(data);
             Entry<Integer, Integer> term = counts.higherEntry(hash);
             counts.put(term.getKey(), term.getValue() + 1);
             if (!hashes.add(hash)) {
@@ -157,13 +158,13 @@ public class HashUtilityTestCase {
             }
         }
 
-        message = StringUtility.format("{}使用[{}]算法,哈希{}次,冲突{}次,方差{},时间{}毫秒", message, method.getName(), datas.length, collision, (long) getVariance(counts.values()), System.currentTimeMillis() - time);
+        message = StringUtility.format("{},哈希{}次,冲突{}次,方差{},时间{}毫秒", message, datas.length, collision, (long) getVariance(counts.values()), System.currentTimeMillis() - time);
         logger.debug(message);
         hashes.clear();
         counts.clear();
     }
 
-    private void test64Collision(String message, Method method, Object[] datas, Collection<Object> hashes, TreeMap<Long, Integer> counts) throws Exception {
+    private void test64Collision(String message, Function<Object, Long> function, Object[] datas, Collection<Object> hashes, TreeMap<Long, Integer> counts) throws Exception {
         double size = 1000D;
         double step = Long.MAX_VALUE;
         step -= Long.MIN_VALUE;
@@ -176,7 +177,7 @@ public class HashUtilityTestCase {
         long time = System.currentTimeMillis();
         int collision = 0;
         for (Object data : datas) {
-            Long hash = Long.class.cast(method.invoke(null, data.toString()));
+            Long hash = function.apply(data);
             Entry<Long, Integer> term = counts.higherEntry(hash);
             counts.put(term.getKey(), term.getValue() + 1);
             if (!hashes.add(hash)) {
@@ -184,7 +185,7 @@ public class HashUtilityTestCase {
             }
         }
 
-        message = StringUtility.format("{}使用[{}]算法,哈希{}次,冲突{}次,方差{},时间{}毫秒", message, method.getName(), datas.length, collision, (long) getVariance(counts.values()), System.currentTimeMillis() - time);
+        message = StringUtility.format("{},哈希{}次,冲突{}次,方差{},时间{}毫秒", message, datas.length, collision, (long) getVariance(counts.values()), System.currentTimeMillis() - time);
         logger.debug(message);
         hashes.clear();
         counts.clear();
@@ -203,18 +204,36 @@ public class HashUtilityTestCase {
         }
         TreeMap<Integer, Integer> count32s = new TreeMap<>();
         for (Method method : stringHash32Methods.values()) {
-            test32Collision("UUID", method, datas, hashes, count32s);
+            test32Collision("UUID-" + method.getName(), (data) -> {
+                try {
+                    return Integer.class.cast(method.invoke(null, data));
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
+                }
+            }, datas, hashes, count32s);
         }
         TreeMap<Long, Integer> count64s = new TreeMap<>();
         for (Method method : stringHash64Methods.values()) {
-            test64Collision("UUID", method, datas, hashes, count64s);
+            test64Collision("UUID-" + method.getName(), (data) -> {
+                try {
+                    return Long.class.cast(method.invoke(null, data));
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
+                }
+            }, datas, hashes, count64s);
         }
 
         for (int index = 0; index < size; index++) {
             datas[index] = index + size;
         }
         for (Method method : numberHash32Methods.values()) {
-            test32Collision("连续整数", method, datas, hashes, count32s);
+            test32Collision("连续整数-" + method.getName(), (data) -> {
+                try {
+                    return Integer.class.cast(method.invoke(null, data));
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
+                }
+            }, datas, hashes, count32s);
         }
     }
 
