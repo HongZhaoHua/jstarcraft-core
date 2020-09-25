@@ -62,9 +62,6 @@ public class JsonUtility {
      * @return
      */
     public static String object2String(Object instance) {
-        if (instance == null) {
-            return null;
-        }
         try {
             return TYPE_CONVERTER.writeValueAsString(instance);
         } catch (Exception exception) {
@@ -74,16 +71,13 @@ public class JsonUtility {
     }
 
     /**
-     * 将JSON字符串转换为对象
+     * 将JSON字符串转换为任意实例
      * 
      * @param json
      * @param type
      * @return
      */
     public static <T> T string2Object(String json, Type type) {
-        if (StringUtility.isBlank(json)) {
-            return null;
-        }
         try {
             return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
         } catch (Exception exception) {
