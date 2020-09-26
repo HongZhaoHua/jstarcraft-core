@@ -5,7 +5,7 @@ List of JVM languages:
 https://en.wikipedia.org/wiki/List_of_JVM_languages
 
 Open Source Scripting Languages in Java:
-https://java-source.net/open-source/scripting-languages:
+https://java-source.net/open-source/scripting-languages
 
 JSR 223: Scripting for the Java Platform:
 https://www.drdobbs.com/jvm/jsr-223-scripting-for-the-java-platform/215801163
