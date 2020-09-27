@@ -26,8 +26,8 @@ public class ObjectConverter extends ThriftConverter<Object> {
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
-        TField feild = protocol.readFieldBegin();
         Object instance;
+        TField feild = protocol.readFieldBegin();
         if (feild.id == 1) {
             instance = null;
         } else {

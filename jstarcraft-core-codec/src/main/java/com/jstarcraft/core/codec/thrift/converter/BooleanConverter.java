@@ -9,6 +9,7 @@ import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 布尔转换器
@@ -18,65 +19,45 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  */
 public class BooleanConverter extends ThriftConverter<Object> {
 
-    /** 0000 0000(Null标记) */
-    private static final byte NULL_MARK = (byte) 0x00;
-
-    /** 1111 1111(false标记) */
-    private static final byte FALSE_MARK = (byte) 0xFF;
-
-    /** 0000 0001(true标记) */
-    private static final byte TRUE_MARK = (byte) 0x01;
+    protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
-        protocol.readFieldBegin();
-        byte mark = protocol.readByte();
+        Object instance;
+        TField feild = protocol.readFieldBegin();
+        if (feild.id == 1) {
+            instance = null;
+        } else {
+            if (type == AtomicBoolean.class) {
+                instance = new AtomicBoolean(protocol.readBool());
+            } else {
+                instance = protocol.readBool();
+            }
+        }
         protocol.readFieldEnd();
         protocol.readFieldBegin();
         protocol.readStructEnd();
-        if (mark == NULL_MARK) {
-            return null;
-        }
-        if (mark == FALSE_MARK) {
-            if (type == AtomicBoolean.class) {
-                return new AtomicBoolean(false);
-            }
-            return false;
-        } else if (mark == TRUE_MARK) {
-            if (type == AtomicBoolean.class) {
-                return new AtomicBoolean(true);
-            }
-            return true;
-        } else {
-            return null;
-        }
+        return instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object instance) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte mark;
-        if (value == null) {
-            mark = NULL_MARK;
-        } else if (type == AtomicBoolean.class) {
-            if (((AtomicBoolean) value).get()) {
-                mark = TRUE_MARK;
-            } else {
-                mark = FALSE_MARK;
-            }
-        } else {
-            if ((Boolean) value) {
-                mark = TRUE_MARK;
-            } else {
-                mark = FALSE_MARK;
-            }
-        }
         protocol.writeStructBegin(new TStruct(definition.getName()));
-        protocol.writeFieldBegin(new TField("_mark", TType.BYTE, (short) (1)));
-        protocol.writeByte(mark);
-        protocol.writeFieldEnd();
+        if (instance == null) {
+            protocol.writeFieldBegin(NULL_MARK);
+            protocol.writeFieldEnd();
+        } else {
+            protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.BOOL, (short) 2));
+            if (type == AtomicBoolean.class) {
+                protocol.writeBool(((AtomicBoolean) instance).get());
+            } else {
+                protocol.writeBool(((Boolean) instance));
+            }
+            protocol.writeFieldEnd();
+        }
         protocol.writeFieldStop();
         protocol.writeStructEnd();
     }
