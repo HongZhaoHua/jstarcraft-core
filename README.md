@@ -154,6 +154,7 @@ JStarCraft Core框架各个模块之间的关系:
         * SVN
         * ZooKeeper
 * 8.脚本(script)
+    * BeanShell
     * Groovy
     * JS
     * Lua
