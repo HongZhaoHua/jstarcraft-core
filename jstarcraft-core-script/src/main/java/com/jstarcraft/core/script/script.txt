@@ -13,6 +13,9 @@ https://www.drdobbs.com/jvm/jsr-223-scripting-for-the-java-platform/215801163
 Jmeter系列之BeanShell使用:
 https://juejin.im/post/6844904119744888840
 
+BshScriptEngine在2.0b6版本没有支持Compilable接口:
+https://github.com/beanshell/beanshell/issues?q=Compilable
+
 一篇文档掌握Jdk8中Javascript引擎Nashorn的使用方法:
 https://www.cnblogs.com/cynchanpin/p/6927278.html
 
