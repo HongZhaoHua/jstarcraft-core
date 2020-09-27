@@ -27,13 +27,13 @@ public class ArrayConverter extends ThriftConverter<Object> {
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        TList list = protocol.readListBegin();
-        int length = list.size;
+        int length = protocol.readListBegin().size;
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
-        Object instance = Array.newInstance(clazz, length);
-        Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
+        Specification specification = Specification.getSpecification(clazz);
         ThriftConverter converter = context.getProtocolConverter(specification);
+        definition = context.getClassDefinition(clazz);
+        Object instance = Array.newInstance(clazz, length);
         for (int index = 0; index < length; index++) {
             Object element = converter.readValueFrom(context, clazz, definition);
             Array.set(instance, index, element);
