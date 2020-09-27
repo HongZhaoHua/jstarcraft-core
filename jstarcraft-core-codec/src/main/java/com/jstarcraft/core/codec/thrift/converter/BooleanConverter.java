@@ -3,11 +3,12 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.TType;
 
-import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 布尔转换器
@@ -29,7 +30,12 @@ public class BooleanConverter extends ThriftConverter<Object> {
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
+        protocol.readStructBegin();
+        protocol.readFieldBegin();
         byte mark = protocol.readByte();
+        protocol.readFieldEnd();
+        protocol.readFieldBegin();
+        protocol.readStructEnd();
         if (mark == NULL_MARK) {
             return null;
         }
@@ -43,30 +49,36 @@ public class BooleanConverter extends ThriftConverter<Object> {
                 return new AtomicBoolean(true);
             }
             return true;
+        } else {
+            return null;
         }
-        String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
-        throw new CodecConvertionException(message);
     }
 
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
         TProtocol protocol = context.getProtocol();
+        byte mark;
         if (value == null) {
-            protocol.writeByte(NULL_MARK);
-            return;
-        } else if (type == Boolean.class || type == boolean.class) {
-            if ((Boolean) value) {
-                protocol.writeByte(TRUE_MARK);
-            } else {
-                protocol.writeByte(FALSE_MARK);
-            }
+            mark = NULL_MARK;
         } else if (type == AtomicBoolean.class) {
             if (((AtomicBoolean) value).get()) {
-                protocol.writeByte(TRUE_MARK);
+                mark = TRUE_MARK;
             } else {
-                protocol.writeByte(FALSE_MARK);
+                mark = FALSE_MARK;
+            }
+        } else {
+            if ((Boolean) value) {
+                mark = TRUE_MARK;
+            } else {
+                mark = FALSE_MARK;
             }
         }
+        protocol.writeStructBegin(new TStruct(definition.getName()));
+        protocol.writeFieldBegin(new TField("_mark", TType.BYTE, (short) (1)));
+        protocol.writeByte(mark);
+        protocol.writeFieldEnd();
+        protocol.writeFieldStop();
+        protocol.writeStructEnd();
     }
 
 }
