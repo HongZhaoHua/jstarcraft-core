@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 字符串转换器
@@ -16,39 +20,43 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  */
 public class StringConverter extends ThriftConverter<Object> {
 
-    /**
-     * 空标记
-     */
-    private static final byte NULL = 1;
-    /**
-     * 非空标记
-     */
-    private static final byte NOT_NULL = 0;
+    protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        byte nil = protocol.readByte();
-        String value = protocol.readString();
-        if (nil == NULL) {
-            return null;
-        }
-        if (type == char.class || type == Character.class) {
-            return value.charAt(0);
+        protocol.readStructBegin();
+        Object instance;
+        TField feild = protocol.readFieldBegin();
+        if (feild.id == 1) {
+            instance = null;
         } else {
-            return value;
+            if (type == char.class || type == Character.class) {
+                instance = protocol.readString().charAt(0);
+            } else {
+                instance = protocol.readString();
+            }
         }
+        protocol.readFieldEnd();
+        protocol.readFieldBegin();
+        protocol.readStructEnd();
+        return instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object instance) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        if (value == null) {
-            protocol.writeByte(NULL);
+        protocol.writeStructBegin(new TStruct(definition.getName()));
+        if (instance == null) {
+            protocol.writeFieldBegin(NULL_MARK);
+            protocol.writeFieldEnd();
         } else {
-            protocol.writeByte(NOT_NULL);
+            protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRING, (short) 2));
+            protocol.writeString(instance.toString());
+            protocol.writeFieldEnd();
         }
-        protocol.writeString(String.valueOf(value));
+        protocol.writeFieldStop();
+        protocol.writeStructEnd();
     }
 
 }
