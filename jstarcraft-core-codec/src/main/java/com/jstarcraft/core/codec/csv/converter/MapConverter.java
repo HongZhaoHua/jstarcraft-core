@@ -38,7 +38,7 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
         ClassDefinition definition = context.getClassDefinition(clazz);
-        Map<Object, Object> map = (Map) definition.getInstance();
+        Map<Object, Object> instance = (Map) definition.getInstance();
         Class<?> keyClazz = TypeUtility.getRawType(types[0], null);
         CsvConverter keyConverter = context.getCsvConverter(Specification.getSpecification(keyClazz));
         Class<?> valueClazz = TypeUtility.getRawType(types[1], null);
@@ -46,15 +46,15 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
         for (int index = 0; index < length; index++) {
             Object key = keyConverter.readValueFrom(context, types[0]);
             Object element = valueConverter.readValueFrom(context, types[1]);
-            map.put(key, element);
+            instance.put(key, element);
         }
-        return map;
+        return instance;
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Map<Object, Object> value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Map<Object, Object> instance) throws Exception {
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
@@ -62,7 +62,7 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
         type = TypeUtility.refineType(type, Map.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
-        Map<Object, Object> map = Map.class.cast(value);
+        Map<Object, Object> map = Map.class.cast(instance);
         out.print(map.size());
         Class<?> keyClazz = TypeUtility.getRawType(types[0], null);
         CsvConverter keyConverter = context.getCsvConverter(Specification.getSpecification(keyClazz));
@@ -74,7 +74,6 @@ public class MapConverter implements CsvConverter<Map<Object, Object>> {
             Object element = keyValue.getValue();
             valueConverter.writeValueTo(context, types[1], element);
         }
-        return;
     }
 
 }

@@ -29,29 +29,29 @@ public class InstantConverter implements CsvConverter<Object> {
         }
         // 处理日期类型
         if (TypeUtility.isAssignable(type, Date.class)) {
-            Object value = new Date(Long.valueOf(element));
-            return value;
+            Object instance = new Date(Long.valueOf(element));
+            return instance;
         } else {
-            Object value = Instant.ofEpochMilli(Long.valueOf(element));
-            return value;
+            Object instance = Instant.ofEpochMilli(Long.valueOf(element));
+            return instance;
         }
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
         // 处理日期类型
         if (TypeUtility.isAssignable(type, Date.class)) {
-            value = Date.class.cast(value).getTime();
-            out.print(value);
+            instance = Date.class.cast(instance).getTime();
+            out.print(instance);
             return;
         } else {
-            value = Instant.class.cast(value).toEpochMilli();
-            out.print(value);
+            instance = Instant.class.cast(instance).toEpochMilli();
+            out.print(instance);
             return;
         }
     }

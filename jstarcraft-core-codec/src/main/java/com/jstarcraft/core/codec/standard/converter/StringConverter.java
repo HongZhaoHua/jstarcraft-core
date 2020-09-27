@@ -88,18 +88,18 @@ public class StringConverter extends StandardConverter<Object> {
         throw new CodecConvertionException(message);
     }
 
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.STRING);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
         String element;
         if (type == char.class || type == Character.class) {
-            element = String.valueOf(value);
+            element = String.valueOf(instance);
         } else {
-            element = (String) value;
+            element = (String) instance;
         }
         int reference = context.getStringIndex(element);
         if (reference != -1) {

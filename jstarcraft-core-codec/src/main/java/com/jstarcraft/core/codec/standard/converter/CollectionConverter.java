@@ -44,48 +44,48 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
         }
         if (mark == EXPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
-            Collection collection = (Collection) definition.getInstance();
-            context.putCollectionValue(collection);
+            Collection instance = (Collection) definition.getInstance();
+            context.putCollectionValue(instance);
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
             StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
             for (int index = 0; index < size; index++) {
-                Object object = converter.readValueFrom(context, elementType, definition);
-                collection.add(object);
+                Object element = converter.readValueFrom(context, elementType, definition);
+                instance.add(element);
             }
-            return collection;
+            return instance;
         } else if (mark == IMPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
-            Collection collection = (Collection) definition.getInstance();
-            context.putCollectionValue(collection);
+            Collection instance = (Collection) definition.getInstance();
+            context.putCollectionValue(instance);
             for (int index = 0; index < size; index++) {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
                 StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
-                Object object = converter.readValueFrom(context, definition.getType(), definition);
-                collection.add(object);
+                Object element = converter.readValueFrom(context, definition.getType(), definition);
+                instance.add(element);
             }
-            return collection;
+            return instance;
         } else if (mark == REFERENCE_MARK) {
             int reference = NumberConverter.readNumber(in).intValue();
-            Collection collection = (Collection) context.getCollectionValue(reference);
-            return collection;
+            Collection instance = (Collection) context.getCollectionValue(reference);
+            return instance;
         }
         String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
         throw new CodecConvertionException(message);
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Collection<?> instance) throws Exception {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.COLLECTION);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
-        int reference = context.getCollectionIndex(value);
+        int reference = context.getCollectionIndex(instance);
         if (reference != -1) {
             information |= REFERENCE_MARK;
             out.write(information);
@@ -93,29 +93,29 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
         } else {
             if (type instanceof Class) {
                 information |= IMPLICIT_MARK;
-                context.putCollectionValue(value);
+                context.putCollectionValue(instance);
                 out.write(information);
-                int size = value.size();
+                int size = instance.size();
                 NumberConverter.writeNumber(out, size);
-                for (Object object : value) {
-                    definition = context.getClassDefinition(object == null ? void.class : object.getClass());
+                for (Object element : instance) {
+                    definition = context.getClassDefinition(element == null ? void.class : element.getClass());
                     NumberConverter.writeNumber(out, definition.getCode());
                     StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
-                    converter.writeValueTo(context, definition.getType(), definition, object);
+                    converter.writeValueTo(context, definition.getType(), definition, element);
                 }
             } else {
                 information |= EXPLICIT_MARK;
-                context.putCollectionValue(value);
+                context.putCollectionValue(instance);
                 out.write(information);
-                int size = value.size();
+                int size = instance.size();
                 NumberConverter.writeNumber(out, size);
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type elementType = types[0];
                 StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
                 definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
-                for (Object object : value) {
-                    converter.writeValueTo(context, elementType, definition, object);
+                for (Object element : instance) {
+                    converter.writeValueTo(context, elementType, definition, element);
                 }
             }
         }

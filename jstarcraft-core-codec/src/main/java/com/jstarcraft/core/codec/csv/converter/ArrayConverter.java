@@ -41,21 +41,21 @@ public class ArrayConverter implements CsvConverter<Object> {
             componentType = clazz.getComponentType();
             componentClass = clazz.getComponentType();
         }
-        Object array = Array.newInstance(componentClass, length);
+        Object instance = Array.newInstance(componentClass, length);
         Specification specification = Specification.getSpecification(componentClass);
         CsvConverter converter = context.getCsvConverter(specification);
         for (int index = 0; index < length; index++) {
             Object element = converter.readValueFrom(context, componentType);
-            Array.set(array, index, element);
+            Array.set(instance, index, element);
         }
-        return array;
+        return instance;
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
         // TODO 处理null
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
@@ -70,12 +70,12 @@ public class ArrayConverter implements CsvConverter<Object> {
             componentType = clazz.getComponentType();
             componentClass = clazz.getComponentType();
         }
-        int length = Array.getLength(value);
+        int length = Array.getLength(instance);
         out.print(length);
         Specification specification = Specification.getSpecification(componentClass);
         CsvConverter converter = context.getCsvConverter(specification);
         for (int index = 0; index < length; index++) {
-            Object element = Array.get(value, index);
+            Object element = Array.get(instance, index);
             converter.writeValueTo(context, componentType, element);
         }
     }

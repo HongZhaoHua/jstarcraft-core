@@ -37,21 +37,21 @@ public class CollectionConverter implements CsvConverter<Collection<Object>> {
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
         ClassDefinition definition = context.getClassDefinition(clazz);
-        Collection<Object> collection = (Collection) definition.getInstance();
+        Collection<Object> instance = (Collection) definition.getInstance();
         Class<?> elementClazz = TypeUtility.getRawType(types[0], null);
         CsvConverter converter = context.getCsvConverter(Specification.getSpecification(elementClazz));
         for (int index = 0; index < length; index++) {
             Object element = converter.readValueFrom(context, types[0]);
-            collection.add(element);
+            instance.add(element);
         }
-        return collection;
+        return instance;
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Collection<Object> value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Collection<Object> instance) throws Exception {
         // TODO 处理null
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
@@ -59,7 +59,7 @@ public class CollectionConverter implements CsvConverter<Collection<Object>> {
         type = TypeUtility.refineType(type, Collection.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
-        Collection<?> collection = Collection.class.cast(value);
+        Collection<?> collection = Collection.class.cast(instance);
         out.print(collection.size());
         Class<?> elementClazz = TypeUtility.getRawType(types[0], null);
         CsvConverter converter = context.getCsvConverter(Specification.getSpecification(elementClazz));

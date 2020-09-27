@@ -136,15 +136,15 @@ public class NumberConverter extends StandardConverter<Number> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Number value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Number instance) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.NUMBER);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
         if (type == Byte.class || type == byte.class) {
-            byte number = value.byteValue();
+            byte number = instance.byteValue();
             if (number < 0) {
                 information |= SWITCH_MARK | NUMERICAL_MARK;
                 if (number == Byte.MIN_VALUE) {
@@ -158,7 +158,7 @@ public class NumberConverter extends StandardConverter<Number> {
             out.write(information);
             writeNumber(out, number);
         } else if (type == Short.class || type == short.class) {
-            short number = value.shortValue();
+            short number = instance.shortValue();
             if (number < 0) {
                 information |= SWITCH_MARK | NUMERICAL_MARK;
                 if (number == Short.MIN_VALUE) {
@@ -172,7 +172,7 @@ public class NumberConverter extends StandardConverter<Number> {
             out.write(information);
             writeNumber(out, number);
         } else if (type == Integer.class || type == int.class || type == AtomicInteger.class) {
-            int number = value.intValue();
+            int number = instance.intValue();
             if (number < 0) {
                 information |= SWITCH_MARK | NUMERICAL_MARK;
                 if (number == Integer.MIN_VALUE) {
@@ -186,46 +186,46 @@ public class NumberConverter extends StandardConverter<Number> {
             out.write(information);
             writeNumber(out, number);
         } else if (type == Long.class || type == long.class || type == AtomicLong.class) {
-            if (value.longValue() == Long.MIN_VALUE) {
+            if (instance.longValue() == Long.MIN_VALUE) {
                 information |= SWITCH_MARK | NUMERICAL_MARK;
-                value = 0;
+                instance = 0;
             } else {
-                long number = value.longValue();
+                long number = instance.longValue();
                 if (number < 0) {
                     information |= SWITCH_MARK | NUMERICAL_MARK;
                     number = -number;
                 } else {
                     information |= NUMERICAL_MARK;
                 }
-                value = number;
+                instance = number;
             }
             out.write(information);
-            writeNumber(out, value);
+            writeNumber(out, instance);
         } else if (type == BigInteger.class) {
-            BigInteger number = (BigInteger) value;
+            BigInteger number = (BigInteger) instance;
             if (number.compareTo(BigInteger.ZERO) < 0) {
                 information |= SWITCH_MARK | NUMERICAL_MARK;
                 number = number.negate();
             } else {
                 information |= NUMERICAL_MARK;
             }
-            value = number;
+            instance = number;
             out.write(information);
-            writeNumber(out, value);
+            writeNumber(out, instance);
         } else if (type == Float.class || type == float.class) {
-            float number = value.floatValue();
+            float number = instance.floatValue();
             information |= NUMERICAL_MARK;
             out.write(information);
             DataOutput dataOutput = new DataOutputStream(out);
             dataOutput.writeFloat(number);
         } else if (type == Double.class || type == double.class) {
-            double number = value.doubleValue();
+            double number = instance.doubleValue();
             information |= NUMERICAL_MARK;
             out.write(information);
             DataOutput dataOutput = new DataOutputStream(out);
             dataOutput.writeDouble(number);
         } else if (type == BigDecimal.class) {
-            BigDecimal number = (BigDecimal) value;
+            BigDecimal number = (BigDecimal) instance;
             information |= NUMERICAL_MARK;
             out.write(information);
             String decimal = number.toString();

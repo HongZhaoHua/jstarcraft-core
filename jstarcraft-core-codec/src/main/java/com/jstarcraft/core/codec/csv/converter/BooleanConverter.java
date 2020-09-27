@@ -37,17 +37,17 @@ public class BooleanConverter implements CsvConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
         // TODO 处理null
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
         if (type == AtomicBoolean.class) {
-            value = ((AtomicBoolean) value).get();
+            instance = ((AtomicBoolean) instance).get();
         }
-        out.print((value.equals(true)) ? TRUE : FALSE);
+        out.print((instance.equals(true)) ? TRUE : FALSE);
     }
 
 }

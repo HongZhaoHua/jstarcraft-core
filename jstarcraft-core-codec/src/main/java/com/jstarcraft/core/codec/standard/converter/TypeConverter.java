@@ -71,38 +71,38 @@ public class TypeConverter extends StandardConverter<Type> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Type value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Type instance) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.TYPE);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
-        if (value instanceof Class) {
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+        if (instance instanceof Class) {
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             if (clazz.isArray()) {
                 information |= ARRAY_MARK;
                 out.write(information);
-                value = TypeUtility.getArrayComponentType(value);
-                writeValueTo(context, value.getClass(), definition, value);
+                instance = TypeUtility.getArrayComponentType(instance);
+                writeValueTo(context, instance.getClass(), definition, instance);
             } else {
                 information |= CLASS_MARK;
                 out.write(information);
                 definition = context.getClassDefinition(clazz);
                 NumberConverter.writeNumber(out, definition.getCode());
             }
-        } else if (value instanceof GenericArrayType) {
+        } else if (instance instanceof GenericArrayType) {
             information |= ARRAY_MARK;
             out.write(information);
-            value = TypeUtility.getArrayComponentType(value);
-            writeValueTo(context, value.getClass(), definition, value);
-        } else if (value instanceof ParameterizedType) {
+            instance = TypeUtility.getArrayComponentType(instance);
+            writeValueTo(context, instance.getClass(), definition, instance);
+        } else if (instance instanceof ParameterizedType) {
             information |= GENERIC_MARK;
             out.write(information);
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             definition = context.getClassDefinition(clazz);
             NumberConverter.writeNumber(out, definition.getCode());
-            ParameterizedType parameterizedType = (ParameterizedType) value;
+            ParameterizedType parameterizedType = (ParameterizedType) instance;
             Type[] types = parameterizedType.getActualTypeArguments();
             NumberConverter.writeNumber(out, types.length);
             for (int index = 0; index < types.length; index++) {

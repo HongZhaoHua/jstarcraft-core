@@ -32,13 +32,13 @@ public class EnumerationConverter extends StandardConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
         OutputStream out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.write(NULL_MARK);
             return;
         }
-        Enum<?> enumeration = (Enum<?>) value;
+        Enum<?> enumeration = (Enum<?>) instance;
         int ordinal = enumeration.ordinal() + 1;
         NumberConverter.writeNumber(out, ordinal);
     }

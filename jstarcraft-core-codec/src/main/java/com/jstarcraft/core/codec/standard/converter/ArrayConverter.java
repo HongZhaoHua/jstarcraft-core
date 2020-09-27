@@ -45,57 +45,57 @@ public class ArrayConverter extends StandardConverter<Object> {
         if (mark == EXPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
             int code = NumberConverter.readNumber(in).intValue();
-            Object value = null;
+            Object instance = null;
             definition = context.getClassDefinition(code);
             if (definition.getType() == byte.class) {
                 // 对字节数组做特殊处理
                 byte[] data = new byte[size];
                 IoUtility.read(in, data);
-                value = data;
-                context.putArrayValue(value);
+                instance = data;
+                context.putArrayValue(instance);
             } else {
                 Class<?> clazz = TypeUtility.getRawType(type, null);
                 clazz = clazz.getComponentType();
-                value = Array.newInstance(clazz, size);
-                context.putArrayValue(value);
+                instance = Array.newInstance(clazz, size);
+                context.putArrayValue(instance);
                 Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
                 StandardConverter converter = context.getProtocolConverter(specification);
                 for (int index = 0; index < size; index++) {
-                    Object object = converter.readValueFrom(context, clazz, definition);
-                    Array.set(value, index, object);
+                    Object element = converter.readValueFrom(context, clazz, definition);
+                    Array.set(instance, index, element);
                 }
             }
-            return value;
+            return instance;
         } else if (mark == IMPLICIT_MARK) {
             int size = NumberConverter.readNumber(in).intValue();
-            Object[] value = new Object[size];
-            context.putArrayValue(value);
+            Object[] instance = new Object[size];
+            context.putArrayValue(instance);
             for (int index = 0; index < size; index++) {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
                 StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
-                Object object = converter.readValueFrom(context, definition.getType(), definition);
-                Array.set(value, index, object);
+                Object element = converter.readValueFrom(context, definition.getType(), definition);
+                Array.set(instance, index, element);
             }
-            return value;
+            return instance;
         } else if (mark == REFERENCE_MARK) {
             int reference = NumberConverter.readNumber(in).intValue();
-            Object[] value = (Object[]) context.getArrayValue(reference);
-            return value;
+            Object[] instance = (Object[]) context.getArrayValue(reference);
+            return instance;
         }
         String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
         throw new CodecConvertionException(message);
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws Exception {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.ARRAY);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
-        int reference = context.getArrayIndex(value);
+        int reference = context.getArrayIndex(instance);
         if (reference != -1) {
             information |= REFERENCE_MARK;
             out.write(information);
@@ -105,37 +105,37 @@ public class ArrayConverter extends StandardConverter<Object> {
             clazz = clazz.getComponentType();
             if (clazz == Object.class) {
                 information |= IMPLICIT_MARK;
-                context.putArrayValue(value);
+                context.putArrayValue(instance);
                 out.write(information);
-                int size = Array.getLength(value);
+                int size = Array.getLength(instance);
                 NumberConverter.writeNumber(out, size);
                 for (int index = 0; index < size; index++) {
-                    Object object = Array.get(value, index);
-                    definition = context.getClassDefinition(object == null ? Object.class : object.getClass());
+                    Object element = Array.get(instance, index);
+                    definition = context.getClassDefinition(element == null ? Object.class : element.getClass());
                     int code = definition.getCode();
                     NumberConverter.writeNumber(out, code);
                     StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
-                    converter.writeValueTo(context, definition.getType(), definition, object);
+                    converter.writeValueTo(context, definition.getType(), definition, element);
                 }
             } else {
                 information |= EXPLICIT_MARK;
-                context.putArrayValue(value);
+                context.putArrayValue(instance);
                 out.write(information);
-                int size = Array.getLength(value);
+                int size = Array.getLength(instance);
                 NumberConverter.writeNumber(out, size);
                 definition = context.getClassDefinition(clazz);
                 int code = definition.getCode();
                 NumberConverter.writeNumber(out, code);
                 if (clazz == byte.class) {
                     // 对字节数组做特殊处理
-                    byte[] data = (byte[]) value;
+                    byte[] data = (byte[]) instance;
                     IoUtility.write(data, out);
                 } else {
                     Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
                     StandardConverter converter = context.getProtocolConverter(specification);
                     for (int index = 0; index < size; index++) {
-                        Object object = Array.get(value, index);
-                        converter.writeValueTo(context, clazz, definition, object);
+                        Object element = Array.get(instance, index);
+                        converter.writeValueTo(context, clazz, definition, element);
                     }
                 }
             }
