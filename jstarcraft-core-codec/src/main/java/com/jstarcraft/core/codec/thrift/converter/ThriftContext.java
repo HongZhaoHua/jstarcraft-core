@@ -94,20 +94,4 @@ public class ThriftContext {
         return protocol;
     }
 
-    @Deprecated
-    // TODO 考虑重构
-    public byte getThriftType(Type type) {
-        Class<?> clazz = TypeUtility.getRawType(type, null);
-        if (clazz.isArray()) {
-            return TType.LIST;
-        }
-        if (type.getClass().getClassLoader() == null) {
-            return TType.STRUCT;
-        }
-        if (!typeReference.containsKey(type)) {
-            throw new CodecConvertionException();
-        }
-        return typeReference.get(type);
-    }
-
 }

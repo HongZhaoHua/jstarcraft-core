@@ -83,7 +83,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
                     value = property.getValue(instance);
                     if (value != null) {
                         ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
-                        TField field = new TField(property.getName(), context.getThriftType(property.getType()), (short) (index + 2));
+                        TField field = new TField(property.getName(), converter.getThriftType(property.getType()), (short) (index + 2));
                         protocol.writeFieldBegin(field);
                         definition = context.getClassDefinition(property.getCode());
                         converter.writeValueTo(context, property.getType(), definition, value);

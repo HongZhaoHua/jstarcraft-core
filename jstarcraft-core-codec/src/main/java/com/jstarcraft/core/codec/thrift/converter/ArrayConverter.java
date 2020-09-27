@@ -31,35 +31,30 @@ public class ArrayConverter extends ThriftConverter<Object> {
         int length = list.size;
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
-        Object value = Array.newInstance(clazz, length);
+        Object instance = Array.newInstance(clazz, length);
         Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
         ThriftConverter converter = context.getProtocolConverter(specification);
         for (int index = 0; index < length; index++) {
-            Object object = converter.readValueFrom(context, clazz, definition);
-            Array.set(value, index, object);
+            Object element = converter.readValueFrom(context, clazz, definition);
+            Array.set(instance, index, element);
         }
         protocol.readListEnd();
-        return value;
+        return instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object instance) throws Exception {
         TProtocol protocol = context.getProtocol();
-        int length = value == null ? 0 : Array.getLength(value);
-        protocol.writeListBegin(new TList(context.getThriftType(type), length));
+        int length = instance == null ? 0 : Array.getLength(instance);
         Class<?> clazz = TypeUtility.getRawType(type, null);
         clazz = clazz.getComponentType();
-        Specification specification;
-        if (clazz == null) {
-            specification = definition.getSpecification();
-        } else {
-            specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-        }
+        Specification specification = Specification.getSpecification(clazz);
         ThriftConverter converter = context.getProtocolConverter(specification);
+        definition = context.getClassDefinition(clazz);
+        protocol.writeListBegin(new TList(converter.getThriftType(clazz), length));
         for (int index = 0; index < length; index++) {
-            Object object = Array.get(value, index);
-            definition = context.getClassDefinition(object == null ? clazz : object.getClass());
-            converter.writeValueTo(context, definition.getType(), definition, object);
+            Object element = Array.get(instance, index);
+            converter.writeValueTo(context, clazz, definition, element);
         }
         protocol.writeListEnd();
     }

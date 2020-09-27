@@ -34,10 +34,10 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
 
     @Override
     public byte getThriftType(Type type) {
-        if (TypeUtility.isAssignable(Set.class, type)) {
+        if (TypeUtility.isAssignable(type, Set.class)) {
             return TType.SET;
         }
-        if (TypeUtility.isAssignable(List.class, type)) {
+        if (TypeUtility.isAssignable(type, List.class)) {
             return TType.LIST;
         }
         throw new CodecConvertionException();
