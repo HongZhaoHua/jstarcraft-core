@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 
 import org.apache.thrift.protocol.TList;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
@@ -17,6 +18,11 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  *
  */
 public class ArrayConverter extends ThriftConverter<Object> {
+
+    @Override
+    public byte getThriftType(Type type) {
+        return TType.LIST;
+    }
 
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {

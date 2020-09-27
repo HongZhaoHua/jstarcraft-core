@@ -8,6 +8,7 @@ import java.lang.reflect.Type;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
@@ -33,6 +34,11 @@ public class TypeConverter extends ThriftConverter<Type> {
 
     /** 0000 0003(泛型标记) */
     private static final byte GENERIC_MARK = (byte) 0x03;
+
+    @Override
+    public byte getThriftType(Type type) {
+        return TType.STRUCT;
+    }
 
     @Override
     public Type readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {

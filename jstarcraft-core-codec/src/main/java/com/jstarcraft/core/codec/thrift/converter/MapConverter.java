@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
@@ -29,6 +30,11 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
 
     /** 0000 0002(隐式标记) */
     private static final byte IMPLICIT_MARK = (byte) 0x02;
+    
+    @Override
+    public byte getThriftType(Type type) {
+        return TType.MAP;
+    }
 
     @Override
     public Map<Object, Object> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {

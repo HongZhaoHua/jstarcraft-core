@@ -22,6 +22,11 @@ public class BooleanConverter extends ThriftConverter<Object> {
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
+    public byte getThriftType(Type type) {
+        return TType.BOOL;
+    }
+
+    @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();

@@ -3,14 +3,17 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
+import com.sun.tools.classfile.Opcode.Set;
 
 /**
  * 集合转换器
@@ -28,6 +31,17 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
 
     /** 0000 0002(隐式标记) */
     private static final byte IMPLICIT_MARK = (byte) 0x02;
+
+    @Override
+    public byte getThriftType(Type type) {
+        if (TypeUtility.isAssignable(Set.class, type)) {
+            return TType.SET;
+        }
+        if (TypeUtility.isAssignable(List.class, type)) {
+            return TType.LIST;
+        }
+        throw new CodecConvertionException();
+    }
 
     @Override
     public Collection<?> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
