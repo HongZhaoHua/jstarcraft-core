@@ -13,11 +13,7 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  */
 public abstract class ThriftConverter<T> {
 
-    /**
-     * 
-     * @param type
-     * @return
-     */
+    @Deprecated
     abstract public byte getThriftType(Type type);
 
     /**
