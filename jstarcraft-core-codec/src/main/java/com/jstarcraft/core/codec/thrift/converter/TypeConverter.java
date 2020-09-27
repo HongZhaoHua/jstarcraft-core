@@ -37,8 +37,7 @@ public class TypeConverter extends ThriftConverter<Type> {
     @Override
     public Type readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        byte information = protocol.readByte();
-        byte mark = getMark(information);
+        byte mark = protocol.readByte();
         if (mark == NULL_MARK) {
             return null;
         }
@@ -72,32 +71,32 @@ public class TypeConverter extends ThriftConverter<Type> {
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type value) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        byte information = ClassDefinition.getMark(Specification.TYPE);
+        byte mark = NULL_MARK;
         if (value == null) {
-            protocol.writeByte(information);
+            protocol.writeByte(mark);
             return;
         }
         if (value instanceof Class) {
             Class<?> clazz = TypeUtility.getRawType(value, null);
             if (clazz.isArray()) {
-                information |= ARRAY_MARK;
-                protocol.writeByte(information);
+                mark |= ARRAY_MARK;
+                protocol.writeByte(mark);
                 value = TypeUtility.getArrayComponentType(value);
                 writeValueTo(context, value.getClass(), definition, value);
             } else {
-                information |= CLASS_MARK;
-                protocol.writeByte(information);
+                mark |= CLASS_MARK;
+                protocol.writeByte(mark);
                 definition = context.getClassDefinition(clazz);
                 protocol.writeI32(definition.getCode());
             }
         } else if (value instanceof GenericArrayType) {
-            information |= ARRAY_MARK;
-            protocol.writeByte(information);
+            mark |= ARRAY_MARK;
+            protocol.writeByte(mark);
             value = TypeUtility.getArrayComponentType(value);
             writeValueTo(context, value.getClass(), definition, value);
         } else if (value instanceof ParameterizedType) {
-            information |= GENERIC_MARK;
-            protocol.writeByte(information);
+            mark |= GENERIC_MARK;
+            protocol.writeByte(mark);
             Class<?> clazz = TypeUtility.getRawType(value, null);
             definition = context.getClassDefinition(clazz);
             protocol.writeI32(definition.getCode());

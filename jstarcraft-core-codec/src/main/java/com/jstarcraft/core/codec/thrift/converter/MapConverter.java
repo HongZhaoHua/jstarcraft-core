@@ -33,8 +33,7 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
     @Override
     public Map<Object, Object> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = protocol.readByte();
-        byte mark = getMark(information);
+        byte mark = protocol.readByte();
         if (mark == NULL_MARK) {
             return null;
         }
@@ -83,14 +82,14 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = ClassDefinition.getMark(Specification.MAP);
+        byte mark = NULL_MARK;
         if (value == null) {
-            protocol.writeByte(information);
+            protocol.writeByte(mark);
             return;
         }
         if (type instanceof Class) {
-            information |= IMPLICIT_MARK;
-            protocol.writeByte(information);
+            mark = IMPLICIT_MARK;
+            protocol.writeByte(mark);
             int size = value.size();
             protocol.writeI32(size);
             for (Entry<Object, Object> keyValue : value.entrySet()) {
@@ -104,8 +103,8 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
                 valueConverter.writeValueTo(context, keyValue.getValue() == null ? void.class : keyValue.getValue().getClass(), valueDefinition, keyValue.getValue());
             }
         } else {
-            information |= EXPLICIT_MARK;
-            protocol.writeByte(information);
+            mark = EXPLICIT_MARK;
+            protocol.writeByte(mark);
             int size = value.size();
             protocol.writeI32(size);
             definition = context.getClassDefinition(value.getClass());

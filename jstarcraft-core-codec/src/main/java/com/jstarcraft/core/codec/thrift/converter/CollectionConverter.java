@@ -32,8 +32,7 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
     @Override
     public Collection<?> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = protocol.readByte();
-        byte mark = getMark(information);
+        byte mark = protocol.readByte();
         if (mark == NULL_MARK) {
             return null;
         }
@@ -69,14 +68,14 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Collection<?> value) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = ClassDefinition.getMark(Specification.COLLECTION);
+        byte mark = NULL_MARK;
         if (value == null) {
-            protocol.writeByte(information);
+            protocol.writeByte(mark);
             return;
         }
         if (type instanceof Class) {
-            information |= IMPLICIT_MARK;
-            protocol.writeByte(information);
+            mark = IMPLICIT_MARK;
+            protocol.writeByte(mark);
             int size = value.size();
             protocol.writeI32(size);
             for (Object object : value) {
@@ -86,8 +85,8 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
                 converter.writeValueTo(context, definition.getType(), definition, object);
             }
         } else {
-            information |= EXPLICIT_MARK;
-            protocol.writeByte(information);
+            mark = EXPLICIT_MARK;
+            protocol.writeByte(mark);
             int size = value.size();
             protocol.writeI32(size);
             ParameterizedType parameterizedType = (ParameterizedType) type;
