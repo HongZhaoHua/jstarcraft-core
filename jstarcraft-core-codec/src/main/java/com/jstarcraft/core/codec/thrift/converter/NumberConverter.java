@@ -9,10 +9,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 数值转换器
@@ -22,89 +26,90 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
  */
 public class NumberConverter extends ThriftConverter<Number> {
 
-    /**
-     * 空标记
-     */
-    private static final byte NULL = 1;
-    /**
-     * 非空标记
-     */
-    private static final byte NOT_NULL = 0;
+    protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
     public Number readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException, ParseException {
         TProtocol protocol = context.getProtocol();
-        // 获取空标记
-        byte nil = protocol.readByte();
-        if (nil == NULL) {
-            protocol.readByte();
-            return null;
-        }
-        if (type == Byte.class || type == byte.class) {
-            Byte value = protocol.readByte();
-            return value;
-        } else if (type == Short.class || type == short.class) {
-            Short value = protocol.readI16();
-            return value;
-        } else if (type == Integer.class || type == int.class || type == AtomicInteger.class) {
-            int value = protocol.readI32();
-            if (type == AtomicInteger.class) {
-                return new AtomicInteger(value);
-            } else {
-                return value;
-            }
-        } else if (type == Long.class || type == long.class || type == AtomicLong.class) {
-            long value = protocol.readI64();
-            if (type == AtomicLong.class) {
-                return new AtomicLong(value);
-            } else {
-                return value;
-            }
-        } else if (type == BigInteger.class) {
-            String value = protocol.readString();
-            return new BigInteger(value);
-        } else if (type == Float.class || type == float.class) {
-            double value = protocol.readDouble();
-            return Float.parseFloat(String.valueOf(value));
-        } else if (type == Double.class || type == double.class) {
-            double value = protocol.readDouble();
-            return value;
-        } else if (type == BigDecimal.class) {
-            String value = protocol.readString();
-            return new BigDecimal(value);
+        protocol.readStructBegin();
+        Object instance;
+        TField feild = protocol.readFieldBegin();
+        if (feild.id == 1) {
+            instance = null;
         } else {
-            throw new CodecConvertionException();
+            if (type == Byte.class || type == byte.class) {
+                instance = protocol.readByte();
+            } else if (type == Short.class || type == short.class) {
+                instance = protocol.readI16();
+            } else if (type == Integer.class || type == int.class || type == AtomicInteger.class) {
+                if (type == AtomicInteger.class) {
+                    instance = new AtomicInteger(protocol.readI32());
+                } else {
+                    instance = protocol.readI32();
+                }
+            } else if (type == Long.class || type == long.class || type == AtomicLong.class) {
+                if (type == AtomicLong.class) {
+                    instance = new AtomicLong(protocol.readI64());
+                } else {
+                    instance = protocol.readI64();
+                }
+            } else if (type == BigInteger.class) {
+                instance = new BigInteger(protocol.readString());
+            } else if (type == Float.class || type == float.class) {
+                instance = Float.intBitsToFloat(protocol.readI32());
+            } else if (type == Double.class || type == double.class) {
+                instance = Double.longBitsToDouble(protocol.readI64());
+            } else if (type == BigDecimal.class) {
+                instance = new BigDecimal(protocol.readString());
+            } else {
+                throw new CodecConvertionException();
+            }
         }
+        protocol.readFieldEnd();
+        protocol.readFieldBegin();
+        protocol.readStructEnd();
+        return (Number) instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Number value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Number instance) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
-        if (value == null) {
-            protocol.writeByte(NULL);
-            protocol.writeByte((byte) 0);
-            return;
+        protocol.writeStructBegin(new TStruct(definition.getName()));
+        if (instance == null) {
+            protocol.writeFieldBegin(NULL_MARK);
+            protocol.writeFieldEnd();
         } else {
-            protocol.writeByte(NOT_NULL);
+            if (type == Byte.class || type == byte.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.BYTE, (short) 2));
+                protocol.writeByte(instance.byteValue());
+            } else if (type == Short.class || type == short.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I16, (short) 2));
+                protocol.writeI16(instance.shortValue());
+            } else if (type == Integer.class || type == int.class || type == AtomicInteger.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I32, (short) 2));
+                protocol.writeI32(instance.intValue());
+            } else if (type == Long.class || type == long.class || type == AtomicLong.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I64, (short) 2));
+                protocol.writeI64(instance.longValue());
+            } else if (type == BigInteger.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRING, (short) 2));
+                protocol.writeString(instance.toString());
+            } else if (type == Float.class || type == float.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I32, (short) 2));
+                protocol.writeI32(Float.floatToIntBits(instance.floatValue()));
+            } else if (type == Double.class || type == double.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I64, (short) 2));
+                protocol.writeI64(Double.doubleToLongBits(instance.doubleValue()));
+            } else if (type == BigDecimal.class) {
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRING, (short) 2));
+                protocol.writeString(instance.toString());
+            } else {
+                throw new CodecConvertionException();
+            }
+            protocol.writeFieldEnd();
         }
-        if (type == Byte.class || type == byte.class) {
-            protocol.writeByte(value.byteValue());
-        } else if (type == Short.class || type == short.class) {
-            protocol.writeI16(value.shortValue());
-        } else if (type == Integer.class || type == int.class || type == AtomicInteger.class) {
-            protocol.writeI32(value.intValue());
-        } else if (type == Long.class || type == long.class || type == AtomicLong.class) {
-            protocol.writeI64(value.longValue());
-        } else if (type == BigInteger.class) {
-            protocol.writeString(value.toString());
-        } else if (type == Float.class || type == float.class) {
-            protocol.writeDouble(value.doubleValue());
-        } else if (type == Double.class || type == double.class) {
-            protocol.writeDouble(value.doubleValue());
-        } else if (type == BigDecimal.class) {
-            protocol.writeString(value.toString());
-        } else {
-            throw new CodecConvertionException();
-        }
+        protocol.writeFieldStop();
+        protocol.writeStructEnd();
     }
+
 }
