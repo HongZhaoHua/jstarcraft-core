@@ -75,38 +75,38 @@ public class TypeConverter extends ThriftConverter<Type> {
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type instance) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
         byte mark = NULL_MARK;
-        if (value == null) {
+        if (instance == null) {
             protocol.writeByte(mark);
             return;
         }
-        if (value instanceof Class) {
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+        if (instance instanceof Class) {
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             if (clazz.isArray()) {
                 mark |= ARRAY_MARK;
                 protocol.writeByte(mark);
-                value = TypeUtility.getArrayComponentType(value);
-                writeValueTo(context, value.getClass(), definition, value);
+                instance = TypeUtility.getArrayComponentType(instance);
+                writeValueTo(context, instance.getClass(), definition, instance);
             } else {
                 mark |= CLASS_MARK;
                 protocol.writeByte(mark);
                 definition = context.getClassDefinition(clazz);
                 protocol.writeI32(definition.getCode());
             }
-        } else if (value instanceof GenericArrayType) {
+        } else if (instance instanceof GenericArrayType) {
             mark |= ARRAY_MARK;
             protocol.writeByte(mark);
-            value = TypeUtility.getArrayComponentType(value);
-            writeValueTo(context, value.getClass(), definition, value);
-        } else if (value instanceof ParameterizedType) {
+            instance = TypeUtility.getArrayComponentType(instance);
+            writeValueTo(context, instance.getClass(), definition, instance);
+        } else if (instance instanceof ParameterizedType) {
             mark |= GENERIC_MARK;
             protocol.writeByte(mark);
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             definition = context.getClassDefinition(clazz);
             protocol.writeI32(definition.getCode());
-            ParameterizedType parameterizedType = (ParameterizedType) value;
+            ParameterizedType parameterizedType = (ParameterizedType) instance;
             Type[] types = parameterizedType.getActualTypeArguments();
             protocol.writeI32(types.length);
             for (int index = 0; index < types.length; index++) {

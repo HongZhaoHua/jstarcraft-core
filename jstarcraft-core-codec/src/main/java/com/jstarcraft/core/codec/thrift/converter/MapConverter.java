@@ -45,7 +45,7 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
         }
         if (mark == EXPLICIT_MARK) {
             int size = protocol.readI32();
-            Map map = (Map) definition.getInstance();
+            Map instance = (Map) definition.getInstance();
             ThriftConverter converter = context.getProtocolConverter(Specification.TYPE);
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
@@ -58,12 +58,12 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             for (int index = 0; index < size; index++) {
                 Object key = keyConverter.readValueFrom(context, keyType, keyDefinition);
                 Object value = valueConverter.readValueFrom(context, valueType, valueDefinition);
-                map.put(key, value);
+                instance.put(key, value);
             }
-            return map;
+            return instance;
         } else if (mark == IMPLICIT_MARK) {
             int size = protocol.readI32();
-            Map map = (Map) definition.getInstance();
+            Map instance = (Map) definition.getInstance();
             for (int index = 0; index < size; index++) {
                 int code = protocol.readI32();
                 definition = context.getClassDefinition(code);
@@ -77,28 +77,28 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 Object key = keyConverter.readValueFrom(context, keyType, keyDefinition);
                 Object value = valueConverter.readValueFrom(context, valueType, valueDefinition);
-                map.put(key, value);
+                instance.put(key, value);
             }
-            return map;
+            return instance;
         }
         String message = StringUtility.format("类型码[{}]没有对应标记码[{}]", type, mark);
         throw new CodecConvertionException(message);
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Map<Object, Object> value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Map<Object, Object> instance) throws Exception {
         TProtocol protocol = context.getProtocol();
         byte mark = NULL_MARK;
-        if (value == null) {
+        if (instance == null) {
             protocol.writeByte(mark);
             return;
         }
         if (type instanceof Class) {
             mark = IMPLICIT_MARK;
             protocol.writeByte(mark);
-            int size = value.size();
+            int size = instance.size();
             protocol.writeI32(size);
-            for (Entry<Object, Object> keyValue : value.entrySet()) {
+            for (Entry<Object, Object> keyValue : instance.entrySet()) {
                 ClassDefinition keyDefinition = context.getClassDefinition(keyValue.getKey().getClass());
                 protocol.writeI32(keyDefinition.getCode());
                 ThriftConverter keyConverter = context.getProtocolConverter(keyDefinition.getSpecification());
@@ -111,9 +111,9 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
         } else {
             mark = EXPLICIT_MARK;
             protocol.writeByte(mark);
-            int size = value.size();
+            int size = instance.size();
             protocol.writeI32(size);
-            definition = context.getClassDefinition(value.getClass());
+            definition = context.getClassDefinition(instance.getClass());
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
@@ -122,7 +122,7 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
-            for (Entry<Object, Object> keyValue : value.entrySet()) {
+            for (Entry<Object, Object> keyValue : instance.entrySet()) {
                 keyConverter.writeValueTo(context, keyType, keyDefinition, keyValue.getKey());
                 valueConverter.writeValueTo(context, valueType, valueDefinition, keyValue.getValue());
             }
