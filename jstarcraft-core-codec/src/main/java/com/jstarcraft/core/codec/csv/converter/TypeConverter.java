@@ -60,37 +60,37 @@ public class TypeConverter implements CsvConverter<Type> {
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Type value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Type instance) throws Exception {
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
-        if (value instanceof Class) {
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+        if (instance instanceof Class) {
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             if (clazz.isArray()) {
                 ClassDefinition definition = context.getClassDefinition(GenericArrayType.class);
                 out.print(definition.getCode());
-                value = TypeUtility.getArrayComponentType(value);
-                writeValueTo(context, value.getClass(), value);
+                instance = TypeUtility.getArrayComponentType(instance);
+                writeValueTo(context, instance.getClass(), instance);
             } else {
                 ClassDefinition definition = context.getClassDefinition(Class.class);
                 out.print(definition.getCode());
                 definition = context.getClassDefinition(clazz);
                 out.print(definition.getCode());
             }
-        } else if (value instanceof GenericArrayType) {
+        } else if (instance instanceof GenericArrayType) {
             ClassDefinition definition = context.getClassDefinition(GenericArrayType.class);
             out.print(definition.getCode());
-            value = TypeUtility.getArrayComponentType(value);
-            writeValueTo(context, value.getClass(), value);
-        } else if (value instanceof ParameterizedType) {
+            instance = TypeUtility.getArrayComponentType(instance);
+            writeValueTo(context, instance.getClass(), instance);
+        } else if (instance instanceof ParameterizedType) {
             ClassDefinition definition = context.getClassDefinition(ParameterizedType.class);
             out.print(definition.getCode());
-            Class<?> clazz = TypeUtility.getRawType(value, null);
+            Class<?> clazz = TypeUtility.getRawType(instance, null);
             definition = context.getClassDefinition(clazz);
             out.print(definition.getCode());
-            ParameterizedType parameterizedType = (ParameterizedType) value;
+            ParameterizedType parameterizedType = (ParameterizedType) instance;
             Type[] types = parameterizedType.getActualTypeArguments();
             out.print(types.length);
             for (int index = 0; index < types.length; index++) {

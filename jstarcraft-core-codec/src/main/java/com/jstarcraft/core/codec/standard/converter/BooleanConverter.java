@@ -54,15 +54,15 @@ public class BooleanConverter extends StandardConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.BOOLEAN);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
         if (type == Boolean.class || type == boolean.class) {
-            if ((Boolean) value) {
+            if ((Boolean) instance) {
                 information |= TRUE_MARK;
                 out.write(information);
             } else {
@@ -70,7 +70,7 @@ public class BooleanConverter extends StandardConverter<Object> {
                 out.write(information);
             }
         } else if (type == AtomicBoolean.class) {
-            if (((AtomicBoolean) value).get()) {
+            if (((AtomicBoolean) instance).get()) {
                 information |= TRUE_MARK;
                 out.write(information);
             } else {

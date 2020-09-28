@@ -1,18 +1,19 @@
 package com.jstarcraft.core.codec.thrift.converter;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.TType;
 
-import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 类型转换器
@@ -22,94 +23,96 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  */
 public class TypeConverter extends ThriftConverter<Type> {
 
-    /** 0000 0000(Null标记) */
-    private static final byte NULL_MARK = (byte) 0x00;
-
-    /** 0000 0002(数组标记) */
-    private static final byte ARRAY_MARK = (byte) 0x01;
-
-    /** 0000 0001(类型标记) */
-    private static final byte CLASS_MARK = (byte) 0x02;
-
-    /** 0000 0003(泛型标记) */
-    private static final byte GENERIC_MARK = (byte) 0x03;
+    protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
-    public Type readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
+    public Type readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = protocol.readByte();
-        byte mark = getMark(information);
-        if (mark == NULL_MARK) {
-            return null;
-        }
-        if (mark == CLASS_MARK) {
-            int code = protocol.readI32();
-            definition = context.getClassDefinition(code);
-            return definition.getType();
-        } else if (mark == ARRAY_MARK) {
-            if (type == Class.class) {
-                type = readValueFrom(context, type, definition);
-                Class<?> clazz = Class.class.cast(type);
-                return Array.newInstance(clazz, 0).getClass();
-            } else {
-                type = readValueFrom(context, type, definition);
-                return TypeUtility.genericArrayType(type);
-            }
-        } else if (mark == GENERIC_MARK) {
-            int code = protocol.readI32();
-            definition = context.getClassDefinition(code);
-            int size = protocol.readI32();
-            Type[] types = new Type[size];
-            for (int index = 0; index < size; index++) {
-                types[index] = readValueFrom(context, type, definition);
-            }
-            return TypeUtility.parameterize(definition.getType(), types);
+        protocol.readStructBegin();
+        Type instance;
+        TField feild = protocol.readFieldBegin();
+        if (NULL_MARK.equals(feild)) {
+            instance = null;
         } else {
-            throw new CodecConvertionException();
+            if (feild.id == 2) {
+                boolean generic = protocol.readBool();
+                protocol.readFieldEnd();
+                protocol.readFieldBegin();
+                definition = context.getClassDefinition(Type.class);
+                Type node = (Type) readValueFrom(context, Type.class, definition);
+                protocol.readFieldEnd();
+                if (generic) {
+                    instance = TypeUtility.genericArrayType(node);
+                } else {
+                    instance = Array.newInstance(TypeUtility.getRawType(node, null), 0).getClass();
+                }
+            } else {
+                int code = protocol.readI32();
+                protocol.readFieldEnd();
+                protocol.readFieldBegin();
+                Specification specification = Specification.getSpecification(Type[].class);
+                ThriftConverter converter = context.getProtocolConverter(specification);
+                definition = context.getClassDefinition(Type[].class);
+                Type[] types = (Type[]) converter.readValueFrom(context, Type[].class, definition);
+                protocol.readFieldEnd();
+                if (types == null) {
+                    definition = context.getClassDefinition(code);
+                    instance = definition.getType();
+                } else {
+                    definition = context.getClassDefinition(code);
+                    instance = TypeUtility.parameterize(definition.getType(), types);
+                }
+            }
         }
+        protocol.readFieldBegin();
+        protocol.readStructEnd();
+        return instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type value) throws IOException, TException {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Type instance) throws Exception {
         TProtocol protocol = context.getProtocol();
-        byte information = ClassDefinition.getMark(Specification.TYPE);
-        if (value == null) {
-            protocol.writeByte(information);
-            return;
-        }
-        if (value instanceof Class) {
-            Class<?> clazz = TypeUtility.getRawType(value, null);
-            if (clazz.isArray()) {
-                information |= ARRAY_MARK;
-                protocol.writeByte(information);
-                value = TypeUtility.getArrayComponentType(value);
-                writeValueTo(context, value.getClass(), definition, value);
-            } else {
-                information |= CLASS_MARK;
-                protocol.writeByte(information);
-                definition = context.getClassDefinition(clazz);
-                protocol.writeI32(definition.getCode());
-            }
-        } else if (value instanceof GenericArrayType) {
-            information |= ARRAY_MARK;
-            protocol.writeByte(information);
-            value = TypeUtility.getArrayComponentType(value);
-            writeValueTo(context, value.getClass(), definition, value);
-        } else if (value instanceof ParameterizedType) {
-            information |= GENERIC_MARK;
-            protocol.writeByte(information);
-            Class<?> clazz = TypeUtility.getRawType(value, null);
-            definition = context.getClassDefinition(clazz);
-            protocol.writeI32(definition.getCode());
-            ParameterizedType parameterizedType = (ParameterizedType) value;
-            Type[] types = parameterizedType.getActualTypeArguments();
-            protocol.writeI32(types.length);
-            for (int index = 0; index < types.length; index++) {
-                writeValueTo(context, types[index].getClass(), definition, types[index]);
-            }
+        protocol.writeStructBegin(new TStruct(definition.getName()));
+        if (instance == null) {
+            protocol.writeFieldBegin(NULL_MARK);
+            protocol.writeFieldEnd();
         } else {
-            throw new CodecConvertionException();
+            Type node = TypeUtility.getArrayComponentType(instance);
+            if (node != null) {
+                boolean generic = instance instanceof GenericArrayType;
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRUCT, (short) 2));
+                definition = context.getClassDefinition(Type.class);
+                protocol.writeBool(generic);
+                protocol.writeFieldEnd();
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRUCT, (short) 3));
+                definition = context.getClassDefinition(Type.class);
+                writeValueTo(context, node.getClass(), definition, node);
+                protocol.writeFieldEnd();
+            } else {
+                Class<?> clazz = TypeUtility.getRawType(instance, null);
+                definition = context.getClassDefinition(clazz);
+                int code = definition.getCode();
+                Type[] types;
+                if (instance instanceof ParameterizedType) {
+                    code = definition.getCode();
+                    ParameterizedType parameterizedType = (ParameterizedType) instance;
+                    types = parameterizedType.getActualTypeArguments();
+                } else {
+                    types = null;
+                }
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.I32, (short) 4));
+                protocol.writeI32(code);
+                protocol.writeFieldEnd();
+                protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.STRUCT, (short) 5));
+                Specification specification = Specification.getSpecification(Type[].class);
+                ThriftConverter converter = context.getProtocolConverter(specification);
+                definition = context.getClassDefinition(Type[].class);
+                converter.writeValueTo(context, Type[].class, definition, types);
+                protocol.writeFieldEnd();
+            }
         }
+        protocol.writeFieldStop();
+        protocol.writeStructEnd();
     }
 
 }

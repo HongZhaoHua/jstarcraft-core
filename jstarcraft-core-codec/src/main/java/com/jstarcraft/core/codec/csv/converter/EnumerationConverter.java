@@ -31,13 +31,13 @@ public class EnumerationConverter implements CsvConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Object value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Object instance) throws Exception {
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
-        Enum<?> enumeration = (Enum<?>) value;
+        Enum<?> enumeration = (Enum<?>) instance;
         int index = enumeration.ordinal();
         out.print(index);
     }

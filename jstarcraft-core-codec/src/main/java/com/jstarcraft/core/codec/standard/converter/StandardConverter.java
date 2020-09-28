@@ -61,9 +61,9 @@ public abstract class StandardConverter<T> {
      * 将指定内容写到上下文
      * 
      * @param context
-     * @param value
+     * @param instance
      * @throws Exception
      */
-    abstract public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, T value) throws Exception;
+    abstract public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, T instance) throws Exception;
 
 }

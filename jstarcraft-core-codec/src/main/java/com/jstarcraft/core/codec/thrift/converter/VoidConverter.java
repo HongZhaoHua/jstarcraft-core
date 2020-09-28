@@ -20,7 +20,6 @@ public class VoidConverter extends ThriftConverter<Object> {
 
     @Override
     public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws IOException {
-
     }
 
 }

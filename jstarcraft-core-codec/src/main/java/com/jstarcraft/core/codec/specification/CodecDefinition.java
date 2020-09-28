@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -26,8 +25,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.jstarcraft.core.codec.exception.CodecDefinitionException;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
-import com.jstarcraft.core.common.reflection.Specification;
-import com.jstarcraft.core.utility.PressUtility;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -40,10 +37,12 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 public class CodecDefinition {
 
     private static final Comparator<Type> typeComparator = new Comparator<Type>() {
+
         @Override
         public int compare(Type left, Type right) {
             return left.getTypeName().compareTo(right.getTypeName());
         }
+
     };
 
     /** 代号管理器 */
@@ -141,7 +140,11 @@ public class CodecDefinition {
     private static void findDependentClasses(Type type, Collection<Class<?>> classes) {
         if (type instanceof Class) {
             Class clazz = (Class) type;
-            classes.add(clazz);
+            if (clazz.isArray()) {
+                clazz = clazz.getComponentType();
+            } else {
+                classes.add(clazz);
+            }
             findDependentClasses(clazz, classes);
         } else if (type instanceof GenericArrayType) {
             // 数组类型
@@ -167,15 +170,11 @@ public class CodecDefinition {
         CodecDefinition definition = new CodecDefinition();
         // 遍历与排序所有依赖的类型
         TreeSet<Class<?>> classes = new TreeSet<>(typeComparator);
-        classes.addAll(Specification.type2Specifitions.keySet());
         for (Type type : types) {
             findDependentClasses(type, classes);
         }
         Object2IntMap<Class<?>> codes = new Object2IntOpenHashMap<>();
         for (Class<?> clazz : classes) {
-            if (clazz.isArray()) {
-                continue;
-            }
             int code = definition.codeManager.incrementAndGet();
             codes.put(clazz, code);
         }
@@ -183,9 +182,6 @@ public class CodecDefinition {
         definition.code2Definitions = new ArrayList<>(classes.size());
 
         for (Class<?> clazz : classes) {
-            if (clazz.isArray()) {
-                continue;
-            }
             if (definition.type2Definitions.get(clazz) == null) {
                 ClassDefinition classDefinition = ClassDefinition.instanceOf(clazz, codes);
                 definition.code2Definitions.add(classDefinition);
@@ -202,10 +198,7 @@ public class CodecDefinition {
     public static CodecDefinition fromBytes(byte[] bytes) {
         try {
             CodecDefinition definition = new CodecDefinition();
-            // 解压解密
-            byte[] unzip = PressUtility.unzip(bytes, 30, TimeUnit.SECONDS);
-
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(unzip);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
             DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
             int size = dataInputStream.readInt();
             definition.code2Definitions = new ArrayList<>(size);
@@ -230,11 +223,8 @@ public class CodecDefinition {
             for (ClassDefinition classDefinition : definition.code2Definitions) {
                 ClassDefinition.writeTo(classDefinition, dataOutputStream);
             }
-
-            // 加密压缩
             byte[] bytes = byteArrayOutputStream.toByteArray();
-            byte[] zip = PressUtility.zip(bytes, 5);
-            return zip;
+            return bytes;
         } catch (Exception exception) {
             throw new CodecDefinitionException(exception);
         }

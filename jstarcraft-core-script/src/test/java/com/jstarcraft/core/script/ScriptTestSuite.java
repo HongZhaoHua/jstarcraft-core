@@ -20,6 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
         // 上下文测试
         ScriptContextTestCase.class,
         // 表达式测试
+        BeanShellExpressionTestCase.class,
+
         GroovyExpressionTestCase.class,
 
         JsExpressionTestCase.class,
@@ -32,6 +34,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
         RubyExpressionTestCase.class,
         // 函数测试
+        BeanShellFunctionTestCase.class,
+        
         GroovyFunctionTestCase.class,
 
         JsFunctionTestCase.class,

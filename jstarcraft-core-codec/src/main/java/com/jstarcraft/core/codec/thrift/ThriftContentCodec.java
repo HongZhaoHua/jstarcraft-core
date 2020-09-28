@@ -57,11 +57,10 @@ public class ThriftContentCodec implements ContentCodec {
 
     @Override
     public Object decode(Type type, InputStream stream) {
-        try {
+        try (TIOStreamTransport transport = new TIOStreamTransport(stream)) {
             if (stream.available() == 0) {
                 return null;
             }
-            TIOStreamTransport transport = new TIOStreamTransport(stream);
             ThriftContext context = new ThriftContext(codecDefinition, protocolFactory.apply(transport));
             ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
@@ -90,11 +89,10 @@ public class ThriftContentCodec implements ContentCodec {
 
     @Override
     public void encode(Type type, Object content, OutputStream stream) {
-        if (content == null) {
-            return;
-        }
-        try {
-            TIOStreamTransport transport = new TIOStreamTransport(stream);
+        try (TIOStreamTransport transport = new TIOStreamTransport(stream)) {
+            if (content == null) {
+                return;
+            }
             ThriftContext context = new ThriftContext(codecDefinition, protocolFactory.apply(transport));
             ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));

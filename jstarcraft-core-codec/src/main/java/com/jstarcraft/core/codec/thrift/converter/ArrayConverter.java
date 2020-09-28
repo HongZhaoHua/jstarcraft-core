@@ -3,12 +3,16 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 
+import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TList;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.protocol.TStruct;
+import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * 数组转换器
@@ -18,44 +22,61 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  */
 public class ArrayConverter extends ThriftConverter<Object> {
 
+    protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
+
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
-        TList list = protocol.readListBegin();
-        int length = list.size;
-        Class<?> clazz = TypeUtility.getRawType(type, null);
-        clazz = clazz.getComponentType();
-        Object value = Array.newInstance(clazz, length);
-        Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-        ThriftConverter converter = context.getProtocolConverter(specification);
-        for (int index = 0; index < length; index++) {
-            Object object = converter.readValueFrom(context, clazz, definition);
-            Array.set(value, index, object);
+        protocol.readStructBegin();
+        Object instance;
+        TField feild = protocol.readFieldBegin();
+        if (NULL_MARK.equals(feild)) {
+            instance = null;
+        } else {
+            int size = protocol.readListBegin().size;
+            Class<?> clazz = TypeUtility.getRawType(type, null);
+            clazz = clazz.getComponentType();
+            Specification specification = Specification.getSpecification(clazz);
+            ThriftConverter converter = context.getProtocolConverter(specification);
+            definition = context.getClassDefinition(clazz);
+            instance = Array.newInstance(clazz, size);
+            for (int index = 0; index < size; index++) {
+                Object element = converter.readValueFrom(context, clazz, definition);
+                Array.set(instance, index, element);
+            }
+            protocol.readListEnd();
         }
-        protocol.readListEnd();
-        return value;
+        protocol.readFieldEnd();
+        protocol.readFieldBegin();
+        protocol.readStructEnd();
+        return instance;
     }
 
     @Override
-    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(ThriftContext context, Type type, ClassDefinition definition, Object instance) throws Exception {
         TProtocol protocol = context.getProtocol();
-        int length = value == null ? 0 : Array.getLength(value);
-        protocol.writeListBegin(new TList(context.getThriftType(type), length));
-        Class<?> clazz = TypeUtility.getRawType(type, null);
-        clazz = clazz.getComponentType();
-        Specification specification;
-        if (clazz == null) {
-            specification = definition.getSpecification();
+        protocol.writeStructBegin(new TStruct(definition.getName()));
+        if (instance == null) {
+            protocol.writeFieldBegin(NULL_MARK);
+            protocol.writeFieldEnd();
         } else {
-            specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
+            protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.LIST, (short) 2));
+            int size = Array.getLength(instance);
+            Class<?> clazz = TypeUtility.getRawType(type, null);
+            clazz = clazz.getComponentType();
+            Specification specification = Specification.getSpecification(clazz);
+            ThriftConverter converter = context.getProtocolConverter(specification);
+            definition = context.getClassDefinition(clazz);
+            protocol.writeListBegin(new TList(TType.STRUCT, size));
+            for (int index = 0; index < size; index++) {
+                Object element = Array.get(instance, index);
+                converter.writeValueTo(context, clazz, definition, element);
+            }
+            protocol.writeListEnd();
+            protocol.writeFieldEnd();
         }
-        ThriftConverter converter = context.getProtocolConverter(specification);
-        for (int index = 0; index < length; index++) {
-            Object object = Array.get(value, index);
-            definition = context.getClassDefinition(object == null ? clazz : object.getClass());
-            converter.writeValueTo(context, definition.getType(), definition, object);
-        }
-        protocol.writeListEnd();
+        protocol.writeFieldStop();
+        protocol.writeStructEnd();
     }
 
 }

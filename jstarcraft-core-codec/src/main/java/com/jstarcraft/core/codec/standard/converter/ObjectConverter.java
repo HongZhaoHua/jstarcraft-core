@@ -38,17 +38,15 @@ public class ObjectConverter extends StandardConverter<Object> {
             return null;
         }
         if (mark == OBJECT_MARK) {
-            // #### 0000
             PropertyDefinition[] properties = definition.getProperties();
-            Object object;
+            Object instance;
             try {
-                object = definition.getInstance();
+                instance = definition.getInstance();
             } catch (Exception exception) {
                 String message = StringUtility.format("获取类型[{}]实例异常", definition.getName());
                 throw new CodecConvertionException(message, exception);
             }
-            context.putObjectValue(object);
-            // int length = PROPERTY_LIMIT & (byte) in.read();
+            context.putObjectValue(instance);
             for (int index = 0; index < properties.length; index++) {
                 PropertyDefinition property = properties[index];
                 StandardConverter converter = context.getProtocolConverter(property.getSpecification());
@@ -58,13 +56,13 @@ public class ObjectConverter extends StandardConverter<Object> {
                     continue;
                 }
                 try {
-                    property.setValue(object, value);
+                    property.setValue(instance, value);
                 } catch (Exception exception) {
                     String message = StringUtility.format("赋值[{}]实例属性[{}]异常", definition.getName(), property.getName());
                     throw new CodecConvertionException(message, exception);
                 }
             }
-            return object;
+            return instance;
         } else if (mark == REFERENCE_MARK) {
             int reference = NumberConverter.readNumber(in).intValue();
             Object value = context.getObjectValue(reference);
@@ -75,14 +73,14 @@ public class ObjectConverter extends StandardConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws Exception {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws Exception {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.OBJECT);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
-        int reference = context.getObjectIndex(value);
+        int reference = context.getObjectIndex(instance);
         if (reference != -1) {
             information |= REFERENCE_MARK;
             out.write(information);
@@ -90,26 +88,15 @@ public class ObjectConverter extends StandardConverter<Object> {
         } else {
             information |= OBJECT_MARK;
             out.write(information);
-            context.putObjectValue(value);
-
-            // int code = definition.getCode();
-            // NumberConverter.writeNumber(out, code);
+            context.putObjectValue(instance);
             PropertyDefinition[] properties = definition.getProperties();
-            // int size = properties.size();
-            // if (size > PROPERTY_LIMIT) {
-            // String message = StringUtility.format("类型[{}]属性数量[{}]超过最大值[{}]",
-            // definition.getClass(), size, PROPERTY_LIMIT);
-            // throw new ProtocolConverterException(message, new
-            // RuntimeException(message));
-            // }
-            // out.write((byte) size);
             for (PropertyDefinition property : properties) {
-                Object object;
+                Object value;
                 try {
-                    object = property.getValue(value);
+                    value = property.getValue(instance);
                     StandardConverter converter = context.getProtocolConverter(property.getSpecification());
                     definition = context.getClassDefinition(property.getCode());
-                    converter.writeValueTo(context, property.getType(), definition, object);
+                    converter.writeValueTo(context, property.getType(), definition, value);
                 } catch (Exception exception) {
                     String message = StringUtility.format("取值[{}]实例属性[{}]异常", definition.getName(), property.getName());
                     throw new CodecConvertionException(message, exception);

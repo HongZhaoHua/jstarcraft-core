@@ -4,6 +4,11 @@ http://www.blogjava.net/DLevin/category/54894.html
 Protobuf基础(Java使用,Windows代码生成):
 https://www.cnblogs.com/ziyue7575/p/11593374.html
 
+Protobuf语法指南（proto2）:
+https://blog.csdn.net/qq_22660775/article/details/89044538
+Protobuf语法指南（proto3）:
+https://blog.csdn.net/qq_22660775/article/details/89163881
+
 Protobuf3 系列:
 https://blog.csdn.net/hry2015/category_6885899.html
 

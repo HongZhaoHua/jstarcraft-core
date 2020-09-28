@@ -4,6 +4,12 @@ http://loveshisong.cn/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/2016-02-16-Type%E8%AF
 Type体系和AnnotatedType体系:
 https://www.zyc.red/categories/Java/Reflect
 
+你真的了解Java泛型参数？Spring ResolvableType更好的处理泛型:
+https://blog.csdn.net/u012881904/article/details/80813294
+
+Spring(https://spring.io/) 系列目录:
+https://www.cnblogs.com/binarylei/p/10198698.html
+
 How To Do In Java:
 https://howtodoinjava.com
 

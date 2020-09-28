@@ -7,7 +7,6 @@ import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
 import com.jstarcraft.core.codec.MockEnumeration;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.codec.standard.StandardContentCodec;
 
 public class StandardContentCodecTestCase extends ContentCodecTestCase {
 

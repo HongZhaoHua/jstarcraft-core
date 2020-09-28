@@ -27,29 +27,19 @@ public class EnumerationConverter extends StandardConverter<Object> {
         if (ordinal == NULL_MARK) {
             return null;
         }
-        // byte information = (byte) in.read();
-        // int code = NumberConverter.readNumber(in).intValue();
-
         Class<?> clazz = definition.getType();
         return clazz.getEnumConstants()[ordinal - 1];
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
         OutputStream out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.write(NULL_MARK);
             return;
         }
-        // byte information = CodecSpecification.ENUMERATION.getCode();
-        // out.write(information);
-        Enum<?> enumeration = (Enum<?>) value;
-        // Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>)
-        // enumeration.getClass();
-
-        // int code = definition.getCode();
+        Enum<?> enumeration = (Enum<?>) instance;
         int ordinal = enumeration.ordinal() + 1;
-        // NumberConverter.writeNumber(out, code);
         NumberConverter.writeNumber(out, ordinal);
     }
 

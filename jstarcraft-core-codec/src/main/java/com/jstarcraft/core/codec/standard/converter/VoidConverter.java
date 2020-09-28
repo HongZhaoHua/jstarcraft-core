@@ -21,7 +21,7 @@ public class VoidConverter extends StandardConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
     }
 
 }

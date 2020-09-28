@@ -32,14 +32,14 @@ public class NumberConverter implements CsvConverter<Number> {
     }
 
     @Override
-    public void writeValueTo(CsvWriter context, Type type, Number value) throws Exception {
+    public void writeValueTo(CsvWriter context, Type type, Number instance) throws Exception {
         // TODO 处理null
         CSVPrinter out = context.getOutputStream();
-        if (value == null) {
+        if (instance == null) {
             out.print(StringUtility.EMPTY);
             return;
         }
-        out.print(value);
+        out.print(instance);
     }
 
 }

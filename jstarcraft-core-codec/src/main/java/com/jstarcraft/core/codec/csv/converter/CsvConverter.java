@@ -28,9 +28,9 @@ public interface CsvConverter<T> {
      * 将指定内容写到上下文
      * 
      * @param context
-     * @param value
+     * @param instance
      * @throws IOException
      */
-    void writeValueTo(CsvWriter context, Type type, T value) throws Exception;
+    void writeValueTo(CsvWriter context, Type type, T instance) throws Exception;
 
 }

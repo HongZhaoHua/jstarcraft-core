@@ -50,21 +50,21 @@ public class InstantConverter extends StandardConverter<Object> {
     }
 
     @Override
-    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object value) throws IOException {
+    public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Object instance) throws IOException {
         OutputStream out = context.getOutputStream();
         byte information = ClassDefinition.getMark(Specification.INSTANT);
-        if (value == null) {
+        if (instance == null) {
             out.write(information);
             return;
         }
         long time;
-        if (value instanceof Date) {
+        if (instance instanceof Date) {
             information |= DATE_MARK;
-            Date date = (Date) value;
+            Date date = (Date) instance;
             time = date.getTime();
-        } else if (value instanceof Instant) {
+        } else if (instance instanceof Instant) {
             information |= INSTANT_MARK;
-            Instant instant = (Instant) value;
+            Instant instant = (Instant) instance;
             time = instant.toEpochMilli();
         } else {
             throw new CodecConvertionException();
