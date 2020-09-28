@@ -38,14 +38,14 @@ public class ArrayConverter extends ThriftConverter<Object> {
         if (NULL_MARK.equals(feild)) {
             instance = null;
         } else {
-            int length = protocol.readListBegin().size;
+            int size = protocol.readListBegin().size;
             Class<?> clazz = TypeUtility.getRawType(type, null);
             clazz = clazz.getComponentType();
             Specification specification = Specification.getSpecification(clazz);
             ThriftConverter converter = context.getProtocolConverter(specification);
             definition = context.getClassDefinition(clazz);
-            instance = Array.newInstance(clazz, length);
-            for (int index = 0; index < length; index++) {
+            instance = Array.newInstance(clazz, size);
+            for (int index = 0; index < size; index++) {
                 Object element = converter.readValueFrom(context, clazz, definition);
                 Array.set(instance, index, element);
             }
@@ -66,14 +66,14 @@ public class ArrayConverter extends ThriftConverter<Object> {
             protocol.writeFieldEnd();
         } else {
             protocol.writeFieldBegin(new TField(StringUtility.EMPTY, TType.LIST, (short) 2));
-            int length = Array.getLength(instance);
+            int size = Array.getLength(instance);
             Class<?> clazz = TypeUtility.getRawType(type, null);
             clazz = clazz.getComponentType();
             Specification specification = Specification.getSpecification(clazz);
             ThriftConverter converter = context.getProtocolConverter(specification);
             definition = context.getClassDefinition(clazz);
-            protocol.writeListBegin(new TList(converter.getThriftType(clazz), length));
-            for (int index = 0; index < length; index++) {
+            protocol.writeListBegin(new TList(converter.getThriftType(clazz), size));
+            for (int index = 0; index < size; index++) {
                 Object element = Array.get(instance, index);
                 converter.writeValueTo(context, clazz, definition, element);
             }
