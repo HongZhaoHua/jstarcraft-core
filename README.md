@@ -67,14 +67,17 @@ JStarCraft Core框架各个模块之间的关系:
     * Cache Aside
     * Cache as Record
 * 2.编解码(codec)
-    * CSV
-    * Hessian
-    * JSON
-    * Kryo
-    * MessagePack
-    * Standard
-    * XML
-    * YAML
+    * 字节
+        * Hessian
+        * Kryo
+        * MessagePack
+        * Standard
+        * Thrift
+    * 字符
+        * CSV
+        * JSON
+        * XML
+        * YAML
 * 3.通用(common)
     * 编译(compilation)
     * 转换(conversion)
