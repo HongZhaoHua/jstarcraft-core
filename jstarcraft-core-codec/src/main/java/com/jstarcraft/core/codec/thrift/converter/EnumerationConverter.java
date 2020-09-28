@@ -2,7 +2,6 @@ package com.jstarcraft.core.codec.thrift.converter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.List;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TField;
@@ -11,9 +10,7 @@ import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
 import com.jstarcraft.core.codec.specification.ClassDefinition;
-import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.sun.tools.classfile.Opcode.Set;
 
 /**
  * 枚举转换器
@@ -24,11 +21,6 @@ import com.sun.tools.classfile.Opcode.Set;
 public class EnumerationConverter extends ThriftConverter<Object> {
 
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
-
-    @Override
-    public byte getThriftType(Type type) {
-        return TType.I32;
-    }
 
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {

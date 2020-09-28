@@ -23,11 +23,6 @@ public class ObjectConverter extends ThriftConverter<Object> {
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
-    public byte getThriftType(Type type) {
-        return TType.STRUCT;
-    }
-
-    @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
@@ -83,7 +78,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
                     value = property.getValue(instance);
                     if (value != null) {
                         ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
-                        TField field = new TField(property.getName(), converter.getThriftType(property.getType()), (short) (index + 2));
+                        TField field = new TField(property.getName(), TType.STRUCT, (short) (index + 2));
                         protocol.writeFieldBegin(field);
                         definition = context.getClassDefinition(property.getCode());
                         converter.writeValueTo(context, property.getType(), definition, value);

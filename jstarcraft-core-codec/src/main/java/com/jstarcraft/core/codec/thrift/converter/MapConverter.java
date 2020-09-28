@@ -27,11 +27,6 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
-    public byte getThriftType(Type type) {
-        return TType.MAP;
-    }
-
-    @Override
     public Map<Object, Object> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
@@ -85,7 +80,7 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
-            protocol.writeMapBegin(new TMap(keyConverter.getThriftType(keyType), valueConverter.getThriftType(valueType),size));
+            protocol.writeMapBegin(new TMap(TType.STRUCT, TType.STRUCT, size));
             for (Entry<Object, Object> keyValue : instance.entrySet()) {
                 keyConverter.writeValueTo(context, keyType, keyDefinition, keyValue.getKey());
                 valueConverter.writeValueTo(context, valueType, valueDefinition, keyValue.getValue());

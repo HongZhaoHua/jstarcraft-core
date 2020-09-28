@@ -25,11 +25,6 @@ public class ArrayConverter extends ThriftConverter<Object> {
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
     @Override
-    public byte getThriftType(Type type) {
-        return TType.STRUCT;
-    }
-
-    @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
@@ -72,7 +67,7 @@ public class ArrayConverter extends ThriftConverter<Object> {
             Specification specification = Specification.getSpecification(clazz);
             ThriftConverter converter = context.getProtocolConverter(specification);
             definition = context.getClassDefinition(clazz);
-            protocol.writeListBegin(new TList(converter.getThriftType(clazz), size));
+            protocol.writeListBegin(new TList(TType.STRUCT, size));
             for (int index = 0; index < size; index++) {
                 Object element = Array.get(instance, index);
                 converter.writeValueTo(context, clazz, definition, element);

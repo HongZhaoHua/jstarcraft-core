@@ -3,7 +3,6 @@ package com.jstarcraft.core.codec.thrift.converter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.thrift.protocol.TField;
 import org.apache.thrift.protocol.TList;
@@ -11,12 +10,10 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
-import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
-import com.sun.tools.classfile.Opcode.Set;
 
 /**
  * 集合转换器
@@ -28,16 +25,7 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
 
     protected static final TField NULL_MARK = new TField(StringUtility.EMPTY, TType.BYTE, (short) 1);
 
-    @Override
-    public byte getThriftType(Type type) {
-        if (TypeUtility.isAssignable(type, Set.class)) {
-            return TType.SET;
-        }
-        if (TypeUtility.isAssignable(type, List.class)) {
-            return TType.LIST;
-        }
-        throw new CodecConvertionException();
-    }
+   
 
     @Override
     public Collection<?> readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws Exception {
@@ -86,7 +74,7 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
             Type elementType = types[0];
             ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
-            protocol.writeListBegin(new TList(converter.getThriftType(elementType), size));
+            protocol.writeListBegin(new TList(TType.STRUCT, size));
             for (Object element : instance) {
                 converter.writeValueTo(context, elementType, definition, element);
             }
