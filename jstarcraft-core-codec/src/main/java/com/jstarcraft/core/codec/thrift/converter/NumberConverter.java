@@ -57,7 +57,7 @@ public class NumberConverter extends ThriftConverter<Number> {
         protocol.readStructBegin();
         Object instance;
         TField feild = protocol.readFieldBegin();
-        if (feild.id == 1) {
+        if (NULL_MARK.equals(feild)) {
             instance = null;
         } else {
             if (type == Byte.class || type == byte.class) {

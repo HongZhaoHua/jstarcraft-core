@@ -26,14 +26,14 @@ public class StringConverter extends ThriftConverter<Object> {
     public byte getThriftType(Type type) {
         return TType.STRING;
     }
-    
+
     @Override
     public Object readValueFrom(ThriftContext context, Type type, ClassDefinition definition) throws IOException, TException {
         TProtocol protocol = context.getProtocol();
         protocol.readStructBegin();
         Object instance;
         TField feild = protocol.readFieldBegin();
-        if (feild.id == 1) {
+        if (NULL_MARK.equals(feild)) {
             instance = null;
         } else {
             if (type == char.class || type == Character.class) {

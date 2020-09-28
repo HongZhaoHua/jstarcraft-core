@@ -35,7 +35,7 @@ public class ArrayConverter extends ThriftConverter<Object> {
         protocol.readStructBegin();
         Object instance;
         TField feild = protocol.readFieldBegin();
-        if (feild.id == 1) {
+        if (NULL_MARK.equals(feild)) {
             instance = null;
         } else {
             int length = protocol.readListBegin().size;

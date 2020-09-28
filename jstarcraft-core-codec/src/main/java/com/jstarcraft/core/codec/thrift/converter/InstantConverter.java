@@ -35,7 +35,7 @@ public class InstantConverter extends ThriftConverter<Object> {
         protocol.readStructBegin();
         Object instance;
         TField feild = protocol.readFieldBegin();
-        if (feild.id == 1) {
+        if (NULL_MARK.equals(feild)) {
             instance = null;
         } else {
             if (type == Date.class) {
