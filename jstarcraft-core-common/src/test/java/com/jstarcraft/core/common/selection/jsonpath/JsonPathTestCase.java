@@ -7,10 +7,67 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.noear.snack.ONode;
 
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.json.JettisonProvider;
+import com.jayway.jsonpath.spi.json.JsonOrgJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonProvider;
+import com.jayway.jsonpath.spi.json.JsonSmartJsonProvider;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class JsonPathTestCase {
+
+    @Test
+    public void testJayway() {
+        JsonProvider[] adapters = new JsonProvider[] { new GsonJsonProvider(),
+
+                new JacksonJsonNodeJsonProvider(),
+
+                new JacksonJsonProvider(),
+
+                new JettisonProvider(),
+
+                new JsonOrgJsonProvider(),
+
+                new JsonSmartJsonProvider() };
+        // TODO 因为TapestryJsonProvider要求根元素必须为{},所以独立测试.
+        try (InputStream stream = JsonPathTestCase.class.getResourceAsStream("jsonpath.json"); DataInputStream buffer = new DataInputStream(stream)) {
+            String json = IoUtility.toString(stream, StringUtility.CHARSET);
+            for (JsonProvider adapter : adapters) {
+                Object root = adapter.parse(json);
+                JaywayJsonPathSelector selector;
+
+                selector = new JaywayJsonPathSelector("$[0]", adapter);
+                Assert.assertEquals(1, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[0:3]", adapter);
+                Assert.assertEquals(3, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[-3:0]", adapter);
+                Assert.assertEquals(3, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$..name", adapter);
+                Assert.assertEquals(3, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[?(@.age > 10)]", adapter);
+                Assert.assertEquals(2, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[?(@.age < 10)]", adapter);
+                Assert.assertEquals(1, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[?(@.sex == true)]", adapter);
+                Assert.assertEquals(2, selector.selectContent(root).size());
+
+                selector = new JaywayJsonPathSelector("$[?(@.sex == false)]", adapter);
+                Assert.assertEquals(1, selector.selectContent(root).size());
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new IllegalArgumentException(exception);
+        }
+    }
 
     @Test
     public void testSnack3() {

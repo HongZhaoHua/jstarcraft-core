@@ -168,9 +168,32 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Jayway依赖 -->
         <dependency>
-            <groupId>io.gatling</groupId>
-            <artifactId>jsonpath_2.12</artifactId>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>com-google-gson</artifactId>
+            <version>RELEASE113</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.4.1</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20200518</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>tapestry-json</artifactId>
+            <version>5.6.1</version>
             <optional>true</optional>
         </dependency>
 

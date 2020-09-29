@@ -679,12 +679,6 @@
             </dependency>
 
             <dependency>
-                <groupId>io.gatling</groupId>
-                <artifactId>jsonpath_2.12</artifactId>
-                <version>0.7.0</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>snack3</artifactId>
                 <version>3.1.7.3</version>
