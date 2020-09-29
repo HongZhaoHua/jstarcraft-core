@@ -11,7 +11,7 @@ import nu.xom.Node;
  * @author Birdy
  *
  */
-public class XomXpathSelector extends XpathSelector<Node> {
+public class XomXpathSelector extends JaxenXpathSelector<Node> {
 
     public XomXpathSelector(String query) {
         super(query);

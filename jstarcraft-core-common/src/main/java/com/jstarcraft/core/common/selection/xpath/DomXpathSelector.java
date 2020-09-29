@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
  * @author Birdy
  *
  */
-public class DomXpathSelector extends XpathSelector<Node> {
+public class DomXpathSelector extends JaxenXpathSelector<Node> {
 
     public DomXpathSelector(String query) {
         super(query);

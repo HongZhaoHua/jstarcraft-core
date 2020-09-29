@@ -10,6 +10,10 @@ import com.jstarcraft.core.common.selection.AbstractSelector;
 /**
  * CSS选择器
  * 
+ * <pre>
+ * 基于jsoup
+ * </pre>
+ * 
  * @author Birdy
  *
  */

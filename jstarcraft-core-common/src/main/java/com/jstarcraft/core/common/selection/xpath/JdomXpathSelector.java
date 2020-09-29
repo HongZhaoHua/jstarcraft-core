@@ -10,7 +10,7 @@ import org.jdom2.NamespaceAware;
  * @author Birdy
  *
  */
-public class JdomXpathSelector extends XpathSelector<NamespaceAware> {
+public class JdomXpathSelector extends JaxenXpathSelector<NamespaceAware> {
 
     public JdomXpathSelector(String query) {
         super(query);

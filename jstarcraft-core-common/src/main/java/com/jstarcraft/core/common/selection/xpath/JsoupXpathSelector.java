@@ -11,7 +11,7 @@ import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlXPath;
  * @author Birdy
  *
  */
-public class JsoupXpathSelector extends XpathSelector<HtmlNode> {
+public class JsoupXpathSelector extends JaxenXpathSelector<HtmlNode> {
 
     public JsoupXpathSelector(String query) {
         super(query);

@@ -11,7 +11,7 @@ import com.jstarcraft.core.common.selection.xpath.swing.SwingXPath;
  * @author Birdy
  *
  */
-public class SwingXpathSelector extends XpathSelector<SwingNode> {
+public class SwingXpathSelector extends JaxenXpathSelector<SwingNode> {
 
     public SwingXpathSelector(String query) {
         super(query);

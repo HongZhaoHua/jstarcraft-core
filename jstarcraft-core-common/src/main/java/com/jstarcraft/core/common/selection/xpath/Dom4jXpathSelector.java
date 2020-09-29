@@ -10,7 +10,7 @@ import org.jaxen.dom4j.Dom4jXPath;
  * @author Birdy
  *
  */
-public class Dom4jXpathSelector extends XpathSelector<Node> {
+public class Dom4jXpathSelector extends JaxenXpathSelector<Node> {
 
     public Dom4jXpathSelector(String query) {
         super(query);

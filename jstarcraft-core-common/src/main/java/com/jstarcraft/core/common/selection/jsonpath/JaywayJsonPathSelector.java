@@ -13,8 +13,20 @@ import com.jayway.jsonpath.internal.path.PathCompiler;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
+/**
+ * JSONPath选择器
+ * 
+ * <pre>
+ * 基于Jayway
+ * </pre>
+ * 
+ * @author Birdy
+ *
+ * @param <T>
+ */
 public class JaywayJsonPathSelector<T> extends JsonPathSelector<T> {
 
+    /** 通过反射获取Jayway属性 */
     private static final Field valueResult;
 
     static {
