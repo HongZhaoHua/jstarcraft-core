@@ -13,7 +13,7 @@ import com.jstarcraft.core.utility.StringUtility;
 public class JsonPathTestCase {
 
     @Test
-    public void testJsonPath() {
+    public void testSnack3() {
         try (InputStream stream = JsonPathTestCase.class.getResourceAsStream("jsonpath.json"); DataInputStream buffer = new DataInputStream(stream)) {
             String json = IoUtility.toString(stream, StringUtility.CHARSET);
             ONode root = ONode.load(json);
