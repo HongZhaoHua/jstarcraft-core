@@ -45,7 +45,6 @@ public class JsonPathTestCase {
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception);
         }
-
     }
 
 }
