@@ -10,11 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+import org.jaxen.Navigator;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.jstarcraft.core.common.selection.xpath.swing.SwingAttributeNode;
 import com.jstarcraft.core.common.selection.xpath.swing.SwingComponentNode;
+import com.jstarcraft.core.common.selection.xpath.swing.SwingNavigator;
 import com.jstarcraft.core.common.selection.xpath.swing.SwingNode;
 import com.jstarcraft.core.common.selection.xpath.swing.SwingXPath;
 
@@ -22,6 +24,7 @@ public class SwingXpathTestCase {
 
     @Test
     public void testXpath() throws Exception {
+        Navigator navigator = SwingNavigator.getInstance();
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Container container = frame.getContentPane();
