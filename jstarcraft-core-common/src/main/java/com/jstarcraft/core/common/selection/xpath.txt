@@ -21,3 +21,6 @@ http://saxon.sourceforge.net
 
 XML解析——Java中XML的四种解析方式:
 https://www.cnblogs.com/longqingyang/p/5577937.html
+
+Java 使用XOM对象数据序列化为XML、反序列化、Preferences相关操作小案例:
+https://blog.csdn.net/liangrui1988/article/details/34199951
