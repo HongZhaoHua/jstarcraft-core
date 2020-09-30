@@ -28,7 +28,7 @@ public class JsonUtilityTestCase {
 
     private void convertType(Type type) {
         JavaType java = JsonUtility.type2Java(type);
-        Assert.assertThat(type, CoreMatchers.equalTo(JsonUtility.java2Type(java)));
+        Assert.assertEquals(type, JsonUtility.java2Type(java));
     }
 
     @Test
