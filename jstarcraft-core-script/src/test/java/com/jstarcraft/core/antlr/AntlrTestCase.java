@@ -32,8 +32,8 @@ public class AntlrTestCase {
         walker.walk(listener, tree);
 
         // 访问器
-        CalculatorVisitor<?> evalByVisitor = new CalculatorBaseVisitor<>();
-        evalByVisitor.visit(tree);
+        CalculatorVisitor<?> visitor = new CalculatorBaseVisitor<>();
+        visitor.visit(tree);
 
         TestRig rig = new TestRig(new String[] { "com.jstarcraft.core.antlr.Calculator", "formula", "-gui", "-tokens", "-tree", "src/test/resources/formula" });
         rig.process();
