@@ -62,11 +62,17 @@ public class JsonUtilityTestCase {
         convertType(TypeUtility.parameterize(List.class, MockComplexObject.class));
         convertType(TypeUtility.parameterize(Set.class, MockComplexObject.class));
 
+        convertType(TypeUtility.parameterize(List.class, MockComplexObject[].class));
+        convertType(TypeUtility.parameterize(Set.class, MockComplexObject[].class));
+
         // 基于映射类型测试
         convertType(TypeUtility.parameterize(Map.class, String.class, MockComplexObject.class));
 
         // 基于泛型类型测试
-        convertType(TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, MockComplexObject.class)));
+        Type type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, MockComplexObject.class));
+        convertType(type);
+        type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, type));
+        convertType(type);
     }
 
 }
