@@ -123,7 +123,7 @@ public class JsonUtility {
                 List<JavaType> javas = java.getBindings().getTypeParameters();
                 int size = javas.size();
                 Type[] generics = new Type[size];
-                for (int index = 0; index < size ; index++) {
+                for (int index = 0; index < size; index++) {
                     generics[index] = java2Type(javas.get(index));
                 }
                 Class<?> clazz = java.getRawClass();
