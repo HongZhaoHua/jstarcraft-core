@@ -1,5 +1,8 @@
 package com.jstarcraft.core.common.reflection;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -47,6 +50,80 @@ public class TypeUtility extends TypeUtils {
             }
         }
         return refineType(clazz.getGenericSuperclass(), toType, types);
+    }
+
+    private static final class TypeVariableImpl<D extends GenericDeclaration> implements TypeVariable<D> {
+
+        private final D declaration;
+
+        private final String name;
+
+        private final Type[] bounds;
+
+        private TypeVariableImpl(D declaration, String name, Type[] bounds) {
+            this.declaration = declaration;
+            this.name = name;
+            this.bounds = bounds;
+        }
+
+        @Override
+        public Type[] getBounds() {
+            return bounds;
+        }
+
+        @Override
+        public D getGenericDeclaration() {
+            return declaration;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public <T extends Annotation> T getAnnotation(Class<T> clazz) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Annotation[] getAnnotations() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Annotation[] getDeclaredAnnotations() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public AnnotatedType[] getAnnotatedBounds() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (object instanceof TypeVariable) {
+                TypeVariable<?> that = (TypeVariable<?>) object;
+                return this.name.equals(that.getName());
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+    }
+
+    public static <D extends GenericDeclaration> TypeVariable<D> typeVariable(D declaration, String name, Type... bounds) {
+        return new TypeVariableImpl<>(declaration, name, bounds);
     }
 
 }

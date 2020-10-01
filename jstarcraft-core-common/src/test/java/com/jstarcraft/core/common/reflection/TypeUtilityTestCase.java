@@ -1,6 +1,7 @@
 package com.jstarcraft.core.common.reflection;
 
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.jstarcraft.core.utility.KeyValue;
 
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
@@ -43,6 +46,17 @@ public class TypeUtilityTestCase {
             Type type = TypeUtility.refineType(ByteArraySet.class, Set.class);
             Assert.assertEquals(TypeUtility.parameterize(Set.class, Byte.class), TypeUtility.refineType(type, Set.class));
         }
+    }
+
+    @Test
+    public void testTypeVariable() {
+        TypeVariable<?>[] typeVariables = KeyValue.class.getTypeParameters();
+        TypeVariable<?> keyVariable = TypeUtility.typeVariable(KeyValue.class, "K");
+        Assert.assertEquals(typeVariables[0].getGenericDeclaration(), keyVariable.getGenericDeclaration());
+        Assert.assertEquals(typeVariables[0].getTypeName(), keyVariable.getTypeName());
+        TypeVariable<?> valueVariable = TypeUtility.typeVariable(KeyValue.class, "V");
+        Assert.assertEquals(typeVariables[1].getGenericDeclaration(), valueVariable.getGenericDeclaration());
+        Assert.assertEquals(typeVariables[1].getTypeName(), valueVariable.getTypeName());
     }
 
 }
