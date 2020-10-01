@@ -2,11 +2,13 @@ package com.jstarcraft.core.common.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -18,6 +20,9 @@ import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import com.jstarcraft.core.utility.ClassUtility;
@@ -138,8 +143,135 @@ public class TypeUtility extends TypeUtils {
         return new TypeVariableImpl<>(declaration, name, bounds);
     }
 
+    private static String class2String(Class<?> clazz) {
+        if (clazz.isArray()) {
+            return type2String(clazz.getComponentType()) + "[]";
+        }
+
+        StringBuilder buffer = new StringBuilder();
+        if (clazz.getEnclosingClass() != null) {
+            buffer.append(class2String(clazz.getEnclosingClass())).append('.').append(clazz.getSimpleName());
+        } else {
+            buffer.append(clazz.getName());
+        }
+        if (clazz.getTypeParameters().length > 0) {
+            buffer.append('<');
+            type2Buffer(buffer, ", ", clazz.getTypeParameters());
+            buffer.append('>');
+        }
+        return buffer.toString();
+    }
+
+    private static String typeVariable2String(TypeVariable<?> typeVariable) {
+        StringBuilder buffer = new StringBuilder(typeVariable.getName());
+        Type[] bounds = typeVariable.getBounds();
+        if (bounds.length > 0 && !(bounds.length == 1 && Object.class.equals(bounds[0]))) {
+            buffer.append(" extends ");
+            type2Buffer(buffer, " & ", typeVariable.getBounds());
+        }
+        return buffer.toString();
+    }
+
+    private static String parameterizedType2String(ParameterizedType parameterizedType) {
+        StringBuilder buffer = new StringBuilder();
+        Type type = parameterizedType.getOwnerType();
+        Class<?> clazz = (Class<?>) parameterizedType.getRawType();
+        if (type == null) {
+            buffer.append(clazz.getName());
+        } else {
+            if (type instanceof Class<?>) {
+                buffer.append(((Class<?>) type).getName());
+            } else {
+                buffer.append(type.toString());
+            }
+            buffer.append('.').append(clazz.getSimpleName());
+        }
+
+        int[] recursiveIndexes = recursiveIndexes(parameterizedType);
+        if (recursiveIndexes.length > 0) {
+            type2Buffer(buffer, recursiveIndexes, parameterizedType.getActualTypeArguments());
+        } else {
+            type2Buffer(buffer.append('<'), ", ", parameterizedType.getActualTypeArguments()).append('>');
+        }
+        return buffer.toString();
+    }
+
+    private static void type2Buffer(StringBuilder buffer, int[] recursiveIndexes, Type[] argumentTypes) {
+        for (int index = 0; index < recursiveIndexes.length; index++) {
+            type2Buffer(buffer.append('<'), ", ", argumentTypes[index].toString()).append('>');
+        }
+        argumentTypes = ArrayUtils.removeAll(argumentTypes, recursiveIndexes);
+        if (argumentTypes.length > 0) {
+            type2Buffer(buffer.append('<'), ", ", argumentTypes).append('>');
+        }
+    }
+
+    private static int[] recursiveIndexes(ParameterizedType parameterizedType) {
+        Type[] argumentTypes = Arrays.copyOf(parameterizedType.getActualTypeArguments(), parameterizedType.getActualTypeArguments().length);
+        int[] recursiveIndexes = {};
+        for (int index = 0; index < argumentTypes.length; index++) {
+            if (argumentTypes[index] instanceof TypeVariable<?>) {
+                if (isRecursive(((TypeVariable<?>) argumentTypes[index]), parameterizedType)) {
+                    recursiveIndexes = ArrayUtils.add(recursiveIndexes, index);
+                }
+            }
+        }
+        return recursiveIndexes;
+    }
+
+    private static boolean isRecursive(TypeVariable<?> typeVariable, ParameterizedType parameterizedType) {
+        return ArrayUtils.contains(typeVariable.getBounds(), parameterizedType);
+    }
+
+    private static String wildcardType2String(WildcardType wildcardType) {
+        StringBuilder buffer = new StringBuilder().append('?');
+        Type[] lowerBounds = wildcardType.getLowerBounds();
+        Type[] upperBounds = wildcardType.getUpperBounds();
+        if (lowerBounds.length > 1 || lowerBounds.length == 1 && lowerBounds[0] != null) {
+            type2Buffer(buffer.append(" super "), " & ", lowerBounds);
+        } else if (upperBounds.length > 1 || upperBounds.length == 1 && !Object.class.equals(upperBounds[0])) {
+            type2Buffer(buffer.append(" extends "), " & ", upperBounds);
+        }
+        return buffer.toString();
+    }
+
+    private static String genericArrayType2String(GenericArrayType genericArrayType) {
+        return String.format("%s<>", type2String(genericArrayType.getGenericComponentType()));
+    }
+
+    private static <T> StringBuilder type2Buffer(StringBuilder buffer, String separator, T... types) {
+        Validate.notEmpty(Validate.noNullElements(types));
+        if (types.length > 0) {
+            buffer.append(object2String(types[0]));
+            for (int index = 1; index < types.length; index++) {
+                buffer.append(separator).append(object2String(types[index]));
+            }
+        }
+        return buffer;
+    }
+
+    private static <T> String object2String(T object) {
+        return object instanceof Type ? type2String((Type) object) : object.toString();
+    }
+
     public static String type2String(Type type) {
-        return toString(type);
+        Validate.notNull(type);
+        if (type instanceof Class<?>) {
+            return class2String((Class<?>) type);
+        }
+        if (type instanceof ParameterizedType) {
+            return parameterizedType2String((ParameterizedType) type);
+        }
+        if (type instanceof WildcardType) {
+            return wildcardType2String((WildcardType) type);
+        }
+        if (type instanceof TypeVariable<?>) {
+            return typeVariable2String((TypeVariable<?>) type);
+        }
+        if (type instanceof GenericArrayType) {
+            return genericArrayType2String((GenericArrayType) type);
+        }
+        throw new IllegalArgumentException(ObjectUtils.identityToString(type));
     }
 
     private static final Map<String, String> long2Short = new HashMap<>();
@@ -170,7 +302,7 @@ public class TypeUtility extends TypeUtils {
             public void exitArray(TypeParser.ArrayContext context) {
                 int dimension = context.ARRAY().size();
                 Type type = stack.pop();
-                if (type instanceof Class) {
+                if (dimension > 0) {
                     StringBuilder buffer = new StringBuilder();
                     for (int index = 0; index < dimension; index++) {
                         buffer.append("[");
@@ -181,10 +313,10 @@ public class TypeUtility extends TypeUtils {
                     } catch (ClassNotFoundException exception) {
                         throw new RuntimeException(exception);
                     }
-                } else {
-                    for (int index = 0; index < dimension; index++) {
-                        type = TypeUtility.genericArrayType(type);
-                    }
+                }
+                dimension = context.GENERIC().size();
+                for (int index = 0; index < dimension; index++) {
+                    type = TypeUtility.genericArrayType(type);
                 }
                 stack.push(type);
             }

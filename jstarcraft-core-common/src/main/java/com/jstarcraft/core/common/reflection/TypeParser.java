@@ -19,7 +19,7 @@ public class TypeParser extends Parser {
 
     protected static final DFA[] _decisionToDFA;
     protected static final PredictionContextCache _sharedContextCache = new PredictionContextCache();
-    public static final int T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, ARRAY = 6, BOUND = 7, ID = 8, SPACE = 9;
+    public static final int T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, ARRAY = 6, BOUND = 7, GENERIC = 8, ID = 9, SPACE = 10;
     public static final int RULE_array = 0, RULE_clazz = 1, RULE_generic = 2, RULE_type = 3, RULE_variable = 4, RULE_wildcard = 5;
 
     private static String[] makeRuleNames() {
@@ -29,13 +29,13 @@ public class TypeParser extends Parser {
     public static final String[] ruleNames = makeRuleNames();
 
     private static String[] makeLiteralNames() {
-        return new String[] { null, "'<'", "','", "'>'", "'&'", "'?'", "'[]'" };
+        return new String[] { null, "'<'", "','", "'>'", "'&'", "'?'", "'[]'", null, "'<>'" };
     }
 
     private static final String[] _LITERAL_NAMES = makeLiteralNames();
 
     private static String[] makeSymbolicNames() {
-        return new String[] { null, null, null, null, null, null, "ARRAY", "BOUND", "ID", "SPACE" };
+        return new String[] { null, null, null, null, null, null, "ARRAY", "BOUND", "GENERIC", "ID", "SPACE" };
     }
 
     private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -102,6 +102,14 @@ public class TypeParser extends Parser {
             return getRuleContext(ClazzContext.class, 0);
         }
 
+        public List<TerminalNode> GENERIC() {
+            return getTokens(TypeParser.GENERIC);
+        }
+
+        public TerminalNode GENERIC(int i) {
+            return getToken(TypeParser.GENERIC, i);
+        }
+
         public List<TerminalNode> ARRAY() {
             return getTokens(TypeParser.ARRAY);
         }
@@ -157,107 +165,303 @@ public class TypeParser extends Parser {
         enterRule(_localctx, 0, RULE_array);
         try {
             int _alt;
-            setState(36);
+            setState(88);
             _errHandler.sync(this);
-            switch (getInterpreter().adaptivePredict(_input, 4, _ctx)) {
+            switch (getInterpreter().adaptivePredict(_input, 16, _ctx)) {
             case 1:
                 enterOuterAlt(_localctx, 1); {
                 setState(12);
                 clazz();
-                setState(14);
+                setState(29);
                 _errHandler.sync(this);
-                _alt = 1;
-                do {
-                    switch (_alt) {
-                    case 1: {
-                        {
-                            setState(13);
-                            match(ARRAY);
+                switch (_input.LA(1)) {
+                case ARRAY: {
+                    {
+                        setState(14);
+                        _errHandler.sync(this);
+                        _alt = 1;
+                        do {
+                            switch (_alt) {
+                            case 1: {
+                                {
+                                    setState(13);
+                                    match(ARRAY);
+                                }
+                            }
+                                break;
+                            default:
+                                throw new NoViableAltException(this);
+                            }
+                            setState(16);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 0, _ctx);
+                        } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                        setState(21);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 1, _ctx);
+                        while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
+                            if (_alt == 1) {
+                                {
+                                    {
+                                        setState(18);
+                                        match(GENERIC);
+                                    }
+                                }
+                            }
+                            setState(23);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 1, _ctx);
                         }
                     }
-                        break;
-                    default:
-                        throw new NoViableAltException(this);
-                    }
-                    setState(16);
+                }
+                    break;
+                case GENERIC: {
+                    setState(25);
                     _errHandler.sync(this);
-                    _alt = getInterpreter().adaptivePredict(_input, 0, _ctx);
-                } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                    _alt = 1;
+                    do {
+                        switch (_alt) {
+                        case 1: {
+                            {
+                                setState(24);
+                                match(GENERIC);
+                            }
+                        }
+                            break;
+                        default:
+                            throw new NoViableAltException(this);
+                        }
+                        setState(27);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 2, _ctx);
+                    } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                }
+                    break;
+                default:
+                    throw new NoViableAltException(this);
+                }
             }
                 break;
             case 2:
                 enterOuterAlt(_localctx, 2); {
-                setState(18);
+                setState(31);
                 generic();
-                setState(20);
+                setState(48);
                 _errHandler.sync(this);
-                _alt = 1;
-                do {
-                    switch (_alt) {
-                    case 1: {
-                        {
-                            setState(19);
-                            match(ARRAY);
+                switch (_input.LA(1)) {
+                case ARRAY: {
+                    {
+                        setState(33);
+                        _errHandler.sync(this);
+                        _alt = 1;
+                        do {
+                            switch (_alt) {
+                            case 1: {
+                                {
+                                    setState(32);
+                                    match(ARRAY);
+                                }
+                            }
+                                break;
+                            default:
+                                throw new NoViableAltException(this);
+                            }
+                            setState(35);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 4, _ctx);
+                        } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                        setState(40);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 5, _ctx);
+                        while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
+                            if (_alt == 1) {
+                                {
+                                    {
+                                        setState(37);
+                                        match(GENERIC);
+                                    }
+                                }
+                            }
+                            setState(42);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 5, _ctx);
                         }
                     }
-                        break;
-                    default:
-                        throw new NoViableAltException(this);
-                    }
-                    setState(22);
+                }
+                    break;
+                case GENERIC: {
+                    setState(44);
                     _errHandler.sync(this);
-                    _alt = getInterpreter().adaptivePredict(_input, 1, _ctx);
-                } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                    _alt = 1;
+                    do {
+                        switch (_alt) {
+                        case 1: {
+                            {
+                                setState(43);
+                                match(GENERIC);
+                            }
+                        }
+                            break;
+                        default:
+                            throw new NoViableAltException(this);
+                        }
+                        setState(46);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 6, _ctx);
+                    } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                }
+                    break;
+                default:
+                    throw new NoViableAltException(this);
+                }
             }
                 break;
             case 3:
                 enterOuterAlt(_localctx, 3); {
-                setState(24);
+                setState(50);
                 variable();
-                setState(26);
+                setState(67);
                 _errHandler.sync(this);
-                _alt = 1;
-                do {
-                    switch (_alt) {
-                    case 1: {
-                        {
-                            setState(25);
-                            match(ARRAY);
+                switch (_input.LA(1)) {
+                case ARRAY: {
+                    {
+                        setState(52);
+                        _errHandler.sync(this);
+                        _alt = 1;
+                        do {
+                            switch (_alt) {
+                            case 1: {
+                                {
+                                    setState(51);
+                                    match(ARRAY);
+                                }
+                            }
+                                break;
+                            default:
+                                throw new NoViableAltException(this);
+                            }
+                            setState(54);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 8, _ctx);
+                        } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                        setState(59);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 9, _ctx);
+                        while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
+                            if (_alt == 1) {
+                                {
+                                    {
+                                        setState(56);
+                                        match(GENERIC);
+                                    }
+                                }
+                            }
+                            setState(61);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 9, _ctx);
                         }
                     }
-                        break;
-                    default:
-                        throw new NoViableAltException(this);
-                    }
-                    setState(28);
+                }
+                    break;
+                case GENERIC: {
+                    setState(63);
                     _errHandler.sync(this);
-                    _alt = getInterpreter().adaptivePredict(_input, 2, _ctx);
-                } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                    _alt = 1;
+                    do {
+                        switch (_alt) {
+                        case 1: {
+                            {
+                                setState(62);
+                                match(GENERIC);
+                            }
+                        }
+                            break;
+                        default:
+                            throw new NoViableAltException(this);
+                        }
+                        setState(65);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 10, _ctx);
+                    } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                }
+                    break;
+                default:
+                    throw new NoViableAltException(this);
+                }
             }
                 break;
             case 4:
                 enterOuterAlt(_localctx, 4); {
-                setState(30);
+                setState(69);
                 wildcard();
-                setState(32);
+                setState(86);
                 _errHandler.sync(this);
-                _alt = 1;
-                do {
-                    switch (_alt) {
-                    case 1: {
-                        {
-                            setState(31);
-                            match(ARRAY);
+                switch (_input.LA(1)) {
+                case ARRAY: {
+                    {
+                        setState(71);
+                        _errHandler.sync(this);
+                        _alt = 1;
+                        do {
+                            switch (_alt) {
+                            case 1: {
+                                {
+                                    setState(70);
+                                    match(ARRAY);
+                                }
+                            }
+                                break;
+                            default:
+                                throw new NoViableAltException(this);
+                            }
+                            setState(73);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 12, _ctx);
+                        } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                        setState(78);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 13, _ctx);
+                        while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
+                            if (_alt == 1) {
+                                {
+                                    {
+                                        setState(75);
+                                        match(GENERIC);
+                                    }
+                                }
+                            }
+                            setState(80);
+                            _errHandler.sync(this);
+                            _alt = getInterpreter().adaptivePredict(_input, 13, _ctx);
                         }
                     }
-                        break;
-                    default:
-                        throw new NoViableAltException(this);
-                    }
-                    setState(34);
+                }
+                    break;
+                case GENERIC: {
+                    setState(82);
                     _errHandler.sync(this);
-                    _alt = getInterpreter().adaptivePredict(_input, 3, _ctx);
-                } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                    _alt = 1;
+                    do {
+                        switch (_alt) {
+                        case 1: {
+                            {
+                                setState(81);
+                                match(GENERIC);
+                            }
+                        }
+                            break;
+                        default:
+                            throw new NoViableAltException(this);
+                        }
+                        setState(84);
+                        _errHandler.sync(this);
+                        _alt = getInterpreter().adaptivePredict(_input, 14, _ctx);
+                    } while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER);
+                }
+                    break;
+                default:
+                    throw new NoViableAltException(this);
+                }
             }
                 break;
             }
@@ -312,7 +516,7 @@ public class TypeParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(38);
+                setState(90);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -375,29 +579,29 @@ public class TypeParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(40);
+                setState(92);
                 clazz();
-                setState(41);
+                setState(93);
                 match(T__0);
-                setState(42);
+                setState(94);
                 type();
-                setState(47);
+                setState(99);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 while (_la == T__1) {
                     {
                         {
-                            setState(43);
+                            setState(95);
                             match(T__1);
-                            setState(44);
+                            setState(96);
                             type();
                         }
                     }
-                    setState(49);
+                    setState(101);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 }
-                setState(50);
+                setState(102);
                 match(T__2);
             }
         } catch (RecognitionException re) {
@@ -465,36 +669,36 @@ public class TypeParser extends Parser {
         TypeContext _localctx = new TypeContext(_ctx, getState());
         enterRule(_localctx, 6, RULE_type);
         try {
-            setState(57);
+            setState(109);
             _errHandler.sync(this);
-            switch (getInterpreter().adaptivePredict(_input, 6, _ctx)) {
+            switch (getInterpreter().adaptivePredict(_input, 18, _ctx)) {
             case 1:
                 enterOuterAlt(_localctx, 1); {
-                setState(52);
+                setState(104);
                 array();
             }
                 break;
             case 2:
                 enterOuterAlt(_localctx, 2); {
-                setState(53);
+                setState(105);
                 clazz();
             }
                 break;
             case 3:
                 enterOuterAlt(_localctx, 3); {
-                setState(54);
+                setState(106);
                 generic();
             }
                 break;
             case 4:
                 enterOuterAlt(_localctx, 4); {
-                setState(55);
+                setState(107);
                 variable();
             }
                 break;
             case 5:
                 enterOuterAlt(_localctx, 5); {
-                setState(56);
+                setState(108);
                 wildcard();
             }
                 break;
@@ -563,30 +767,30 @@ public class TypeParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(59);
+                setState(111);
                 match(ID);
-                setState(69);
+                setState(121);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 if (_la == BOUND) {
                     {
-                        setState(60);
+                        setState(112);
                         match(BOUND);
-                        setState(61);
+                        setState(113);
                         generic();
-                        setState(66);
+                        setState(118);
                         _errHandler.sync(this);
                         _la = _input.LA(1);
                         while (_la == T__3) {
                             {
                                 {
-                                    setState(62);
+                                    setState(114);
                                     match(T__3);
-                                    setState(63);
+                                    setState(115);
                                     generic();
                                 }
                             }
-                            setState(68);
+                            setState(120);
                             _errHandler.sync(this);
                             _la = _input.LA(1);
                         }
@@ -650,16 +854,16 @@ public class TypeParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(71);
+                setState(123);
                 match(T__4);
-                setState(74);
+                setState(126);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 if (_la == BOUND) {
                     {
-                        setState(72);
+                        setState(124);
                         match(BOUND);
-                        setState(73);
+                        setState(125);
                         type();
                     }
                 }
@@ -675,8 +879,9 @@ public class TypeParser extends Parser {
         return _localctx;
     }
 
-    public static final String _serializedATN = "\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\13O\4\2\t\2\4\3\t" + "\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\6\2\21\n\2\r\2\16\2\22\3\2" + "\3\2\6\2\27\n\2\r\2\16\2\30\3\2\3\2\6\2\35\n\2\r\2\16\2\36\3\2\3\2\6\2" + "#\n\2\r\2\16\2$\5\2\'\n\2\3\3\3\3\3\4\3\4\3\4\3\4\3\4\7\4\60\n\4\f\4\16" + "\4\63\13\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\5\5<\n\5\3\6\3\6\3\6\3\6\3\6\7" + "\6C\n\6\f\6\16\6F\13\6\5\6H\n\6\3\7\3\7\3\7\5\7M\n\7\3\7\2\2\b\2\4\6\b" + "\n\f\2\2\2W\2&\3\2\2\2\4(\3\2\2\2\6*\3\2\2\2\b;\3\2\2\2\n=\3\2\2\2\fI" + "\3\2\2\2\16\20\5\4\3\2\17\21\7\b\2\2\20\17\3\2\2\2\21\22\3\2\2\2\22\20" + "\3\2\2\2\22\23\3\2\2\2\23\'\3\2\2\2\24\26\5\6\4\2\25\27\7\b\2\2\26\25" + "\3\2\2\2\27\30\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\'\3\2\2\2\32\34" + "\5\n\6\2\33\35\7\b\2\2\34\33\3\2\2\2\35\36\3\2\2\2\36\34\3\2\2\2\36\37" + "\3\2\2\2\37\'\3\2\2\2 \"\5\f\7\2!#\7\b\2\2\"!\3\2\2\2#$\3\2\2\2$\"\3\2"
-            + "\2\2$%\3\2\2\2%\'\3\2\2\2&\16\3\2\2\2&\24\3\2\2\2&\32\3\2\2\2& \3\2\2" + "\2\'\3\3\2\2\2()\7\n\2\2)\5\3\2\2\2*+\5\4\3\2+,\7\3\2\2,\61\5\b\5\2-." + "\7\4\2\2.\60\5\b\5\2/-\3\2\2\2\60\63\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2" + "\62\64\3\2\2\2\63\61\3\2\2\2\64\65\7\5\2\2\65\7\3\2\2\2\66<\5\2\2\2\67" + "<\5\4\3\28<\5\6\4\29<\5\n\6\2:<\5\f\7\2;\66\3\2\2\2;\67\3\2\2\2;8\3\2" + "\2\2;9\3\2\2\2;:\3\2\2\2<\t\3\2\2\2=G\7\n\2\2>?\7\t\2\2?D\5\6\4\2@A\7" + "\6\2\2AC\5\6\4\2B@\3\2\2\2CF\3\2\2\2DB\3\2\2\2DE\3\2\2\2EH\3\2\2\2FD\3" + "\2\2\2G>\3\2\2\2GH\3\2\2\2H\13\3\2\2\2IL\7\7\2\2JK\7\t\2\2KM\5\b\5\2L" + "J\3\2\2\2LM\3\2\2\2M\r\3\2\2\2\f\22\30\36$&\61;DGL";
+    public static final String _serializedATN = "\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f\u0083\4\2\t\2\4" + "\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\6\2\21\n\2\r\2\16\2\22" + "\3\2\7\2\26\n\2\f\2\16\2\31\13\2\3\2\6\2\34\n\2\r\2\16\2\35\5\2 \n\2\3" + "\2\3\2\6\2$\n\2\r\2\16\2%\3\2\7\2)\n\2\f\2\16\2,\13\2\3\2\6\2/\n\2\r\2" + "\16\2\60\5\2\63\n\2\3\2\3\2\6\2\67\n\2\r\2\16\28\3\2\7\2<\n\2\f\2\16\2" + "?\13\2\3\2\6\2B\n\2\r\2\16\2C\5\2F\n\2\3\2\3\2\6\2J\n\2\r\2\16\2K\3\2" + "\7\2O\n\2\f\2\16\2R\13\2\3\2\6\2U\n\2\r\2\16\2V\5\2Y\n\2\5\2[\n\2\3\3" + "\3\3\3\4\3\4\3\4\3\4\3\4\7\4d\n\4\f\4\16\4g\13\4\3\4\3\4\3\5\3\5\3\5\3" + "\5\3\5\5\5p\n\5\3\6\3\6\3\6\3\6\3\6\7\6w\n\6\f\6\16\6z\13\6\5\6|\n\6\3" + "\7\3\7\3\7\5\7\u0081\n\7\3\7\2\2\b\2\4\6\b\n\f\2\2\2\u0097\2Z\3\2\2\2" + "\4\\\3\2\2\2\6^\3\2\2\2\bo\3\2\2\2\nq\3\2\2\2\f}\3\2\2\2\16\37\5\4\3\2" + "\17\21\7\b\2\2\20\17\3\2\2\2\21\22\3\2\2\2\22\20\3\2\2\2\22\23\3\2\2\2"
+            + "\23\27\3\2\2\2\24\26\7\n\2\2\25\24\3\2\2\2\26\31\3\2\2\2\27\25\3\2\2\2" + "\27\30\3\2\2\2\30 \3\2\2\2\31\27\3\2\2\2\32\34\7\n\2\2\33\32\3\2\2\2\34" + "\35\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3\2\2\2\37\20\3\2\2\2\37\33" + "\3\2\2\2 [\3\2\2\2!\62\5\6\4\2\"$\7\b\2\2#\"\3\2\2\2$%\3\2\2\2%#\3\2\2" + "\2%&\3\2\2\2&*\3\2\2\2\')\7\n\2\2(\'\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2" + "\2\2+\63\3\2\2\2,*\3\2\2\2-/\7\n\2\2.-\3\2\2\2/\60\3\2\2\2\60.\3\2\2\2" + "\60\61\3\2\2\2\61\63\3\2\2\2\62#\3\2\2\2\62.\3\2\2\2\63[\3\2\2\2\64E\5" + "\n\6\2\65\67\7\b\2\2\66\65\3\2\2\2\678\3\2\2\28\66\3\2\2\289\3\2\2\29" + "=\3\2\2\2:<\7\n\2\2;:\3\2\2\2<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>F\3\2\2\2" + "?=\3\2\2\2@B\7\n\2\2A@\3\2\2\2BC\3\2\2\2CA\3\2\2\2CD\3\2\2\2DF\3\2\2\2" + "E\66\3\2\2\2EA\3\2\2\2F[\3\2\2\2GX\5\f\7\2HJ\7\b\2\2IH\3\2\2\2JK\3\2\2" + "\2KI\3\2\2\2KL\3\2\2\2LP\3\2\2\2MO\7\n\2\2NM\3\2\2\2OR\3\2\2\2PN\3\2\2" + "\2PQ\3\2\2\2QY\3\2\2\2RP\3\2\2\2SU\7\n\2\2TS\3\2\2\2UV\3\2\2\2VT\3\2\2"
+            + "\2VW\3\2\2\2WY\3\2\2\2XI\3\2\2\2XT\3\2\2\2Y[\3\2\2\2Z\16\3\2\2\2Z!\3\2" + "\2\2Z\64\3\2\2\2ZG\3\2\2\2[\3\3\2\2\2\\]\7\13\2\2]\5\3\2\2\2^_\5\4\3\2" + "_`\7\3\2\2`e\5\b\5\2ab\7\4\2\2bd\5\b\5\2ca\3\2\2\2dg\3\2\2\2ec\3\2\2\2" + "ef\3\2\2\2fh\3\2\2\2ge\3\2\2\2hi\7\5\2\2i\7\3\2\2\2jp\5\2\2\2kp\5\4\3" + "\2lp\5\6\4\2mp\5\n\6\2np\5\f\7\2oj\3\2\2\2ok\3\2\2\2ol\3\2\2\2om\3\2\2" + "\2on\3\2\2\2p\t\3\2\2\2q{\7\13\2\2rs\7\t\2\2sx\5\6\4\2tu\7\6\2\2uw\5\6" + "\4\2vt\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2\2\2y|\3\2\2\2zx\3\2\2\2{r\3\2" + "\2\2{|\3\2\2\2|\13\3\2\2\2}\u0080\7\7\2\2~\177\7\t\2\2\177\u0081\5\b\5" + "\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\r\3\2\2\2\30\22\27\35\37%" + "*\60\628=CEKPVXZeox{\u0080";
     public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
     static {
         _decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];

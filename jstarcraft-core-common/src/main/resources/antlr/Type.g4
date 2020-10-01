@@ -5,10 +5,10 @@ package com.jstarcraft.core.common.reflection;
 }
     
 array
-    : clazz ARRAY+
-    | generic ARRAY+
-    | variable ARRAY+
-    | wildcard ARRAY+
+    : clazz ((ARRAY+ GENERIC*) | GENERIC+)
+    | generic ((ARRAY+ GENERIC*) | GENERIC+)
+    | variable ((ARRAY+ GENERIC*) | GENERIC+)
+    | wildcard ((ARRAY+ GENERIC*) | GENERIC+)
     ;
 
 clazz
@@ -41,6 +41,10 @@ ARRAY
 
 BOUND
     : ('extends' | 'super')
+    ;
+
+GENERIC
+    : '<>'
     ;
 
 ID
