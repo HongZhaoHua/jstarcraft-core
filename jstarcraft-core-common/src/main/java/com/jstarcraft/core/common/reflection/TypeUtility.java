@@ -7,8 +7,19 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.lang3.reflect.TypeUtils;
+
+import com.jstarcraft.core.utility.ClassUtility;
 
 /**
  * 类型工具
@@ -124,6 +135,108 @@ public class TypeUtility extends TypeUtils {
 
     public static <D extends GenericDeclaration> TypeVariable<D> typeVariable(D declaration, String name, Type... bounds) {
         return new TypeVariableImpl<>(declaration, name, bounds);
+    }
+
+    public static String type2String(Type type) {
+        return toString(type);
+    }
+
+    private static final Map<String, String> long2Short = new HashMap<>();
+
+    static {
+        long2Short.put("boolean", "Z");
+        long2Short.put("byte", "B");
+        long2Short.put("char", "C");
+        long2Short.put("short", "S");
+        long2Short.put("int", "I");
+        long2Short.put("long", "L");
+        long2Short.put("double", "D");
+        long2Short.put("float", "F");
+    }
+
+    public static Type string2Type(String string) {
+        CharStream characters = CharStreams.fromString(string);
+        TypeLexer lexer = new TypeLexer(characters); // 词法分析
+        TokenStream tokens = new CommonTokenStream(lexer); // 转成token流
+        TypeParser parser = new TypeParser(tokens); // 语法分析
+        ParseTree tree = parser.type();
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        LinkedList<Type> stack = new LinkedList<>();
+        TypeListener listener = new TypeBaseListener() {
+
+            @Override
+            public void exitArray(TypeParser.ArrayContext context) {
+                int dimension = context.ARRAY().size();
+                Type type = stack.pop();
+                if (type instanceof Class) {
+                    StringBuilder buffer = new StringBuilder();
+                    for (int index = 0; index < dimension; index++) {
+                        buffer.append("[");
+                    }
+                    buffer.append(long2Short.getOrDefault(type.getTypeName(), "L" + type.getTypeName() + ";"));
+                    try {
+                        type = ClassUtility.getClass(buffer.toString());
+                    } catch (ClassNotFoundException exception) {
+                        throw new RuntimeException(exception);
+                    }
+                } else {
+                    for (int index = 0; index < dimension; index++) {
+                        type = TypeUtility.genericArrayType(type);
+                    }
+                }
+                stack.push(type);
+            }
+
+            @Override
+            public void exitClazz(TypeParser.ClazzContext context) {
+                try {
+                    stack.push(ClassUtility.getClass(context.getText()));
+                } catch (ClassNotFoundException e) {
+                    stack.push(TypeUtility.typeVariable(null, context.getText()));
+                }
+            }
+
+            @Override
+            public void exitGeneric(TypeParser.GenericContext context) {
+                int size = context.type().size();
+                Type[] types = new Type[size];
+                for (int index = size - 1; index >= 0; index--) {
+                    types[index] = stack.pop();
+                }
+                Type type = stack.pop();
+                type = TypeUtility.parameterize((Class) type, types);
+                stack.push(type);
+            }
+
+            @Override
+            public void exitVariable(TypeParser.VariableContext context) {
+                int size = context.generic().size();
+                Type[] types = new Type[size];
+                for (int index = size - 1; index >= 0; index--) {
+                    types[index] = stack.pop();
+                }
+                Type type = TypeUtility.typeVariable(null, context.ID().getText(), types);
+                stack.push(type);
+            }
+
+            @Override
+            public void exitWildcard(TypeParser.WildcardContext context) {
+                Type type = stack.pop();
+                WildcardTypeBuilder builder = TypeUtility.wildcardType();
+                if (context.BOUND().getText().equals("extends")) {
+                    builder.withUpperBounds(type);
+                } else {
+                    builder.withLowerBounds(type);
+                }
+                builder.withUpperBounds(type);
+                type = builder.build();
+                stack.push(type);
+            }
+
+        };
+        walker.walk(listener, tree);
+        return stack.pop();
     }
 
 }

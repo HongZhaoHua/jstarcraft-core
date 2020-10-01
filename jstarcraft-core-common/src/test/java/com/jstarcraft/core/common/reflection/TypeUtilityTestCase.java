@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.conversion.json.MockComplexObject;
+import com.jstarcraft.core.common.conversion.json.MockEnumeration;
+import com.jstarcraft.core.common.conversion.json.MockMatrix;
 import com.jstarcraft.core.utility.KeyValue;
 
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanOpenHashMap;
@@ -57,6 +61,56 @@ public class TypeUtilityTestCase {
         TypeVariable<?> valueVariable = TypeUtility.typeVariable(KeyValue.class, "V");
         Assert.assertEquals(typeVariables[1].getGenericDeclaration(), valueVariable.getGenericDeclaration());
         Assert.assertEquals(typeVariables[1].getTypeName(), valueVariable.getTypeName());
+    }
+
+    private void convertType(Type type) {
+        String java = TypeUtility.type2String(type);
+        Assert.assertEquals(type, TypeUtility.string2Type(java));
+    }
+
+    @Test
+    public void testConvertType() {
+        // 基于原始与包装类型测试
+        convertType(AtomicBoolean.class);
+        convertType(Boolean.class);
+        convertType(boolean.class);
+
+        // 基于对象类型测试
+        convertType(MockComplexObject.class);
+        convertType(MockMatrix.class);
+
+        // 基于枚举类型测试
+        convertType(MockEnumeration.class);
+
+        // 基于数组类型测试
+        convertType(MockEnumeration[].class);
+        convertType(Integer[].class);
+        convertType(int[].class);
+        convertType(MockComplexObject[].class);
+        convertType(Byte[].class);
+        convertType(byte[].class);
+
+        // 基于集合类型测试
+        convertType(TypeUtility.parameterize(List.class, MockEnumeration.class));
+        convertType(TypeUtility.parameterize(Set.class, MockEnumeration.class));
+
+        convertType(TypeUtility.parameterize(List.class, Integer.class));
+        convertType(TypeUtility.parameterize(Set.class, Integer.class));
+
+        convertType(TypeUtility.parameterize(List.class, MockComplexObject.class));
+        convertType(TypeUtility.parameterize(Set.class, MockComplexObject.class));
+
+        convertType(TypeUtility.parameterize(List.class, MockComplexObject[].class));
+        convertType(TypeUtility.parameterize(Set.class, MockComplexObject[].class));
+
+        // 基于映射类型测试
+        convertType(TypeUtility.parameterize(Map.class, String.class, MockComplexObject.class));
+
+        // 基于泛型类型测试
+        Type type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, MockComplexObject.class));
+        convertType(type);
+        type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, type));
+        convertType(type);
     }
 
 }
