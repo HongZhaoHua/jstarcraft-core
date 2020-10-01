@@ -181,10 +181,6 @@ public class TypeUtility extends TypeUtils {
                     } catch (ClassNotFoundException exception) {
                         throw new RuntimeException(exception);
                     }
-                    TerminalNode bound = context.GENERIC();
-                    if (bound != null) {
-                        type = TypeUtility.genericArrayType(type);
-                    }
                 } else {
                     for (int index = 0; index < dimension; index++) {
                         type = TypeUtility.genericArrayType(type);

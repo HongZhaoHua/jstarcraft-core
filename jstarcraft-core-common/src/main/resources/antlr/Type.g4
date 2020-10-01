@@ -5,8 +5,10 @@ package com.jstarcraft.core.common.reflection;
 }
     
 array
-    : clazz GENERIC? ARRAY+
+    : clazz ARRAY+
     | generic ARRAY+
+    | variable ARRAY+
+    | wildcard ARRAY+
     ;
 
 clazz
@@ -18,11 +20,11 @@ generic
     ;
 
 type
-    : wildcard
-    | array
+    : array
     | clazz
     | generic
     | variable
+    | wildcard
     ;
     
 variable
@@ -43,10 +45,6 @@ BOUND
 
 ID
     : [a-zA-Z][a-zA-Z0-9._]*
-    ;
-
-GENERIC
-    : '<>'
     ;
 
 SPACE
