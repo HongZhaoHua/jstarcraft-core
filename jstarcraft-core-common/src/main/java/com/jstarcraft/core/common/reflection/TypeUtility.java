@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import com.jstarcraft.core.utility.ClassUtility;
@@ -180,6 +181,10 @@ public class TypeUtility extends TypeUtils {
                     } catch (ClassNotFoundException exception) {
                         throw new RuntimeException(exception);
                     }
+                    TerminalNode bound = context.GENERIC();
+                    if (bound != null) {
+                        type = TypeUtility.genericArrayType(type);
+                    }
                 } else {
                     for (int index = 0; index < dimension; index++) {
                         type = TypeUtility.genericArrayType(type);
@@ -224,12 +229,14 @@ public class TypeUtility extends TypeUtils {
             public void exitWildcard(TypeParser.WildcardContext context) {
                 Type type = stack.pop();
                 WildcardTypeBuilder builder = TypeUtility.wildcardType();
-                if (context.BOUND().getText().equals("extends")) {
-                    builder.withUpperBounds(type);
-                } else {
-                    builder.withLowerBounds(type);
+                TerminalNode bound = context.BOUND();
+                if (bound != null) {
+                    if (bound.getText().equals("extends")) {
+                        builder.withUpperBounds(type);
+                    } else {
+                        builder.withLowerBounds(type);
+                    }
                 }
-                builder.withUpperBounds(type);
                 type = builder.build();
                 stack.push(type);
             }
