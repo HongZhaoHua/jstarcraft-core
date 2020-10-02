@@ -49,7 +49,7 @@ public class StandardContentCodec implements ContentCodec {
     public Object decode(Type type, InputStream stream) {
         try {
             StandardReader context = new StandardReader(stream, codecDefinition);
-            StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            StandardConverter converter = context.getStandardConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
@@ -75,7 +75,7 @@ public class StandardContentCodec implements ContentCodec {
     public void encode(Type type, Object content, OutputStream stream) {
         try {
             StandardWriter context = new StandardWriter(stream, codecDefinition);
-            StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            StandardConverter converter = context.getStandardConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {

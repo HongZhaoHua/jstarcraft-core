@@ -62,7 +62,7 @@ public class ThriftContentCodec implements ContentCodec {
                 return null;
             }
             ThriftContext context = new ThriftContext(codecDefinition, protocolFactory.apply(transport));
-            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ThriftConverter converter = context.getThriftConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             return converter.readValueFrom(context, type, classDefinition);
         } catch (Exception exception) {
@@ -94,7 +94,7 @@ public class ThriftContentCodec implements ContentCodec {
                 return;
             }
             ThriftContext context = new ThriftContext(codecDefinition, protocolFactory.apply(transport));
-            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(type));
+            ThriftConverter converter = context.getThriftConverter(Specification.getSpecification(type));
             ClassDefinition classDefinition = codecDefinition.getClassDefinition(TypeUtility.getRawType(type, null));
             converter.writeValueTo(context, type, classDefinition, content);
         } catch (Exception exception) {

@@ -49,7 +49,7 @@ public abstract class StandardContext {
         this.definition = definition;
     }
 
-    public StandardConverter getProtocolConverter(Specification specification) {
+    public StandardConverter getStandardConverter(Specification specification) {
         StandardConverter converter = converters.get(specification);
         return converter;
     }

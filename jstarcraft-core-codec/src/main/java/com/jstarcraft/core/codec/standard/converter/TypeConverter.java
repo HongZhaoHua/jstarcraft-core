@@ -18,14 +18,14 @@ public class TypeConverter extends StandardConverter<Type> {
 
     @Override
     public Type readValueFrom(StandardReader context, Type type, ClassDefinition definition) throws Exception {
-        StandardConverter converter = context.getProtocolConverter(Specification.STRING);
+        StandardConverter converter = context.getStandardConverter(Specification.STRING);
         String instance = (String) converter.readValueFrom(context, String.class, context.getClassDefinition(String.class));
         return instance == null ? null : TypeUtility.string2Type(instance);
     }
 
     @Override
     public void writeValueTo(StandardWriter context, Type type, ClassDefinition definition, Type instance) throws Exception {
-        StandardConverter converter = context.getProtocolConverter(Specification.STRING);
+        StandardConverter converter = context.getStandardConverter(Specification.STRING);
         String string = type == null ? null : TypeUtility.type2String(instance);
         converter.writeValueTo(context, String.class, context.getClassDefinition(String.class), string);
     }

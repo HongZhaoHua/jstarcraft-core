@@ -47,13 +47,13 @@ public class MapConverter extends StandardConverter<Map<Object, Object>> {
             int size = NumberConverter.readNumber(in).intValue();
             Map instance = (Map) definition.getInstance();
             context.putMapValue(instance);
-            StandardConverter converter = context.getProtocolConverter(Specification.TYPE);
+            StandardConverter converter = context.getStandardConverter(Specification.TYPE);
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
             Type valueType = types[1];
-            StandardConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-            StandardConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+            StandardConverter keyConverter = context.getStandardConverter(Specification.getSpecification(keyType));
+            StandardConverter valueConverter = context.getStandardConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
             for (int index = 0; index < size; index++) {
@@ -70,11 +70,11 @@ public class MapConverter extends StandardConverter<Map<Object, Object>> {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
                 Type keyType = definition.getType();
-                StandardConverter keyConverter = context.getProtocolConverter(definition.getSpecification());
+                StandardConverter keyConverter = context.getStandardConverter(definition.getSpecification());
                 code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
                 Type valueType = definition.getType();
-                StandardConverter valueConverter = context.getProtocolConverter(definition.getSpecification());
+                StandardConverter valueConverter = context.getStandardConverter(definition.getSpecification());
                 ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 Object key = keyConverter.readValueFrom(context, keyType, keyDefinition);
@@ -114,10 +114,10 @@ public class MapConverter extends StandardConverter<Map<Object, Object>> {
                 for (Entry<Object, Object> keyValue : instance.entrySet()) {
                     ClassDefinition keyDefinition = context.getClassDefinition(keyValue.getKey().getClass());
                     NumberConverter.writeNumber(out, keyDefinition.getCode());
-                    StandardConverter keyConverter = context.getProtocolConverter(keyDefinition.getSpecification());
+                    StandardConverter keyConverter = context.getStandardConverter(keyDefinition.getSpecification());
                     ClassDefinition valueDefinition = context.getClassDefinition(keyValue.getValue() == null ? void.class : keyValue.getValue().getClass());
                     NumberConverter.writeNumber(out, valueDefinition.getCode());
-                    StandardConverter valueConverter = context.getProtocolConverter(valueDefinition.getSpecification());
+                    StandardConverter valueConverter = context.getStandardConverter(valueDefinition.getSpecification());
                     keyConverter.writeValueTo(context, keyValue.getKey().getClass(), keyDefinition, keyValue.getKey());
                     valueConverter.writeValueTo(context, keyValue.getValue() == null ? void.class : keyValue.getValue().getClass(), valueDefinition, keyValue.getValue());
                 }
@@ -132,8 +132,8 @@ public class MapConverter extends StandardConverter<Map<Object, Object>> {
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type keyType = types[0];
                 Type valueType = types[1];
-                StandardConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-                StandardConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+                StandardConverter keyConverter = context.getStandardConverter(Specification.getSpecification(keyType));
+                StandardConverter valueConverter = context.getStandardConverter(Specification.getSpecification(valueType));
                 ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
                 ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
                 for (Entry<Object, Object> keyValue : instance.entrySet()) {

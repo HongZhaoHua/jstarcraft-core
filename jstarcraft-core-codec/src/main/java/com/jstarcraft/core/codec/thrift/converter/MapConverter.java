@@ -43,8 +43,8 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
             Type valueType = types[1];
-            ThriftConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-            ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+            ThriftConverter keyConverter = context.getThriftConverter(Specification.getSpecification(keyType));
+            ThriftConverter valueConverter = context.getThriftConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
             for (int index = 0; index < size; index++) {
@@ -76,8 +76,8 @@ public class MapConverter extends ThriftConverter<Map<Object, Object>> {
             Type[] types = parameterizedType.getActualTypeArguments();
             Type keyType = types[0];
             Type valueType = types[1];
-            ThriftConverter keyConverter = context.getProtocolConverter(Specification.getSpecification(keyType));
-            ThriftConverter valueConverter = context.getProtocolConverter(Specification.getSpecification(valueType));
+            ThriftConverter keyConverter = context.getThriftConverter(Specification.getSpecification(keyType));
+            ThriftConverter valueConverter = context.getThriftConverter(Specification.getSpecification(valueType));
             ClassDefinition keyDefinition = context.getClassDefinition(TypeUtility.getRawType(keyType, null));
             ClassDefinition valueDefinition = context.getClassDefinition(TypeUtility.getRawType(valueType, null));
             protocol.writeMapBegin(new TMap(TType.STRUCT, TType.STRUCT, size));

@@ -59,7 +59,7 @@ public class ArrayConverter extends StandardConverter<Object> {
                 instance = Array.newInstance(clazz, size);
                 context.putArrayValue(instance);
                 Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-                StandardConverter converter = context.getProtocolConverter(specification);
+                StandardConverter converter = context.getStandardConverter(specification);
                 for (int index = 0; index < size; index++) {
                     Object element = converter.readValueFrom(context, clazz, definition);
                     Array.set(instance, index, element);
@@ -73,7 +73,7 @@ public class ArrayConverter extends StandardConverter<Object> {
             for (int index = 0; index < size; index++) {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
-                StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
+                StandardConverter converter = context.getStandardConverter(definition.getSpecification());
                 Object element = converter.readValueFrom(context, definition.getType(), definition);
                 Array.set(instance, index, element);
             }
@@ -114,7 +114,7 @@ public class ArrayConverter extends StandardConverter<Object> {
                     definition = context.getClassDefinition(element == null ? Object.class : element.getClass());
                     int code = definition.getCode();
                     NumberConverter.writeNumber(out, code);
-                    StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
+                    StandardConverter converter = context.getStandardConverter(definition.getSpecification());
                     converter.writeValueTo(context, definition.getType(), definition, element);
                 }
             } else {
@@ -132,7 +132,7 @@ public class ArrayConverter extends StandardConverter<Object> {
                     IoUtility.write(data, out);
                 } else {
                     Specification specification = clazz.isArray() ? Specification.ARRAY : definition.getSpecification();
-                    StandardConverter converter = context.getProtocolConverter(specification);
+                    StandardConverter converter = context.getStandardConverter(specification);
                     for (int index = 0; index < size; index++) {
                         Object element = Array.get(instance, index);
                         converter.writeValueTo(context, clazz, definition, element);
