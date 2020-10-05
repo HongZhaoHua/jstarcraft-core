@@ -11,6 +11,7 @@ import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.CharStream;
@@ -18,11 +19,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import com.jstarcraft.core.utility.ClassUtility;
@@ -162,14 +161,8 @@ public class TypeUtility extends TypeUtils {
         return buffer.toString();
     }
 
-    private static String typeVariable2String(TypeVariable<?> typeVariable) {
-        StringBuilder buffer = new StringBuilder(typeVariable.getName());
-        Type[] bounds = typeVariable.getBounds();
-        if (bounds.length > 0 && !(bounds.length == 1 && Object.class.equals(bounds[0]))) {
-            buffer.append(" extends ");
-            type2Buffer(buffer, " & ", typeVariable.getBounds());
-        }
-        return buffer.toString();
+    private static String genericArrayType2String(GenericArrayType genericArrayType) {
+        return String.format("%s<>", type2String(genericArrayType.getGenericComponentType()));
     }
 
     private static String parameterizedType2String(ParameterizedType parameterizedType) {
@@ -223,6 +216,16 @@ public class TypeUtility extends TypeUtils {
         return ArrayUtils.contains(typeVariable.getBounds(), parameterizedType);
     }
 
+    private static String typeVariable2String(TypeVariable<?> typeVariable) {
+        StringBuilder buffer = new StringBuilder(typeVariable.getName());
+        Type[] bounds = typeVariable.getBounds();
+        if (bounds.length > 0 && !(bounds.length == 1 && Object.class.equals(bounds[0]))) {
+            buffer.append(" extends ");
+            type2Buffer(buffer, " & ", typeVariable.getBounds());
+        }
+        return buffer.toString();
+    }
+
     private static String wildcardType2String(WildcardType wildcardType) {
         StringBuilder buffer = new StringBuilder().append('?');
         Type[] lowerBounds = wildcardType.getLowerBounds();
@@ -235,12 +238,7 @@ public class TypeUtility extends TypeUtils {
         return buffer.toString();
     }
 
-    private static String genericArrayType2String(GenericArrayType genericArrayType) {
-        return String.format("%s<>", type2String(genericArrayType.getGenericComponentType()));
-    }
-
     private static <T> StringBuilder type2Buffer(StringBuilder buffer, String separator, T... types) {
-        Validate.notEmpty(Validate.noNullElements(types));
         if (types.length > 0) {
             buffer.append(object2String(types[0]));
             for (int index = 1; index < types.length; index++) {
@@ -255,21 +253,20 @@ public class TypeUtility extends TypeUtils {
     }
 
     public static String type2String(Type type) {
-        Validate.notNull(type);
         if (type instanceof Class<?>) {
             return class2String((Class<?>) type);
+        }
+        if (type instanceof GenericArrayType) {
+            return genericArrayType2String((GenericArrayType) type);
         }
         if (type instanceof ParameterizedType) {
             return parameterizedType2String((ParameterizedType) type);
         }
-        if (type instanceof WildcardType) {
-            return wildcardType2String((WildcardType) type);
-        }
         if (type instanceof TypeVariable<?>) {
             return typeVariable2String((TypeVariable<?>) type);
         }
-        if (type instanceof GenericArrayType) {
-            return genericArrayType2String((GenericArrayType) type);
+        if (type instanceof WildcardType) {
+            return wildcardType2String((WildcardType) type);
         }
         throw new IllegalArgumentException(ObjectUtils.identityToString(type));
     }
@@ -294,14 +291,13 @@ public class TypeUtility extends TypeUtils {
         TypeParser parser = new TypeParser(tokens); // 语法分析
         ParseTree tree = parser.type();
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        LinkedList<Type> stack = new LinkedList<>();
-        TypeListener listener = new TypeBaseListener() {
+        LinkedList<Class<?>> classes = new LinkedList<>();
+        TypeVisitor<Type> vositor = new TypeBaseVisitor<Type>() {
 
             @Override
-            public void exitArray(TypeParser.ArrayContext context) {
+            public Type visitArray(TypeParser.ArrayContext context) {
+                Type type = visit(context.getChild(0));
                 int dimension = context.ARRAY().size();
-                Type type = stack.pop();
                 if (dimension > 0) {
                     StringBuilder buffer = new StringBuilder();
                     for (int index = 0; index < dimension; index++) {
@@ -318,44 +314,46 @@ public class TypeUtility extends TypeUtils {
                 for (int index = 0; index < dimension; index++) {
                     type = TypeUtility.genericArrayType(type);
                 }
-                stack.push(type);
+                return type;
             }
 
             @Override
-            public void exitClazz(TypeParser.ClazzContext context) {
+            public Type visitClazz(TypeParser.ClazzContext context) {
                 try {
-                    stack.push(ClassUtility.getClass(context.getText()));
+                    return ClassUtility.getClass(context.getText());
                 } catch (ClassNotFoundException exception) {
-                    stack.push(TypeUtility.typeVariable(null, context.getText()));
+                    return TypeUtility.typeVariable(classes.peek(), context.getText());
                 }
             }
 
             @Override
-            public void exitGeneric(TypeParser.GenericContext context) {
-                int size = context.type().size();
+            public Type visitGeneric(TypeParser.GenericContext context) {
+                Class<?> clazz = (Class<?>) visit(context.clazz());
+                classes.push(clazz);
+                List<TypeParser.TypeContext> contexts = context.type();
+                int size = contexts.size();
                 Type[] types = new Type[size];
-                for (int index = size - 1; index >= 0; index--) {
-                    types[index] = stack.pop();
+                for (int index = 0; index < size; index++) {
+                    types[index] = visit(contexts.get(index));
                 }
-                Type type = stack.pop();
-                type = TypeUtility.parameterize((Class) type, types);
-                stack.push(type);
+                classes.pop();
+                return TypeUtility.parameterize(clazz, types);
             }
 
             @Override
-            public void exitVariable(TypeParser.VariableContext context) {
-                int size = context.generic().size();
+            public Type visitVariable(TypeParser.VariableContext context) {
+                List<TypeParser.GenericContext> contexts = context.generic();
+                int size = contexts.size();
                 Type[] types = new Type[size];
-                for (int index = size - 1; index >= 0; index--) {
-                    types[index] = stack.pop();
+                for (int index = 0; index < size; index++) {
+                    types[index] = visit(contexts.get(index));
                 }
-                Type type = TypeUtility.typeVariable(null, context.ID().getText(), types);
-                stack.push(type);
+                return TypeUtility.typeVariable(classes.peek(), context.ID().getText(), types);
             }
 
             @Override
-            public void exitWildcard(TypeParser.WildcardContext context) {
-                Type type = stack.pop();
+            public Type visitWildcard(TypeParser.WildcardContext context) {
+                Type type = visit(context.type());
                 WildcardTypeBuilder builder = TypeUtility.wildcardType();
                 TerminalNode bound = context.BOUND();
                 if (bound != null) {
@@ -365,13 +363,11 @@ public class TypeUtility extends TypeUtils {
                         builder.withLowerBounds(type);
                     }
                 }
-                type = builder.build();
-                stack.push(type);
+                return builder.build();
             }
 
         };
-        walker.walk(listener, tree);
-        return stack.pop();
+        return vositor.visit(tree);
     }
 
 }
