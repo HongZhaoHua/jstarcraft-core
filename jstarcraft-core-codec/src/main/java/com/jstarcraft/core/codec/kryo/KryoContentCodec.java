@@ -32,35 +32,36 @@ public class KryoContentCodec implements ContentCodec {
     private final Kryo kryo;
 
     public KryoContentCodec(CodecDefinition definition) {
-        this(5, definition);
+        this(true, 5, definition);
     }
 
-    public KryoContentCodec(int dimension, CodecDefinition definition) {
+    public KryoContentCodec(boolean registration, int dimension, CodecDefinition definition) {
         this.codecDefinition = definition;
         Kryo kryo = new Kryo();
         kryo.setReferences(true);
-        kryo.setRegistrationRequired(true);
-        for (ClassDefinition classDefinition : definition.getClassDefinitions()) {
-            Class<?> clazz = classDefinition.getType();
-            if (clazz == void.class || clazz == Void.class) {
-                // TODO
-                continue;
-            }
-            kryo.register(clazz);
-            if (clazz.isPrimitive()) {
-                for (int index = 0; index < dimension; index++) {
-                    Object array = Array.newInstance(clazz, 0);
-                    kryo.register(array.getClass());
-                    clazz = array.getClass();
+        kryo.setRegistrationRequired(registration);
+        if (registration) {
+            for (ClassDefinition classDefinition : definition.getClassDefinitions()) {
+                Class<?> clazz = classDefinition.getType();
+                if (clazz == void.class || clazz == Void.class) {
+                    // TODO
+                    continue;
                 }
-            } else {
-                Type type = clazz;
-                for (int index = 0; index < dimension; index++) {
-                    type = TypeUtility.genericArrayType(type);
-                    kryo.register(TypeUtility.getRawType(type, null));
+                kryo.register(clazz);
+                if (clazz.isPrimitive()) {
+                    for (int index = 0; index < dimension; index++) {
+                        Object array = Array.newInstance(clazz, 0);
+                        kryo.register(array.getClass());
+                        clazz = array.getClass();
+                    }
+                } else {
+                    Type type = clazz;
+                    for (int index = 0; index < dimension; index++) {
+                        type = TypeUtility.genericArrayType(type);
+                        kryo.register(TypeUtility.getRawType(type, null));
+                    }
                 }
             }
-
         }
         this.kryo = kryo;
     }
@@ -77,8 +78,6 @@ public class KryoContentCodec implements ContentCodec {
                 return value;
             } else {
                 if (kryo.isRegistrationRequired()) {
-                    // Registration registration =
-                    // kryo.readClass(byteBufferInput);
                     return kryo.readObject(byteBufferInput, TypeUtility.getRawType(type, null));
                 } else {
                     return kryo.readClassAndObject(byteBufferInput);
@@ -103,8 +102,6 @@ public class KryoContentCodec implements ContentCodec {
                 return value;
             } else {
                 if (kryo.isRegistrationRequired()) {
-                    // Registration registration =
-                    // kryo.readClass(byteBufferInput);
                     return kryo.readObject(byteBufferInput, TypeUtility.getRawType(type, null));
                 } else {
                     return kryo.readClassAndObject(byteBufferInput);
@@ -130,7 +127,6 @@ public class KryoContentCodec implements ContentCodec {
                 return value;
             } else {
                 if (kryo.isRegistrationRequired()) {
-                    // kryo.writeClass(byteBufferOutput, instance.getClass());
                     kryo.writeObject(byteBufferOutput, content);
                     return byteBufferOutput.toBytes();
                 } else {
