@@ -325,7 +325,7 @@ public class TypeUtility extends TypeUtils {
             public void exitClazz(TypeParser.ClazzContext context) {
                 try {
                     stack.push(ClassUtility.getClass(context.getText()));
-                } catch (ClassNotFoundException e) {
+                } catch (ClassNotFoundException exception) {
                     stack.push(TypeUtility.typeVariable(null, context.getText()));
                 }
             }
