@@ -111,6 +111,10 @@ public class TypeUtilityTestCase {
         convertType(type);
         type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, type));
         convertType(type);
+
+        String string = "com.jstarcraft.core.utility.KeyValue<java.lang.Object, T extends java.lang.Comparable<? super java.lang.Object[]>><><>";
+        type = TypeUtility.string2Type(string);
+        convertType(type);
     }
 
 }

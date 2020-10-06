@@ -7,8 +7,6 @@ package com.jstarcraft.core.common.reflection;
 array
     : clazz ((ARRAY+ GENERIC*) | GENERIC+)
     | generic ((ARRAY+ GENERIC*) | GENERIC+)
-    | variable ((ARRAY+ GENERIC*) | GENERIC+)
-    | wildcard ((ARRAY+ GENERIC*) | GENERIC+)
     ;
 
 clazz
@@ -20,11 +18,11 @@ generic
     ;
 
 type
-    : array
+    : wildcard
+    | array
     | clazz
     | generic
     | variable
-    | wildcard
     ;
     
 variable
