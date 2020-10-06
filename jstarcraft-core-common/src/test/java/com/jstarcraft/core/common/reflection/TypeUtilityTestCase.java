@@ -111,10 +111,18 @@ public class TypeUtilityTestCase {
         convertType(type);
         type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, type));
         convertType(type);
+    }
 
-        String string = "com.jstarcraft.core.utility.KeyValue<java.lang.Object, T extends java.lang.Comparable<? super java.lang.Object[]>><><>";
-        type = TypeUtility.string2Type(string);
-        convertType(type);
+    private void convertString(String java) {
+        Type type = TypeUtility.string2Type(java);
+        Assert.assertEquals(java, TypeUtility.type2String(type));
+    }
+
+    @Test
+    public void testConvertString() {
+        convertString("com.jstarcraft.core.utility.KeyValue<java.lang.Object, T extends java.lang.Comparable<? super java.lang.Object[]>><><>");
+
+        convertString("com.jstarcraft.core.utility.KeyValue<K extends java.land.Boolean, T extends com.jstarcraft.core.utility.KeyValue<K, T>>");
     }
 
 }

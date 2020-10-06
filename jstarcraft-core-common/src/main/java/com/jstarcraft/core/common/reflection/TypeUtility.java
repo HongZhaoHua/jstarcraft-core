@@ -8,7 +8,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +19,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 
@@ -179,41 +177,8 @@ public class TypeUtility extends TypeUtils {
             }
             buffer.append('.').append(clazz.getSimpleName());
         }
-
-        int[] recursiveIndexes = recursiveIndexes(parameterizedType);
-        if (recursiveIndexes.length > 0) {
-            type2Buffer(buffer, recursiveIndexes, parameterizedType.getActualTypeArguments());
-        } else {
-            type2Buffer(buffer.append('<'), ", ", parameterizedType.getActualTypeArguments()).append('>');
-        }
+        type2Buffer(buffer.append('<'), ", ", parameterizedType.getActualTypeArguments()).append('>');
         return buffer.toString();
-    }
-
-    private static void type2Buffer(StringBuilder buffer, int[] recursiveIndexes, Type[] argumentTypes) {
-        for (int index = 0; index < recursiveIndexes.length; index++) {
-            type2Buffer(buffer.append('<'), ", ", argumentTypes[index].toString()).append('>');
-        }
-        argumentTypes = ArrayUtils.removeAll(argumentTypes, recursiveIndexes);
-        if (argumentTypes.length > 0) {
-            type2Buffer(buffer.append('<'), ", ", argumentTypes).append('>');
-        }
-    }
-
-    private static int[] recursiveIndexes(ParameterizedType parameterizedType) {
-        Type[] argumentTypes = Arrays.copyOf(parameterizedType.getActualTypeArguments(), parameterizedType.getActualTypeArguments().length);
-        int[] recursiveIndexes = {};
-        for (int index = 0; index < argumentTypes.length; index++) {
-            if (argumentTypes[index] instanceof TypeVariable<?>) {
-                if (isRecursive(((TypeVariable<?>) argumentTypes[index]), parameterizedType)) {
-                    recursiveIndexes = ArrayUtils.add(recursiveIndexes, index);
-                }
-            }
-        }
-        return recursiveIndexes;
-    }
-
-    private static boolean isRecursive(TypeVariable<?> typeVariable, ParameterizedType parameterizedType) {
-        return ArrayUtils.contains(typeVariable.getBounds(), parameterizedType);
     }
 
     private static String typeVariable2String(TypeVariable<?> typeVariable) {
