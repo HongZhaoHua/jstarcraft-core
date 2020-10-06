@@ -342,7 +342,7 @@ public class TypeUtility extends TypeUtils {
 
             @Override
             public Type visitVariable(TypeParser.VariableContext context) {
-                List<TypeParser.GenericContext> contexts = context.generic();
+                List<TypeParser.TypeContext> contexts = context.type();
                 int size = contexts.size();
                 Type[] types = new Type[size];
                 for (int index = 0; index < size; index++) {

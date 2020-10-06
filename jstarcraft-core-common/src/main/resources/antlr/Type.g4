@@ -26,7 +26,7 @@ type
     ;
     
 variable
-    : ID (BOUND generic ('&' generic)*)?
+    : ID (BOUND (type) ('&' (type))*)?
     ;
 
 wildcard

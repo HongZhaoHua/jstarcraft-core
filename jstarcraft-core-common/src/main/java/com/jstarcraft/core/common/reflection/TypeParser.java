@@ -487,11 +487,11 @@ public class TypeParser extends Parser {
 	public static class VariableContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(TypeParser.ID, 0); }
 		public TerminalNode BOUND() { return getToken(TypeParser.BOUND, 0); }
-		public List<GenericContext> generic() {
-			return getRuleContexts(GenericContext.class);
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
 		}
-		public GenericContext generic(int i) {
-			return getRuleContext(GenericContext.class,i);
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
 		}
 		public VariableContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -517,6 +517,7 @@ public class TypeParser extends Parser {
 		enterRule(_localctx, 8, RULE_variable);
 		int _la;
 		try {
+			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(73);
@@ -528,23 +529,29 @@ public class TypeParser extends Parser {
 				{
 				setState(74);
 				match(BOUND);
+				{
 				setState(75);
-				generic();
+				type();
+				}
 				setState(80);
 				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==T__3) {
-					{
-					{
-					setState(76);
-					match(T__3);
-					setState(77);
-					generic();
-					}
+				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(76);
+						match(T__3);
+						{
+						setState(77);
+						type();
+						}
+						}
+						} 
 					}
 					setState(82);
 					_errHandler.sync(this);
-					_la = _input.LA(1);
+					_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 				}
 				}
 			}
@@ -642,7 +649,7 @@ public class TypeParser extends Parser {
 		"=;\3\2\2\2>A\3\2\2\2?=\3\2\2\2?@\3\2\2\2@B\3\2\2\2A?\3\2\2\2BC\7\5\2\2"+
 		"C\7\3\2\2\2DJ\5\f\7\2EJ\5\2\2\2FJ\5\4\3\2GJ\5\6\4\2HJ\5\n\6\2ID\3\2\2"+
 		"\2IE\3\2\2\2IF\3\2\2\2IG\3\2\2\2IH\3\2\2\2J\t\3\2\2\2KU\7\13\2\2LM\7\t"+
-		"\2\2MR\5\6\4\2NO\7\6\2\2OQ\5\6\4\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2"+
+		"\2\2MR\5\b\5\2NO\7\6\2\2OQ\5\b\5\2PN\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2"+
 		"\2\2SV\3\2\2\2TR\3\2\2\2UL\3\2\2\2UV\3\2\2\2V\13\3\2\2\2WZ\7\7\2\2XY\7"+
 		"\t\2\2Y[\5\b\5\2ZX\3\2\2\2Z[\3\2\2\2[\r\3\2\2\2\20\22\27\35\37%*\60\62"+
 		"\64?IRUZ";
