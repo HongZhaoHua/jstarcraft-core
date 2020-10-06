@@ -1,0 +1,8 @@
+Objenesis是一个小的Java库，它有一个用途：实例化一个特定类的新对象:
+https://zhuanlan.zhihu.com/p/27220411
+
+Objenesis，另一种实例化对象的方式:
+https://blog.csdn.net/ghaohao/article/details/80472500
+
+Objenesis-实例化对象的黑科技:
+https://benjaminwhx.com/2018/06/10/Objenesis-%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E9%BB%91%E7%A7%91%E6%8A%80
