@@ -1,6 +1,7 @@
 package com.jstarcraft.core.codec.specification;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * 类型匹配器
@@ -120,6 +121,13 @@ public class ClassMatcher<T> {
                         return value;
                     }
                 }
+                if (key.isArray()) {
+                    for (Entry<Clazz, T> keyValue : classes.entrySet()) {
+                        if (keyValue.getKey().clazz.isAssignableFrom(key)) {
+                            return keyValue.getValue();
+                        }
+                    }
+                }
             }
         }
         // 根据接口查找
@@ -129,8 +137,8 @@ public class ClassMatcher<T> {
                 return value;
             }
             if (!key.isInterface()) {
-                while ((key = key.getSuperclass()) != null) {
-                    value = match(key.getInterfaces(), clazz);
+                for (Class<?> current = key; (current != null); current = current.getSuperclass()) {
+                    value = match(current.getInterfaces(), clazz);
                     if (value != null) {
                         return value;
                     }

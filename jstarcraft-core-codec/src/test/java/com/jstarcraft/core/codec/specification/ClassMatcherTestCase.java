@@ -61,6 +61,15 @@ public class ClassMatcherTestCase {
             }
 
         }.getClass()));
+
+        matcher.set(Object[].class, Object[].class);
+        Assert.assertEquals(Object[].class, matcher.match(Object[].class));
+        Assert.assertEquals(Object[].class, matcher.match(Object[][].class));
+        Assert.assertEquals(Object[].class, matcher.match(Comparable[].class));
+        Assert.assertEquals(Object[].class, matcher.match(Comparable[][].class));
+        matcher.set(Comparable[].class, Comparable[].class);
+        Assert.assertEquals(Comparable[].class, matcher.match(Comparable[].class));
+        Assert.assertEquals(Object[].class, matcher.match(Comparable[][].class));
     }
 
 }
