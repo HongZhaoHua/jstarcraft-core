@@ -102,17 +102,4 @@ public class ArrayConverter extends AvroConverter<Object> {
         }
     }
 
-    private List<?> converterWrite(Object[] paramArr) {
-        if (TypeUtility.isArrayType(paramArr[0].getClass())) {
-            final ArrayList<Object> objects = Lists.newArrayList();
-            for (int index = 0; index < paramArr.length; index++) {
-                final Object[] indexArr = (Object[]) paramArr[0];
-                objects.add(this.converterWrite(indexArr));
-            }
-            return objects;
-        } else {
-            return Arrays.asList(paramArr);
-        }
-    }
-
 }
