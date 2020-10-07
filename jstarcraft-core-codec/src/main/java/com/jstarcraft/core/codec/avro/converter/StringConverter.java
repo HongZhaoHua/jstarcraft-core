@@ -1,16 +1,21 @@
 package com.jstarcraft.core.codec.avro.converter;
 
+import java.lang.reflect.Type;
+
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.utility.StringUtility;
-import java.lang.reflect.Type;
 
-public class StringConverter extends AvroConverter<Object>{
-
+/**
+ * 字符串转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
+public class StringConverter extends AvroConverter<Object> {
 
     @Override
     protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
-
         String value = String.valueOf(input);
         if (StringUtility.isEmpty(value)) {
             return null;

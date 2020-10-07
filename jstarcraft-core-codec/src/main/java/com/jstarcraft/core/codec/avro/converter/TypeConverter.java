@@ -1,22 +1,25 @@
 package com.jstarcraft.core.codec.avro.converter;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.*;
-
 /**
- * @author: MnZzV
- **/
+ * 类型转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class TypeConverter extends AvroConverter<Type> {
-
 
     @Override
     protected Type readValue(AvroReader avroReader, Object input, Type type) throws Exception {
@@ -28,7 +31,6 @@ public class TypeConverter extends AvroConverter<Type> {
         } else {
             baseType = avroReader.getClassDefinition(base);
         }
-
         if (baseType.getType() == Class.class) {
             if (base == objectArrayIndex) {
                 Type readValue = readValue(avroReader, inputList, type);

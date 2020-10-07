@@ -1,13 +1,16 @@
 package com.jstarcraft.core.codec.avro;
 
+import java.io.OutputStream;
+
 import com.jstarcraft.core.codec.avro.converter.AvroContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 
-import java.io.OutputStream;
-
 /**
- * @author: MnZzV
- **/
+ * Avro写出器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class AvroWriter extends AvroContext {
 
     private OutputStream outputStream;

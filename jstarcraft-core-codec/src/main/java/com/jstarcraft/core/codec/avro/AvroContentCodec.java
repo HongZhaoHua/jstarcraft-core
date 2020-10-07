@@ -1,19 +1,26 @@
 package com.jstarcraft.core.codec.avro;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.avro.converter.AvroConverter;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.lang.reflect.Type;
 /**
+ * Avro编解码器
+ * 
+ * @author Yue Zhen Wei
  *
- * @author: MnZzV
- **/
+ */
 public class AvroContentCodec implements ContentCodec {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AvroContentCodec.class);
@@ -29,8 +36,8 @@ public class AvroContentCodec implements ContentCodec {
         if (content.length == 0) {
             return null;
         }
-        try(ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
-           return decode(type, byteArrayInputStream);
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
+            return decode(type, byteArrayInputStream);
         } catch (Exception exception) {
             String message = "Avro解码失败:" + exception.getMessage();
             exception.printStackTrace();

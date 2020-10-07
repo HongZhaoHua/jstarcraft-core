@@ -1,11 +1,17 @@
 package com.jstarcraft.core.codec.avro.converter;
 
+import java.util.EnumMap;
+
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 
-import java.util.EnumMap;
-
+/**
+ * Avro上下文
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class AvroContext {
 
     protected static final EnumMap<Specification, AvroConverter<?>> converters = new EnumMap<>(Specification.class);
@@ -24,6 +30,7 @@ public class AvroContext {
 
     }
     private CodecDefinition definition;
+
     public AvroContext(CodecDefinition definition) {
         this.definition = definition;
     }
@@ -43,6 +50,5 @@ public class AvroContext {
     public AvroConverter getAvroConverter(Specification specification) {
         return converters.get(specification);
     }
-
 
 }
