@@ -16,7 +16,6 @@ public class StringConverter extends AvroConverter<Object> {
 
     @Override
     protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
-
         String value = String.valueOf(input);
         if (StringUtility.isEmpty(value)) {
             return null;

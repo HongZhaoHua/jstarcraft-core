@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BiFunction;
 
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
@@ -40,6 +41,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @param <T>
  */
 public abstract class AvroConverter<T> {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected abstract T readValue(AvroReader avroReader, Object input, Type type) throws Exception;
@@ -80,20 +82,11 @@ public abstract class AvroConverter<T> {
     protected final Schema getSchema(Type type) {
         Specification specification = Specification.getSpecification(type);
         Class<?> clazz = TypeUtility.getRawType(type, null);
-        Schema result = this.getFromCache(clazz);
-        if (result == null) {
-            return specification2SchemaMaps.get(specification).transformer(type, clazz);
-        } else {
-            return result;
+        Schema schema = type2Schemas.get(clazz);
+        if (schema == null) {
+            schema = specification2Schemas.get(specification).apply(type, clazz);
         }
-    }
-
-    private Schema getFromCache(Class<?> clazz) {
-        return type2Schemas.get(clazz);
-    }
-
-    private void addCache(Class<?> clazz, Schema schema) {
-        type2Schemas.put(clazz, schema);
+        return schema;
     }
 
     protected final Type[] getTypes(Type type, Class<?> clazz) {
@@ -113,10 +106,9 @@ public abstract class AvroConverter<T> {
 
     private final static Map<Class<?>, Schema> arrayType2Schemas = new HashMap<>();
 
-    private final static Map<Specification, TransFormerSchema<Type, Class<?>>> specification2SchemaMaps = new HashMap<>();
+    private final static Map<Specification, BiFunction<Type, Class<?>, Schema>> specification2Schemas = new HashMap<>();
 
     static {
-
         arrayType2Schemas.put(byte.class, SchemaBuilder.builder().bytesType());
         arrayType2Schemas.put(Byte.class, SchemaBuilder.builder().bytesType());
 
@@ -154,7 +146,7 @@ public abstract class AvroConverter<T> {
     }
 
     {
-        specification2SchemaMaps.put(Specification.ARRAY, (type, clazz) -> {
+        specification2Schemas.put(Specification.ARRAY, (type, clazz) -> {
             Class<?> typeClazz;
             if (((typeClazz = getTypeClazz(clazz.getComponentType())) == Byte.class || typeClazz == byte.class)) {
                 return arrayType2Schemas.get(typeClazz);
@@ -167,12 +159,12 @@ public abstract class AvroConverter<T> {
             }
         });
 
-        specification2SchemaMaps.put(Specification.MAP, (type, clazz) -> {
+        specification2Schemas.put(Specification.MAP, (type, clazz) -> {
             Type[] types = getTypes(type, Map.class);
             return SchemaBuilder.map().values().nullable().type(this.getSchema(types[1]));
         });
 
-        specification2SchemaMaps.put(Specification.COLLECTION, (type, clazz) -> {
+        specification2Schemas.put(Specification.COLLECTION, (type, clazz) -> {
             Type[] types = getTypes(type, Collection.class);
             Schema schema = this.getSchema(types[0]);
             if (schema.getType() == Schema.Type.ENUM) {
@@ -181,7 +173,7 @@ public abstract class AvroConverter<T> {
             return SchemaBuilder.array().items().nullable().type(schema);
         });
 
-        specification2SchemaMaps.put(Specification.ENUMERATION, (type, clazz) -> {
+        specification2Schemas.put(Specification.ENUMERATION, (type, clazz) -> {
             Object[] enumConstants = clazz.getEnumConstants();
             String[] strEnums = new String[enumConstants.length];
             for (int i = 0; i < enumConstants.length; i++) {
@@ -191,26 +183,18 @@ public abstract class AvroConverter<T> {
             return schema;
         });
 
-        specification2SchemaMaps.put(Specification.OBJECT, (type, clazz) -> {
+        specification2Schemas.put(Specification.OBJECT, (type, clazz) -> {
             SchemaBuilder.FieldAssembler<Schema> fields = SchemaBuilder.builder().record(clazz.getSimpleName()).fields();
-
             Field[] clazzFields = FieldUtils.getAllFields(clazz);
             for (Field clazzField : clazzFields) {
                 fields.name(clazzField.getName()).type(this.getSchema(clazzField.getGenericType())).noDefault();
             }
-
             Schema schema = fields.endRecord();
-            this.addCache(clazz, schema);
+            type2Schemas.put(clazz, schema);
             return schema;
         });
 
-        specification2SchemaMaps.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.array().items().intType());
-
-    }
-
-    @FunctionalInterface
-    private interface TransFormerSchema<T, C> {
-        Schema transformer(Type type, Class<?> clazz);
+        specification2Schemas.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.array().items().intType());
     }
 
 }

@@ -31,7 +31,6 @@ public class TypeConverter extends AvroConverter<Type> {
         } else {
             baseType = avroReader.getClassDefinition(base);
         }
-
         if (baseType.getType() == Class.class) {
             if (base == objectArrayIndex) {
                 Type readValue = readValue(avroReader, inputList, type);
