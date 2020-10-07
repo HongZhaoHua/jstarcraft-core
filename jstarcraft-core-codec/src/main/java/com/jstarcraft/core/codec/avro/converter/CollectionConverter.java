@@ -1,16 +1,17 @@
 package com.jstarcraft.core.codec.avro.converter;
 
-import com.jstarcraft.core.codec.avro.AvroReader;
-import com.jstarcraft.core.codec.avro.AvroWriter;
-import com.jstarcraft.core.common.reflection.Specification;
-import com.jstarcraft.core.common.reflection.TypeUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jstarcraft.core.codec.avro.AvroReader;
+import com.jstarcraft.core.codec.avro.AvroWriter;
+import com.jstarcraft.core.common.reflection.Specification;
+import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * @author: MnZzV
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class CollectionConverter extends AvroConverter<Collection<Object>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionConverter.class);
+
     @Override
     protected Collection<Object> readValue(AvroReader avroReader, Object input, Type type) throws Exception {
         Class<?> clazz = TypeUtility.getRawType(type, null);

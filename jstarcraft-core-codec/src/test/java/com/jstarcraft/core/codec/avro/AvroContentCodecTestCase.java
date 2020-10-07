@@ -1,17 +1,22 @@
-package com.jstarcraft.core.codec.arvo;
+package com.jstarcraft.core.codec.avro;
 
-import com.jstarcraft.core.codec.*;
-import com.jstarcraft.core.codec.avro.AvroContentCodec;
-import com.jstarcraft.core.codec.specification.CodecDefinition;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.junit.Test;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import com.jstarcraft.core.codec.ContentCodec;
+import com.jstarcraft.core.codec.ContentCodecTestCase;
+import com.jstarcraft.core.codec.MockEnumeration;
+import com.jstarcraft.core.codec.avro.AvroContentCodec;
+import com.jstarcraft.core.codec.specification.CodecDefinition;
 
 /**
  * {@link AvroContentCodec} unit test case
+ * 
  * @author MnZzV
  */
 public class AvroContentCodecTestCase extends ContentCodecTestCase {
@@ -46,6 +51,7 @@ public class AvroContentCodecTestCase extends ContentCodecTestCase {
     public void testNull() throws Exception {
         super.testNull();
     }
+
     @Test
     public void testPerformance() {
         super.testPerformance();
@@ -81,21 +87,19 @@ public class AvroContentCodecTestCase extends ContentCodecTestCase {
 
         Schema schema = SchemaBuilder.record("parquet").fields().requiredString("title").requiredString("when").name("where").type(SchemaBuilder.record("where").fields().requiredFloat("longitude").requiredFloat("latitude").endRecord()).noDefault().endRecord();
         GenericRecord parquet = new GenericData.Record(schema);
-            parquet.put("title", "title");
-            parquet.put("when", "2020-01-01 00:00:00");
-            GenericRecord where = new GenericData.Record(schema.getField("where").schema());
-            where.put("longitude", 0F);
-            where.put("latitude", 0F);
-            parquet.put("where", where);
+        parquet.put("title", "title");
+        parquet.put("when", "2020-01-01 00:00:00");
+        GenericRecord where = new GenericData.Record(schema.getField("where").schema());
+        where.put("longitude", 0F);
+        where.put("latitude", 0F);
+        parquet.put("where", where);
 
 //            ParquetWriter writer = AvroParquetWriter.builder(output).withSchema(schema).build();
 //            writer.write(parquet);
 //            writer.close();
-        }
+    }
 
-
-
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         AtomicInteger deep = new AtomicInteger();
         deep.incrementAndGet();
         System.err.println(deep);

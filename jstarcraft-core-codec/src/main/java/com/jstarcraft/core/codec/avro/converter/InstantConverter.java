@@ -1,18 +1,17 @@
 package com.jstarcraft.core.codec.avro.converter;
 
-import com.jstarcraft.core.codec.avro.AvroReader;
-import com.jstarcraft.core.codec.avro.AvroWriter;
-import com.jstarcraft.core.codec.exception.CodecConvertionException;
-
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.Date;
+
+import com.jstarcraft.core.codec.avro.AvroReader;
+import com.jstarcraft.core.codec.avro.AvroWriter;
+import com.jstarcraft.core.codec.exception.CodecConvertionException;
 
 /**
  * @author: MnZzV
  **/
 public class InstantConverter extends AvroConverter<Object> {
-
 
     @Override
     protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {

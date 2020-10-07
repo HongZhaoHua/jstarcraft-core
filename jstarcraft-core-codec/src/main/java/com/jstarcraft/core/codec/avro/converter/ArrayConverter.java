@@ -1,22 +1,22 @@
 package com.jstarcraft.core.codec.avro.converter;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.compress.utils.Lists;
+
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.io.*;
-import org.apache.avro.reflect.ReflectDatumWriter;
-import org.apache.avro.specific.SpecificDatumWriter;
-import org.apache.commons.compress.utils.Lists;
 
-import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
-import java.util.*;
 /**
  *
  * @author: MnZzV
@@ -28,15 +28,14 @@ public class ArrayConverter extends AvroConverter<Object> {
         if (!TypeUtility.isArrayType(type)) {
             throw new CodecException("Avro解码类型不是数组");
         }
-        final Class<?> clazz = (Class<?>)type;
+        final Class<?> clazz = (Class<?>) type;
         Class<?> typeClazz = clazz.getComponentType();
         typeClazz = typeClazz == null ? clazz : typeClazz;
         while (typeClazz != null && typeClazz.isArray()) {
             typeClazz = typeClazz.getComponentType();
         }
 
-        final List<?> list = Byte.class.isAssignableFrom(typeClazz) || byte.class.isAssignableFrom(typeClazz) ? getByteList(input) :
-                (List<?>) input;
+        final List<?> list = Byte.class.isAssignableFrom(typeClazz) || byte.class.isAssignableFrom(typeClazz) ? getByteList(input) : (List<?>) input;
         Object result = Array.newInstance(clazz.getComponentType(), list.size());
         AvroConverter<?> avroConverter = avroReader.getAvroConverter(Specification.getSpecification(clazz.getComponentType()));
         for (int i = 0; i < list.size(); i++) {
@@ -92,8 +91,8 @@ public class ArrayConverter extends AvroConverter<Object> {
             return objects;
         }
         if (typeClazz.isPrimitive() && baseClazz.isArray()) {
-           int length = Array.getLength(content);
-           List list = new ArrayList();
+            int length = Array.getLength(content);
+            List list = new ArrayList();
             for (int i = 0; i < length; i++) {
                 final Object o = Array.get(content, i);
                 list.add(this.getWriteList(writer, o, baseClazz.getComponentType()));
@@ -116,7 +115,6 @@ public class ArrayConverter extends AvroConverter<Object> {
             return Arrays.asList(paramArr);
         }
     }
-
 
     private static Map<Class<?>, Class<?>> primitive2ObjectClass = new HashMap<>();
 

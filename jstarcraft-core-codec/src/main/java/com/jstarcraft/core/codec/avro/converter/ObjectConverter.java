@@ -1,17 +1,18 @@
 package com.jstarcraft.core.codec.avro.converter;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
+
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.PropertyDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
 /**
  * @author: MnZzV

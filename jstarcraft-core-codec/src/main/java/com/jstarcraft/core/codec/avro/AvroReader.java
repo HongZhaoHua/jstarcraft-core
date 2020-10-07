@@ -1,9 +1,9 @@
 package com.jstarcraft.core.codec.avro;
 
+import java.io.InputStream;
+
 import com.jstarcraft.core.codec.avro.converter.AvroContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-
-import java.io.InputStream;
 
 /**
  * @author: MnZzV
