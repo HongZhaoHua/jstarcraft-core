@@ -49,7 +49,7 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
-            StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+            StandardConverter converter = context.getStandardConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
             for (int index = 0; index < size; index++) {
                 Object element = converter.readValueFrom(context, elementType, definition);
@@ -63,7 +63,7 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
             for (int index = 0; index < size; index++) {
                 int code = NumberConverter.readNumber(in).intValue();
                 definition = context.getClassDefinition(code);
-                StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
+                StandardConverter converter = context.getStandardConverter(definition.getSpecification());
                 Object element = converter.readValueFrom(context, definition.getType(), definition);
                 instance.add(element);
             }
@@ -100,7 +100,7 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
                 for (Object element : instance) {
                     definition = context.getClassDefinition(element == null ? void.class : element.getClass());
                     NumberConverter.writeNumber(out, definition.getCode());
-                    StandardConverter converter = context.getProtocolConverter(definition.getSpecification());
+                    StandardConverter converter = context.getStandardConverter(definition.getSpecification());
                     converter.writeValueTo(context, definition.getType(), definition, element);
                 }
             } else {
@@ -112,7 +112,7 @@ public class CollectionConverter extends StandardConverter<Collection<?>> {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Type elementType = types[0];
-                StandardConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+                StandardConverter converter = context.getStandardConverter(Specification.getSpecification(elementType));
                 definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
                 for (Object element : instance) {
                     converter.writeValueTo(context, elementType, definition, element);

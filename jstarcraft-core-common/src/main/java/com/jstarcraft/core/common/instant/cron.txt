@@ -1,2 +1,11 @@
+Cron Trigger Tutorial:
+http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
+
 Cron表达式详解和表达式的验证:
 https://www.cnblogs.com/rever/p/9887384.html
+
+Cron表达式的详细用法:
+https://www.jianshu.com/p/e9ce1a7e1ed1
+
+Cron表达式语法详解:
+https://blog.csdn.net/lianjunzongsiling/article/details/82228655

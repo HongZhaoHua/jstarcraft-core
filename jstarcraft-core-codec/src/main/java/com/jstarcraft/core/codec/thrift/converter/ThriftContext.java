@@ -42,7 +42,7 @@ public class ThriftContext {
         this.protocol = protocol;
     }
 
-    public ThriftConverter getProtocolConverter(Specification specification) {
+    public ThriftConverter getThriftConverter(Specification specification) {
         ThriftConverter converter = converters.get(specification);
         return converter;
     }

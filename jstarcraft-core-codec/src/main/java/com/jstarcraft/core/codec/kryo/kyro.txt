@@ -1,2 +1,8 @@
 Kryo序列化及反序列化对象:
 http://nettm.blog.51cto.com/4841905/1702453
+
+Kryo官方文档:
+https://blog.csdn.net/fanjunjaden/article/details/72823866
+
+Kryo 使用指南:
+https://www.cnblogs.com/hntyzgn/p/7122709.html

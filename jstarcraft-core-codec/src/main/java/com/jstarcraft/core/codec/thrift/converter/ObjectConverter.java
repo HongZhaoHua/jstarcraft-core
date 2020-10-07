@@ -45,7 +45,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
             }
             if (feild.id != 1) {
                 PropertyDefinition property = properties[feild.id - 2];
-                ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
+                ThriftConverter converter = context.getThriftConverter(property.getSpecification());
                 definition = context.getClassDefinition(property.getCode());
                 Object value = converter.readValueFrom(context, property.getType(), definition);
                 try {
@@ -77,7 +77,7 @@ public class ObjectConverter extends ThriftConverter<Object> {
                 try {
                     value = property.getValue(instance);
                     if (value != null) {
-                        ThriftConverter converter = context.getProtocolConverter(property.getSpecification());
+                        ThriftConverter converter = context.getThriftConverter(property.getSpecification());
                         TField field = new TField(property.getName(), TType.STRUCT, (short) (index + 2));
                         protocol.writeFieldBegin(field);
                         definition = context.getClassDefinition(property.getCode());

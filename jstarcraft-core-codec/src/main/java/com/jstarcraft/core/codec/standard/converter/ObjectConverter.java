@@ -49,7 +49,7 @@ public class ObjectConverter extends StandardConverter<Object> {
             context.putObjectValue(instance);
             for (int index = 0; index < properties.length; index++) {
                 PropertyDefinition property = properties[index];
-                StandardConverter converter = context.getProtocolConverter(property.getSpecification());
+                StandardConverter converter = context.getStandardConverter(property.getSpecification());
                 definition = context.getClassDefinition(property.getCode());
                 Object value = converter.readValueFrom(context, property.getType(), definition);
                 if (value == null) {
@@ -94,7 +94,7 @@ public class ObjectConverter extends StandardConverter<Object> {
                 Object value;
                 try {
                     value = property.getValue(instance);
-                    StandardConverter converter = context.getProtocolConverter(property.getSpecification());
+                    StandardConverter converter = context.getStandardConverter(property.getSpecification());
                     definition = context.getClassDefinition(property.getCode());
                     converter.writeValueTo(context, property.getType(), definition, value);
                 } catch (Exception exception) {

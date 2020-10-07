@@ -1,14 +1,9 @@
 package com.jstarcraft.core.codec.msgpack;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Iterator;
 
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.slf4j.Logger;
@@ -16,28 +11,18 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.codec.exception.CodecConvertionException;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.jackson.BigDecimalJacksonDeserializer;
 import com.jstarcraft.core.codec.jackson.BigDecimalJacksonSerializer;
-import com.jstarcraft.core.codec.specification.ClassDefinition;
+import com.jstarcraft.core.codec.jackson.TypeJacksonDeserializer;
+import com.jstarcraft.core.codec.jackson.TypeJacksonSerializer;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.Specification;
-import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
  * MessagePack格式编解码器
@@ -47,8 +32,6 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
 public class MessagePackContentCodec implements ContentCodec {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessagePackContentCodec.class);
-
-    private final ThreadLocal<Type> currentTypes = new ThreadLocal<>();
 
     private final CodecDefinition codecDefinition;
     /** 类型转换器(基于Jackson) */
@@ -63,99 +46,10 @@ public class MessagePackContentCodec implements ContentCodec {
         typeConverter.setVisibility(PropertyAccessor.SETTER, Visibility.NONE);
         typeConverter.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-        JsonDeserializer<Type> typeDeserializer = new JsonDeserializer<Type>() {
-
-            private Type readValueFrom(Iterator<JsonNode> iterator) throws IOException {
-                Integer code = iterator.next().asInt();
-                ClassDefinition definition = codecDefinition.getClassDefinition(code);
-                if (definition.getType() == Class.class) {
-                    code = iterator.next().asInt();
-                    definition = codecDefinition.getClassDefinition(code);
-                    return definition.getType();
-                } else if (definition.getType() == GenericArrayType.class) {
-                    Type type = currentTypes.get();
-                    if (type == Class.class) {
-                        type = readValueFrom(iterator);
-                        Class<?> clazz = Class.class.cast(type);
-                        return Array.newInstance(clazz, 0).getClass();
-                    } else {
-                        type = readValueFrom(iterator);
-                        return TypeUtility.genericArrayType(type);
-                    }
-                } else if (definition.getType() == ParameterizedType.class) {
-                    code = iterator.next().asInt();
-                    definition = codecDefinition.getClassDefinition(code);
-                    Integer length = iterator.next().asInt();
-                    Type[] types = new Type[length];
-                    for (int index = 0; index < length; index++) {
-                        types[index] = readValueFrom(iterator);
-                    }
-                    return TypeUtility.parameterize(definition.getType(), types);
-                } else {
-                    throw new CodecConvertionException();
-                }
-            }
-
-            @Override
-            public Type deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
-                ObjectCodec objectCodec = parser.getCodec();
-                JsonNode node = objectCodec.readTree(parser);
-                Type type = readValueFrom(node.iterator());
-                return type;
-            }
-
-        };
-
-        JsonSerializer<Type> typeSerializer = new JsonSerializer<Type>() {
-
-            private void writeValueTo(JsonGenerator out, Type value) throws IOException {
-                if (TypeUtility.isInstance(value, Class.class)) {
-                    Class<?> clazz = TypeUtility.getRawType(value, null);
-                    if (clazz.isArray()) {
-                        ClassDefinition definition = codecDefinition.getClassDefinition(GenericArrayType.class);
-                        out.writeNumber(definition.getCode());
-                        value = TypeUtility.getArrayComponentType(value);
-                        writeValueTo(out, value);
-                    } else {
-                        ClassDefinition definition = codecDefinition.getClassDefinition(Class.class);
-                        out.writeNumber(definition.getCode());
-                        definition = codecDefinition.getClassDefinition(clazz);
-                        out.writeNumber(definition.getCode());
-                    }
-                } else if (TypeUtility.isInstance(value, GenericArrayType.class)) {
-                    ClassDefinition definition = codecDefinition.getClassDefinition(GenericArrayType.class);
-                    out.writeNumber(definition.getCode());
-                    value = TypeUtility.getArrayComponentType(value);
-                    writeValueTo(out, value);
-                } else if (TypeUtility.isInstance(value, ParameterizedType.class)) {
-                    ClassDefinition definition = codecDefinition.getClassDefinition(ParameterizedType.class);
-                    out.writeNumber(definition.getCode());
-                    Class<?> clazz = TypeUtility.getRawType(value, null);
-                    definition = codecDefinition.getClassDefinition(clazz);
-                    out.writeNumber(definition.getCode());
-                    ParameterizedType parameterizedType = (ParameterizedType) value;
-                    Type[] types = parameterizedType.getActualTypeArguments();
-                    out.writeNumber(types.length);
-                    for (int index = 0; index < types.length; index++) {
-                        writeValueTo(out, types[index]);
-                    }
-                } else {
-                    throw new CodecConvertionException();
-                }
-            }
-
-            @Override
-            public void serialize(Type value, JsonGenerator generator, SerializerProvider serializers) throws IOException, JsonProcessingException {
-                generator.writeStartArray();
-                writeValueTo(generator, value);
-                generator.writeEndArray();
-            }
-
-        };
         JavaTimeModule module = new JavaTimeModule();
         typeConverter.registerModule(module);
-        module.addDeserializer(Type.class, typeDeserializer);
-        module.addSerializer(Type.class, typeSerializer);
+        module.addDeserializer(Type.class, new TypeJacksonDeserializer());
+        module.addSerializer(Type.class, new TypeJacksonSerializer());
         module.addDeserializer(BigDecimal.class, new BigDecimalJacksonDeserializer());
         module.addSerializer(BigDecimal.class, new BigDecimalJacksonSerializer());
     }
@@ -168,9 +62,7 @@ public class MessagePackContentCodec implements ContentCodec {
             }
             Specification specification = Specification.getSpecification(type);
             if (specification == Specification.TYPE) {
-                currentTypes.set(type);
                 Type value = typeConverter.readValue(content, Type.class);
-                currentTypes.remove();
                 return value;
             } else {
                 return typeConverter.readValue(content, JsonUtility.type2Java(type));
@@ -187,9 +79,7 @@ public class MessagePackContentCodec implements ContentCodec {
         try {
             Specification specification = Specification.getSpecification(type);
             if (specification == Specification.TYPE) {
-                currentTypes.set(type);
                 Type value = typeConverter.readValue(stream, Type.class);
-                currentTypes.remove();
                 return value;
             } else {
                 return typeConverter.readValue(stream, JsonUtility.type2Java(type));
@@ -207,9 +97,7 @@ public class MessagePackContentCodec implements ContentCodec {
             if (content == null) {
                 return new byte[] {};
             }
-            currentTypes.set(type);
             byte[] value = typeConverter.writeValueAsBytes(content);
-            currentTypes.remove();
             return value;
         } catch (Exception exception) {
             String message = "MessagePack编码异常";
@@ -221,9 +109,7 @@ public class MessagePackContentCodec implements ContentCodec {
     @Override
     public void encode(Type type, Object content, OutputStream stream) {
         try {
-            currentTypes.set(type);
             typeConverter.writeValue(stream, content);
-            currentTypes.remove();
         } catch (Exception exception) {
             String message = "MessagePack编码异常";
             LOGGER.error(message, exception);

@@ -1,0 +1,5 @@
+JMESPath:
+https://jmespath.org/
+
+This is an implementation of JMESPath for Java and it supports searching JSON documents (via Jackson or Gson) and structures containing basic Java objects (Map, List, String, etc.) – but can also be extended to work with any JSON-like structure:
+https://github.com/burtcorp/jmespath-java

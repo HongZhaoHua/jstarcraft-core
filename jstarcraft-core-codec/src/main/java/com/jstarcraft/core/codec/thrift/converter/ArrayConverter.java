@@ -37,7 +37,7 @@ public class ArrayConverter extends ThriftConverter<Object> {
             Class<?> clazz = TypeUtility.getRawType(type, null);
             clazz = clazz.getComponentType();
             Specification specification = Specification.getSpecification(clazz);
-            ThriftConverter converter = context.getProtocolConverter(specification);
+            ThriftConverter converter = context.getThriftConverter(specification);
             definition = context.getClassDefinition(clazz);
             instance = Array.newInstance(clazz, size);
             for (int index = 0; index < size; index++) {
@@ -65,7 +65,7 @@ public class ArrayConverter extends ThriftConverter<Object> {
             Class<?> clazz = TypeUtility.getRawType(type, null);
             clazz = clazz.getComponentType();
             Specification specification = Specification.getSpecification(clazz);
-            ThriftConverter converter = context.getProtocolConverter(specification);
+            ThriftConverter converter = context.getThriftConverter(specification);
             definition = context.getClassDefinition(clazz);
             protocol.writeListBegin(new TList(TType.STRUCT, size));
             for (int index = 0; index < size; index++) {

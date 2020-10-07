@@ -43,7 +43,7 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
-            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+            ThriftConverter converter = context.getThriftConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
             for (int index = 0; index < size; index++) {
                 Object element = converter.readValueFrom(context, elementType, definition);
@@ -72,7 +72,7 @@ public class CollectionConverter extends ThriftConverter<Collection<?>> {
             ParameterizedType parameterizedType = (ParameterizedType) type;
             Type[] types = parameterizedType.getActualTypeArguments();
             Type elementType = types[0];
-            ThriftConverter converter = context.getProtocolConverter(Specification.getSpecification(elementType));
+            ThriftConverter converter = context.getThriftConverter(Specification.getSpecification(elementType));
             definition = context.getClassDefinition(TypeUtility.getRawType(elementType, null));
             protocol.writeListBegin(new TList(TType.STRUCT, size));
             for (Object element : instance) {

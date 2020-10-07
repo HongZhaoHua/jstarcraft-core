@@ -113,19 +113,22 @@ public class JsonUtility {
      */
     public static Type java2Type(JavaType java) {
         Type type = null;
-        if (java.isArrayType()) {
-            // 数组类型
-            type = java.getRawClass();
-        } else if (java.hasGenericTypes()) {
-            // 泛型类型
-            List<JavaType> javas = java.getBindings().getTypeParameters();
-            Type[] generics = new Type[javas.size()];
-            int index = 0;
-            for (JavaType term : javas) {
-                generics[index++] = java2Type(term);
+        if (java.hasGenericTypes()) {
+            if (java.isArrayType()) {
+                // 数组类型
+                type = java2Type(java.getContentType());
+                type = TypeUtility.genericArrayType(type);
+            } else {
+                // 泛型类型
+                List<JavaType> javas = java.getBindings().getTypeParameters();
+                int size = javas.size();
+                Type[] generics = new Type[size];
+                for (int index = 0; index < size; index++) {
+                    generics[index] = java2Type(javas.get(index));
+                }
+                Class<?> clazz = java.getRawClass();
+                type = TypeUtility.parameterize(clazz, generics);
             }
-            Class<?> clazz = java.getRawClass();
-            type = TypeUtility.parameterize(clazz, generics);
         } else {
             type = java.getRawClass();
         }
