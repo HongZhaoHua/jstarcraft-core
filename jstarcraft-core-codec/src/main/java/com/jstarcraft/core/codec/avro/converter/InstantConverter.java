@@ -9,8 +9,11 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.exception.CodecConvertionException;
 
 /**
- * @author: MnZzV
- **/
+ * 日期时间转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class InstantConverter extends AvroConverter<Object> {
 
     @Override

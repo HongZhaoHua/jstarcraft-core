@@ -11,6 +11,12 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
+/**
+ * 映射转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class MapConverter extends AvroConverter<Map<Object, Object>> {
 
     @Override

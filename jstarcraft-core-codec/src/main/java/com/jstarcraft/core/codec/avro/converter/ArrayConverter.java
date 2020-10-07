@@ -18,9 +18,11 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
+ * 数组转换器
+ * 
+ * @author Yue Zhen Wei
  *
- * @author: MnZzV
- **/
+ */
 public class ArrayConverter extends AvroConverter<Object> {
 
     @Override

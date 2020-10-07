@@ -16,9 +16,11 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**
+ * Avro编解码器
+ * 
+ * @author Yue Zhen Wei
  *
- * @author: MnZzV
- **/
+ */
 public class AvroContentCodec implements ContentCodec {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AvroContentCodec.class);

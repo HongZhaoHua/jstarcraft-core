@@ -14,8 +14,11 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
- * @author: MnZzV
- **/
+ * 类型转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class TypeConverter extends AvroConverter<Type> {
 
     @Override

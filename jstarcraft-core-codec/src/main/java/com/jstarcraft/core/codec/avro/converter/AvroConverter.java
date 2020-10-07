@@ -33,8 +33,10 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
+ * Avro转换器
+ * 
+ * @author Yue Zhen Wei
  *
- * @author MnZzV
  * @param <T>
  */
 public abstract class AvroConverter<T> {

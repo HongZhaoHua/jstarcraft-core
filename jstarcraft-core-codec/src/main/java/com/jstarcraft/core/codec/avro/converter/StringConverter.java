@@ -6,6 +6,12 @@ import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.utility.StringUtility;
 
+/**
+ * 字符串转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class StringConverter extends AvroConverter<Object> {
 
     @Override

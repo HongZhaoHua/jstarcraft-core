@@ -14,8 +14,11 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
- * @author: MnZzV
- **/
+ * 集合转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class CollectionConverter extends AvroConverter<Collection<Object>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionConverter.class);

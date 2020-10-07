@@ -6,6 +6,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 
+/**
+ * 布尔转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class BooleanConverter extends AvroConverter<Object> {
 
     @Override

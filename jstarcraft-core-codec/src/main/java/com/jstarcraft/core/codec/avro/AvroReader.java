@@ -6,8 +6,11 @@ import com.jstarcraft.core.codec.avro.converter.AvroContext;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 
 /**
- * @author: MnZzV
- **/
+ * Avro读入器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class AvroReader extends AvroContext {
 
     private InputStream inputStream;

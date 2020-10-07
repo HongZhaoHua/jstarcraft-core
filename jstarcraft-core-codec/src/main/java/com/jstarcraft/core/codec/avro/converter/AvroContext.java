@@ -6,6 +6,12 @@ import com.jstarcraft.core.codec.specification.ClassDefinition;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.jstarcraft.core.common.reflection.Specification;
 
+/**
+ * Avro上下文
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class AvroContext {
 
     protected static final EnumMap<Specification, AvroConverter<?>> converters = new EnumMap<>(Specification.class);

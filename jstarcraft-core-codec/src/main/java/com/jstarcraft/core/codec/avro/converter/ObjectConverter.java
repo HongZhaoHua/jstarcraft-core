@@ -15,8 +15,11 @@ import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
 /**
- * @author: MnZzV
- **/
+ * 对象转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class ObjectConverter extends AvroConverter<Object> {
 
     @Override

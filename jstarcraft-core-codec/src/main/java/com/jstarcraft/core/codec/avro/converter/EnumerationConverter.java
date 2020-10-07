@@ -6,6 +6,12 @@ import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.exception.CodecException;
 
+/**
+ * 枚举转换器
+ * 
+ * @author Yue Zhen Wei
+ *
+ */
 public class EnumerationConverter extends AvroConverter<Object> {
 
     @Override
