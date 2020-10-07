@@ -1,24 +1,12 @@
 package com.jstarcraft.core.codec.avro;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.junit.Test;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
 import com.jstarcraft.core.codec.MockEnumeration;
-import com.jstarcraft.core.codec.avro.AvroContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 
-/**
- * {@link AvroContentCodec} unit test case
- * 
- * @author MnZzV
- */
 public class AvroContentCodecTestCase extends ContentCodecTestCase {
 
     @Override

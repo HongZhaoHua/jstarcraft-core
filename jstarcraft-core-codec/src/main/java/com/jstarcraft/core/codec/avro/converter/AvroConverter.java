@@ -23,6 +23,7 @@ import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.reflect.ReflectData;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -55,9 +56,9 @@ public abstract class AvroConverter<T> {
      * @throws IOException
      */
     public final T readValueFrom(AvroReader avroReader, Type type) throws Exception {
-        GenericDatumReader userDatumReader = new GenericDatumReader<>(getSchema(type));
-        BinaryDecoder binaryEncoder = DecoderFactory.get().directBinaryDecoder(avroReader.getInputStream(), null);
-        Object read = userDatumReader.read(new Object(), binaryEncoder);
+        GenericDatumReader datumReader = new GenericDatumReader<>(getSchema(type));
+        BinaryDecoder decoder = DecoderFactory.get().directBinaryDecoder(avroReader.getInputStream(), null);
+        Object read = datumReader.read(null, decoder);
         return readValue(avroReader, read, type);
     }
 
@@ -72,13 +73,14 @@ public abstract class AvroConverter<T> {
     public final void writeValueTo(AvroWriter writer, Type type, T value) throws Exception {
         Schema schema = this.getSchema(type);
         Object writeValue = writeValue(writer, value, type);
-        SpecificDatumWriter<Object> specificDatumWriter = new SpecificDatumWriter<>(schema);
-        BinaryEncoder binaryEncoder = EncoderFactory.get().directBinaryEncoder(writer.getOutputStream(), null);
-        specificDatumWriter.write(writeValue, binaryEncoder);
+        SpecificDatumWriter<Object> datumWriter = new SpecificDatumWriter<>(schema);
+        BinaryEncoder encoder = EncoderFactory.get().directBinaryEncoder(writer.getOutputStream(), null);
+        datumWriter.write(writeValue, encoder);
     }
 
     protected abstract Object writeValue(AvroWriter writer, T value, Type type) throws Exception;
 
+    // TODO 考虑使用ReflectData.getSchema替代
     protected final Schema getSchema(Type type) {
         Specification specification = Specification.getSpecification(type);
         Class<?> clazz = TypeUtility.getRawType(type, null);
