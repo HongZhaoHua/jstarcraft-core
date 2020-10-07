@@ -82,27 +82,4 @@ public class AvroContentCodecTestCase extends ContentCodecTestCase {
         testConvert(MockEnumeration.class, MockEnumeration.TERRAN);
     }
 
-    @Test
-    public void testReadWriteArvo() throws Exception {
-
-        Schema schema = SchemaBuilder.record("parquet").fields().requiredString("title").requiredString("when").name("where").type(SchemaBuilder.record("where").fields().requiredFloat("longitude").requiredFloat("latitude").endRecord()).noDefault().endRecord();
-        GenericRecord parquet = new GenericData.Record(schema);
-        parquet.put("title", "title");
-        parquet.put("when", "2020-01-01 00:00:00");
-        GenericRecord where = new GenericData.Record(schema.getField("where").schema());
-        where.put("longitude", 0F);
-        where.put("latitude", 0F);
-        parquet.put("where", where);
-
-//            ParquetWriter writer = AvroParquetWriter.builder(output).withSchema(schema).build();
-//            writer.write(parquet);
-//            writer.close();
-    }
-
-    public static void main(String[] args) {
-        AtomicInteger deep = new AtomicInteger();
-        deep.incrementAndGet();
-        System.err.println(deep);
-    }
-
 }
