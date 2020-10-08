@@ -23,7 +23,6 @@ import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
-import org.apache.avro.reflect.ReflectData;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
