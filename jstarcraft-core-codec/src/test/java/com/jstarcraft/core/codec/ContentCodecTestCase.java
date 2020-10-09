@@ -327,6 +327,9 @@ public abstract class ContentCodecTestCase {
         testConvert(ParameterizedType.class, type);
         type = TypeUtility.parameterize(TreeSet.class, Byte.class);
         testConvert(ParameterizedType.class, type);
+        testConvert(WildcardType.class, TypeUtility.wildcardType().withUpperBounds(type).build());
+        testConvert(WildcardType.class, TypeUtility.wildcardType().withLowerBounds(type).build());
+        testConvert(TypeVariable.class, TypeUtility.typeVariable(null, "T", type));
 
         // 基于枚举类型测试
         type = MockEnumeration.class;
