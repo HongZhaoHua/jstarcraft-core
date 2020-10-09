@@ -34,13 +34,23 @@ import org.junit.Test;
 import com.jstarcraft.core.codec.MockComplexObject;
 import com.jstarcraft.core.codec.MockEnumeration;
 import com.jstarcraft.core.common.reflection.TypeUtility;
+import com.jstarcraft.core.utility.StringUtility;
 
 public class AvroTestCase {
 
-    public static class TypeConversion extends Conversion<Type> {
+    public static class TypeConversion extends Conversion {
+
+        private Class clazz;
+
+        private String name;
+
+        public TypeConversion(Class clazz, String name) {
+            this.clazz = clazz;
+            this.name = name;
+        }
 
         @Override
-        public Class<Type> getConvertedType() {
+        public Class getConvertedType() {
             return Type.class;
         }
 
@@ -51,17 +61,17 @@ public class AvroTestCase {
 
         @Override
         public String getLogicalTypeName() {
-            return "type";
+            return name;
         }
 
         @Override
-        public Type fromCharSequence(CharSequence value, Schema schema, LogicalType type) {
+        public Object fromCharSequence(CharSequence value, Schema schema, LogicalType type) {
             return TypeUtility.string2Type(value.toString());
         }
 
         @Override
-        public CharSequence toCharSequence(Type value, Schema schema, LogicalType type) {
-            return TypeUtility.type2String(value);
+        public CharSequence toCharSequence(Object value, Schema schema, LogicalType type) {
+            return TypeUtility.type2String((Type) value);
         }
 
     }
@@ -139,7 +149,7 @@ public class AvroTestCase {
 
     {
         avroData.addLogicalTypeConversion(new TimestampMillisConversion());
-        avroData.addLogicalTypeConversion(new TypeConversion());
+        avroData.addLogicalTypeConversion(new TypeConversion(Type.class, "type"));
     }
 
     protected void testConvert(Type type, Object value) throws Exception {
