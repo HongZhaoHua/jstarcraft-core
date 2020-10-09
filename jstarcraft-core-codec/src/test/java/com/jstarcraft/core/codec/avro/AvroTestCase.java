@@ -80,11 +80,11 @@ public class AvroTestCase {
 
         @Override
         protected Schema createSchema(Type type, Map<String, Schema> names) {
-            if (type instanceof Class) { // Class
+            if (type instanceof Class) {
                 Class<?> clazz = (Class<?>) type;
-                if (clazz.isArray()) { // array
+                if (clazz.isArray()) {
                     Class component = clazz.getComponentType();
-                    if (component == Byte.TYPE) { // byte array
+                    if (component == Byte.TYPE) {
                         Schema schema = Schema.create(Schema.Type.BYTES);
                         schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
                         return schema;
