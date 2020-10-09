@@ -79,11 +79,6 @@ public class AvroTestCase {
     private AllowNull avroData = new AllowNull() {
 
         @Override
-        public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
-            return (Conversion<T>) super.getConversionFor(logicalType);
-        }
-
-        @Override
         protected Schema createSchema(Type type, Map<String, Schema> names) {
             if (type instanceof Class) { // Class
                 Class<?> clazz = (Class<?>) type;
@@ -124,6 +119,11 @@ public class AvroTestCase {
                 return schema;
             }
             return super.createSchema(type, names);
+        }
+
+        @Override
+        public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
+            return (Conversion<T>) super.getConversionFor(logicalType);
         }
 
         @Override
