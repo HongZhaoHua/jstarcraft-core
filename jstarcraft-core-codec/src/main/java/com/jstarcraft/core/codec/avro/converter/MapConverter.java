@@ -44,11 +44,11 @@ public class MapConverter extends AvroConverter<Map<Object, Object>> {
         Type refineType = TypeUtility.refineType(type, Map.class);
         ParameterizedType cast = ParameterizedType.class.cast(refineType);
         Type actualTypeArgument = cast.getActualTypeArguments()[1];
-        AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
+        AvroConverter converter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
         Class<?> rawType = TypeUtility.getRawType(type, null);
         Map record = (Map) context.getClassDefinition(rawType).getInstance();
         for (Object key : instance.keySet()) {
-            record.put(key, avroConverter.writeValue(context, instance.get(key), actualTypeArgument));
+            record.put(key, converter.writeValue(context, instance.get(key), actualTypeArgument));
         }
         return record;
     }

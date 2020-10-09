@@ -33,8 +33,8 @@ public class ObjectConverter extends AvroConverter<Object> {
         Object instance = classDefinition.getInstance();
         for (PropertyDefinition property : classDefinition.getProperties()) {
             Object inputItem = genericData.get(property.getName());
-            AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(property.getType()));
-            Object item = avroConverter.readValue(context, inputItem, property.getType());
+            AvroConverter converter = context.getAvroConverter(Specification.getSpecification(property.getType()));
+            Object item = converter.readValue(context, inputItem, property.getType());
             property.setValue(instance, item);
         }
         return instance;
@@ -49,9 +49,9 @@ public class ObjectConverter extends AvroConverter<Object> {
         GenericRecord record = new GenericData.Record(schema);
         Class<?> clazz = TypeUtility.getRawType(type, null);
         for (Field declaredField : clazz.getDeclaredFields()) {
-            AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));
+            AvroConverter converter = context.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));
             declaredField.setAccessible(true);
-            record.put(declaredField.getName(), avroConverter.writeValue(context, declaredField.get(instance), declaredField.getGenericType()));
+            record.put(declaredField.getName(), converter.writeValue(context, declaredField.get(instance), declaredField.getGenericType()));
         }
         return record;
     }

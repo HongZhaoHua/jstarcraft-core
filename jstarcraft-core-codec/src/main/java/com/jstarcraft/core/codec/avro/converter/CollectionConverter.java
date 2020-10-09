@@ -30,9 +30,9 @@ public class CollectionConverter extends AvroConverter<Collection<Object>> {
         Collection<Object> inputCollection = (Collection<Object>) record;
 
         Type[] types = super.getTypes(type, Collection.class);
-        AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(types[0]));
+        AvroConverter converter = context.getAvroConverter(Specification.getSpecification(types[0]));
         for (Object value : inputCollection) {
-            instance.add(avroConverter.readValue(context, value, types[0]));
+            instance.add(converter.readValue(context, value, types[0]));
         }
         return instance;
     }
@@ -42,11 +42,11 @@ public class CollectionConverter extends AvroConverter<Collection<Object>> {
         Type refineType = TypeUtility.refineType(type, Collection.class);
         ParameterizedType cast = ParameterizedType.class.cast(refineType);
         Type actualTypeArgument = cast.getActualTypeArguments()[0];
-        AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
+        AvroConverter converter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
         return instance.stream().map(index -> {
             Object converterValue = null;
             try {
-                converterValue = avroConverter.writeValue(context, index, actualTypeArgument);
+                converterValue = converter.writeValue(context, index, actualTypeArgument);
             } catch (Exception exception) {
                 LOGGER.error("Avro 类型转换错误  cause: {} \n error: {}", exception.getCause(), exception.getMessage());
             }

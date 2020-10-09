@@ -52,9 +52,9 @@ public class AvroContentCodec implements ContentCodec {
             if (available == 0) {
                 return null;
             }
-            final AvroReader avroReader = new AvroReader(stream, this.codecDefinition);
-            final AvroConverter<?> avroConverter = avroReader.getAvroConverter(Specification.getSpecification(type));
-            return avroConverter.readValueFrom(avroReader, type);
+            final AvroReader context = new AvroReader(stream, this.codecDefinition);
+            final AvroConverter<?> converter = context.getAvroConverter(Specification.getSpecification(type));
+            return converter.readValueFrom(context, type);
         } catch (Exception exception) {
             String message = "Avro解码失败:" + exception.getMessage();
             exception.printStackTrace();
@@ -83,9 +83,9 @@ public class AvroContentCodec implements ContentCodec {
             return;
         }
         try {
-            final AvroWriter avroContext = new AvroWriter(outputStream, this.codecDefinition);
-            final AvroConverter avroConverter = avroContext.getAvroConverter(Specification.getSpecification(type));
-            avroConverter.writeValueTo(avroContext, type, content);
+            final AvroWriter context = new AvroWriter(outputStream, this.codecDefinition);
+            final AvroConverter converter = context.getAvroConverter(Specification.getSpecification(type));
+            converter.writeValueTo(context, type, content);
         } catch (Exception exception) {
             String message = "Avro编码失败:" + exception.getMessage();
             exception.printStackTrace();

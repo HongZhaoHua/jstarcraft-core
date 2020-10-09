@@ -34,15 +34,14 @@ public class ArrayConverter extends AvroConverter<Object> {
         while (typeClazz != null && typeClazz.isArray()) {
             typeClazz = typeClazz.getComponentType();
         }
-
         final List<?> list = Byte.class.isAssignableFrom(typeClazz) || byte.class.isAssignableFrom(typeClazz) ? getByteList(record) : (List<?>) record;
         Object instance = Array.newInstance(clazz.getComponentType(), list.size());
-        AvroConverter<?> avroConverter = context.getAvroConverter(Specification.getSpecification(clazz.getComponentType()));
+        AvroConverter<?> converter = context.getAvroConverter(Specification.getSpecification(clazz.getComponentType()));
         for (int index = 0; index < list.size(); index++) {
             if (list.get(index) == null) {
                 continue;
             }
-            Array.set(instance, index, avroConverter.readValue(context, list.get(index), clazz.getComponentType()));
+            Array.set(instance, index, converter.readValue(context, list.get(index), clazz.getComponentType()));
         }
         return instance;
     }
