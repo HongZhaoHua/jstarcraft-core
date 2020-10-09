@@ -9,8 +9,10 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +31,7 @@ import org.apache.avro.Conversion;
 import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
+import org.apache.avro.SchemaNormalization;
 import org.apache.avro.UnresolvedUnionException;
 import org.apache.avro.data.TimeConversions.TimestampMillisConversion;
 import org.apache.avro.io.Decoder;
@@ -98,15 +101,62 @@ public class AvroTestCase {
             }
             Class clazz = TypeUtility.getRawType(type, null);
             if (Collection.class.isAssignableFrom(clazz)) {
-                type = TypeUtility.refineType(type, Collection.class);
-                ParameterizedType parameterizedType = (ParameterizedType) type;
+                ParameterizedType parameterizedType = (ParameterizedType) TypeUtility.refineType(type, Collection.class);
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Schema schema = createSchema(types[0], names);
                 schema = SchemaBuilder.array().items().nullable().type(schema);
                 schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
                 return schema;
             }
+            if (Map.class.isAssignableFrom(clazz)) {
+                ParameterizedType parameterizedType = (ParameterizedType) TypeUtility.refineType(type, Map.class);
+                Type[] types = parameterizedType.getActualTypeArguments();
+                Class key = TypeUtility.getRawType(types[0], null);
+                Class value = TypeUtility.getRawType(types[1], null);
+                if (isStringable(key)) { // Stringable key
+                    Schema schema = Schema.createMap(createSchema(types[1], names));
+                    schema.addProp(SpecificData.KEY_CLASS_PROP, key.getName());
+                    return schema;
+                } else if (key != String.class) {
+                    Schema keySchema = createSchema(types[0], names);
+                    Schema valueSchema = createSchema(types[1], names);
+                    Schema.Field keyField = new Schema.Field("key", keySchema, null, null);
+                    Schema.Field valueField = new Schema.Field("value", valueSchema, null, null);
+                    String name = getNameForNonStringMapRecord(types[0], types[1], keySchema, valueSchema);
+                    Schema elementSchema = Schema.createRecord(name, null, null, false);
+                    elementSchema.setFields(Arrays.asList(keyField, valueField));
+                    Schema schema = Schema.createArray(elementSchema);
+                    schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
+                    return schema;
+                }
+            }
             return super.createSchema(type, names);
+        }
+
+        static final String NS_MAP_ARRAY_RECORD = "org.apache.avro.reflect.Pair";
+
+        private String getNameForNonStringMapRecord(Type keyType, Type valueType, Schema keySchema, Schema valueSchema) {
+
+            // Generate a nice name for classes in java* package
+            if (keyType instanceof Class && valueType instanceof Class) {
+
+                Class keyClass = (Class) keyType;
+                Class valueClass = (Class) valueType;
+                Package pkg1 = keyClass.getPackage();
+                Package pkg2 = valueClass.getPackage();
+
+                if (pkg1 != null && pkg1.getName().startsWith("java") && pkg2 != null && pkg2.getName().startsWith("java")) {
+                    return NS_MAP_ARRAY_RECORD + keyClass.getSimpleName() + valueClass.getSimpleName();
+                }
+            }
+
+            String name = keySchema.getFullName() + valueSchema.getFullName();
+            long fingerprint = SchemaNormalization.fingerprint64(name.getBytes(StandardCharsets.UTF_8));
+
+            if (fingerprint < 0)
+                fingerprint = -fingerprint; // ignore sign
+            String fpString = Long.toString(fingerprint, 16); // hex
+            return NS_MAP_ARRAY_RECORD + fpString;
         }
 
         @Override
@@ -137,13 +187,13 @@ public class AvroTestCase {
 
     {
         avroData.addLogicalTypeConversion(new AtomicBooleanConversion());
-        
+
         avroData.addLogicalTypeConversion(new AtomicIntegerConversion());
         avroData.addLogicalTypeConversion(new AtomicLongConversion());
-        
+
         avroData.addLogicalTypeConversion(new DateConversion());
         avroData.addLogicalTypeConversion(new TimestampMillisConversion());
-        
+
         avroData.addLogicalTypeConversion(new TypeConversion(Type.class, "type"));
         avroData.addLogicalTypeConversion(new TypeConversion(Class.class, "class"));
         avroData.addLogicalTypeConversion(new TypeConversion(GenericArrayType.class, "generic-array-type"));
@@ -446,6 +496,19 @@ public class AvroTestCase {
         testConvert(type.getClass(), type);
         type = Instant.class;
         testConvert(type.getClass(), type);
+    }
+
+    @Test
+    public void testUniMi() throws Exception {
+        Byte2BooleanOpenHashMap map = new Byte2BooleanOpenHashMap();
+        map.put((byte) 1, true);
+        map.put((byte) -1, false);
+        testConvert(Byte2BooleanOpenHashMap.class, map);
+
+        ByteArrayList list = new ByteArrayList();
+        list.add((byte) 1);
+        list.add((byte) -1);
+        testConvert(ByteArrayList.class, list);
     }
 
 }
