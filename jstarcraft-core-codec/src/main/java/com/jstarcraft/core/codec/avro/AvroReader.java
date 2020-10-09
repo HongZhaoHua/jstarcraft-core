@@ -18,7 +18,6 @@ public class AvroReader extends AvroContext {
     public AvroReader(InputStream inputStream, CodecDefinition definition) throws Exception {
         super(definition);
         this.inputStream = inputStream;
-
     }
 
     public InputStream getInputStream() {

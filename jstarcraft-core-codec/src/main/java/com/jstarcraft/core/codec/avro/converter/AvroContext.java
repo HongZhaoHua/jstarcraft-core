@@ -18,17 +18,21 @@ public class AvroContext {
 
     static {
         converters.put(Specification.ARRAY, new ArrayConverter());
+        converters.put(Specification.BOOLEAN, new BooleanConverter());
         converters.put(Specification.COLLECTION, new CollectionConverter());
         converters.put(Specification.ENUMERATION, new EnumerationConverter());
         converters.put(Specification.MAP, new MapConverter());
-        converters.put(Specification.STRING, new StringConverter());
         converters.put(Specification.NUMBER, new NumberConverter());
-        converters.put(Specification.BOOLEAN, new BooleanConverter());
-        converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.OBJECT, new ObjectConverter());
+        converters.put(Specification.STRING, new StringConverter());
+        converters.put(Specification.INSTANT, new InstantConverter());
         converters.put(Specification.TYPE, new TypeConverter());
-
     }
+
+    public AvroConverter getAvroConverter(Specification specification) {
+        return converters.get(specification);
+    }
+
     private CodecDefinition definition;
 
     public AvroContext(CodecDefinition definition) {
@@ -45,10 +49,6 @@ public class AvroContext {
 
     protected ClassDefinition getClassDefinition(int index) {
         return definition.getClassDefinition(index);
-    }
-
-    public AvroConverter getAvroConverter(Specification specification) {
-        return converters.get(specification);
     }
 
 }
