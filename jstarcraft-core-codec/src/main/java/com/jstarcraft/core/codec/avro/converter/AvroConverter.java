@@ -44,40 +44,42 @@ public abstract class AvroConverter<T> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected abstract T readValue(AvroReader avroReader, Object input, Type type) throws Exception;
+    protected abstract T readValue(AvroReader context, Object record, Type type) throws Exception;
 
     /**
      * 从指定上下文读取内容
      *
-     * @param avroReader
+     * @param context
      * @param type
      * @return
      * @throws IOException
      */
-    public final T readValueFrom(AvroReader avroReader, Type type) throws Exception {
-        GenericDatumReader datumReader = new GenericDatumReader<>(getSchema(type));
-        BinaryDecoder decoder = DecoderFactory.get().directBinaryDecoder(avroReader.getInputStream(), null);
-        Object read = datumReader.read(null, decoder);
-        return readValue(avroReader, read, type);
+    public final T readValueFrom(AvroReader context, Type type) throws Exception {
+        Schema schema = getSchema(type);
+        GenericDatumReader reader = new GenericDatumReader<>(schema);
+        BinaryDecoder decoder = DecoderFactory.get().directBinaryDecoder(context.getInputStream(), null);
+        Object record = reader.read(null, decoder);
+        T instance = readValue(context, record, type);
+        return instance;
     }
+
+    protected abstract Object writeValue(AvroWriter context, T instance, Type type) throws Exception;
 
     /**
      * 将指定内容写到上下文
      *
-     * @param writer
+     * @param context
      * @param type
-     * @param value
+     * @param instance
      * @throws IOException
      */
-    public final void writeValueTo(AvroWriter writer, Type type, T value) throws Exception {
-        Schema schema = this.getSchema(type);
-        Object writeValue = writeValue(writer, value, type);
-        SpecificDatumWriter<Object> datumWriter = new SpecificDatumWriter<>(schema);
-        BinaryEncoder encoder = EncoderFactory.get().directBinaryEncoder(writer.getOutputStream(), null);
-        datumWriter.write(writeValue, encoder);
+    public final void writeValueTo(AvroWriter context, Type type, T instance) throws Exception {
+        Object record = writeValue(context, instance, type);
+        Schema schema = getSchema(type);
+        SpecificDatumWriter<Object> write = new SpecificDatumWriter<>(schema);
+        BinaryEncoder encoder = EncoderFactory.get().directBinaryEncoder(context.getOutputStream(), null);
+        write.write(record, encoder);
     }
-
-    protected abstract Object writeValue(AvroWriter writer, T value, Type type) throws Exception;
 
     // TODO 考虑使用ReflectData.getSchema替代
     protected final Schema getSchema(Type type) {

@@ -15,23 +15,23 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
 public class BooleanConverter extends AvroConverter<Object> {
 
     @Override
-    protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
+    protected Object readValue(AvroReader writer, Object record, Type type) throws Exception {
         if (type == AtomicBoolean.class) {
-            return new AtomicBoolean((Boolean) input);
+            return new AtomicBoolean((Boolean) record);
         } else {
-            return input;
+            return record;
         }
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Object value, Type type) throws Exception {
+    protected Object writeValue(AvroWriter writer, Object instance, Type type) throws Exception {
         Class clazz = (Class) type;
         Boolean input;
         if (AtomicBoolean.class.isAssignableFrom(clazz)) {
-            AtomicBoolean atomicBoolean = (AtomicBoolean) value;
+            AtomicBoolean atomicBoolean = (AtomicBoolean) instance;
             input = atomicBoolean.get();
         } else {
-            input = (Boolean) value;
+            input = (Boolean) instance;
         }
         return input;
     }

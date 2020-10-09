@@ -17,25 +17,25 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
 public class InstantConverter extends AvroConverter<Object> {
 
     @Override
-    protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
+    protected Object readValue(AvroReader context, Object record, Type type) throws Exception {
         Class clazz = (Class) type;
         if (Date.class.isAssignableFrom(clazz)) {
-            return new Date((Long) input);
+            return new Date((Long) record);
         } else if (Instant.class.isAssignableFrom(clazz)) {
-            return Instant.ofEpochMilli((Long) input);
+            return Instant.ofEpochMilli((Long) record);
         } else {
             throw new CodecConvertionException();
         }
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Object value, Type type) throws Exception {
+    protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
         long time;
-        if (value instanceof Date) {
-            Date date = (Date) value;
+        if (instance instanceof Date) {
+            Date date = (Date) instance;
             time = date.getTime();
-        } else if (value instanceof Instant) {
-            Instant instant = (Instant) value;
+        } else if (instance instanceof Instant) {
+            Instant instant = (Instant) instance;
             time = instant.toEpochMilli();
         } else {
             throw new CodecConvertionException();
