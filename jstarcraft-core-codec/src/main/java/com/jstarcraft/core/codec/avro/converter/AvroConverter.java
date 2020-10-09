@@ -19,9 +19,9 @@ import java.util.function.BiFunction;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericDatumReader;
-import org.apache.avro.io.BinaryDecoder;
-import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -57,7 +57,8 @@ public abstract class AvroConverter<T> {
     public final T readValueFrom(AvroReader context, Type type) throws Exception {
         Schema schema = getSchema(type);
         GenericDatumReader reader = new GenericDatumReader<>(schema);
-        BinaryDecoder decoder = DecoderFactory.get().directBinaryDecoder(context.getInputStream(), null);
+        Decoder decoder = DecoderFactory.get().jsonDecoder(schema, context.getInputStream());
+//        Decoder decoder = DecoderFactory.get().directBinaryDecoder(context.getInputStream(), null);
         Object record = reader.read(null, decoder);
         T instance = readValue(context, record, type);
         return instance;
@@ -77,8 +78,10 @@ public abstract class AvroConverter<T> {
         Object record = writeValue(context, instance, type);
         Schema schema = getSchema(type);
         SpecificDatumWriter<Object> write = new SpecificDatumWriter<>(schema);
-        BinaryEncoder encoder = EncoderFactory.get().directBinaryEncoder(context.getOutputStream(), null);
+        Encoder encoder = EncoderFactory.get().jsonEncoder(schema, context.getOutputStream());
+//        Encoder encoder = EncoderFactory.get().directBinaryEncoder(context.getOutputStream(), null);
         write.write(record, encoder);
+        encoder.flush();
     }
 
     // TODO 考虑使用ReflectData.getSchema替代
