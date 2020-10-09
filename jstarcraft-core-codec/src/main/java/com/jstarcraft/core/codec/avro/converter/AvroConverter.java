@@ -197,7 +197,7 @@ public abstract class AvroConverter<T> {
             return schema;
         });
 
-        specification2Schemas.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.array().items().intType());
+        specification2Schemas.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.builder().stringType());
     }
 
 }

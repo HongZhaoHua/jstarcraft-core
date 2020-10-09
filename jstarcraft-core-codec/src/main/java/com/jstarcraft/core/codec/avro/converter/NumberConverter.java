@@ -36,7 +36,7 @@ public class NumberConverter extends AvroConverter<Number> {
 
     private Object getInputValue(Number instance, Type type) {
         if (type == BigInteger.class) {
-            return instance + "";
+            return instance.toString();
         }
         return instance;
     }
