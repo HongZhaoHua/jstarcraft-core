@@ -42,11 +42,11 @@ public class ObjectConverter extends AvroConverter<Object> {
 
     @Override
     protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
-        Schema schema = super.getSchema(type);
-        GenericRecord record = new GenericData.Record(schema);
         if (instance == null) {
             return null;
         }
+        Schema schema = super.getSchema(type);
+        GenericRecord record = new GenericData.Record(schema);
         Class<?> clazz = TypeUtility.getRawType(type, null);
         for (Field declaredField : clazz.getDeclaredFields()) {
             AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));

@@ -54,18 +54,22 @@ public class AvroTestCase {
 
     }
 
-    @Test
-    public void testAvro() throws Exception {
-        ReflectData avroData = new ReflectData() {
+    private ReflectData avroData = new ReflectData() {
 
-            @Override
-            public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
-                return (Conversion<T>) super.getConversionFor(logicalType);
-            }
+        @Override
+        public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
+            return (Conversion<T>) super.getConversionFor(logicalType);
+        }
 
-        };
+    };
+
+    {
         avroData.addLogicalTypeConversion(new TimestampMillisConversion());
         avroData.addLogicalTypeConversion(new TypeConversion());
+    }
+
+    @Test
+    public void testAvro() throws Exception {
         Schema schema = avroData.getSchema(MockComplexObject.class);
         ReflectDatumWriter<MockComplexObject> writer = new ReflectDatumWriter<>(schema, avroData);
         ReflectDatumReader<MockComplexObject> reader = new ReflectDatumReader<>(schema, schema, avroData);
