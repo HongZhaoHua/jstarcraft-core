@@ -6,13 +6,14 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.compress.utils.Lists;
-
 import com.jstarcraft.core.codec.avro.AvroReader;
 import com.jstarcraft.core.codec.avro.AvroWriter;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.common.reflection.Specification;
 import com.jstarcraft.core.common.reflection.TypeUtility;
+
+import it.unimi.dsi.fastutil.bytes.ByteArrayList;
+import it.unimi.dsi.fastutil.bytes.ByteList;
 
 /**
  * 数组转换器
@@ -51,12 +52,9 @@ public class ArrayConverter extends AvroConverter<Object> {
         return getWriteList(context, instance, type);
     }
 
-    private List<?> getByteList(Object record) {
+    private ByteList getByteList(Object record) {
         byte[] array = ((ByteBuffer) record).array();
-        final ArrayList<Object> objects = Lists.newArrayList();
-        for (byte element : array) {
-            objects.add(element);
-        }
+        final ByteList objects = new ByteArrayList(array);
         return objects;
     }
 
@@ -78,8 +76,11 @@ public class ArrayConverter extends AvroConverter<Object> {
         }
 
         if (Object.class.isAssignableFrom(typeClazz)) {
-            final ArrayList<Object> objects = Lists.newArrayList();
-            for (Object element : (Object[]) instance) {
+            Object[] array = (Object[]) instance;
+            int length = array.length;
+            final ArrayList<Object> objects = new ArrayList<>(length);
+            for (int index = 0; index < length; index++) {
+                Object element = array[index];
                 if (element == null) {
                     objects.add(null);
                     continue;
@@ -90,9 +91,9 @@ public class ArrayConverter extends AvroConverter<Object> {
         }
         if (typeClazz.isPrimitive() && baseClazz.isArray()) {
             int length = Array.getLength(instance);
-            List list = new ArrayList();
+            List list = new ArrayList(length);
             for (int index = 0; index < length; index++) {
-                final Object element = Array.get(instance, index);
+                Object element = Array.get(instance, index);
                 list.add(this.getWriteList(writer, element, baseClazz.getComponentType()));
             }
             return list;
