@@ -30,16 +30,16 @@ public class InstantConverter extends AvroConverter<Object> {
 
     @Override
     protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
-        long time;
+        long record;
         if (instance instanceof Date) {
             Date date = (Date) instance;
-            time = date.getTime();
+            record = date.getTime();
         } else if (instance instanceof Instant) {
             Instant instant = (Instant) instance;
-            time = instant.toEpochMilli();
+            record = instant.toEpochMilli();
         } else {
             throw new CodecConvertionException();
         }
-        return time;
+        return record;
     }
 }

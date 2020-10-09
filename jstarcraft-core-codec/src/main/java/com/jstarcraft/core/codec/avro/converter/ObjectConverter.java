@@ -43,7 +43,7 @@ public class ObjectConverter extends AvroConverter<Object> {
     @Override
     protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
         Schema schema = super.getSchema(type);
-        GenericRecord parquet = new GenericData.Record(schema);
+        GenericRecord record = new GenericData.Record(schema);
         if (instance == null) {
             return null;
         }
@@ -51,9 +51,8 @@ public class ObjectConverter extends AvroConverter<Object> {
         for (Field declaredField : clazz.getDeclaredFields()) {
             AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));
             declaredField.setAccessible(true);
-            parquet.put(declaredField.getName(), avroConverter.writeValue(context, declaredField.get(instance), declaredField.getGenericType()));
+            record.put(declaredField.getName(), avroConverter.writeValue(context, declaredField.get(instance), declaredField.getGenericType()));
         }
-
-        return parquet;
+        return record;
     }
 }

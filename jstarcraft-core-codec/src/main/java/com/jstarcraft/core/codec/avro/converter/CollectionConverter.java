@@ -26,15 +26,15 @@ public class CollectionConverter extends AvroConverter<Collection<Object>> {
     @Override
     protected Collection<Object> readValue(AvroReader context, Object record, Type type) throws Exception {
         Class<?> clazz = TypeUtility.getRawType(type, null);
-        Collection<Object> resultCollection = (Collection<Object>) clazz.newInstance();
+        Collection<Object> instance = (Collection<Object>) clazz.newInstance();
         Collection<Object> inputCollection = (Collection<Object>) record;
 
         Type[] types = super.getTypes(type, Collection.class);
         AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(types[0]));
         for (Object value : inputCollection) {
-            resultCollection.add(avroConverter.readValue(context, value, types[0]));
+            instance.add(avroConverter.readValue(context, value, types[0]));
         }
-        return resultCollection;
+        return instance;
     }
 
     @Override

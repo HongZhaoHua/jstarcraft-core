@@ -22,23 +22,21 @@ public class MapConverter extends AvroConverter<Map<Object, Object>> {
     @Override
     protected Map<Object, Object> readValue(AvroReader context, Object record, Type type) throws Exception {
         Class<?> rawType = TypeUtility.getRawType(type, null);
-        Map<Object, Object> map = (Map<Object, Object>) (rawType).newInstance();
+        Map<Object, Object> instance = (Map<Object, Object>) (rawType).newInstance();
         type = TypeUtility.refineType(type, Map.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
         Class<?> keyClazz = (Class<?>) types[0];
         Class<?> valueClazz = (Class<?>) types[1];
-
         AvroConverter<?> keyConverter = context.getAvroConverter(Specification.getSpecification(keyClazz));
         AvroConverter<?> valueConverter = context.getAvroConverter(Specification.getSpecification(valueClazz));
-
         Iterator<Map.Entry<String, Object>> iterator = ((HashMap<String, Object>) record).entrySet().iterator();
         Map.Entry<String, Object> next;
         while (iterator.hasNext()) {
             next = iterator.next();
-            map.put(keyConverter.readValue(context, next.getKey(), keyClazz), valueConverter.readValue(context, next.getValue(), valueClazz));
+            instance.put(keyConverter.readValue(context, next.getKey(), keyClazz), valueConverter.readValue(context, next.getValue(), valueClazz));
         }
-        return map;
+        return instance;
     }
 
     @Override
@@ -48,11 +46,10 @@ public class MapConverter extends AvroConverter<Map<Object, Object>> {
         Type actualTypeArgument = cast.getActualTypeArguments()[1];
         AvroConverter avroConverter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
         Class<?> rawType = TypeUtility.getRawType(type, null);
-        Map output = (Map) context.getClassDefinition(rawType).getInstance();
+        Map record = (Map) context.getClassDefinition(rawType).getInstance();
         for (Object key : instance.keySet()) {
-            output.put(key, avroConverter.writeValue(context, instance.get(key), actualTypeArgument));
+            record.put(key, avroConverter.writeValue(context, instance.get(key), actualTypeArgument));
         }
-
-        return output;
+        return record;
     }
 }

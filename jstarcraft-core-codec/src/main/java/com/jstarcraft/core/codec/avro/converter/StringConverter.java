@@ -16,14 +16,14 @@ public class StringConverter extends AvroConverter<Object> {
 
     @Override
     protected Object readValue(AvroReader context, Object record, Type type) throws Exception {
-        String value = String.valueOf(record);
-        if (StringUtility.isEmpty(value)) {
+        String instance = String.valueOf(record);
+        if (StringUtility.isEmpty(instance)) {
             return null;
         }
         if (type == char.class || type == Character.class) {
-            return value.charAt(0);
+            return instance.charAt(0);
         } else {
-            return value;
+            return instance;
         }
     }
 
@@ -32,12 +32,12 @@ public class StringConverter extends AvroConverter<Object> {
         if (instance == null) {
             return StringUtility.EMPTY;
         }
-        String element;
+        String record;
         if (type == char.class || type == Character.class) {
-            element = String.valueOf(instance);
+            record = String.valueOf(instance);
         } else {
-            element = (String) instance;
+            record = (String) instance;
         }
-        return element;
+        return record;
     }
 }

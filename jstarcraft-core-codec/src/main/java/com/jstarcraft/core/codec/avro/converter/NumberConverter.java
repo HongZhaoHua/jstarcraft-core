@@ -34,12 +34,11 @@ public class NumberConverter extends AvroConverter<Number> {
         return getInputValue(instance, type);
     }
 
-    private Object getInputValue(Number value, Type type) {
+    private Object getInputValue(Number instance, Type type) {
         if (type == BigInteger.class) {
-            return value + "";
+            return instance + "";
         }
-
-        return value;
+        return instance;
     }
 
 }

@@ -26,14 +26,14 @@ public class BooleanConverter extends AvroConverter<Object> {
     @Override
     protected Object writeValue(AvroWriter writer, Object instance, Type type) throws Exception {
         Class clazz = (Class) type;
-        Boolean input;
+        Boolean record;
         if (AtomicBoolean.class.isAssignableFrom(clazz)) {
             AtomicBoolean atomicBoolean = (AtomicBoolean) instance;
-            input = atomicBoolean.get();
+            record = atomicBoolean.get();
         } else {
-            input = (Boolean) instance;
+            record = (Boolean) instance;
         }
-        return input;
+        return record;
     }
 
 }
