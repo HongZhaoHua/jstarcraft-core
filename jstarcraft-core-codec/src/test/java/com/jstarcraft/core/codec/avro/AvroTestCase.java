@@ -9,11 +9,8 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,21 +24,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.avro.Conversion;
-import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
-import org.apache.avro.SchemaNormalization;
-import org.apache.avro.UnresolvedUnionException;
 import org.apache.avro.data.TimeConversions.TimestampMillisConversion;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
-import org.apache.avro.reflect.ReflectData.AllowNull;
 import org.apache.avro.reflect.ReflectDatumReader;
 import org.apache.avro.reflect.ReflectDatumWriter;
-import org.apache.avro.specific.SpecificData;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,100 +57,7 @@ import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 
 public class AvroTestCase {
 
-    private AllowNull avroData = new AllowNull() {
-
-        @Override
-        protected Schema createSchema(Type type, Map<String, Schema> names) {
-            if (type instanceof Class) {
-                Class<?> clazz = (Class<?>) type;
-                if (clazz.isArray()) {
-                    Class component = clazz.getComponentType();
-                    if (component == Byte.TYPE) {
-                        Schema schema = Schema.create(Schema.Type.BYTES);
-                        schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
-                        return schema;
-                    }
-                    Schema schema = createSchema(component, names);
-                    if (component.isPrimitive()) {
-                        schema = SchemaBuilder.array().items().type(schema);
-                    } else {
-                        schema = SchemaBuilder.array().items().nullable().type(schema);
-                    }
-                    schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
-                    return schema;
-                }
-            }
-            if (type instanceof GenericArrayType) {
-                Type component = ((GenericArrayType) type).getGenericComponentType();
-                if (component == Byte.TYPE) {
-                    return Schema.create(Schema.Type.BYTES);
-                }
-                Schema schema = createSchema(component, names);
-                schema = SchemaBuilder.array().items().nullable().type(schema);
-                return schema;
-            }
-            Class clazz = TypeUtility.getRawType(type, null);
-            if (Collection.class.isAssignableFrom(clazz)) {
-                ParameterizedType parameterizedType = (ParameterizedType) TypeUtility.refineType(type, Collection.class);
-                Type[] types = parameterizedType.getActualTypeArguments();
-                Schema schema = createSchema(types[0], names);
-                schema = SchemaBuilder.array().items().nullable().type(schema);
-                schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
-                return schema;
-            }
-            if (Map.class.isAssignableFrom(clazz)) {
-                ParameterizedType parameterizedType = (ParameterizedType) TypeUtility.refineType(type, Map.class);
-                Type[] types = parameterizedType.getActualTypeArguments();
-                Class key = TypeUtility.getRawType(types[0], null);
-                Class value = TypeUtility.getRawType(types[1], null);
-                if (key == String.class || isStringable(key)) {
-                    Schema schema = Schema.createMap(makeNullable(createSchema(types[1], names)));
-                    schema.addProp(SpecificData.KEY_CLASS_PROP, key.getName());
-                    return schema;
-                } else if (key != String.class) {
-                    Schema keySchema = createSchema(types[0], names);
-                    Schema valueSchema = createSchema(types[1], names);
-                    String name = NS_MAP_ARRAY_RECORD + keySchema.getName() + valueSchema.getName();
-                    valueSchema = makeNullable(valueSchema);
-                    Schema.Field keyField = new Schema.Field("key", keySchema, null, null);
-                    Schema.Field valueField = new Schema.Field("value", valueSchema, null, null);
-                    Schema elementSchema = Schema.createRecord(name, null, null, false);
-                    elementSchema.setFields(Arrays.asList(keyField, valueField));
-                    Schema schema = Schema.createArray(elementSchema);
-                    schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
-                    return schema;
-                }
-            }
-            return super.createSchema(type, names);
-        }
-
-        static final String NS_MAP_ARRAY_RECORD = "com.jstarcraft.core.utility.KeyValue";
-
-        @Override
-        public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
-            return (Conversion<T>) super.getConversionFor(logicalType);
-        }
-
-        @Override
-        public int resolveUnion(Schema union, Object datum) {
-            List<Schema> candidates = union.getTypes();
-            for (int index = 0; index < candidates.size(); index += 1) {
-                LogicalType candidateType = candidates.get(index).getLogicalType();
-                if (candidateType != null) {
-                    Conversion<?> conversion = super.getConversionFor(candidateType);
-                    if (conversion != null) {
-                        return index;
-                    }
-                }
-            }
-            Integer index = union.getIndexNamed(getSchemaName(datum));
-            if (index != null) {
-                return index;
-            }
-            throw new UnresolvedUnionException(union, datum);
-        }
-
-    };
+    private AvroData avroData = new AvroData();
 
     {
         avroData.addLogicalTypeConversion(new AtomicBooleanConversion());
