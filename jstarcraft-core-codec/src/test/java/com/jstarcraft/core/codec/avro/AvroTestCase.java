@@ -113,16 +113,17 @@ public class AvroTestCase {
                 Type[] types = parameterizedType.getActualTypeArguments();
                 Class key = TypeUtility.getRawType(types[0], null);
                 Class value = TypeUtility.getRawType(types[1], null);
-                if (isStringable(key)) { // Stringable key
-                    Schema schema = Schema.createMap(createSchema(types[1], names));
+                if (key == String.class || isStringable(key)) {
+                    Schema schema = Schema.createMap(makeNullable(createSchema(types[1], names)));
                     schema.addProp(SpecificData.KEY_CLASS_PROP, key.getName());
                     return schema;
                 } else if (key != String.class) {
                     Schema keySchema = createSchema(types[0], names);
                     Schema valueSchema = createSchema(types[1], names);
+                    String name = NS_MAP_ARRAY_RECORD + keySchema.getName() + valueSchema.getName();
+                    valueSchema = makeNullable(valueSchema);
                     Schema.Field keyField = new Schema.Field("key", keySchema, null, null);
                     Schema.Field valueField = new Schema.Field("value", valueSchema, null, null);
-                    String name = getNameForNonStringMapRecord(types[0], types[1], keySchema, valueSchema);
                     Schema elementSchema = Schema.createRecord(name, null, null, false);
                     elementSchema.setFields(Arrays.asList(keyField, valueField));
                     Schema schema = Schema.createArray(elementSchema);
@@ -133,31 +134,7 @@ public class AvroTestCase {
             return super.createSchema(type, names);
         }
 
-        static final String NS_MAP_ARRAY_RECORD = "org.apache.avro.reflect.Pair";
-
-        private String getNameForNonStringMapRecord(Type keyType, Type valueType, Schema keySchema, Schema valueSchema) {
-
-            // Generate a nice name for classes in java* package
-            if (keyType instanceof Class && valueType instanceof Class) {
-
-                Class keyClass = (Class) keyType;
-                Class valueClass = (Class) valueType;
-                Package pkg1 = keyClass.getPackage();
-                Package pkg2 = valueClass.getPackage();
-
-                if (pkg1 != null && pkg1.getName().startsWith("java") && pkg2 != null && pkg2.getName().startsWith("java")) {
-                    return NS_MAP_ARRAY_RECORD + keyClass.getSimpleName() + valueClass.getSimpleName();
-                }
-            }
-
-            String name = keySchema.getFullName() + valueSchema.getFullName();
-            long fingerprint = SchemaNormalization.fingerprint64(name.getBytes(StandardCharsets.UTF_8));
-
-            if (fingerprint < 0)
-                fingerprint = -fingerprint; // ignore sign
-            String fpString = Long.toString(fingerprint, 16); // hex
-            return NS_MAP_ARRAY_RECORD + fpString;
-        }
+        static final String NS_MAP_ARRAY_RECORD = "com.jstarcraft.core.utility.KeyValue";
 
         @Override
         public <T> Conversion<T> getConversionByClass(Class<T> datumClass, LogicalType logicalType) {
@@ -204,6 +181,7 @@ public class AvroTestCase {
 
     protected void testConvert(Type type, Object value) throws Exception {
         Schema schema = avroData.getSchema(type);
+        schema = avroData.makeNullable(schema);
         ReflectDatumWriter writer = new ReflectDatumWriter<>(schema, avroData);
         ReflectDatumReader reader = new ReflectDatumReader<>(schema, schema, avroData);
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
@@ -509,6 +487,40 @@ public class AvroTestCase {
         list.add((byte) 1);
         list.add((byte) -1);
         testConvert(ByteArrayList.class, list);
+    }
+
+    @Test
+    public void testNull() throws Exception {
+        // 基于Null的协议测试
+        // 基于对象的协议测试
+        MockComplexObject object = MockComplexObject.instanceOf(0, "birdy", null, 10, Instant.now(), MockEnumeration.TERRAN);
+        testConvert(MockComplexObject.class, null);
+        testConvert(MockComplexObject.class, object);
+
+        // 基于枚举的协议测试
+        testConvert(MockEnumeration.class, null);
+
+        // 基于数组的协议测试
+        Integer[] integerArray = new Integer[] { 0, null };
+        testConvert(Integer[].class, integerArray);
+        MockComplexObject[] objectArray = new MockComplexObject[] { object, null };
+        testConvert(MockComplexObject[].class, objectArray);
+
+        // 基于集合的协议测试
+        List<MockComplexObject> objectList = new ArrayList<>(objectArray.length);
+        Collections.addAll(objectList, objectArray);
+        testConvert(TypeUtility.parameterize(ArrayList.class, MockComplexObject.class), objectList);
+        // testConvert(ArrayList.class, objectList);
+        Set<MockComplexObject> objectSet = new HashSet<>(objectList);
+        testConvert(TypeUtility.parameterize(HashSet.class, MockComplexObject.class), objectSet);
+        // testConvert(HashSet.class, objectSet);
+
+        // 基于映射的协议测试
+        Map<String, MockComplexObject> map = new HashMap<>();
+        map.put(object.getFirstName(), object);
+        map.put("null", null);
+        testConvert(TypeUtility.parameterize(HashMap.class, String.class, MockComplexObject.class), map);
+        // testConvert(HashMap.class, map);
     }
 
 }
