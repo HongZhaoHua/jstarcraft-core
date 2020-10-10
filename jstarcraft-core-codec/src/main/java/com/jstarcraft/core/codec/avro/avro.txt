@@ -1,4 +1,6 @@
-Apache Avro Specification:
+Avro规范:
+https://www.cnblogs.com/majianguo/p/7687107.html
+https://www.cnblogs.com/majianguo/p/7725027.html
 http://avro.apache.org/docs/current/spec.html
 
 Avro介绍:
