@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.jstarcraft.core.codec.avro.AvroContentCodecTestCase;
 import com.jstarcraft.core.codec.csv.CsvContentCodecTestCase;
 import com.jstarcraft.core.codec.hessian.HessianContentCodecTestCase;
 import com.jstarcraft.core.codec.json.JsonContentCodecTestCase;
@@ -18,6 +19,8 @@ import com.jstarcraft.core.codec.yaml.YamlContentCodecTestCase;
 @SuiteClasses({
 
         CodecDefinitionTestCase.class,
+
+        AvroContentCodecTestCase.class,
 
         CsvContentCodecTestCase.class,
 
