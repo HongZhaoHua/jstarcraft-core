@@ -1,5 +1,7 @@
 package com.jstarcraft.core.codec.avro;
 
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.EncoderFactory;
 import org.junit.Test;
 
 import com.jstarcraft.core.codec.ContentCodec;
@@ -11,7 +13,21 @@ public class AvroContentCodecTestCase extends ContentCodecTestCase {
 
     @Override
     protected ContentCodec getContentCodec(CodecDefinition protocolDefinition) {
-        final AvroContentCodec codec = new AvroContentCodec(protocolDefinition);
+        final AvroContentCodec codec = new AvroContentCodec(protocolDefinition, (schema, input) -> {
+            return DecoderFactory.get().binaryDecoder(input, null);
+//            try {
+//                return DecoderFactory.get().jsonDecoder(schema, input);
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
+        }, (schema, output) -> {
+            return EncoderFactory.get().binaryEncoder(output, null);
+//            try {
+//                return EncoderFactory.get().jsonEncoder(schema, output);
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
+        });
         return codec;
     }
 

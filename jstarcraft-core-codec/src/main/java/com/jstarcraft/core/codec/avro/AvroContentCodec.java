@@ -4,16 +4,30 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
+import java.util.function.BiFunction;
 
+import org.apache.avro.Schema;
+import org.apache.avro.data.TimeConversions.TimestampMillisConversion;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jstarcraft.core.codec.ContentCodec;
-import com.jstarcraft.core.codec.avro.converter.AvroConverter;
+import com.jstarcraft.core.codec.avro.conversion.AtomicBooleanConversion;
+import com.jstarcraft.core.codec.avro.conversion.AtomicIntegerConversion;
+import com.jstarcraft.core.codec.avro.conversion.AtomicLongConversion;
+import com.jstarcraft.core.codec.avro.conversion.DateConversion;
+import com.jstarcraft.core.codec.avro.conversion.TypeConversion;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.common.reflection.Specification;
 
 /**
  * Avro编解码器
@@ -27,20 +41,39 @@ public class AvroContentCodec implements ContentCodec {
 
     private CodecDefinition codecDefinition;
 
-    public AvroContentCodec(CodecDefinition codecDefinition) {
+    private BiFunction<Schema, InputStream, Decoder> decoderFactory;
+
+    private BiFunction<Schema, OutputStream, Encoder> encoderFactory;
+
+    private AvroData utility;
+
+    public AvroContentCodec(CodecDefinition codecDefinition, BiFunction<Schema, InputStream, Decoder> decoderFactory, BiFunction<Schema, OutputStream, Encoder> encoderFactory) {
         this.codecDefinition = codecDefinition;
+        this.decoderFactory = decoderFactory;
+        this.encoderFactory = encoderFactory;
+        this.utility = new AvroData();
+        this.utility.addLogicalTypeConversion(new AtomicBooleanConversion());
+
+        this.utility.addLogicalTypeConversion(new AtomicIntegerConversion());
+        this.utility.addLogicalTypeConversion(new AtomicLongConversion());
+
+        this.utility.addLogicalTypeConversion(new DateConversion());
+        this.utility.addLogicalTypeConversion(new TimestampMillisConversion());
+
+        this.utility.addLogicalTypeConversion(new TypeConversion(Type.class, "type"));
+        this.utility.addLogicalTypeConversion(new TypeConversion(Class.class, "class"));
+        this.utility.addLogicalTypeConversion(new TypeConversion(GenericArrayType.class, "generic-array-type"));
+        this.utility.addLogicalTypeConversion(new TypeConversion(ParameterizedType.class, "parameterized-type"));
+        this.utility.addLogicalTypeConversion(new TypeConversion(TypeVariable.class, "type-variable"));
+        this.utility.addLogicalTypeConversion(new TypeConversion(WildcardType.class, "wildcard-type"));
     }
 
     @Override
     public Object decode(Type type, byte[] content) {
-        if (content.length == 0) {
-            return null;
-        }
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
             return decode(type, byteArrayInputStream);
         } catch (Exception exception) {
             String message = "Avro解码失败:" + exception.getMessage();
-            exception.printStackTrace();
             throw new CodecException(message, exception);
         }
     }
@@ -48,13 +81,11 @@ public class AvroContentCodec implements ContentCodec {
     @Override
     public Object decode(Type type, InputStream stream) {
         try {
-            int available = stream.available();
-            if (available == 0) {
-                return null;
-            }
-            final AvroReader context = new AvroReader(stream, this.codecDefinition);
-            final AvroConverter<?> converter = context.getAvroConverter(Specification.getSpecification(type));
-            return converter.readValueFrom(context, type);
+            Schema schema = utility.getSchema(type);
+            schema = utility.makeNullable(schema);
+            DatumReader reader = new AvroDatumReader(schema, utility);
+            Decoder decoder = decoderFactory.apply(schema, stream);
+            return reader.read(null, decoder);
         } catch (Exception exception) {
             String message = "Avro解码失败:" + exception.getMessage();
             exception.printStackTrace();
@@ -64,9 +95,6 @@ public class AvroContentCodec implements ContentCodec {
 
     @Override
     public byte[] encode(Type type, Object content) {
-        if (content == null) {
-            return new byte[] {};
-        }
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
             encode(type, content, outputStream);
             return outputStream.toByteArray();
@@ -78,17 +106,16 @@ public class AvroContentCodec implements ContentCodec {
     }
 
     @Override
-    public void encode(Type type, Object content, OutputStream outputStream) {
-        if (content == null) {
-            return;
-        }
+    public void encode(Type type, Object content, OutputStream stream) {
         try {
-            final AvroWriter context = new AvroWriter(outputStream, this.codecDefinition);
-            final AvroConverter converter = context.getAvroConverter(Specification.getSpecification(type));
-            converter.writeValueTo(context, type, content);
+            Schema schema = utility.getSchema(type);
+            schema = utility.makeNullable(schema);
+            DatumWriter writer = new AvroDatumWriter(schema, utility);
+            Encoder encoder = encoderFactory.apply(schema, stream);
+            writer.write(content, encoder);
+            encoder.flush();
         } catch (Exception exception) {
             String message = "Avro编码失败:" + exception.getMessage();
-            exception.printStackTrace();
             throw new CodecException(message, exception);
         }
     }
