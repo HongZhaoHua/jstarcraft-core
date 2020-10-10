@@ -21,6 +21,7 @@ import it.unimi.dsi.fastutil.bytes.ByteList;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class ArrayConverter extends AvroConverter<Object> {
 
     @Override

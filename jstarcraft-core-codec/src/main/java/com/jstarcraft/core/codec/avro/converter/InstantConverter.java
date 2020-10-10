@@ -14,6 +14,7 @@ import com.jstarcraft.core.codec.exception.CodecConvertionException;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class InstantConverter extends AvroConverter<Object> {
 
     @Override

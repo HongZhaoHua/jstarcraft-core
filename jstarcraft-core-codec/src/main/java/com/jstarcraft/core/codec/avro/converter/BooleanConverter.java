@@ -12,6 +12,7 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class BooleanConverter extends AvroConverter<Object> {
 
     @Override

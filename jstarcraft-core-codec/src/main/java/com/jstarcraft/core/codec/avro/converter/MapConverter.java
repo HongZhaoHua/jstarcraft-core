@@ -17,6 +17,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class MapConverter extends AvroConverter<Map<Object, Object>> {
 
     @Override

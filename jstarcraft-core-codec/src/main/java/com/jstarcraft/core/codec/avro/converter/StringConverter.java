@@ -12,6 +12,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class StringConverter extends AvroConverter<Object> {
 
     @Override

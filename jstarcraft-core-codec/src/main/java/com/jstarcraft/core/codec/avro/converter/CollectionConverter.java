@@ -19,6 +19,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class CollectionConverter extends AvroConverter<Collection<Object>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionConverter.class);

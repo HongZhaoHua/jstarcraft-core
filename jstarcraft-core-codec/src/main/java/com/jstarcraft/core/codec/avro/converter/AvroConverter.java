@@ -40,6 +40,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  *
  * @param <T>
  */
+@Deprecated
 public abstract class AvroConverter<T> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

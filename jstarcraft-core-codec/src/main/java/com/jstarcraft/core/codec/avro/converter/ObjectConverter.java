@@ -20,6 +20,7 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class ObjectConverter extends AvroConverter<Object> {
 
     @Override

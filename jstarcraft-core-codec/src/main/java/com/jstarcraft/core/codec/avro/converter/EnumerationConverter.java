@@ -11,6 +11,7 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class EnumerationConverter extends AvroConverter<Object> {
 
     @Override

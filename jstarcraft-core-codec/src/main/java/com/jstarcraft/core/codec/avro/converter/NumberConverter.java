@@ -14,6 +14,7 @@ import com.jstarcraft.core.utility.NumberUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class NumberConverter extends AvroConverter<Number> {
 
     @Override

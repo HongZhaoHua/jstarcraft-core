@@ -12,6 +12,7 @@ import com.jstarcraft.core.common.reflection.Specification;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class AvroContext {
 
     protected static final EnumMap<Specification, AvroConverter<?>> converters = new EnumMap<>(Specification.class);
