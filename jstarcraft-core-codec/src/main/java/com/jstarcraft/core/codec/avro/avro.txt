@@ -1,3 +1,6 @@
+Apache Avro Specification:
+http://avro.apache.org/docs/current/spec.html
+
 Avro介绍:
 https://fangjian0423.github.io/2016/02/21/avro-intro
 
