@@ -12,7 +12,6 @@ import java.util.Map;
 import org.apache.avro.Conversion;
 import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
 import org.apache.avro.UnresolvedUnionException;
 import org.apache.avro.reflect.ReflectData;
 import org.apache.avro.specific.SpecificData;
@@ -40,9 +39,9 @@ public class AvroData extends ReflectData {
                 }
                 Schema schema = createSchema(component, names);
                 if (component.isPrimitive()) {
-                    schema = SchemaBuilder.array().items().type(schema);
+                    schema = Schema.createArray(schema);
                 } else {
-                    schema = SchemaBuilder.array().items().nullable().type(schema);
+                    schema = Schema.createArray(makeNullable(schema));
                 }
                 schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
                 return schema;
@@ -54,7 +53,7 @@ public class AvroData extends ReflectData {
                 return Schema.create(Schema.Type.BYTES);
             }
             Schema schema = createSchema(component, names);
-            schema = SchemaBuilder.array().items().nullable().type(schema);
+            schema = Schema.createArray(makeNullable(schema));
             return schema;
         }
         Class clazz = TypeUtility.getRawType(type, null);
@@ -62,7 +61,7 @@ public class AvroData extends ReflectData {
             ParameterizedType parameterizedType = (ParameterizedType) TypeUtility.refineType(type, Collection.class);
             Type[] types = parameterizedType.getActualTypeArguments();
             Schema schema = createSchema(types[0], names);
-            schema = SchemaBuilder.array().items().nullable().type(schema);
+            schema = Schema.createArray(makeNullable(schema));
             schema.addProp(SpecificData.CLASS_PROP, clazz.getName());
             return schema;
         }

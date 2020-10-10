@@ -14,51 +14,51 @@ import org.apache.avro.reflect.ReflectDatumReader;
 
 public class AvroDatumReader<T> extends ReflectDatumReader<T> {
 
-    public AvroDatumReader(Schema schema, AvroData data) {
-        super(schema, schema, data);
+    public AvroDatumReader(Schema schema, AvroData utility) {
+        super(schema, schema, utility);
     }
 
     // TODO 此处重写是为了修复官方JsonDecoder无法处理数组的Bug
     @Override
-    protected Object readArray(Object old, Schema expected, ResolvingDecoder in) throws IOException {
-        Object array = newArray(old, 0, expected);
+    protected Object readArray(Object datum, Schema schema, ResolvingDecoder in) throws IOException {
+        Object array = newArray(datum, 0, schema);
         if (array instanceof Collection) {
-            return super.readArray(old, expected, in);
+            return super.readArray(datum, schema, in);
         } else if (array instanceof Map) {
-            return super.readArray(old, expected, in);
+            return super.readArray(datum, schema, in);
         } else {
-            Class<?> elementType = array.getClass().getComponentType();
-            if (elementType.isPrimitive()) {
-                return super.readArray(old, expected, in);
+            Class<?> clazz = array.getClass().getComponentType();
+            if (clazz.isPrimitive()) {
+                return super.readArray(datum, schema, in);
             } else {
-                Schema expectedType = expected.getElementType();
-                long l = in.readArrayStart();
-                ArrayList list = new ArrayList<>();
-                readCollection(list, expectedType, l, in);
-                return list.toArray((Object[]) Array.newInstance(elementType, list.size()));
+                schema = schema.getElementType();
+                long length = in.readArrayStart();
+                ArrayList datums = new ArrayList();
+                readCollection(datums, schema, length, in);
+                return datums.toArray((Object[]) Array.newInstance(clazz, datums.size()));
             }
         }
     }
 
-    private Object readCollection(Collection<Object> collection, Schema expectedType, long length, ResolvingDecoder in) throws IOException {
-        LogicalType logicalType = expectedType.getLogicalType();
+    private Object readCollection(Collection<Object> datums, Schema schema, long length, ResolvingDecoder in) throws IOException {
+        LogicalType logicalType = schema.getLogicalType();
         Conversion<?> conversion = getData().getConversionFor(logicalType);
         if (logicalType != null && conversion != null) {
             do {
                 for (int index = 0; index < length; index++) {
-                    Object element = readWithConversion(null, expectedType, logicalType, conversion, in);
-                    collection.add(element);
+                    Object datum = readWithConversion(null, schema, logicalType, conversion, in);
+                    datums.add(datum);
                 }
             } while ((length = in.arrayNext()) > 0);
         } else {
             do {
                 for (int index = 0; index < length; index++) {
-                    Object element = readWithoutConversion(null, expectedType, in);
-                    collection.add(element);
+                    Object datum = readWithoutConversion(null, schema, in);
+                    datums.add(datum);
                 }
             } while ((length = in.arrayNext()) > 0);
         }
-        return collection;
+        return datums;
     }
 
 }

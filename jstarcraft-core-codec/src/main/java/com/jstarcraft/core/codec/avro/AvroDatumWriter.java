@@ -10,8 +10,8 @@ import org.apache.avro.reflect.ReflectDatumWriter;
 
 public class AvroDatumWriter<T> extends ReflectDatumWriter<T> {
 
-    public AvroDatumWriter(Schema root, AvroData reflectData) {
-        super(root, reflectData);
+    public AvroDatumWriter(Schema root, AvroData utility) {
+        super(root, utility);
     }
 
     // TODO 此处重写是为了修复官方JsonEncoder无法处理数组的Bug
@@ -21,26 +21,26 @@ public class AvroDatumWriter<T> extends ReflectDatumWriter<T> {
             super.writeArray(schema, datum, out);
             return;
         }
-        Class<?> elementClass = datum.getClass().getComponentType();
-        if (null == elementClass) {
+        Class<?> clazz = datum.getClass().getComponentType();
+        if (null == clazz) {
             throw new AvroRuntimeException("Array data must be a Collection or Array");
         }
-        Schema element = schema.getElementType();
-        if (elementClass.isPrimitive()) {
+        if (clazz.isPrimitive()) {
             super.writeArray(schema, datum, out);
         } else {
+            schema = schema.getElementType();
             out.writeArrayStart();
-            writeObjectArray(element, (Object[]) datum, out);
+            writeObjectArray(schema, (Object[]) datum, out);
             out.writeArrayEnd();
         }
     }
 
-    private void writeObjectArray(Schema element, Object[] data, Encoder out) throws IOException {
-        int size = data.length;
+    private void writeObjectArray(Schema schema, Object[] datums, Encoder out) throws IOException {
+        int size = datums.length;
         out.setItemCount(size);
-        for (Object datum : data) {
+        for (Object datum : datums) {
             out.startItem();
-            this.write(element, datum, out);
+            write(schema, datum, out);
         }
     }
 
