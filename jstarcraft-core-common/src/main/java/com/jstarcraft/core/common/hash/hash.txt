@@ -36,3 +36,6 @@ http://tdcq.iteye.com/blog/1968756
 
 Hashids algorithm v1.0.0 implementation in Java:
 https://github.com/10cella/hashids-java
+
+A Java implementation of the rabin fingerprinting method:
+https://github.com/themadcreator/rabinfingerprint
