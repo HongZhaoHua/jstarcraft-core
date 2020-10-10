@@ -2,8 +2,6 @@ package com.jstarcraft.core.codec.avro;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,7 +11,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,9 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.avro.AvroRuntimeException;
-import org.apache.avro.Conversion;
-import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
 import org.apache.avro.data.TimeConversions.TimestampMillisConversion;
 import org.apache.avro.io.DatumReader;
@@ -38,9 +32,6 @@ import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
-import org.apache.avro.io.ResolvingDecoder;
-import org.apache.avro.reflect.ReflectDatumReader;
-import org.apache.avro.reflect.ReflectDatumWriter;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -88,86 +79,38 @@ public class AvroTestCase {
     protected void testConvert(Type type, Object value) throws Exception {
         Schema schema = avroData.getSchema(type);
         schema = avroData.makeNullable(schema);
-        DatumWriter writer = new ReflectDatumWriter(schema, avroData) {
-
-            // TODO 此处重写是为了修复官方JsonEncoder无法处理数组的Bug
-            @Override
-            protected void writeArray(Schema schema, Object datum, Encoder out) throws IOException {
-                if (datum instanceof Collection) {
-                    super.writeArray(schema, datum, out);
-                    return;
-                }
-                Class<?> elementClass = datum.getClass().getComponentType();
-                if (null == elementClass) {
-                    throw new AvroRuntimeException("Array data must be a Collection or Array");
-                }
-                Schema element = schema.getElementType();
-                if (elementClass.isPrimitive()) {
-                    super.writeArray(schema, datum, out);
+        DatumWriter writer = new AvroDatumWriter(schema, avroData);
+        DatumReader reader = new AvroDatumReader(schema, avroData);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            Encoder encoder = EncoderFactory.get().binaryEncoder(output, null);
+            writer.write(value, encoder);
+            encoder.flush();
+            byte[] data = output.toByteArray();
+            try (ByteArrayInputStream input = new ByteArrayInputStream(data)) {
+                Decoder decoder = DecoderFactory.get().binaryDecoder(input, null);
+                if (type == AtomicBoolean.class) {
+                    AtomicBoolean left = (AtomicBoolean) value;
+                    AtomicBoolean right = (AtomicBoolean) reader.read(null, decoder);
+                    Assert.assertTrue(TypeUtility.isInstance(left, type));
+                    Assert.assertTrue(TypeUtility.isInstance(right, type));
+                    Assert.assertThat(right.get(), CoreMatchers.equalTo(left.get()));
+                } else if (type == AtomicInteger.class || type == AtomicLong.class) {
+                    Number left = (Number) value;
+                    Number right = (Number) reader.read(null, decoder);
+                    Assert.assertTrue(TypeUtility.isInstance(left, type));
+                    Assert.assertTrue(TypeUtility.isInstance(right, type));
+                    Assert.assertThat(right.longValue(), CoreMatchers.equalTo(left.longValue()));
                 } else {
-                    out.writeArrayStart();
-                    writeObjectArray(element, (Object[]) datum, out);
-                    out.writeArrayEnd();
-                }
-            }
-
-            private void writeObjectArray(Schema element, Object[] data, Encoder out) throws IOException {
-                int size = data.length;
-                out.setItemCount(size);
-                for (Object datum : data) {
-                    out.startItem();
-                    this.write(element, datum, out);
-                }
-            }
-
-        };
-
-        DatumReader reader = new ReflectDatumReader(schema, schema, avroData) {
-
-            // TODO 此处重写是为了修复官方JsonDecoder无法处理数组的Bug
-            @Override
-            protected Object readArray(Object old, Schema expected, ResolvingDecoder in) throws IOException {
-                Object array = newArray(old, 0, expected);
-                if (array instanceof Collection) {
-                    return super.readArray(old, expected, in);
-                } else if (array instanceof Map) {
-                    return super.readArray(old, expected, in);
-                } else {
-                    Class<?> elementType = array.getClass().getComponentType();
-                    if (elementType.isPrimitive()) {
-                        return super.readArray(old, expected, in);
-                    } else {
-                        Schema expectedType = expected.getElementType();
-                        long l = in.readArrayStart();
-                        ArrayList list = new ArrayList<>();
-                        readCollection(list, expectedType, l, in);
-                        return list.toArray((Object[]) Array.newInstance(elementType, list.size()));
+                    Object left = value;
+                    Object right = reader.read(null, decoder);
+                    if (value != null) {
+                        Assert.assertTrue(TypeUtility.isInstance(left, type));
+                        Assert.assertTrue(TypeUtility.isInstance(right, type));
                     }
+                    Assert.assertThat(right, CoreMatchers.equalTo(left));
                 }
             }
-
-            private Object readCollection(Collection<Object> c, Schema expectedType, long l, ResolvingDecoder in) throws IOException {
-                LogicalType logicalType = expectedType.getLogicalType();
-                Conversion<?> conversion = getData().getConversionFor(logicalType);
-                if (logicalType != null && conversion != null) {
-                    do {
-                        for (int i = 0; i < l; i++) {
-                            Object element = readWithConversion(null, expectedType, logicalType, conversion, in);
-                            c.add(element);
-                        }
-                    } while ((l = in.arrayNext()) > 0);
-                } else {
-                    do {
-                        for (int i = 0; i < l; i++) {
-                            Object element = readWithoutConversion(null, expectedType, in);
-                            c.add(element);
-                        }
-                    } while ((l = in.arrayNext()) > 0);
-                }
-                return c;
-            }
-
-        };
+        }
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             Encoder encoder = EncoderFactory.get().jsonEncoder(schema, output);
             writer.write(value, encoder);
