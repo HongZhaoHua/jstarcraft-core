@@ -68,6 +68,7 @@ JStarCraft Core框架各个模块之间的关系:
     * Cache as Record
 * 2.编解码(codec)
     * 字节
+        * Avro
         * Hessian
         * Kryo
         * MessagePack

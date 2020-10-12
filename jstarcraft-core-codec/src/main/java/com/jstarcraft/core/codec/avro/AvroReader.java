@@ -11,6 +11,7 @@ import com.jstarcraft.core.codec.specification.CodecDefinition;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class AvroReader extends AvroContext {
 
     private InputStream inputStream;
@@ -18,7 +19,6 @@ public class AvroReader extends AvroContext {
     public AvroReader(InputStream inputStream, CodecDefinition definition) throws Exception {
         super(definition);
         this.inputStream = inputStream;
-
     }
 
     public InputStream getInputStream() {

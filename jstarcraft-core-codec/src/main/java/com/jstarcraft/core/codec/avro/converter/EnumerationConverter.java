@@ -11,17 +11,18 @@ import com.jstarcraft.core.codec.avro.AvroWriter;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class EnumerationConverter extends AvroConverter<Object> {
 
     @Override
-    protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
+    protected Object readValue(AvroReader context, Object record, Type type) throws Exception {
         Class clazz = (Class<?>) type;
-        return Enum.valueOf(clazz, String.valueOf(input));
+        return Enum.valueOf(clazz, String.valueOf(record));
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Object value, Type type) throws Exception {
+    protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
 //        return new GenericData.EnumSymbol(super.getSchema(type), value);
-        return value;
+        return instance;
     }
 }

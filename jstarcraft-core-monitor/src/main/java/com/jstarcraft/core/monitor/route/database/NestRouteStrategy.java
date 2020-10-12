@@ -26,7 +26,7 @@ public class NestRouteStrategy implements RouteStrategy {
     };
 
     /**
-     * 推入数据键
+     * 推入键(手动)
      * 
      * @param key
      */
@@ -36,11 +36,26 @@ public class NestRouteStrategy implements RouteStrategy {
     }
 
     /**
-     * 拉出数据键
+     * 拉出键(手动)
      */
     public void pullKey() {
         LinkedList<String> context = contexts.get();
         context.removeLast();
+    }
+
+    /**
+     * 范围键(自动)
+     * 
+     * <pre>
+     * 支持try-catch-resources语法
+     * </pre>
+     * 
+     * @param key
+     * @return
+     */
+    public AutoCloseable scopeKey(String key) {
+        this.pushKey(key);
+        return this::pullKey;
     }
 
     @Override

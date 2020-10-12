@@ -1,3 +1,11 @@
+Avro规范:
+https://www.cnblogs.com/majianguo/p/7687107.html
+https://www.cnblogs.com/majianguo/p/7725027.html
+http://avro.apache.org/docs/current/spec.html
+
+Avro介绍:
+https://fangjian0423.github.io/2016/02/21/avro-intro
+
 Java对象与Avro相互转换:
 https://blog.csdn.net/cherlshall/article/details/98964706
 

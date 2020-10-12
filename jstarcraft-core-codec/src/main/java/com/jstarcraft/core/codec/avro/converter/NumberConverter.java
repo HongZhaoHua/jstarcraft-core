@@ -14,32 +14,32 @@ import com.jstarcraft.core.utility.NumberUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class NumberConverter extends AvroConverter<Number> {
 
     @Override
-    protected Number readValue(AvroReader avroReader, Object input, Type type) throws Exception {
+    protected Number readValue(AvroReader context, Object record, Type type) throws Exception {
         if (type == BigInteger.class) {
-            return new BigInteger(String.valueOf(input));
+            return new BigInteger(String.valueOf(record));
         } else if (type == BigDecimal.class) {
-            return new BigDecimal(String.valueOf(input));
+            return new BigDecimal(String.valueOf(record));
         }
-        if (input == null) {
+        if (record == null) {
             return null;
         }
-        return NumberUtility.convert(String.valueOf(input), (Class<? extends Number>) type);
+        return NumberUtility.convert(String.valueOf(record), (Class<? extends Number>) type);
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Number value, Type type) throws Exception {
-        return getInputValue(value, type);
+    protected Object writeValue(AvroWriter context, Number instance, Type type) throws Exception {
+        return getInputValue(instance, type);
     }
 
-    private Object getInputValue(Number value, Type type) {
+    private Object getInputValue(Number instance, Type type) {
         if (type == BigInteger.class) {
-            return value + "";
+            return instance.toString();
         }
-
-        return value;
+        return instance;
     }
 
 }

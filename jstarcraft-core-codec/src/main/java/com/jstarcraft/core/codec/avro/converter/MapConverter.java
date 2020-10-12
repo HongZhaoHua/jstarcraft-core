@@ -17,42 +17,40 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class MapConverter extends AvroConverter<Map<Object, Object>> {
 
     @Override
-    protected Map<Object, Object> readValue(AvroReader avroReader, Object input, Type type) throws Exception {
+    protected Map<Object, Object> readValue(AvroReader context, Object record, Type type) throws Exception {
         Class<?> rawType = TypeUtility.getRawType(type, null);
-        Map<Object, Object> map = (Map<Object, Object>) (rawType).newInstance();
+        Map<Object, Object> instance = (Map<Object, Object>) (rawType).newInstance();
         type = TypeUtility.refineType(type, Map.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
         Class<?> keyClazz = (Class<?>) types[0];
         Class<?> valueClazz = (Class<?>) types[1];
-
-        AvroConverter<?> keyConverter = avroReader.getAvroConverter(Specification.getSpecification(keyClazz));
-        AvroConverter<?> valueConverter = avroReader.getAvroConverter(Specification.getSpecification(valueClazz));
-
-        Iterator<Map.Entry<String, Object>> iterator = ((HashMap<String, Object>) input).entrySet().iterator();
+        AvroConverter<?> keyConverter = context.getAvroConverter(Specification.getSpecification(keyClazz));
+        AvroConverter<?> valueConverter = context.getAvroConverter(Specification.getSpecification(valueClazz));
+        Iterator<Map.Entry<String, Object>> iterator = ((HashMap<String, Object>) record).entrySet().iterator();
         Map.Entry<String, Object> next;
         while (iterator.hasNext()) {
             next = iterator.next();
-            map.put(keyConverter.readValue(avroReader, next.getKey(), keyClazz), valueConverter.readValue(avroReader, next.getValue(), valueClazz));
+            instance.put(keyConverter.readValue(context, next.getKey(), keyClazz), valueConverter.readValue(context, next.getValue(), valueClazz));
         }
-        return map;
+        return instance;
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Map<Object, Object> value, Type type) throws Exception {
+    protected Object writeValue(AvroWriter context, Map<Object, Object> instance, Type type) throws Exception {
         Type refineType = TypeUtility.refineType(type, Map.class);
         ParameterizedType cast = ParameterizedType.class.cast(refineType);
         Type actualTypeArgument = cast.getActualTypeArguments()[1];
-        AvroConverter avroConverter = writer.getAvroConverter(Specification.getSpecification(actualTypeArgument));
+        AvroConverter converter = context.getAvroConverter(Specification.getSpecification(actualTypeArgument));
         Class<?> rawType = TypeUtility.getRawType(type, null);
-        Map output = (Map) writer.getClassDefinition(rawType).getInstance();
-        for (Object key : value.keySet()) {
-            output.put(key, avroConverter.writeValue(writer, value.get(key), actualTypeArgument));
+        Map record = (Map) context.getClassDefinition(rawType).getInstance();
+        for (Object key : instance.keySet()) {
+            record.put(key, converter.writeValue(context, instance.get(key), actualTypeArgument));
         }
-
-        return output;
+        return record;
     }
 }

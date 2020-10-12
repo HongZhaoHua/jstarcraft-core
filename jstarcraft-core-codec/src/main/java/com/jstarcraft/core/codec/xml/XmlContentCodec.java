@@ -1,5 +1,7 @@
 package com.jstarcraft.core.codec.xml;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -10,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
-import com.jstarcraft.core.utility.StringUtility;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 
@@ -42,10 +43,10 @@ public class XmlContentCodec implements ContentCodec {
 
     @Override
     public Object decode(Type type, byte[] content) {
-        try {
-            return typeConverter.fromXML(new String(content, StringUtility.CHARSET));
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
+            return decode(type, byteArrayInputStream);
         } catch (Exception exception) {
-            String message = "XML解码异常";
+            String message = "XML解码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }
@@ -64,14 +65,11 @@ public class XmlContentCodec implements ContentCodec {
 
     @Override
     public byte[] encode(Type type, Object content) {
-        try {
-            if (content == null) {
-                return new byte[] {};
-            }
-            byte[] value = typeConverter.toXML(content).getBytes(StringUtility.CHARSET);
-            return value;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            encode(type, content, byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
         } catch (Exception exception) {
-            String message = "XML编码异常";
+            String message = "XML编码失败:" + exception.getMessage();
             LOGGER.error(message, exception);
             throw new CodecException(message, exception);
         }

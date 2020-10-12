@@ -12,32 +12,33 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class StringConverter extends AvroConverter<Object> {
 
     @Override
-    protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
-        String value = String.valueOf(input);
-        if (StringUtility.isEmpty(value)) {
+    protected Object readValue(AvroReader context, Object record, Type type) throws Exception {
+        String instance = String.valueOf(record);
+        if (StringUtility.isEmpty(instance)) {
             return null;
         }
         if (type == char.class || type == Character.class) {
-            return value.charAt(0);
+            return instance.charAt(0);
         } else {
-            return value;
+            return instance;
         }
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Object value, Type type) throws Exception {
-        if (value == null) {
+    protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
+        if (instance == null) {
             return StringUtility.EMPTY;
         }
-        String element;
+        String record;
         if (type == char.class || type == Character.class) {
-            element = String.valueOf(value);
+            record = String.valueOf(instance);
         } else {
-            element = (String) value;
+            record = (String) instance;
         }
-        return element;
+        return record;
     }
 }

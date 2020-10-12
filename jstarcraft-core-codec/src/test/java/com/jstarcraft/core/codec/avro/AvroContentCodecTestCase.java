@@ -1,29 +1,33 @@
 package com.jstarcraft.core.codec.avro;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.EncoderFactory;
 import org.junit.Test;
 
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.ContentCodecTestCase;
 import com.jstarcraft.core.codec.MockEnumeration;
-import com.jstarcraft.core.codec.avro.AvroContentCodec;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 
-/**
- * {@link AvroContentCodec} unit test case
- * 
- * @author MnZzV
- */
 public class AvroContentCodecTestCase extends ContentCodecTestCase {
 
     @Override
     protected ContentCodec getContentCodec(CodecDefinition protocolDefinition) {
-        final AvroContentCodec codec = new AvroContentCodec(protocolDefinition);
+        final AvroContentCodec codec = new AvroContentCodec(protocolDefinition, (schema, input) -> {
+            return DecoderFactory.get().binaryDecoder(input, null);
+//            try {
+//                return DecoderFactory.get().jsonDecoder(schema, input);
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
+        }, (schema, output) -> {
+            return EncoderFactory.get().binaryEncoder(output, null);
+//            try {
+//                return EncoderFactory.get().jsonEncoder(schema, output);
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
+        });
         return codec;
     }
 

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec;
+package com.jstarcraft.core.codec.avro;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,15 +24,29 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.avro.Schema;
+import org.apache.avro.data.TimeConversions.TimestampMillisConversion;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.Encoder;
+import org.apache.avro.io.EncoderFactory;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.jstarcraft.core.codec.specification.CodecDefinition;
+import com.jstarcraft.core.codec.ContentCodecTestCase;
+import com.jstarcraft.core.codec.MockComplexObject;
+import com.jstarcraft.core.codec.MockEnumeration;
+import com.jstarcraft.core.codec.MockMatrix;
+import com.jstarcraft.core.codec.avro.conversion.AtomicBooleanConversion;
+import com.jstarcraft.core.codec.avro.conversion.AtomicIntegerConversion;
+import com.jstarcraft.core.codec.avro.conversion.AtomicLongConversion;
+import com.jstarcraft.core.codec.avro.conversion.DateConversion;
+import com.jstarcraft.core.codec.avro.conversion.TypeConversion;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.NumberUtility;
 import com.jstarcraft.core.utility.RandomUtility;
@@ -43,94 +55,54 @@ import com.jstarcraft.core.utility.StringUtility;
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 
-public abstract class ContentCodecTestCase {
+public class AvroTestCase {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected abstract ContentCodec getContentCodec(CodecDefinition protocolDefinition);
-
-    protected ContentCodec contentCodec;
+    private AvroData avroData = new AvroData();
 
     {
-        Collection<Type> protocolClasses = new LinkedList<>();
-        // 布尔规范
-        protocolClasses.add(AtomicBoolean.class);
-        protocolClasses.add(boolean.class);
-        protocolClasses.add(Boolean.class);
+        avroData.addLogicalTypeConversion(new AtomicBooleanConversion());
 
-        // 数值规范
-        protocolClasses.add(AtomicInteger.class);
-        protocolClasses.add(AtomicLong.class);
-        protocolClasses.add(byte.class);
-        protocolClasses.add(short.class);
-        protocolClasses.add(int.class);
-        protocolClasses.add(long.class);
-        protocolClasses.add(float.class);
-        protocolClasses.add(double.class);
-        protocolClasses.add(Byte.class);
-        protocolClasses.add(Short.class);
-        protocolClasses.add(Integer.class);
-        protocolClasses.add(Long.class);
-        protocolClasses.add(Float.class);
-        protocolClasses.add(Double.class);
-        protocolClasses.add(BigInteger.class);
-        protocolClasses.add(BigDecimal.class);
+        avroData.addLogicalTypeConversion(new AtomicIntegerConversion());
+        avroData.addLogicalTypeConversion(new AtomicLongConversion());
 
-        // 字符规范
-        protocolClasses.add(char.class);
-        protocolClasses.add(Character.class);
-        protocolClasses.add(String.class);
+        avroData.addLogicalTypeConversion(new DateConversion());
+        avroData.addLogicalTypeConversion(new TimestampMillisConversion());
 
-        // 日期时间规范
-        protocolClasses.add(Date.class);
-        protocolClasses.add(Instant.class);
-
-        // 类型规范
-        protocolClasses.add(Class.class);
-        protocolClasses.add(GenericArrayType.class);
-        protocolClasses.add(ParameterizedType.class);
-        protocolClasses.add(TypeVariable.class);
-        protocolClasses.add(WildcardType.class);
-
-        // 未知规范
-        protocolClasses.add(void.class);
-        protocolClasses.add(Void.class);
-
-        protocolClasses.add(Object.class);
-        protocolClasses.add(MockComplexObject.class);
-        protocolClasses.add(MockEnumeration.class);
-        protocolClasses.add(MockMatrix.class);
-        protocolClasses.add(MockSimpleObject.class);
-
-        protocolClasses.add(ArrayList.class);
-        protocolClasses.add(HashSet.class);
-        protocolClasses.add(TreeSet.class);
-        protocolClasses.add(Byte2BooleanOpenHashMap.class);
-        protocolClasses.add(ByteArrayList.class);
-        CodecDefinition definition = CodecDefinition.instanceOf(protocolClasses);
-        contentCodec = this.getContentCodec(definition);
+        avroData.addLogicalTypeConversion(new TypeConversion(Type.class, "type"));
+        avroData.addLogicalTypeConversion(new TypeConversion(Class.class, "class"));
+        avroData.addLogicalTypeConversion(new TypeConversion(GenericArrayType.class, "generic-array-type"));
+        avroData.addLogicalTypeConversion(new TypeConversion(ParameterizedType.class, "parameterized-type"));
+        avroData.addLogicalTypeConversion(new TypeConversion(TypeVariable.class, "type-variable"));
+        avroData.addLogicalTypeConversion(new TypeConversion(WildcardType.class, "wildcard-type"));
     }
 
     protected void testConvert(Type type, Object value) throws Exception {
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            contentCodec.encode(type, value, byteArrayOutputStream);
-            byte[] data = byteArrayOutputStream.toByteArray();
-            try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data)) {
+        Schema schema = avroData.getSchema(type);
+        schema = avroData.makeNullable(schema);
+        DatumWriter writer = new AvroDatumWriter(schema, avroData);
+        DatumReader reader = new AvroDatumReader(schema, avroData);
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            Encoder encoder = EncoderFactory.get().binaryEncoder(output, null);
+            writer.write(value, encoder);
+            encoder.flush();
+            byte[] data = output.toByteArray();
+            try (ByteArrayInputStream input = new ByteArrayInputStream(data)) {
+                Decoder decoder = DecoderFactory.get().binaryDecoder(input, null);
                 if (type == AtomicBoolean.class) {
                     AtomicBoolean left = (AtomicBoolean) value;
-                    AtomicBoolean right = (AtomicBoolean) contentCodec.decode(type, byteArrayInputStream);
+                    AtomicBoolean right = (AtomicBoolean) reader.read(null, decoder);
                     Assert.assertTrue(TypeUtility.isInstance(left, type));
                     Assert.assertTrue(TypeUtility.isInstance(right, type));
                     Assert.assertThat(right.get(), CoreMatchers.equalTo(left.get()));
                 } else if (type == AtomicInteger.class || type == AtomicLong.class) {
                     Number left = (Number) value;
-                    Number right = (Number) contentCodec.decode(type, byteArrayInputStream);
+                    Number right = (Number) reader.read(null, decoder);
                     Assert.assertTrue(TypeUtility.isInstance(left, type));
                     Assert.assertTrue(TypeUtility.isInstance(right, type));
                     Assert.assertThat(right.longValue(), CoreMatchers.equalTo(left.longValue()));
                 } else {
                     Object left = value;
-                    Object right = contentCodec.decode(type, byteArrayInputStream);
+                    Object right = reader.read(null, decoder);
                     if (value != null) {
                         Assert.assertTrue(TypeUtility.isInstance(left, type));
                         Assert.assertTrue(TypeUtility.isInstance(right, type));
@@ -139,6 +111,42 @@ public abstract class ContentCodecTestCase {
                 }
             }
         }
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            Encoder encoder = EncoderFactory.get().jsonEncoder(schema, output);
+            writer.write(value, encoder);
+            encoder.flush();
+            byte[] data = output.toByteArray();
+            try (ByteArrayInputStream input = new ByteArrayInputStream(data)) {
+                Decoder decoder = DecoderFactory.get().jsonDecoder(schema, input);
+                if (type == AtomicBoolean.class) {
+                    AtomicBoolean left = (AtomicBoolean) value;
+                    AtomicBoolean right = (AtomicBoolean) reader.read(null, decoder);
+                    Assert.assertTrue(TypeUtility.isInstance(left, type));
+                    Assert.assertTrue(TypeUtility.isInstance(right, type));
+                    Assert.assertThat(right.get(), CoreMatchers.equalTo(left.get()));
+                } else if (type == AtomicInteger.class || type == AtomicLong.class) {
+                    Number left = (Number) value;
+                    Number right = (Number) reader.read(null, decoder);
+                    Assert.assertTrue(TypeUtility.isInstance(left, type));
+                    Assert.assertTrue(TypeUtility.isInstance(right, type));
+                    Assert.assertThat(right.longValue(), CoreMatchers.equalTo(left.longValue()));
+                } else {
+                    Object left = value;
+                    Object right = reader.read(null, decoder);
+                    if (value != null) {
+                        Assert.assertTrue(TypeUtility.isInstance(left, type));
+                        Assert.assertTrue(TypeUtility.isInstance(right, type));
+                    }
+                    Assert.assertThat(right, CoreMatchers.equalTo(left));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testAvro() throws Exception {
+        MockComplexObject mock = MockComplexObject.instanceOf(0, "birdy", null, 10, Instant.now(), MockEnumeration.TERRAN);
+        testConvert(MockComplexObject.class, mock);
     }
 
     @Test
@@ -286,40 +294,6 @@ public abstract class ContentCodecTestCase {
     }
 
     @Test
-    public void testNull() throws Exception {
-        // 基于Null的协议测试
-        // 基于对象的协议测试
-        MockComplexObject object = MockComplexObject.instanceOf(0, "birdy", null, 10, Instant.now(), MockEnumeration.TERRAN);
-        testConvert(MockComplexObject.class, null);
-        testConvert(MockComplexObject.class, object);
-
-        // 基于枚举的协议测试
-        testConvert(MockEnumeration.class, null);
-
-        // 基于数组的协议测试
-        Integer[] integerArray = new Integer[] { 0, null };
-        testConvert(Integer[].class, integerArray);
-        MockComplexObject[] objectArray = new MockComplexObject[] { object, null };
-        testConvert(MockComplexObject[].class, objectArray);
-
-        // 基于集合的协议测试
-        List<MockComplexObject> objectList = new ArrayList<>(objectArray.length);
-        Collections.addAll(objectList, objectArray);
-        testConvert(TypeUtility.parameterize(ArrayList.class, MockComplexObject.class), objectList);
-        // testConvert(ArrayList.class, objectList);
-        Set<MockComplexObject> objectSet = new HashSet<>(objectList);
-        testConvert(TypeUtility.parameterize(HashSet.class, MockComplexObject.class), objectSet);
-        // testConvert(HashSet.class, objectSet);
-
-        // 基于映射的协议测试
-        Map<String, MockComplexObject> map = new HashMap<>();
-        map.put(object.getFirstName(), object);
-        map.put("null", null);
-        testConvert(TypeUtility.parameterize(HashMap.class, String.class, MockComplexObject.class), map);
-        // testConvert(HashMap.class, map);
-    }
-
-    @Test
     public void testString() throws Exception {
         testConvert(char.class, ' ');
         testConvert(Character.class, ' ');
@@ -357,9 +331,6 @@ public abstract class ContentCodecTestCase {
         testConvert(ParameterizedType.class, type);
         type = TypeUtility.parameterize(TreeSet.class, Byte.class);
         testConvert(ParameterizedType.class, type);
-        testConvert(WildcardType.class, TypeUtility.wildcardType().withUpperBounds(type).build());
-        testConvert(WildcardType.class, TypeUtility.wildcardType().withLowerBounds(type).build());
-        testConvert(TypeVariable.class, TypeUtility.typeVariable(null, "T", type));
 
         // 基于枚举类型测试
         type = MockEnumeration.class;
@@ -445,60 +416,38 @@ public abstract class ContentCodecTestCase {
         testConvert(ByteArrayList.class, list);
     }
 
-    private void testPerformance(ContentCodec contentCodec, Type type, Object instance) {
-        byte[] data = contentCodec.encode(type, instance);
-        String message = StringUtility.format("格式化{}大小:{},{}", type.getTypeName(), data.length, Arrays.toString(data));
-        logger.debug(message);
-
-        Instant now = null;
-        int times = 1000;
-        now = Instant.now();
-        for (int index = 0; index < times; index++) {
-            contentCodec.encode(type, instance);
-        }
-        logger.debug(StringUtility.format("编码{}次一共消耗{}毫秒.", times, System.currentTimeMillis() - now.toEpochMilli()));
-
-        now = Instant.now();
-        for (int index = 0; index < times; index++) {
-            contentCodec.decode(type, data);
-        }
-        logger.debug(StringUtility.format("解码{}次一共消耗{}毫秒.", times, System.currentTimeMillis() - now.toEpochMilli()));
-    }
-
     @Test
-    public void testPerformance() {
-        String message = StringUtility.format("[{}]编解码性能测试", contentCodec.getClass().getName());
-        logger.debug(message);
+    public void testNull() throws Exception {
+        // 基于Null的协议测试
+        // 基于对象的协议测试
+        MockComplexObject object = MockComplexObject.instanceOf(0, "birdy", null, 10, Instant.now(), MockEnumeration.TERRAN);
+        testConvert(MockComplexObject.class, null);
+        testConvert(MockComplexObject.class, object);
 
-        int size = 1000;
+        // 基于枚举的协议测试
+        testConvert(MockEnumeration.class, null);
 
-        Type type = MockComplexObject.class;
-        Object instance = MockComplexObject.instanceOf(Integer.MAX_VALUE, "birdy", "hong", size, Instant.now(), MockEnumeration.TERRAN);
-        testPerformance(contentCodec, type, instance);
+        // 基于数组的协议测试
+        Integer[] integerArray = new Integer[] { 0, null };
+        testConvert(Integer[].class, integerArray);
+        MockComplexObject[] objectArray = new MockComplexObject[] { object, null };
+        testConvert(MockComplexObject[].class, objectArray);
 
-        type = MockSimpleObject.class;
-        instance = MockSimpleObject.instanceOf(0, "birdy");
-        testPerformance(contentCodec, type, instance);
+        // 基于集合的协议测试
+        List<MockComplexObject> objectList = new ArrayList<>(objectArray.length);
+        Collections.addAll(objectList, objectArray);
+        testConvert(TypeUtility.parameterize(ArrayList.class, MockComplexObject.class), objectList);
+        // testConvert(ArrayList.class, objectList);
+        Set<MockComplexObject> objectSet = new HashSet<>(objectList);
+        testConvert(TypeUtility.parameterize(HashSet.class, MockComplexObject.class), objectSet);
+        // testConvert(HashSet.class, objectSet);
 
-        String[] stringArray = new String[size];
-        for (int index = 0; index < size; index++) {
-            stringArray[index] = "mickey" + index;
-        }
-        type = String[].class;
-        instance = stringArray;
-        testPerformance(contentCodec, type, instance);
-
-        ArrayList<String> stringList = new ArrayList<>(size);
-        Collections.addAll(stringList, stringArray);
-        type = TypeUtility.parameterize(ArrayList.class, String.class);
-        instance = stringList;
-        testPerformance(contentCodec, type, instance);
-
-        HashSet<String> stringSet = new HashSet<>(size);
-        Collections.addAll(stringSet, stringArray);
-        type = TypeUtility.parameterize(HashSet.class, String.class);
-        instance = stringSet;
-        testPerformance(contentCodec, type, instance);
+        // 基于映射的协议测试
+        Map<String, MockComplexObject> map = new HashMap<>();
+        map.put(object.getFirstName(), object);
+        map.put("null", null);
+        testConvert(TypeUtility.parameterize(HashMap.class, String.class, MockComplexObject.class), map);
+        // testConvert(HashMap.class, map);
     }
 
 }

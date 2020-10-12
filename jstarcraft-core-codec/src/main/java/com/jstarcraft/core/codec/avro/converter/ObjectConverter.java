@@ -20,40 +20,40 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  * @author Yue Zhen Wei
  *
  */
+@Deprecated
 public class ObjectConverter extends AvroConverter<Object> {
 
     @Override
-    protected Object readValue(AvroReader avroReader, Object input, Type type) throws Exception {
-        if (input == null) {
+    protected Object readValue(AvroReader context, Object record, Type type) throws Exception {
+        if (record == null) {
             return null;
         }
-        GenericRecord genericData = (GenericRecord) input;
+        GenericRecord genericData = (GenericRecord) record;
         Class<?> rawType = TypeUtility.getRawType(type, null);
-        ClassDefinition classDefinition = avroReader.getClassDefinition(rawType);
+        ClassDefinition classDefinition = context.getClassDefinition(rawType);
         Object instance = classDefinition.getInstance();
         for (PropertyDefinition property : classDefinition.getProperties()) {
             Object inputItem = genericData.get(property.getName());
-            AvroConverter avroConverter = avroReader.getAvroConverter(Specification.getSpecification(property.getType()));
-            Object item = avroConverter.readValue(avroReader, inputItem, property.getType());
+            AvroConverter converter = context.getAvroConverter(Specification.getSpecification(property.getType()));
+            Object item = converter.readValue(context, inputItem, property.getType());
             property.setValue(instance, item);
         }
         return instance;
     }
 
     @Override
-    protected Object writeValue(AvroWriter writer, Object input, Type type) throws Exception {
-        Schema schema = super.getSchema(type);
-        GenericRecord parquet = new GenericData.Record(schema);
-        if (input == null) {
+    protected Object writeValue(AvroWriter context, Object instance, Type type) throws Exception {
+        if (instance == null) {
             return null;
         }
+        Schema schema = super.getSchema(type);
+        GenericRecord record = new GenericData.Record(schema);
         Class<?> clazz = TypeUtility.getRawType(type, null);
         for (Field declaredField : clazz.getDeclaredFields()) {
-            AvroConverter avroConverter = writer.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));
+            AvroConverter converter = context.getAvroConverter(Specification.getSpecification(declaredField.getGenericType()));
             declaredField.setAccessible(true);
-            parquet.put(declaredField.getName(), avroConverter.writeValue(writer, declaredField.get(input), declaredField.getGenericType()));
+            record.put(declaredField.getName(), converter.writeValue(context, declaredField.get(instance), declaredField.getGenericType()));
         }
-
-        return parquet;
+        return record;
     }
 }

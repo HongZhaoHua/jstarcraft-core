@@ -19,9 +19,9 @@ import java.util.function.BiFunction;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericDatumReader;
-import org.apache.avro.io.BinaryDecoder;
-import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -40,45 +40,52 @@ import com.jstarcraft.core.common.reflection.TypeUtility;
  *
  * @param <T>
  */
+@Deprecated
 public abstract class AvroConverter<T> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected abstract T readValue(AvroReader avroReader, Object input, Type type) throws Exception;
+    protected abstract T readValue(AvroReader context, Object record, Type type) throws Exception;
 
     /**
      * 从指定上下文读取内容
      *
-     * @param avroReader
+     * @param context
      * @param type
      * @return
      * @throws IOException
      */
-    public final T readValueFrom(AvroReader avroReader, Type type) throws Exception {
-        GenericDatumReader userDatumReader = new GenericDatumReader<>(getSchema(type));
-        BinaryDecoder binaryEncoder = DecoderFactory.get().directBinaryDecoder(avroReader.getInputStream(), null);
-        Object read = userDatumReader.read(new Object(), binaryEncoder);
-        return readValue(avroReader, read, type);
+    public final T readValueFrom(AvroReader context, Type type) throws Exception {
+        Schema schema = getSchema(type);
+        GenericDatumReader reader = new GenericDatumReader<>(schema);
+        Decoder decoder = DecoderFactory.get().jsonDecoder(schema, context.getInputStream());
+//        Decoder decoder = DecoderFactory.get().directBinaryDecoder(context.getInputStream(), null);
+        Object record = reader.read(null, decoder);
+        T instance = readValue(context, record, type);
+        return instance;
     }
+
+    protected abstract Object writeValue(AvroWriter context, T instance, Type type) throws Exception;
 
     /**
      * 将指定内容写到上下文
      *
-     * @param writer
+     * @param context
      * @param type
-     * @param value
+     * @param instance
      * @throws IOException
      */
-    public final void writeValueTo(AvroWriter writer, Type type, T value) throws Exception {
-        Schema schema = this.getSchema(type);
-        Object writeValue = writeValue(writer, value, type);
-        SpecificDatumWriter<Object> specificDatumWriter = new SpecificDatumWriter<>(schema);
-        BinaryEncoder binaryEncoder = EncoderFactory.get().directBinaryEncoder(writer.getOutputStream(), null);
-        specificDatumWriter.write(writeValue, binaryEncoder);
+    public final void writeValueTo(AvroWriter context, Type type, T instance) throws Exception {
+        Object record = writeValue(context, instance, type);
+        Schema schema = getSchema(type);
+        SpecificDatumWriter<Object> write = new SpecificDatumWriter<>(schema);
+        Encoder encoder = EncoderFactory.get().jsonEncoder(schema, context.getOutputStream());
+//        Encoder encoder = EncoderFactory.get().directBinaryEncoder(context.getOutputStream(), null);
+        write.write(record, encoder);
+        encoder.flush();
     }
 
-    protected abstract Object writeValue(AvroWriter writer, T value, Type type) throws Exception;
-
+    // TODO 考虑使用ReflectData.getSchema替代
     protected final Schema getSchema(Type type) {
         Specification specification = Specification.getSpecification(type);
         Class<?> clazz = TypeUtility.getRawType(type, null);
@@ -194,7 +201,7 @@ public abstract class AvroConverter<T> {
             return schema;
         });
 
-        specification2Schemas.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.array().items().intType());
+        specification2Schemas.put(Specification.TYPE, (type, clazz) -> SchemaBuilder.builder().stringType());
     }
 
 }
