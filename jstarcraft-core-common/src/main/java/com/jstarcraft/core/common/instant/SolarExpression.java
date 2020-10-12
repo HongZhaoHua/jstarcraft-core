@@ -325,12 +325,19 @@ public class SolarExpression extends DateTimeExpression {
                     int offset = week - last;
                     offset = (offset == 0 ? 0 : (offset > 0 ? offset - 7 : offset));
                     offset -= (nth - 1) * 7;
-                    days.set(size + offset, true);
+                    int day = size + offset;
+                    if (day < 1 || day > size) {
+                        continue;
+                    }
+                    days.set(day, true);
                 } else if (index < 7) {
                     // 从0代表周一转换到1代表周一
                     int week = index % 7 + 1;
                     int offset = (week - first + 7) % 7;
                     for (int day = 1 + offset; day <= size; day += 7) {
+                        if (day < 1 || day > size) {
+                            continue;
+                        }
                         days.set(day, true);
                     }
                 } else {
@@ -340,7 +347,11 @@ public class SolarExpression extends DateTimeExpression {
                     int week = index % 7 + 1;
                     int offset = (week - first + 7) % 7;
                     offset += (nth - 1) * 7;
-                    days.set(1 + offset, true);
+                    int day = 1 + offset;
+                    if (day < 1 || day > size) {
+                        continue;
+                    }
+                    days.set(day, true);
                 }
             }
         }
