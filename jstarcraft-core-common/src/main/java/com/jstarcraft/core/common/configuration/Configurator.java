@@ -59,10 +59,6 @@ public interface Configurator {
 
     Long getLong(String key);
 
-    LocalDateTime getLocalDateTime(String key, LocalDateTime instead);
-
-    LocalDateTime getLocalDateTime(String key);
-
     <T> T getObject(Class<T> clazz, String key, T instead);
 
     <T> T getObject(Class<T> clazz, String key);
@@ -70,10 +66,6 @@ public interface Configurator {
     String getString(String key, String instead);
 
     String getString(String key);
-
-    ZonedDateTime getZonedDateTime(String key, ZonedDateTime instead);
-
-    ZonedDateTime getZonedDateTime(String key);
 
     Iterator<String> getKeys();
 

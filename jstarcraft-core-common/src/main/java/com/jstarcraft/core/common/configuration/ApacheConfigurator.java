@@ -139,27 +139,13 @@ public class ApacheConfigurator implements Configurator {
     }
 
     @Override
-    public LocalDateTime getLocalDateTime(String key, LocalDateTime instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public LocalDateTime getLocalDateTime(String key) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public <T> T getObject(Class<T> clazz, String key, T instead) {
-        // TODO Auto-generated method stub
-        return null;
+        return keyValues.get(clazz, key, instead);
     }
 
     @Override
     public <T> T getObject(Class<T> clazz, String key) {
-        // TODO Auto-generated method stub
-        return null;
+        return keyValues.get(clazz, key);
     }
 
     @Override
@@ -170,18 +156,6 @@ public class ApacheConfigurator implements Configurator {
     @Override
     public String getString(String key) {
         return keyValues.getString(key);
-    }
-
-    @Override
-    public ZonedDateTime getZonedDateTime(String key, ZonedDateTime instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getZonedDateTime(String key) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
