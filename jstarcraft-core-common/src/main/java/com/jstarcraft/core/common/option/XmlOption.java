@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.io.StringReader;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class XmlConfigurator implements StringConfigurator {
+public class XmlOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -77,7 +77,7 @@ public class XmlConfigurator implements StringConfigurator {
         }
     }
 
-    public XmlConfigurator(String xml) {
+    public XmlOption(String xml) {
         this.keyValues = new LinkedHashMap<>();
         xml = xml.replaceAll("\\r", "").replaceAll("\\n", "").replaceAll("\\t", "");
         try {

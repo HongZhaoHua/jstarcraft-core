@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public interface StringConfigurator extends Configurator {
+public interface StringOption extends Option {
 
     @Override
     default BigDecimal getBigDecimal(String key, BigDecimal instead) {

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class YamlConfigurator implements StringConfigurator {
+public class YamlOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -46,7 +46,7 @@ public class YamlConfigurator implements StringConfigurator {
         }
     }
 
-    public YamlConfigurator(String yaml) {
+    public YamlOption(String yaml) {
         this.keyValues = new LinkedHashMap<>();
         Type type = TypeUtility.parameterize(LinkedHashMap.class, String.class, Object.class);
         flatten(StringUtility.EMPTY, YamlUtility.string2Object(yaml, type), keyValues);

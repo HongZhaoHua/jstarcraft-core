@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -12,12 +12,12 @@ import java.util.Properties;
  * @author Birdy
  *
  */
-public class PropertyConfigurator implements StringConfigurator {
+public class PropertyOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
 
-    public PropertyConfigurator(String properties) {
+    public PropertyOption(String properties) {
         Properties keyValues = new Properties();
         try (BufferedReader buffer = new BufferedReader(new StringReader(properties))) {
             keyValues.load(buffer);

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class JsonConfigurator implements StringConfigurator {
+public class JsonOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -46,7 +46,7 @@ public class JsonConfigurator implements StringConfigurator {
         }
     }
 
-    public JsonConfigurator(String json) {
+    public JsonOption(String json) {
         this.keyValues = new LinkedHashMap<>();
         Type type = TypeUtility.parameterize(LinkedHashMap.class, String.class, Object.class);
         flatten(StringUtility.EMPTY, JsonUtility.string2Object(json, type), keyValues);
