@@ -69,21 +69,6 @@ public interface StringConfigurator extends Configurator {
     }
 
     @Override
-    default Class getClass(String key, Class instead) {
-        String value = getString(key);
-        try {
-            return StringUtility.isBlank(value) ? instead : Class.forName(value);
-        } catch (ClassNotFoundException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    @Override
-    default Class getClass(String key) {
-        return getClass(key, null);
-    }
-
-    @Override
     default Double getDouble(String key, Double instead) {
         String value = getString(key);
         return StringUtility.isBlank(value) ? instead : Double.valueOf(value);
@@ -136,45 +121,6 @@ public interface StringConfigurator extends Configurator {
     @Override
     default Long getLong(String key) {
         return getLong(key, null);
-    }
-
-    @Override
-    default <T> T getObject(Class<T> clazz, String key, T instead) {
-        Object value = null;
-        if (clazz == Boolean.class || clazz == boolean.class) {
-            value = getBoolean(key);
-        }
-        if (clazz == Byte.class || clazz == byte.class) {
-            value = getByte(key);
-        }
-        if (clazz == Character.class || clazz == char.class) {
-            value = getCharacter(key);
-        }
-        if (clazz == Class.class) {
-            value = getClass(key);
-        }
-        if (clazz == Double.class || clazz == double.class) {
-            value = getDouble(key);
-        }
-        if (clazz == Float.class || clazz == float.class) {
-            value = getFloat(key);
-        }
-        if (clazz == Integer.class || clazz == int.class) {
-            value = getInteger(key);
-        }
-        if (clazz == Long.class || clazz == long.class) {
-            value = getLong(key);
-        }
-        if (clazz == String.class) {
-            value = getString(key);
-        }
-        // TODO 不支持的类型
-        return value == null ? instead : (T) value;
-    }
-
-    @Override
-    default <T> T getObject(Class<T> clazz, String key) {
-        return getObject(clazz, key, null);
     }
 
     @Override
