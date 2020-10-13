@@ -1,11 +1,6 @@
-MQTT3.1.1协议中文版:
+##### MQTT 3.1.1 #####
+MQTT 3.1.1 协议中文版:
 http://mqtt.p2hp.com/mqtt311
-
-MQTT5.0协议中文版:
-http://mqtt.p2hp.com/mqtt-5-0
-
-MQTT 协议:
-https://www.emqx.io/cn/blog/category/mqtt-protocol
 
 MQTT Part 1 简介:
 https://www.jianshu.com/p/da8e03d8ab08
@@ -33,8 +28,13 @@ https://www.jianshu.com/p/210063a3e9dc
 MQTT协议从服务端到客户端详解:
 https://www.jianshu.com/p/3d5b487c6860
 
-MQTT协议中文版:
-https://github.com/mcxiaoke/mqtt
+##### MQTT 5.0 #####
+
+MQTT 5.0 协议中文版:
+http://mqtt.p2hp.com/mqtt-5-0
+
+MQTT 协议:
+https://www.emqx.io/cn/blog/category/mqtt-protocol
 
 Vert.x MQTT:
 https://vertx.io/docs/vertx-mqtt/java/
