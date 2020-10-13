@@ -84,6 +84,11 @@
         </dependency>
 
         <!-- TOML -->
+        <dependency>
+            <groupId>com.teesoft</groupId>
+            <artifactId>jackson-dataformat-toml</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <!-- XML -->
         <dependency>
