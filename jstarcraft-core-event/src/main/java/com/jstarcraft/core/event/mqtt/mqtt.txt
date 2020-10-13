@@ -1,3 +1,6 @@
+MQTT 协议:
+https://www.emqx.io/cn/blog/category/mqtt-protocol
+
 MQTT Part 1 简介:
 https://www.jianshu.com/p/da8e03d8ab08
 MQTT Part 2 发布和订阅:
