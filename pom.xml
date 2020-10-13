@@ -215,7 +215,7 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-amqp-client</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- JMS框架依赖 -->
@@ -236,7 +236,7 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-mqtt</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- QMQ框架依赖 -->
@@ -270,14 +270,14 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-stomp</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- Vert.x框架依赖 -->
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-core</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- 监控框架依赖 -->
