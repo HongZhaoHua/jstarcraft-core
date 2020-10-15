@@ -18,3 +18,6 @@ https://blog.csdn.net/hspingcc/article/details/73332526
 
 LocalDateTime 获取当前是第几周:
 https://blog.csdn.net/MariaOzawa/article/details/104329172
+
+How do I parse RFC 3339 datetimes with Java?:
+https://stackoverflow.com/questions/6038136/how-do-i-parse-rfc-3339-datetimes-with-java
