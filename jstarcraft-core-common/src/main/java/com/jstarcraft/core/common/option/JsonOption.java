@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
@@ -24,9 +25,9 @@ public class JsonOption implements StringOption {
     private Map<String, String> keyValues;
 
     protected void flatten(String path, Map<String, Object> from, Map<String, String> to) {
-        Set<Map.Entry<String, Object>> keyValues = from.entrySet();
-        for (Iterator<Map.Entry<String, Object>> iterator = keyValues.iterator(); iterator.hasNext();) {
-            Map.Entry<String, Object> keyValue = iterator.next();
+        Set<Entry<String, Object>> keyValues = from.entrySet();
+        for (Iterator<Entry<String, Object>> iterator = keyValues.iterator(); iterator.hasNext();) {
+            Entry<String, Object> keyValue = iterator.next();
             String key = keyValue.getKey();
             Object value = keyValue.getValue();
             key = StringUtility.isEmpty(path) ? key : key.startsWith("[") ? path.concat(key) : path.concat(StringUtility.DOT).concat(key);

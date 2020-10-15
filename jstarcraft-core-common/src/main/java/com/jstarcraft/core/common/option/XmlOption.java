@@ -17,6 +17,8 @@ import org.xml.sax.InputSource;
 
 import com.jstarcraft.core.utility.StringUtility;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 /**
  * XML配置器
  * 
@@ -54,18 +56,32 @@ public class XmlOption implements StringOption {
             return;
         }
         path = path == null ? "" : path;
-        for (int index = 0, size = nodes.getLength(); index < size; index++) {
+        int size = nodes.getLength();
+        Object2IntOpenHashMap<String> counts = new Object2IntOpenHashMap<>();
+        for (int index = 0; index < size; index++) {
             Node node = nodes.item(index);
-            String value = node.getNodeValue();
-            value = value == null ? "" : value.trim();
+            String name = node.getNodeName();
+            int count = counts.getOrDefault(name, 0);
+            counts.put(name, count + 1);
+        }
+        Object2IntOpenHashMap<String> currents = new Object2IntOpenHashMap<>();
+        for (int index = 0; index < size; index++) {
+            Node node = nodes.item(index);
             String name = node.getNodeName();
             name = name == null ? "" : name.trim();
-            if (StringUtils.isEmpty(name)) {
+            if (StringUtility.isEmpty(name)) {
                 continue;
             }
+            String value = node.getNodeValue();
+            value = value == null ? "" : value.trim();
+            if (counts.getInt(name) > 1) {
+                int current = currents.getOrDefault(name, 0);
+                currents.put(name, current + 1);
+                name = name + "[" + current + "]";
+            }
             String key = StringUtility.isEmpty(path) ? name : path + StringUtility.DOT + name;
-            NamedNodeMap nodeMap = node.getAttributes();
-            flatten(key, nodeMap, keyValues);
+            NamedNodeMap attributes = node.getAttributes();
+            flatten(key, attributes, keyValues);
             if (node.getNodeType() == Node.ELEMENT_NODE && node.hasChildNodes()) {
                 flatten(key, node.getChildNodes(), keyValues);
                 continue;
@@ -83,6 +99,7 @@ public class XmlOption implements StringOption {
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.parse(new InputSource(new StringReader(xml)));
+            flatten("", document.getAttributes(), keyValues);
             flatten("", document.getChildNodes(), keyValues);
         } catch (Exception exception) {
             throw new RuntimeException(exception);

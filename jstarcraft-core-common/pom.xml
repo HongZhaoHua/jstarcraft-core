@@ -54,11 +54,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-configuration2</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.googlecode.concurrentlinkedhashmap</groupId>
             <artifactId>concurrentlinkedhashmap-lru</artifactId>
         </dependency>
@@ -123,13 +118,6 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
-        <!-- HOCON -->
-        <dependency>
-            <groupId>com.electronwill.night-config</groupId>
-            <artifactId>hocon</artifactId>
-            <version>3.6.3</version>
-        </dependency>
-
         <!-- JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -146,19 +134,39 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- TOML -->
-        <dependency>
-            <groupId>com.electronwill.night-config</groupId>
-            <artifactId>toml</artifactId>
-            <version>3.6.3</version>
-        </dependency>
-
         <!-- CRON -->
         <dependency>
             <groupId>com.cronutils</groupId>
             <artifactId>cron-utils</artifactId>
         </dependency>
 
+        <!-- 配置项依赖 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+        </dependency>
+
+        <!-- NightConfig依赖 -->
+        <dependency>
+            <groupId>com.electronwill.night-config</groupId>
+            <artifactId>hocon</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.electronwill.night-config</groupId>
+            <artifactId>toml</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+
+        <!-- TOML -->
+        <dependency>
+            <groupId>org.tomlj</groupId>
+            <artifactId>tomlj</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- 选择项依赖 -->
         <!-- CSS -->
         <dependency>
             <groupId>org.jsoup</groupId>
