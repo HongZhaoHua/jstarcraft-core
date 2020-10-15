@@ -3,3 +3,6 @@ https://blog.csdn.net/wanghantong/article/details/79072474
 
 使用Netflix Archaius进行配置管理:
 https://www.jianshu.com/p/f9d7500920a9
+
+TomlJ: A Java parser for Tom's Obvious, Minimal Language (TOML):
+https://github.com/tomlj/tomlj
