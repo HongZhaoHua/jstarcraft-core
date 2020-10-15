@@ -1,2 +1,4 @@
 Jackson (Java) data format module that supports reading and writing CBOR ("Concise Binary Object Representation") encoded data:
 https://github.com/FasterXML/jackson-dataformats-binary/tree/master/cbor
+
+http://cbor.io/impls.html
