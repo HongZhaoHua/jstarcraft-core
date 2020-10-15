@@ -9,7 +9,7 @@ import org.apache.commons.configuration2.Configuration;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * Apache配置器
+ * Apache Configuration2配置器
  * 
  * @author Birdy
  *

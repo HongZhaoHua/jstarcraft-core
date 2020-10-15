@@ -32,8 +32,8 @@ public class XmlOption implements StringOption {
         if (null == attributes || attributes.getLength() < 1) {
             return;
         }
-        for (int i = 0; i < attributes.getLength(); i++) {
-            Node node = attributes.item(i);
+        for (int index = 0, size = attributes.getLength(); index < size; index++) {
+            Node node = attributes.item(index);
             if (null == node) {
                 continue;
             }
