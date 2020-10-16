@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.jstarcraft.core.codec.avro.AvroContentCodecTestCase;
+import com.jstarcraft.core.codec.cbor.CborContentCodecTestCase;
 import com.jstarcraft.core.codec.csv.CsvContentCodecTestCase;
 import com.jstarcraft.core.codec.hessian.HessianContentCodecTestCase;
 import com.jstarcraft.core.codec.json.JsonContentCodecTestCase;
@@ -21,6 +22,8 @@ import com.jstarcraft.core.codec.yaml.YamlContentCodecTestCase;
         CodecDefinitionTestCase.class,
 
         AvroContentCodecTestCase.class,
+
+        CborContentCodecTestCase.class,
 
         CsvContentCodecTestCase.class,
 

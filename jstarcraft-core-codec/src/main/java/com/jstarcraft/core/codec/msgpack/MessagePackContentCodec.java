@@ -57,13 +57,9 @@ public class MessagePackContentCodec implements ContentCodec {
     @Override
     public Object decode(Type type, byte[] content) {
         try {
-            if (content.length == 0) {
-                return null;
-            }
             Specification specification = Specification.getSpecification(type);
-            if (specification == Specification.TYPE) {
-                Type value = typeConverter.readValue(content, Type.class);
-                return value;
+            if (Specification.TYPE == specification) {
+                return typeConverter.readValue(content, Type.class);
             } else {
                 return typeConverter.readValue(content, JsonUtility.type2Java(type));
             }
@@ -78,9 +74,8 @@ public class MessagePackContentCodec implements ContentCodec {
     public Object decode(Type type, InputStream stream) {
         try {
             Specification specification = Specification.getSpecification(type);
-            if (specification == Specification.TYPE) {
-                Type value = typeConverter.readValue(stream, Type.class);
-                return value;
+            if (Specification.TYPE == specification) {
+                return typeConverter.readValue(stream, Type.class);
             } else {
                 return typeConverter.readValue(stream, JsonUtility.type2Java(type));
             }
@@ -94,11 +89,7 @@ public class MessagePackContentCodec implements ContentCodec {
     @Override
     public byte[] encode(Type type, Object content) {
         try {
-            if (content == null) {
-                return new byte[] {};
-            }
-            byte[] value = typeConverter.writeValueAsBytes(content);
-            return value;
+            return typeConverter.writeValueAsBytes(content);
         } catch (Exception exception) {
             String message = "MessagePack编码异常";
             LOGGER.error(message, exception);

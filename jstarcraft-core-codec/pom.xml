@@ -33,18 +33,18 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Cbro -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-cbor</artifactId>
-            <version>2.11.1</version>
-        </dependency>
-
         <!-- BSON -->
         <dependency>
             <groupId>de.undercouch</groupId>
             <artifactId>bson4jackson</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- CBOR -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
+            <version>2.11.1</version>
         </dependency>
 
         <!-- Hessian -->

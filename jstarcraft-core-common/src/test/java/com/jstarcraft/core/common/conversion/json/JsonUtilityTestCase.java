@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.redisson.codec.JsonJacksonCodec;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 
@@ -73,6 +75,17 @@ public class JsonUtilityTestCase {
         convertType(type);
         type = TypeUtility.genericArrayType(TypeUtility.parameterize(Map.class, String.class, type));
         convertType(type);
+    }
+
+    @Test
+    public void test() throws Exception {
+        JsonJacksonCodec codec = new JsonJacksonCodec();
+        Object object = MockSimpleObject.instanceOf(1000, "birdy");
+        String json = codec.getObjectMapper().writeValueAsString(object);
+        System.out.println(object);
+        System.out.println(json);
+        object = codec.getObjectMapper().readValue(json, Object.class);
+        System.out.println(object);
     }
 
 }
