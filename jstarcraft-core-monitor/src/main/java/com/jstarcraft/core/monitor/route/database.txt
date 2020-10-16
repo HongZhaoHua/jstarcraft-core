@@ -4,6 +4,9 @@ http://www.mycat.org.cn
 Apache ShardingSphere:
 http://shardingsphere.apache.org/index_zh.html
 
+SpringBoot 集成 Sharding-JDBC 实现易于扩容的分库分表:
+https://blog.csdn.net/feichitianxia/article/details/106876424
+
 使用Sharding-JDBC 分库分表:
 https://www.cnblogs.com/coderzhw/p/11094305.html
 
