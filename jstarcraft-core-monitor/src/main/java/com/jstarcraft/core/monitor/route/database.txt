@@ -4,6 +4,9 @@ http://www.mycat.org.cn
 Apache ShardingSphere:
 http://shardingsphere.apache.org/index_zh.html
 
+Sharding-JDBC教程:
+https://blog.csdn.net/womenyiqilalala/category_9915733.html
+
 跟我学Sharding-JDBC:
 http://wuwenliang.net/categories/Sharding-JDBC
 
