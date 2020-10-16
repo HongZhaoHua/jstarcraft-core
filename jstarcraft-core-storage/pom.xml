@@ -38,6 +38,19 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring</artifactId>
+            <version>4.1.1</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+
         <!-- 存储框架依赖 -->
         <!-- 键值型存储框架依赖 -->
         <dependency>
