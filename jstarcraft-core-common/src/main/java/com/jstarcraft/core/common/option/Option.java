@@ -1,9 +1,7 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Iterator;
 
 /**
@@ -13,7 +11,7 @@ import java.util.Iterator;
  *
  */
 // TODO 考虑改名Option
-public interface Configurator {
+public interface Option {
 
     BigDecimal getBigDecimal(String key, BigDecimal instead);
 
@@ -35,10 +33,6 @@ public interface Configurator {
 
     Character getCharacter(String key);
 
-    Class getClass(String key, Class instead);
-
-    Class getClass(String key);
-
     Double getDouble(String key, Double instead);
 
     Double getDouble(String key);
@@ -59,21 +53,9 @@ public interface Configurator {
 
     Long getLong(String key);
 
-    LocalDateTime getLocalDateTime(String key, LocalDateTime instead);
-
-    LocalDateTime getLocalDateTime(String key);
-
-    <T> T getObject(Class<T> clazz, String key, T instead);
-
-    <T> T getObject(Class<T> clazz, String key);
-
     String getString(String key, String instead);
 
     String getString(String key);
-
-    ZonedDateTime getZonedDateTime(String key, ZonedDateTime instead);
-
-    ZonedDateTime getZonedDateTime(String key);
 
     Iterator<String> getKeys();
 

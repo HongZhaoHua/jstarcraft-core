@@ -31,3 +31,6 @@ redis.call会触发Lua中的异常，redis.pcall将自动捕获所有能检测�
 Lua数字都将被转换为整数，发给Redis的小数点会丢失，返回前把它们转换成字符串类型。
 确保在Lua中使用的所有KEY都在KEY表中，否则在将来的Redis版中你的脚本都有不能被很好支持的危险。
 Lua脚本和其它Redis操作一样，在脚本执行时，其它的一切都不能运行。考虑用脚本来护展Redis服务器能力，但要保持短小和有用。
+
+Redis 与 Lua 使用中的小问题:
+https://www.hchstudio.cn/article/2019/88af

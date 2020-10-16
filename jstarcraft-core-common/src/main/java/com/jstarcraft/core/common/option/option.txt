@@ -1,0 +1,11 @@
+Commons-Configuration2简介、使用方式、代码范例:
+https://blog.csdn.net/wanghantong/article/details/79072474
+
+使用Netflix Archaius进行配置管理:
+https://www.jianshu.com/p/f9d7500920a9
+
+NightConfig is a powerful yet easy-to-use java configuration library, written in Java 8:
+https://github.com/TheElectronWill/night-config
+
+TomlJ: A Java parser for Tom's Obvious, Minimal Language (TOML):
+https://github.com/tomlj/tomlj

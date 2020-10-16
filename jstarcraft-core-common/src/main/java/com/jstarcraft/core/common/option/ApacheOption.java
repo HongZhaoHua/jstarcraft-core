@@ -1,24 +1,24 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Iterator;
 
 import org.apache.commons.configuration2.Configuration;
 
+import com.jstarcraft.core.utility.StringUtility;
+
 /**
- * Apache配置器
+ * Apache Configuration2配置器
  * 
  * @author Birdy
  *
  */
-public class ApacheConfigurator implements Configurator {
+public class ApacheOption implements Option {
 
     private Configuration keyValues;
 
-    public ApacheConfigurator(Configuration keyValues) {
+    public ApacheOption(Configuration keyValues) {
         this.keyValues = keyValues;
     }
 
@@ -64,26 +64,13 @@ public class ApacheConfigurator implements Configurator {
 
     @Override
     public Character getCharacter(String key, Character instead) {
-        // TODO Auto-generated method stub
-        return null;
+        String value = getString(key);
+        return StringUtility.isBlank(value) ? instead : Character.valueOf(value.charAt(0));
     }
 
     @Override
     public Character getCharacter(String key) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Class getClass(String key, Class instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Class getClass(String key) {
-        // TODO Auto-generated method stub
-        return null;
+        return getCharacter(key, null);
     }
 
     @Override
@@ -98,14 +85,13 @@ public class ApacheConfigurator implements Configurator {
 
     @Override
     public <T extends Enum<T>> T getEnumeration(Class<T> clazz, String key, T instead) {
-        // TODO Auto-generated method stub
-        return null;
+        String value = getString(key);
+        return StringUtility.isBlank(value) ? instead : Enum.valueOf(clazz, value);
     }
 
     @Override
     public <T extends Enum<T>> T getEnumeration(Class<T> clazz, String key) {
-        // TODO Auto-generated method stub
-        return null;
+        return getEnumeration(clazz, key, null);
     }
 
     @Override
@@ -139,30 +125,6 @@ public class ApacheConfigurator implements Configurator {
     }
 
     @Override
-    public LocalDateTime getLocalDateTime(String key, LocalDateTime instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public LocalDateTime getLocalDateTime(String key) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <T> T getObject(Class<T> clazz, String key, T instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <T> T getObject(Class<T> clazz, String key) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public String getString(String key, String instead) {
         return keyValues.getString(key, instead);
     }
@@ -170,18 +132,6 @@ public class ApacheConfigurator implements Configurator {
     @Override
     public String getString(String key) {
         return keyValues.getString(key);
-    }
-
-    @Override
-    public ZonedDateTime getZonedDateTime(String key, ZonedDateTime instead) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ZonedDateTime getZonedDateTime(String key) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
