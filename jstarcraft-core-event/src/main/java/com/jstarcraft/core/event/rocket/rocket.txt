@@ -25,3 +25,6 @@ https://www.jianshu.com/p/5843cdcd02aa
 消息中间件—RocketMQ消息存储:
 https://www.jianshu.com/p/b73fdd893f98
 https://www.jianshu.com/p/6d0c118c17de
+
+RocketMQ消费的位置:
+https://blog.csdn.net/xiaobao5214/article/details/80510994
