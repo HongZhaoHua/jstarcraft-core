@@ -215,7 +215,7 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-amqp-client</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- JMS框架依赖 -->
@@ -236,7 +236,7 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-mqtt</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- QMQ框架依赖 -->
@@ -270,14 +270,14 @@
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-stomp</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- Vert.x框架依赖 -->
             <dependency>
                 <groupId>io.vertx</groupId>
                 <artifactId>vertx-core</artifactId>
-                <version>3.8.5</version>
+                <version>3.9.3</version>
             </dependency>
 
             <!-- 监控框架依赖 -->
@@ -320,7 +320,8 @@
                 <version>5.2.8.RELEASE</version>
             </dependency>
 
-            <!-- 对象关系映射框架依赖 -->
+            <!-- 存储框架依赖 -->
+            <!-- 键值型存储框架依赖 -->
             <dependency>
                 <groupId>com.sleepycat</groupId>
                 <artifactId>je</artifactId>
@@ -333,6 +334,7 @@
                 <version>2.2.3</version>
             </dependency>
 
+            <!-- 关系型存储框架依赖 -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -351,6 +353,13 @@
                 <version>5.2.8.RELEASE</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!-- 文档型存储框架依赖 -->
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
@@ -399,12 +408,7 @@
                 <version>2.2.2.RELEASE</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-
+            <!-- 图型存储框架依赖 -->
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j</artifactId>
@@ -702,7 +706,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>4.13.1</version>
             </dependency>
 
             <dependency>

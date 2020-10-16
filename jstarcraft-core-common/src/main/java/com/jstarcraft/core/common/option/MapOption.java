@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -9,12 +9,12 @@ import java.util.Map;
  * @author Birdy
  *
  */
-public class MapConfigurator implements StringConfigurator {
+public class MapOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
 
-    public MapConfigurator(Map keyValues) {
+    public MapOption(Map keyValues) {
         this.keyValues = keyValues;
     }
 

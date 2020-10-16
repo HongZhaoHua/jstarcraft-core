@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.option;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -6,27 +6,28 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-import com.jstarcraft.core.common.conversion.yaml.YamlUtility;
+import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * YAML配置器
+ * JSON配置器
  * 
  * @author Birdy
  *
  */
-public class YamlConfigurator implements StringConfigurator {
+public class JsonOption implements StringOption {
 
     /** 配置项 */
     private Map<String, String> keyValues;
 
     protected void flatten(String path, Map<String, Object> from, Map<String, String> to) {
-        Set<Map.Entry<String, Object>> keyValues = from.entrySet();
-        for (Iterator<Map.Entry<String, Object>> iterator = keyValues.iterator(); iterator.hasNext();) {
-            Map.Entry<String, Object> keyValue = iterator.next();
+        Set<Entry<String, Object>> keyValues = from.entrySet();
+        for (Iterator<Entry<String, Object>> iterator = keyValues.iterator(); iterator.hasNext();) {
+            Entry<String, Object> keyValue = iterator.next();
             String key = keyValue.getKey();
             Object value = keyValue.getValue();
             key = StringUtility.isEmpty(path) ? key : key.startsWith("[") ? path.concat(key) : path.concat(StringUtility.DOT).concat(key);
@@ -46,10 +47,10 @@ public class YamlConfigurator implements StringConfigurator {
         }
     }
 
-    public YamlConfigurator(String yaml) {
+    public JsonOption(String json) {
         this.keyValues = new LinkedHashMap<>();
         Type type = TypeUtility.parameterize(LinkedHashMap.class, String.class, Object.class);
-        flatten(StringUtility.EMPTY, YamlUtility.string2Object(yaml, type), keyValues);
+        flatten(StringUtility.EMPTY, JsonUtility.string2Object(json, type), keyValues);
     }
 
     @Override

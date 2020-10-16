@@ -161,6 +161,18 @@ public class SolarExpressionTestCase {
             }
         }
         {
+            SolarExpression expression = new SolarExpression("0 0 12 ? * 1#5 2020");
+            LocalDateTime dateTime = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
+            dateTime = expression.getPreviousDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2020, 11, 29, 12, 0, 0), dateTime);
+        }
+        {
+            SolarExpression expression = new SolarExpression("0 0 12 ? * 1#5 2020");
+            LocalDateTime dateTime = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+            dateTime = expression.getNextDateTime(dateTime);
+            Assert.assertEquals(LocalDateTime.of(2020, 3, 29, 12, 0, 0), dateTime);
+        }
+        {
             SolarExpression expression = new SolarExpression("0 0 12 ? * SUNL 2020");
             LocalDateTime dateTime = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
             for (int index = 0, size = 12; index < size; index++) {

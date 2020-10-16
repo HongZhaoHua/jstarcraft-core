@@ -1,0 +1,8 @@
+Mybatis Plugin 以及Druid Filer 改写SQL:
+https://www.cnblogs.com/larva-zhh/p/12191531.html
+
+JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes. The generated hierarchy can be navigated using the Visitor Pattern:
+https://github.com/JSQLParser/JSqlParser
+
+使用JSqlParser替换SQL语句中的表名:
+http://xfenglin.com/a/12008491585.html

@@ -94,6 +94,33 @@ public class RedissonTestCase {
             // 自定义脚本,相当于
             /**
              * <pre>
+             * boolean exists = (limiter != null);
+             * int current = number;
+             * if (exists) {
+             *     current += limiter.get(key);
+             * }
+             * if (current > limit) {
+             *     return false;
+             * }
+             * limiter.put(key, current);
+             * if (!exists) {
+             *     setExpire(limiter, expire);
+             * }
+             * return true;
+             * </pre>
+             */
+            signature = script.scriptLoad("local exists = redis.call('exists', KEYS[1]); local current = tonumber(ARGV[2]); local limit = tonumber(ARGV[3]); if (exists == 1) then current = current + redis.call('hget', KEYS[1], ARGV[1]); end; if (current > limit) then return false; end; redis.call('hset', KEYS[1], ARGV[1], current); if (exists == 0) then redis.call('expire', KEYS[1], ARGV[4]); end; return true;");
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.TRUE, value);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.FALSE, value);
+            Thread.sleep(5000);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.TRUE, value);
+
+            // 自定义脚本,相当于
+            /**
+             * <pre>
              * Integer index = attributes.get("key");
              * if (index == null) {
              *     index = attributes.size();

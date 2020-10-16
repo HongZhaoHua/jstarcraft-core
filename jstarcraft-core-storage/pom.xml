@@ -38,12 +38,27 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- 对象关系映射框架依赖 -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring</artifactId>
+            <version>4.1.1</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+
+        <!-- 存储框架依赖 -->
+        <!-- 键值型存储框架依赖 -->
         <dependency>
             <groupId>com.sleepycat</groupId>
             <artifactId>je</artifactId>
         </dependency>
 
+        <!-- 关系型存储框架依赖 -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -59,6 +74,12 @@
             <artifactId>spring-orm</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+        </dependency>
+
+        <!-- 文档型存储框架依赖 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
@@ -99,11 +120,7 @@
             <artifactId>spring-data-mongodb</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-        </dependency>
-
+        <!-- 图型存储框架依赖 -->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
