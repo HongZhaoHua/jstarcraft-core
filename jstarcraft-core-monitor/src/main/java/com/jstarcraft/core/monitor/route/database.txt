@@ -4,6 +4,12 @@ http://www.mycat.org.cn
 Apache ShardingSphere:
 http://shardingsphere.apache.org/index_zh.html
 
+跟我学Sharding-JDBC:
+http://wuwenliang.net/categories/Sharding-JDBC
+
+【分库分表】Sharding-JDBC—分片策略:
+https://www.cnblogs.com/mr-yang-localhost/p/8313360.html
+
 SpringBoot 集成 Sharding-JDBC 实现易于扩容的分库分表:
 https://blog.csdn.net/feichitianxia/article/details/106876424
 
