@@ -20,28 +20,7 @@ import io.etcd.jetcd.options.LeaseOption;
  */
 public class EtcdTransactionManager extends TransactionManager {
 
-    private class Holder {
-
-        private final long lease;
-
-        private final ByteSequence lock;
-
-        private Holder(long lease, ByteSequence lock) {
-            this.lease = lease;
-            this.lock = lock;
-        }
-
-        public long getLease() {
-            return lease;
-        }
-
-        public ByteSequence getLock() {
-            return lock;
-        }
-
-    }
-
-    private ThreadLocal<Holder> holders = new ThreadLocal<>();
+    private ThreadLocal<Long> holders = new ThreadLocal<>();
 
     private Client etcd;
 
@@ -58,10 +37,11 @@ public class EtcdTransactionManager extends TransactionManager {
         try {
             long lease = etcd.getLeaseClient().grant(TimeUnit.SECONDS.convert(expire, TimeUnit.MILLISECONDS)).get().getID();
             try {
-                ByteSequence lock = etcd.getLockClient().lock(ByteSequence.from(key.getBytes(StringUtility.CHARSET)), lease).get(1000, TimeUnit.MILLISECONDS).getKey();
-                Holder holder = new Holder(lease, lock);
-                holders.set(holder);
+                // 租约加锁成功则保存
+                etcd.getLockClient().lock(ByteSequence.from(key.getBytes(StringUtility.CHARSET)), lease).get(1000, TimeUnit.MILLISECONDS).getKey();
+                holders.set(lease);
             } catch (Exception exception) {
+                // 租约加锁失败则释放
                 etcd.getLeaseClient().revoke(lease).get();
                 throw new TransactionLockException();
             }
@@ -76,14 +56,12 @@ public class EtcdTransactionManager extends TransactionManager {
         String key = definition.getName();
         Long value = definition.getMost().toEpochMilli();
         try {
-            Holder holder = holders.get();
-            long lease = holder.getLease();
-            ByteSequence lock = holder.getLock();
+            long lease = holders.get();
             holders.remove();
             long ttl = etcd.getLeaseClient().timeToLive(lease, LeaseOption.DEFAULT).get().getTTl();
+            // 根据TTL判断租约状态
             if (ttl > 0) {
                 etcd.getLeaseClient().revoke(lease).get();
-                etcd.getLockClient().unlock(lock).get();
             } else {
                 throw new TransactionUnlockException();
             }
