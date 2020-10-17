@@ -1,3 +1,6 @@
+SQL语言分类DDL、DML、DQL、TCL、DCL:
+https://blog.csdn.net/pengpengpeng85/article/details/78764787
+
 Mybatis Plugin 以及Druid Filer 改写SQL:
 https://www.cnblogs.com/larva-zhh/p/12191531.html
 
