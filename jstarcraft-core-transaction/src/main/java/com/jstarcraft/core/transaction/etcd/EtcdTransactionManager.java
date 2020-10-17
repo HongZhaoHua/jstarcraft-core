@@ -13,17 +13,35 @@ import io.etcd.jetcd.Client;
 import io.etcd.jetcd.options.LeaseOption;
 
 /**
- * Etcd事务管理器
+ * etcd事务管理器
  * 
  * @author Birdy
  *
  */
-// TODO 此类需要重构
 public class EtcdTransactionManager extends TransactionManager {
 
-    private long lease;
+    private class Holder {
 
-    private ByteSequence lock;
+        private final long lease;
+
+        private final ByteSequence lock;
+
+        private Holder(long lease, ByteSequence lock) {
+            this.lease = lease;
+            this.lock = lock;
+        }
+
+        public long getLease() {
+            return lease;
+        }
+
+        public ByteSequence getLock() {
+            return lock;
+        }
+
+    }
+
+    private ThreadLocal<Holder> holders = new ThreadLocal<>();
 
     private Client etcd;
 
@@ -38,8 +56,15 @@ public class EtcdTransactionManager extends TransactionManager {
         Long value = definition.getMost().toEpochMilli();
         int expire = Long.valueOf(value - System.currentTimeMillis()).intValue();
         try {
-            lease = etcd.getLeaseClient().grant(TimeUnit.SECONDS.convert(expire, TimeUnit.MILLISECONDS)).get().getID();
-            lock = etcd.getLockClient().lock(ByteSequence.from(key.getBytes(StringUtility.CHARSET)), lease).get(1000, TimeUnit.MILLISECONDS).getKey();
+            long lease = etcd.getLeaseClient().grant(TimeUnit.SECONDS.convert(expire, TimeUnit.MILLISECONDS)).get().getID();
+            try {
+                ByteSequence lock = etcd.getLockClient().lock(ByteSequence.from(key.getBytes(StringUtility.CHARSET)), lease).get(1000, TimeUnit.MILLISECONDS).getKey();
+                Holder holder = new Holder(lease, lock);
+                holders.set(holder);
+            } catch (Exception exception) {
+                etcd.getLeaseClient().revoke(lease).get();
+                throw new TransactionLockException();
+            }
         } catch (Exception exception) {
             throw new TransactionLockException(exception);
         }
@@ -51,6 +76,10 @@ public class EtcdTransactionManager extends TransactionManager {
         String key = definition.getName();
         Long value = definition.getMost().toEpochMilli();
         try {
+            Holder holder = holders.get();
+            long lease = holder.getLease();
+            ByteSequence lock = holder.getLock();
+            holders.remove();
             long ttl = etcd.getLeaseClient().timeToLive(lease, LeaseOption.DEFAULT).get().getTTl();
             if (ttl > 0) {
                 etcd.getLeaseClient().revoke(lease).get();
