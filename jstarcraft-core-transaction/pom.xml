@@ -20,6 +20,7 @@
         </dependency>
 
         <!-- 事务框架依赖 -->
+        <!-- Cassandra -->
         <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
@@ -32,24 +33,41 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Couchbase -->
         <dependency>
             <groupId>com.couchbase.client</groupId>
             <artifactId>java-client</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!-- Elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!-- etcd -->
+        <dependency>
+            <groupId>org.mousio</groupId>
+            <artifactId>etcd4j</artifactId>
+            <version>2.18.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.etcd</groupId>
+            <artifactId>jetcd-all</artifactId>
+            <version>0.5.3</version>
+        </dependency>
+
+        <!-- Hazelcast -->
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!-- Redis -->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
@@ -62,6 +80,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- ZooKeeper -->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
