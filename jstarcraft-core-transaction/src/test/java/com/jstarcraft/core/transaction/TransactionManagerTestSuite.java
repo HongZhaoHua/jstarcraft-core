@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.jstarcraft.core.transaction.cassandra.CassandraTransactionManagerTestCase;
 import com.jstarcraft.core.transaction.elasticsearch.ElasticsearchTransactionManagerTestCase;
+import com.jstarcraft.core.transaction.etcd.EtcdTransactionManagerTestCase;
 import com.jstarcraft.core.transaction.hazelcast.HazelcastTransactionManagerTestCase;
 import com.jstarcraft.core.transaction.hibernate.HibernateTransactionManagerTestCase;
 import com.jstarcraft.core.transaction.mongo.MongoTransactionManagerTestCase;
@@ -18,6 +19,8 @@ import com.jstarcraft.core.transaction.zookeeper.ZooKeeperTransactionManagerTest
         CassandraTransactionManagerTestCase.class,
 
         ElasticsearchTransactionManagerTestCase.class,
+
+        EtcdTransactionManagerTestCase.class,
 
         HazelcastTransactionManagerTestCase.class,
 

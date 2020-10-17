@@ -52,12 +52,14 @@
             <groupId>org.mousio</groupId>
             <artifactId>etcd4j</artifactId>
             <version>2.18.0</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>io.etcd</groupId>
             <artifactId>jetcd-all</artifactId>
             <version>0.5.3</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Hazelcast -->

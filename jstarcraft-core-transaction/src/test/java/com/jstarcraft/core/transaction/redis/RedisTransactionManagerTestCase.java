@@ -10,7 +10,6 @@ import org.redisson.config.Config;
 
 import com.jstarcraft.core.transaction.TransactionManager;
 import com.jstarcraft.core.transaction.TransactionManagerTestCase;
-import com.jstarcraft.core.transaction.redis.RedisTransactionManager;
 
 public class RedisTransactionManagerTestCase extends TransactionManagerTestCase {
 
