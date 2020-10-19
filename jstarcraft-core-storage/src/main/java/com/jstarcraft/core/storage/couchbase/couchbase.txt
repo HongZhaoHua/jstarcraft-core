@@ -1,8 +1,5 @@
 Couchbase Enterprise vs. Community Edition vs. Couchbase Cloud:
 https://www.couchbase.com/products/editions
 
-System Properties Comparison Couchbase vs. CouchDB vs. MongoDB:
-https://db-engines.com/en/system/CouchDB%3BCouchbase%3BMongoDB
-
 Feature set: CouchDB vs. Couchbase:
 https://www.couchbase.com/comparing-couchbase-vs-couchdb
