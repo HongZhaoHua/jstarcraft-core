@@ -6,3 +6,6 @@ https://amudabadmus.wordpress.com/2017/09/07/how-to-install-dynamodb-on-windows
 
 Install DynamoDB In Local System:
 https://cloudaffaire.com/install-dynamodb-in-local-system
+
+Amazon DynamoDB开发人员指南:
+https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/Introduction.html
