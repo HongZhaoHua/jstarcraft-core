@@ -1,3 +1,6 @@
+详解Spring事件驱动模型:
+http://jinnianshilongnian.iteye.com/blog/1902886
+
 Spring IOC 容器源码分析:
 https://javadoop.com/post/spring-ioc
 
