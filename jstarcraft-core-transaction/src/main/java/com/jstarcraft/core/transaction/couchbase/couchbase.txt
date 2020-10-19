@@ -1,2 +1,5 @@
 安装 Couchbase 服务器:
 https://www.cnblogs.com/haogj/p/3587943.html
+
+Couchbase 中文教程:
+https://xiaoxiami.gitbook.io/couchbase
