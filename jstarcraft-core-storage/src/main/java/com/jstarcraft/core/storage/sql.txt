@@ -9,3 +9,6 @@ https://github.com/JSQLParser/JSqlParser
 
 使用JSqlParser替换SQL语句中的表名:
 http://xfenglin.com/a/12008491585.html
+
+基于antlr4 解析器，支持spark sql, tidb sql, flink sql, Spark/flink jar 运行命令解析器:
+https://github.com/melin/dataworker-sql-parser
