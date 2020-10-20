@@ -12,3 +12,6 @@ http://xfenglin.com/a/12008491585.html
 
 基于antlr4 解析器，支持spark sql, tidb sql, flink sql, Spark/flink jar 运行命令解析器:
 https://github.com/melin/dataworker-sql-parser
+
+parse sql into elasticsearch dsl with antlr4:
+https://github.com/iamazy/elasticsearch-sql
