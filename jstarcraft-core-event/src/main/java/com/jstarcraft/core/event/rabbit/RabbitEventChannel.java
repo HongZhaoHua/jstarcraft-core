@@ -1,5 +1,7 @@
 package com.jstarcraft.core.event.rabbit;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +15,7 @@ import com.jstarcraft.core.event.EventMonitor;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.AMQP.BasicProperties.Builder;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
@@ -49,6 +52,15 @@ public class RabbitEventChannel extends AbstractEventChannel {
         public void handleDelivery(String tag, Envelope envelope, BasicProperties properties, byte[] bytes) {
             try {
                 Object event = codec.decode(clazz, bytes);
+                Map<String, Object> contexts = properties.getHeaders();
+                if (contexts != null) {
+                    Object context = contexts.get(CONTEXT);
+                    if (context != null) {
+                        if (setter != null) {
+                            setter.accept(context.toString());
+                        }
+                    }
+                }
                 synchronized (manager) {
                     switch (mode) {
                     case QUEUE: {
@@ -174,7 +186,14 @@ public class RabbitEventChannel extends AbstractEventChannel {
             Class type = event.getClass();
             String key = type.getName();
             byte[] bytes = codec.encode(type, event);
-            channel.basicPublish(name, key, null, bytes);
+            Builder properties = new Builder();
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    properties.headers(Collections.singletonMap(CONTEXT, context));
+                }
+            }
+            channel.basicPublish(name, key, properties.build(), bytes);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }

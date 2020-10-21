@@ -53,9 +53,15 @@ public class RocketEventChannel extends AbstractEventChannel {
         }
 
         @Override
-        public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> datas, ConsumeConcurrentlyContext context) {
+        public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> datas, ConsumeConcurrentlyContext current) {
             for (MessageExt data : datas) {
                 try {
+                    String context = data.getUserProperty(CONTEXT);
+                    if (context != null) {
+                        if (setter != null) {
+                            setter.accept(context);
+                        }
+                    }
                     byte[] bytes = data.getBody();
                     Object event = codec.decode(clazz, bytes);
                     synchronized (manager) {
@@ -172,6 +178,12 @@ public class RocketEventChannel extends AbstractEventChannel {
             address = address.replace(StringUtility.DOT, StringUtility.DASH);
             byte[] bytes = codec.encode(type, event);
             Message message = new Message(name, address, bytes);
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    message.putUserProperty(CONTEXT, context);
+                }
+            }
             producer.send(message);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
