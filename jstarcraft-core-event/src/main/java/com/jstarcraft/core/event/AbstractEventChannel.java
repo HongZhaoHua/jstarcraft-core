@@ -15,9 +15,9 @@ public abstract class AbstractEventChannel implements EventChannel {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractEventChannel.class);
 
-    protected static final String CONTEXT = "jstarcraft-context";
+    protected static final String CONTEXT = "JStarCraftContext";
 
-    protected static final String DATA = "jstarcraft-data";
+    protected static final String DATA = "JStarCraftData";
 
     protected final EventMode mode;
 

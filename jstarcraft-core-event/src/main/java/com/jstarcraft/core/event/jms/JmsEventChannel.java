@@ -171,8 +171,8 @@ public class JmsEventChannel extends AbstractEventChannel {
                 break;
             }
             }
-            BytesMessage message = context.createBytesMessage();
             byte[] bytes = codec.encode(type, event);
+            BytesMessage message = context.createBytesMessage();
             message.writeBytes(bytes);
             if (getter != null) {
                 String context = getter.get();

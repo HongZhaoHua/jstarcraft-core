@@ -52,6 +52,12 @@ public class AmqpEventChannel extends AbstractEventChannel {
         @Override
         public void onMessage(Message data) {
             try {
+                String context = data.getStringProperty(CONTEXT);
+                if (context != null) {
+                    if (setter != null) {
+                        setter.accept(context);
+                    }
+                }
                 byte[] bytes = data.getBody(byte[].class);
                 Object event = codec.decode(clazz, bytes);
                 synchronized (manager) {
@@ -181,6 +187,12 @@ public class AmqpEventChannel extends AbstractEventChannel {
             byte[] bytes = codec.encode(type, event);
             BytesMessage message = session.createBytesMessage();
             message.writeBytes(bytes);
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    message.setStringProperty(CONTEXT, context);
+                }
+            }
             producer.send(message);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
