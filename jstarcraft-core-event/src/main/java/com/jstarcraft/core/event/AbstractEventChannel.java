@@ -2,9 +2,12 @@ package com.jstarcraft.core.event;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +21,20 @@ public abstract class AbstractEventChannel implements EventChannel {
     protected String name;
 
     protected ConcurrentMap<Class, EventManager> managers;
+    
+    protected Supplier<Map<String, String>> getter;
+    
+    protected Consumer<Map<String, String>> setter;
 
     protected AbstractEventChannel(EventMode mode, String name) {
+        this(mode, name, null, null);
+    }
+    
+    protected AbstractEventChannel(EventMode mode, String name, Supplier<Map<String, String>> getter, Consumer<Map<String, String>> setter) {
         this.mode = mode;
         this.name = name;
+        this.getter = getter;
+        this.setter = setter;
         this.managers = new ConcurrentHashMap<>();
     }
 
