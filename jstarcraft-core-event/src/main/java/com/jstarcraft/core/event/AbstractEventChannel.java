@@ -2,7 +2,6 @@ package com.jstarcraft.core.event;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -16,21 +15,25 @@ public abstract class AbstractEventChannel implements EventChannel {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractEventChannel.class);
 
+    protected static final String CONTEXT = "jstarcraft-context";
+
+    protected static final String DATA = "jstarcraft-data";
+
     protected final EventMode mode;
 
     protected String name;
 
     protected ConcurrentMap<Class, EventManager> managers;
-    
-    protected Supplier<Map<String, String>> getter;
-    
-    protected Consumer<Map<String, String>> setter;
+
+    protected Supplier<String> getter;
+
+    protected Consumer<String> setter;
 
     protected AbstractEventChannel(EventMode mode, String name) {
         this(mode, name, null, null);
     }
-    
-    protected AbstractEventChannel(EventMode mode, String name, Supplier<Map<String, String>> getter, Consumer<Map<String, String>> setter) {
+
+    protected AbstractEventChannel(EventMode mode, String name, Supplier<String> getter, Consumer<String> setter) {
         this.mode = mode;
         this.name = name;
         this.getter = getter;

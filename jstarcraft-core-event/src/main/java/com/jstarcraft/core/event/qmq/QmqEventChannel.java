@@ -71,9 +71,15 @@ public class QmqEventChannel extends AbstractEventChannel {
         @Override
         public void onMessage(Message envelope) {
             try {
-                String data = envelope.getLargeString("data");
+                String data = envelope.getStringProperty(DATA);
                 if (data == null) {
                     return;
+                }
+                String context = envelope.getStringProperty(CONTEXT);
+                if (context != null) {
+                    if (setter != null) {
+                        setter.accept(context);
+                    }
                 }
                 byte[] bytes = SecurityUtility.decodeBase64(data);
                 Object event = codec.decode(clazz, bytes);
@@ -234,7 +240,14 @@ public class QmqEventChannel extends AbstractEventChannel {
             String data = SecurityUtility.encodeBase64(bytes);
             Message envelope = producer.generateMessage(key);
             // QMQ提供的Message是key/value的形式
-            envelope.setProperty("data", data);
+            // QMQ的Message.setProperty(key, value)的大小默认不能超过32K
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    envelope.setProperty(CONTEXT, context);
+                }
+            }
+            envelope.setProperty(DATA, data);
             producer.sendMessage(envelope);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
