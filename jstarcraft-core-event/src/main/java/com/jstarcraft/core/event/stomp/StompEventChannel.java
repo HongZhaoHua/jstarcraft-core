@@ -44,6 +44,13 @@ public class StompEventChannel extends AbstractEventChannel {
         @Override
         public void handle(Frame data) {
             try {
+                Map<String, String> metadatas = data.getHeaders();
+                String context = metadatas.get(CONTEXT);
+                if (context != null) {
+                    if (setter != null) {
+                        setter.accept(context);
+                    }
+                }
                 byte[] bytes = data.getBodyAsByteArray();
                 Object event = codec.decode(clazz, bytes);
                 synchronized (manager) {
@@ -178,6 +185,12 @@ public class StompEventChannel extends AbstractEventChannel {
                 metadatas.put("destination-type", "MULTICAST");
                 break;
             }
+            }
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    metadatas.put(CONTEXT, context);
+                }
             }
             session.send(metadatas, Buffer.buffer(bytes));
         } catch (Exception exception) {
