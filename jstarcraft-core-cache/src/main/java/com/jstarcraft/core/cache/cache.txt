@@ -10,6 +10,9 @@ https://www.jianshu.com/p/d00348a9eb3b
 为监控而生的多级缓存框架 layering-cache:
 https://www.jianshu.com/p/c5b2617b83e2
 
+Java Caching(缓存)-策略和JCache API:
+https://blog.csdn.net/boonya/article/details/54632129
+
 目前PersistenceStrategy思路的基本假设是在异步持久化过程中不存在缓存击穿,所以只检查删除.
 从完备性角度,存在一定问题.如果万一在异步持久化过程存在缓存击穿,则存在脏数据.
 
