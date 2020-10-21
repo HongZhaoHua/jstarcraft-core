@@ -19,3 +19,7 @@ tools.cmd使用参数:
 {ip}通过ipconfig命令获取
 {hostname}通过hostname命令获取
 AddBroker --metaserver={ip}:8080 --token=token --brokerGroup=groupName --role=0 --hostname={hostname} --ip={ip} --servePort=20881 --syncPort=20882
+
+broker.properties使用参数:
+{ip}通过ipconfig命令获取
+meta.server.endpoint={ip}:8080/meta/address
