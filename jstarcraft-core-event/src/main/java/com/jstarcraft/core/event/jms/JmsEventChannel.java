@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.jms.BytesMessage;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
@@ -149,22 +150,28 @@ public class JmsEventChannel extends AbstractEventChannel {
 
     @Override
     public void triggerEvent(Object event) {
-        Class type = event.getClass();
-        Destination address = null;
-        switch (mode) {
-        case QUEUE: {
-            // TODO 需要防止路径冲突
-            address = context.createQueue(name + StringUtility.DOT + type.getName());
-            break;
+        try {
+            Class type = event.getClass();
+            Destination address = null;
+            switch (mode) {
+            case QUEUE: {
+                // TODO 需要防止路径冲突
+                address = context.createQueue(name + StringUtility.DOT + type.getName());
+                break;
+            }
+            case TOPIC: {
+                // TODO 需要防止路径冲突
+                address = context.createTopic(name + StringUtility.DOT + type.getName());
+                break;
+            }
+            }
+            BytesMessage message = context.createBytesMessage();
+            byte[] bytes = codec.encode(type, event);
+            message.writeBytes(bytes);
+            producer.send(address, message);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
         }
-        case TOPIC: {
-            // TODO 需要防止路径冲突
-            address = context.createTopic(name + StringUtility.DOT + type.getName());
-            break;
-        }
-        }
-        byte[] bytes = codec.encode(type, event);
-        producer.send(address, bytes);
     }
 
 }
