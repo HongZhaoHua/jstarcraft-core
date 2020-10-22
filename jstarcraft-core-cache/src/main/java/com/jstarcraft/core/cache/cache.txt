@@ -23,6 +23,9 @@ https://www.jianshu.com/p/f6a1eae03efb
 《剖析缓存系列》—— 剖析JCache:
 https://www.jianshu.com/p/6a3514801ca6
 
+JCache (JSR107) Examples:
+https://github.com/dbrimley/jcache-examples
+
 目前PersistenceStrategy思路的基本假设是在异步持久化过程中不存在缓存击穿,所以只检查删除.
 从完备性角度,存在一定问题.如果万一在异步持久化过程存在缓存击穿,则存在脏数据.
 
