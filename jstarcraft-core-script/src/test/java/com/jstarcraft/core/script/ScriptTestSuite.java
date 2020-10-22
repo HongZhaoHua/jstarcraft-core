@@ -24,6 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
         GroovyExpressionTestCase.class,
 
+        KotlinExpressionTestCase.class,
+
         JsExpressionTestCase.class,
 
         LuaExpressionTestCase.class,
@@ -35,8 +37,10 @@ import org.junit.runners.Suite.SuiteClasses;
         RubyExpressionTestCase.class,
         // 函数测试
         BeanShellFunctionTestCase.class,
-        
+
         GroovyFunctionTestCase.class,
+
+        KotlinFunctionTestCase.class,
 
         JsFunctionTestCase.class,
 
