@@ -6,3 +6,6 @@ https://www.runoob.com/kotlin/kotlin-tutorial.html
 
 学习 Kotlin:
 https://www.kotlincn.net/docs/reference
+
+Kotlin JSR223 engine passing bindings:
+https://stackoverflow.com/questions/53062392/kotlin-jsr223-engine-passing-bindings
