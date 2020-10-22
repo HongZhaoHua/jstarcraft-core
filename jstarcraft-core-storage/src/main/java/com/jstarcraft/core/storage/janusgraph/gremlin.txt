@@ -1,6 +1,9 @@
 Gremlin中文文档:
 http://tinkerpop-gremlin.cn
 
+深入学习图数据库语言Gremlin 系列:
+https://blog.csdn.net/javeme/article/details/82631834
+
 Spring Data Gremlin:
 https://github.com/Microsoft/spring-data-gremlin
 
