@@ -1,0 +1,5 @@
+Jmeter系列之BeanShell使用:
+https://juejin.im/post/6844904119744888840
+
+BshScriptEngine在2.0b6版本没有支持Compilable接口:
+https://github.com/beanshell/beanshell/issues?q=Compilable

@@ -1,0 +1,5 @@
+Getting Started with LuaJ:
+https://github.com/luaj/luaj
+
+lua-函数作为表元素:
+https://blog.csdn.net/qq_28290581/article/details/52462841

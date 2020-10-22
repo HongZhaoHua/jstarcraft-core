@@ -1,0 +1,6 @@
+console: Failed to install '': java.nio.charset.UnsupportedCharsetException: cp0.解决方法:
+jvm 启动参数 -Dpython.console.encoding=utf-8或System.setProperty("python.console.encoding", "utf-8")
+https://bbs.csdn.net/topics/391865152
+
+可爱的 Jython:
+https://www.oschina.net/question/12_4825

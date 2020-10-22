@@ -1,0 +1,14 @@
+一篇文档掌握Jdk8中JavaScript引擎Nashorn的使用方法:
+https://www.cnblogs.com/cynchanpin/p/6927278.html
+
+Java 8 Nashorn 教程:
+https://wizardforcel.gitbooks.io/modern-java/content/ch3.html
+
+Java 8新特性探究 Nashorn:
+https://my.oschina.net/benhaile/blog/290276
+
+Java 中使用ScriptEngine执行javascript脚本代码和使用中应该注意的事项:
+https://blog.csdn.net/xiao_jun_0820/article/details/76498268
+
+优化Java调用Nashorn引擎的性能:
+https://blog.csdn.net/lff0305/article/details/78130832
