@@ -7,3 +7,6 @@ https://www.jianshu.com/p/f93fdc1a4f68
 
 Apache Jena入门:
 https://blog.csdn.net/qq_22938671/article/details/89070995
+
+Jena RDF API 使用教程:
+https://blog.csdn.net/u013007703/article/details/94591600
