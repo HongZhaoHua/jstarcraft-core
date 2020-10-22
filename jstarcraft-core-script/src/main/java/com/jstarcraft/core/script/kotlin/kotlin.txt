@@ -1,5 +1,8 @@
-学习 Kotlin:
-https://www.kotlincn.net/docs/reference
+初识 Kotlin:
+https://blog.csdn.net/u011033906/category_9489370.html
 
 Kotlin 教程:
 https://www.runoob.com/kotlin/kotlin-tutorial.html
+
+学习 Kotlin:
+https://www.kotlincn.net/docs/reference
