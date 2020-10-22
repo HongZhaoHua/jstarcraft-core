@@ -162,6 +162,7 @@ JStarCraft Core框架各个模块之间的关系:
     * BeanShell
     * Groovy
     * JS
+    * Kotlin
     * Lua
     * MVEL
     * Python
