@@ -7,6 +7,12 @@ https://www.zyc.red/categories/Java/Reflect
 你真的了解Java泛型参数？Spring ResolvableType更好的处理泛型:
 https://blog.csdn.net/u012881904/article/details/80813294
 
+Java:Annotation(注解)--原理到案例:
+https://www.jianshu.com/p/28edf5352b63
+
+Java-JSR-269-插入式注解处理器:
+https://liuyehcf.github.io/2018/02/02/Java-JSR-269-%E6%8F%92%E5%85%A5%E5%BC%8F%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8/
+
 Spring(https://spring.io/) 系列目录:
 https://www.cnblogs.com/binarylei/p/10198698.html
 
