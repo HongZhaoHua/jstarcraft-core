@@ -4,6 +4,9 @@ http://tinkerpop-gremlin.cn
 深入学习图数据库语言Gremlin 系列:
 https://blog.csdn.net/javeme/article/details/82631834
 
+图形数据库与 CRUD 操作:
+https://developer.ibm.com/zh/depmodels/cloud/articles/cl-graph-database-1/
+
 Spring Data Gremlin:
 https://github.com/Microsoft/spring-data-gremlin
 
