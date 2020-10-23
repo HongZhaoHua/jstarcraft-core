@@ -10,3 +10,6 @@ https://blog.csdn.net/qq_22938671/article/details/89070995
 
 Jena RDF API 使用教程:
 https://blog.csdn.net/u013007703/article/details/94591600
+
+RDF 教程:
+https://www.w3school.com.cn/rdf/index.asp
