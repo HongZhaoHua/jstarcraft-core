@@ -1,0 +1,5 @@
+A Jackson-based content processing library for structured data, including JSON, XML, CSV, RDF (N-Triple, Turtle, RDF/XML, JSON as XML, XML to RDF):
+https://github.com/xbib/content
+
+QuiXDM is an ubiquitous open-source implementation of a Streaming Data Model to process XML, JSON, YAML, RDF, CSV, HTML:
+https://github.com/Innovimax-SARL/QuiXDM:
