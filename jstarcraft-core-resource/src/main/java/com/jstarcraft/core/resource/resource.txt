@@ -12,6 +12,9 @@ http://www.xdemo.org/java-file-watchservice
 EasyExcel使用说明:
 https://www.yuque.com/easyexcel/doc
 
+EasyExcel自定义Converter:
+https://blog.csdn.net/fsadkjl/category_9956995.html
+
 Java基于注解和反射导入导出Excel(Bean转Excel,Excel转Bean):
 http://www.xdemo.org/java-excel-poi-import-export-annotation-reflect
 
