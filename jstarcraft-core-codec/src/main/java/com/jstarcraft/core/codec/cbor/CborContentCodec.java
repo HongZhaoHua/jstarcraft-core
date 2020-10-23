@@ -15,9 +15,9 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jstarcraft.core.codec.ContentCodec;
 import com.jstarcraft.core.codec.exception.CodecException;
-import com.jstarcraft.core.codec.jackson.TypeJacksonDeserializer;
-import com.jstarcraft.core.codec.jackson.TypeJacksonSerializer;
 import com.jstarcraft.core.common.conversion.json.JsonUtility;
+import com.jstarcraft.core.common.conversion.json.TypeJacksonDeserializer;
+import com.jstarcraft.core.common.conversion.json.TypeJacksonSerializer;
 import com.jstarcraft.core.common.reflection.Specification;
 
 /**

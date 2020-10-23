@@ -1,4 +1,4 @@
-package com.jstarcraft.core.codec.jackson;
+package com.jstarcraft.core.common.conversion.json;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
