@@ -1,0 +1,2 @@
+Jackson data format module for reading and writing CSV encoded data, either as "raw" data (sequence of String arrays), or via data binding to/from Java Objects (POJOs):
+https://github.com/FasterXML/jackson-dataformats-text
