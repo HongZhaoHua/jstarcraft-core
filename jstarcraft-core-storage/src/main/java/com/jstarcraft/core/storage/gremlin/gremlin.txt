@@ -1,6 +1,9 @@
 TinkerPop3 中文文档翻译:
 https://blog.csdn.net/knightjya/article/details/104060494
 
+图查询引擎TinkerPop:
+https://www.imbajin.com/2018-07-26-%E5%9B%BE%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8ETinkerpop
+
 Gremlin中文文档:
 http://tinkerpop-gremlin.cn
 
