@@ -1,3 +1,6 @@
+TinkerPop3 中文文档翻译:
+https://blog.csdn.net/knightjya/article/details/104060494
+
 Gremlin中文文档:
 http://tinkerpop-gremlin.cn
 
