@@ -10,6 +10,9 @@ https://blog.csdn.net/freewebsys/category_5580251.html
 图查询引擎TinkerPop:
 https://www.imbajin.com/2018-07-26-%E5%9B%BE%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8ETinkerpop
 
+Practical Gremlin: An Apache TinkerPop Tutorial:
+https://github.com/krlawrence/graph
+
 Gremlin中文文档:
 http://tinkerpop-gremlin.cn
 
