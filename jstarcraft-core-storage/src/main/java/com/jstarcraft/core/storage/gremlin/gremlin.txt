@@ -1,5 +1,11 @@
+从零开始玩转图库:
+https://developer.aliyun.com/article/603694
+
 TinkerPop3 中文文档翻译:
 https://blog.csdn.net/knightjya/article/details/104060494
+
+图数数据库引擎TinkerPop:
+https://blog.csdn.net/freewebsys/category_5580251.html
 
 图查询引擎TinkerPop:
 https://www.imbajin.com/2018-07-26-%E5%9B%BE%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8ETinkerpop
