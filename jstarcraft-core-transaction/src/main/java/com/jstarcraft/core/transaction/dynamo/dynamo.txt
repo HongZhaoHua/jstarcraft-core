@@ -1,0 +1,8 @@
+在计算机上本地部署 DynamoDB:
+https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
+
+How to install DynamoDB on Windows:
+https://amudabadmus.wordpress.com/2017/09/07/how-to-install-dynamodb-on-windows
+
+Install DynamoDB In Local System:
+https://cloudaffaire.com/install-dynamodb-in-local-system

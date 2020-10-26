@@ -53,9 +53,15 @@ public class RocketEventChannel extends AbstractEventChannel {
         }
 
         @Override
-        public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> datas, ConsumeConcurrentlyContext context) {
+        public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> datas, ConsumeConcurrentlyContext current) {
             for (MessageExt data : datas) {
                 try {
+                    String context = data.getUserProperty(CONTEXT);
+                    if (context != null) {
+                        if (setter != null) {
+                            setter.accept(context);
+                        }
+                    }
                     byte[] bytes = data.getBody();
                     Object event = codec.decode(clazz, bytes);
                     synchronized (manager) {
@@ -103,11 +109,6 @@ public class RocketEventChannel extends AbstractEventChannel {
         try {
             this.connections = connections;
             this.codec = codec;
-            DefaultMQProducer producer = new DefaultMQProducer(name);
-            producer.setInstanceName(name);
-            producer.setNamesrvAddr(connections);
-            producer.start();
-            this.producer = producer;
             this.consumers = new ConcurrentHashMap<>();
         } catch (Exception exception) {
             throw new RuntimeException(exception);
@@ -123,13 +124,13 @@ public class RocketEventChannel extends AbstractEventChannel {
                     manager = new EventManager();
                     managers.put(type, manager);
                     // TODO 需要防止路径冲突
-                    String address = name + StringUtility.DOT + type.getName();
+                    String address = type.getName();
                     address = address.replace(StringUtility.DOT, StringUtility.DASH);
-                    DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(address);
+                    DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(String.join(StringUtility.DASH, name, address));
                     consumer.setInstanceName(name);
                     consumer.setNamesrvAddr(connections);
                     consumer.setConsumeMessageBatchMaxSize(1000);
-                    consumer.subscribe(address, "*");
+                    consumer.subscribe(name, address);
                     switch (mode) {
                     case QUEUE: {
                         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
@@ -173,10 +174,16 @@ public class RocketEventChannel extends AbstractEventChannel {
     public void triggerEvent(Object event) {
         try {
             Class type = event.getClass();
-            String address = name + StringUtility.DOT + type.getName();
+            String address = type.getName();
             address = address.replace(StringUtility.DOT, StringUtility.DASH);
             byte[] bytes = codec.encode(type, event);
-            Message message = new Message(address, address, bytes);
+            Message message = new Message(name, address, bytes);
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    message.putUserProperty(CONTEXT, context);
+                }
+            }
             producer.send(message);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
@@ -185,7 +192,15 @@ public class RocketEventChannel extends AbstractEventChannel {
 
     @Override
     public void start() {
-
+        try {
+            DefaultMQProducer producer = new DefaultMQProducer(name);
+            producer.setInstanceName(name);
+            producer.setNamesrvAddr(connections);
+            producer.start();
+            this.producer = producer;
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     @Override

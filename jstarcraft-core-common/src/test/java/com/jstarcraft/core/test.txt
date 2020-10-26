@@ -1,6 +1,3 @@
-详解Spring事件驱动模型:
-http://jinnianshilongnian.iteye.com/blog/1902886
-
 Junit5 入门系列:
 https://blog.csdn.net/ryo1060732496/category_9276134.html
 
@@ -32,6 +29,13 @@ JUnit4(四)高级之规则:
 https://blog.csdn.net/fanxiaobin577328725/article/details/78407199
 JUnit4(五)高级之假设与理论:
 https://blog.csdn.net/fanxiaobin577328725/article/details/81740015
+
+Testcontainer-01篇 基本入门:
+https://blog.csdn.net/mail_liuxing/article/details/99075606
+Testcontainer-02篇 Redis:
+https://blog.csdn.net/mail_liuxing/article/details/99082785
+Testcontainer-03篇 MySQL:
+https://blog.csdn.net/mail_liuxing/article/details/99859503
 
 Java中的Mongodb单元测试:
 https://blog.csdn.net/kiwi_coder/article/details/37873093

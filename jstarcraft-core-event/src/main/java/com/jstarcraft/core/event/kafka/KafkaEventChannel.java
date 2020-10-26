@@ -14,6 +14,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -82,6 +83,15 @@ public class KafkaEventChannel extends AbstractEventChannel {
             while (true) {
                 ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofMillis(1000L));
                 for (ConsumerRecord<String, byte[]> record : records) {
+                    Header context = record.headers().lastHeader(CONTEXT);
+                    if (context != null) {
+                        byte[] bytes = context.value();
+                        if (bytes != null) {
+                            if (setter != null) {
+                                setter.accept(new String(bytes, StringUtility.CHARSET));
+                            }
+                        }
+                    }
                     byte[] bytes = record.value();
                     try {
                         Object event = codec.decode(clazz, bytes);
@@ -203,6 +213,12 @@ public class KafkaEventChannel extends AbstractEventChannel {
             String group = name + StringUtility.DOT + type.getName();
             byte[] bytes = codec.encode(type, event);
             ProducerRecord<String, byte[]> record = new ProducerRecord<>(group, bytes);
+            if (getter != null) {
+                String context = getter.get();
+                if (context != null) {
+                    record.headers().add(CONTEXT, context.getBytes(StringUtility.CHARSET));
+                }
+            }
             producer.send(record);
         } catch (Exception exception) {
             throw new RuntimeException(exception);

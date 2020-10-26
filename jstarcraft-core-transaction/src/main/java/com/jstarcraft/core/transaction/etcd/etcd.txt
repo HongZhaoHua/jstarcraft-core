@@ -1,0 +1,7 @@
+Etcd分布式锁（一）：cp分布式锁的最佳实现:
+https://juejin.im/post/6844903928652382221
+Etcd分布式锁（二）：支持公平锁，避免某些场景下线程长期无法获取锁
+https://juejin.im/post/6844903935124176903
+
+Middleware 基于 Etcd 的分布式锁实现原理及方案:
+https://iefhong.me/e06cd1a7.html

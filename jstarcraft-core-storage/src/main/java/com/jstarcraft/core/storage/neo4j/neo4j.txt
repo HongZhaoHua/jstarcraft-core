@@ -7,9 +7,6 @@ https://blog.csdn.net/wireless_com/article/details/86486289
 一文了解各大图数据库查询语言（Gremlin vs Cypher vs nGQL）:
 https://www.jianshu.com/p/7a10e572501a
 
-System Properties Comparison JanusGraph vs. Neo4j vs. OrientDB:
-https://db-engines.com/en/system/JanusGraph%3BNeo4j%3BOrientDB
-
 ArangoDB、Neo4j、OrientDB单机性能比较:
 https://www.jianshu.com/p/38b70768380c
 

@@ -1,6 +1,13 @@
 Redis的Windows版本:
 https://github.com/tporadowski/redis/releases
 
+Redis分布式锁（一）：基于AOP和Redis实现的简易版分布式锁:
+https://juejin.im/post/6844903734107963400
+Redis分布式锁（二）：支持锁的续期，避免锁超时后导致多个线程获得锁:
+https://juejin.im/post/6844903764868988936
+Redis分布式锁（三）：支持锁可重入，避免锁递归调用时死锁:
+https://juejin.im/post/6844903905785036814
+
 Redis 命令参考:
 http://www.redis.cn/
 

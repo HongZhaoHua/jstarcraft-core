@@ -11,33 +11,6 @@ import com.jstarcraft.core.event.MockUnicastEvent;
 
 public class QmqEventChannelTestCase extends EventChannelTestCase {
 
-//    private static MessageProducerProvider producer;
-//
-//    private static MessageConsumerProvider consumer;
-//
-//    @BeforeClass
-//    public static void start() throws Exception {
-//        final String applicationCode = "QmqTestCase";
-//        final String metaAddress = "http://127.0.0.1:8080/meta/address";
-//
-//        producer = new MessageProducerProvider();
-//        producer.setAppCode(applicationCode);
-//        producer.setMetaServer(metaAddress);
-//        producer.init();
-//
-//        consumer = new MessageConsumerProvider();
-//        consumer.setAppCode(applicationCode);
-//        consumer.setMetaServer(metaAddress);
-//        consumer.init();
-//    }
-//
-//    @AfterClass
-//    public static void stop() throws Exception {
-//        producer.destroy();
-//
-//        consumer.destroy();
-//    }
-
     @Override
     protected EventChannel getEventChannel(EventMode mode) {
         CodecDefinition definition = CodecDefinition.instanceOf(MockUnicastEvent.class, MockBroadcastEvent.class);

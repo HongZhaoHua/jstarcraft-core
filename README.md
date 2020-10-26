@@ -162,6 +162,7 @@ JStarCraft Core框架各个模块之间的关系:
     * BeanShell
     * Groovy
     * JS
+    * Kotlin
     * Lua
     * MVEL
     * Python
@@ -176,6 +177,7 @@ JStarCraft Core框架各个模块之间的关系:
     * 分布式锁
         * Cassandra
         * Elasticsearch
+        * etcd
         * Hazelcast
         * Hibernate
         * Mongo

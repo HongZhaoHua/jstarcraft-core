@@ -1,0 +1,14 @@
+初识 Kotlin:
+https://blog.csdn.net/u011033906/category_9489370.html
+
+Kotlin 教程:
+https://www.runoob.com/kotlin/kotlin-tutorial.html
+
+学习 Kotlin:
+https://www.kotlincn.net/docs/reference
+
+KotlinJsr223ScriptEngine示例:
+https://github.com/JetBrains/kotlin/blob/ba6da7c40a6cc502508faf6e04fa105b96bc7777/libraries/examples/kotlin-jsr223-daemon-local-eval-example/src/test/kotlin/org/jetbrains/kotlin/script/jsr223/KotlinJsr223ScriptEngineIT.kt
+
+Kotlin JSR223 engine passing bindings:
+https://stackoverflow.com/questions/53062392/kotlin-jsr223-engine-passing-bindings

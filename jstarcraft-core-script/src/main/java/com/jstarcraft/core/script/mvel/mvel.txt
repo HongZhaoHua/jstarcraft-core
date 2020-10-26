@@ -1,0 +1,5 @@
+MVEL 2.x语法指南:
+http://blinkfox.com/mvel-2-xyu-fa-zhi-nan/
+
+[Mvel]Mvel2.0使用指南一 基础:
+https://blog.csdn.net/SunnyYoona/article/details/75244442
