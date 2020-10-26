@@ -71,6 +71,7 @@ JStarCraft Core框架各个模块之间的关系:
         * Avro
         * CBOR
         * Hessian
+        * Ion
         * Kryo
         * MessagePack
         * Standard
