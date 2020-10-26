@@ -111,11 +111,25 @@
                 <version>2.11.0</version>
             </dependency>
 
+            <!-- CBOR -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-cbor</artifactId>
+                <version>2.11.2</version>
+            </dependency>
+
             <!-- Hessian -->
             <dependency>
                 <groupId>com.caucho</groupId>
                 <artifactId>hessian</artifactId>
                 <version>4.0.63</version>
+            </dependency>
+
+            <!-- Ion -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-ion</artifactId>
+                <version>2.11.2</version>
             </dependency>
 
             <!-- Kryo -->

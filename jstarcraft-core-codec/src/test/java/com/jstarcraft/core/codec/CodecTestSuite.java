@@ -8,6 +8,7 @@ import com.jstarcraft.core.codec.avro.AvroContentCodecTestCase;
 import com.jstarcraft.core.codec.cbor.CborContentCodecTestCase;
 import com.jstarcraft.core.codec.csv.CsvContentCodecTestCase;
 import com.jstarcraft.core.codec.hessian.HessianContentCodecTestCase;
+import com.jstarcraft.core.codec.ion.IonContentCodecTestCase;
 import com.jstarcraft.core.codec.json.JsonContentCodecTestCase;
 import com.jstarcraft.core.codec.kryo.KryoContentCodecTestCase;
 import com.jstarcraft.core.codec.msgpack.MessagePackContentCodecTestCase;
@@ -28,6 +29,8 @@ import com.jstarcraft.core.codec.yaml.YamlContentCodecTestCase;
         CsvContentCodecTestCase.class,
 
         HessianContentCodecTestCase.class,
+        
+        IonContentCodecTestCase.class,
 
         JsonContentCodecTestCase.class,
 
