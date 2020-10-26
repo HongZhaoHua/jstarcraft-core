@@ -33,6 +33,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- ion -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-ion</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+
         <!-- BSON -->
         <dependency>
             <groupId>de.undercouch</groupId>
