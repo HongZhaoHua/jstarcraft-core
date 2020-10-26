@@ -94,7 +94,7 @@ public class RedissonTestCase {
             // 自定义脚本,相当于
             /**
              * <pre>
-             * boolean exists = (limiter != null);
+             * boolean exists = (limiter != null && limiter.contains(key));
              * int current = number;
              * if (exists) {
              *     current += limiter.get(key);
@@ -109,13 +109,19 @@ public class RedissonTestCase {
              * return true;
              * </pre>
              */
-            signature = script.scriptLoad("local exists = redis.call('exists', KEYS[1]); local current = tonumber(ARGV[2]); local limit = tonumber(ARGV[3]); if (exists == 1) then current = current + redis.call('hget', KEYS[1], ARGV[1]); end; if (current > limit) then return false; end; redis.call('hset', KEYS[1], ARGV[1], current); if (exists == 0) then redis.call('expire', KEYS[1], ARGV[4]); end; return true;");
-            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            signature = script.scriptLoad("local exists = redis.call('hexists', KEYS[1], ARGV[1]); local current = tonumber(ARGV[2]); local limit = tonumber(ARGV[3]); if (exists == 1) then current = current + redis.call('hget', KEYS[1], ARGV[1]); end; if (current > limit) then return false; end; redis.call('hset', KEYS[1], ARGV[1], current); if (exists == 0) then redis.call('expire', KEYS[1], ARGV[4]); end; return true;");
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "left", 1000, 1000, 5);
             Assert.assertEquals(Boolean.TRUE, value);
-            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "left", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.FALSE, value);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "right", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.TRUE, value);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "right", 1000, 1000, 5);
             Assert.assertEquals(Boolean.FALSE, value);
             Thread.sleep(5000);
-            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "key", 1000, 1000, 5);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "left", 1000, 1000, 5);
+            Assert.assertEquals(Boolean.TRUE, value);
+            value = script.evalSha(Mode.READ_WRITE, signature, ReturnType.BOOLEAN, Arrays.asList("limiter"), "right", 1000, 1000, 5);
             Assert.assertEquals(Boolean.TRUE, value);
 
             // 自定义脚本,相当于
