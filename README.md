@@ -177,6 +177,7 @@ JStarCraft Core框架各个模块之间的关系:
 * 10.事务(transaction)
     * 分布式锁
         * Cassandra
+        * Consul
         * Elasticsearch
         * etcd
         * Hazelcast
