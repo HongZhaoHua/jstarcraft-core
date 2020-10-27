@@ -102,7 +102,7 @@ public class ZooKeeperTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         try {
             String path = getNodePath(definition);
             curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
@@ -117,7 +117,7 @@ public class ZooKeeperTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         try {
             AtomicBoolean state = states.get();
             state.compareAndSet(true, false);

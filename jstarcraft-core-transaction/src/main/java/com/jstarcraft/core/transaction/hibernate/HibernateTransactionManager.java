@@ -62,7 +62,7 @@ public class HibernateTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         String name = definition.getName();
         Instant most = definition.getMost();
         Instant now = Instant.now();
@@ -77,7 +77,7 @@ public class HibernateTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         String name = definition.getName();
         Instant most = definition.getMost();
         Instant now = Instant.now();

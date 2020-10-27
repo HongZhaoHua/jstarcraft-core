@@ -66,7 +66,7 @@ public abstract class TransactionManager {
      * 
      * @param definition
      */
-    protected abstract void lock(TransactionDefinition definition);
+    public abstract void lock(TransactionDefinition definition);
 
     /**
      * 根据指定的定义解锁
@@ -77,6 +77,6 @@ public abstract class TransactionManager {
      * 
      * @param definition
      */
-    protected abstract void unlock(TransactionDefinition definition);
+    public abstract void unlock(TransactionDefinition definition);
 
 }

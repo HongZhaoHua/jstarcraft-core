@@ -66,7 +66,7 @@ public class MongoTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         Instant now = Instant.now();
         Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
         Criteria[] andCriterias = new Criteria[1];
@@ -81,7 +81,7 @@ public class MongoTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         Instant now = Instant.now();
         Criteria criteria = Criteria.where(MongoMetadata.mongoId).is(definition.getName());
         Criteria[] andCriterias = new Criteria[2];

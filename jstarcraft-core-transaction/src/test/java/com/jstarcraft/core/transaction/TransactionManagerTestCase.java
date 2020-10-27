@@ -14,7 +14,7 @@ import com.jstarcraft.core.utility.StringUtility;
 
 public abstract class TransactionManagerTestCase {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected final String name = "jstarcraft";
 

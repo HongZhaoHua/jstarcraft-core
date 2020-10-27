@@ -29,7 +29,7 @@ public class EtcdTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         // 尝试加锁
         String key = definition.getName();
         Long value = definition.getMost().toEpochMilli();
@@ -51,7 +51,7 @@ public class EtcdTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         // 尝试解锁
         String key = definition.getName();
         Long value = definition.getMost().toEpochMilli();

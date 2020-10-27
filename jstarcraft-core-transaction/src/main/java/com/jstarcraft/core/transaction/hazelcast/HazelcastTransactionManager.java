@@ -37,7 +37,7 @@ public class HazelcastTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         Instant now = Instant.now();
         String name = definition.getName();
         final IMap<String, HazelcastTransactionDefinition> store = getStore();
@@ -57,7 +57,7 @@ public class HazelcastTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         Instant now = Instant.now();
         String name = definition.getName();
         final IMap<String, HazelcastTransactionDefinition> store = getStore();

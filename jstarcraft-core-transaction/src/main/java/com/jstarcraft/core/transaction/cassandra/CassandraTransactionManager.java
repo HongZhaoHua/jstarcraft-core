@@ -98,7 +98,7 @@ public class CassandraTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void lock(TransactionDefinition definition) {
+    public void lock(TransactionDefinition definition) {
         // 尝试加锁
         String name = definition.getName();
         Instant instant = definition.getMost();
@@ -118,7 +118,7 @@ public class CassandraTransactionManager extends TransactionManager {
     }
 
     @Override
-    protected void unlock(TransactionDefinition definition) {
+    public void unlock(TransactionDefinition definition) {
         // 尝试解锁
         String name = definition.getName();
         Instant instant = definition.getMost();
