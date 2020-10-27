@@ -518,6 +518,7 @@
             </dependency>
 
             <!-- 事务框架依赖 -->
+            <!-- Cassandra -->
             <dependency>
                 <groupId>com.datastax.oss</groupId>
                 <artifactId>java-driver-core</artifactId>
@@ -530,24 +531,42 @@
                 <version>4.6.0</version>
             </dependency>
 
+            <!-- Consul -->
+            <dependency>
+                <groupId>com.ecwid.consul</groupId>
+                <artifactId>consul-api</artifactId>
+                <version>1.4.5</version>
+            </dependency>
+
+            <!-- Couchbase -->
             <dependency>
                 <groupId>com.couchbase.client</groupId>
                 <artifactId>java-client</artifactId>
                 <version>2.7.14</version>
             </dependency>
 
+            <!-- Elasticsearch -->
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>7.6.2</version>
             </dependency>
 
+            <!-- etcd -->
+            <dependency>
+                <groupId>io.etcd</groupId>
+                <artifactId>jetcd-all</artifactId>
+                <version>0.5.3</version>
+            </dependency>
+
+            <!-- Hazelcast -->
             <dependency>
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast</artifactId>
                 <version>3.11.2</version>
             </dependency>
 
+            <!-- Redis -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
@@ -560,6 +579,7 @@
                 <version>3.1.0</version>
             </dependency>
 
+            <!-- ZooKeeper -->
             <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-framework</artifactId>
