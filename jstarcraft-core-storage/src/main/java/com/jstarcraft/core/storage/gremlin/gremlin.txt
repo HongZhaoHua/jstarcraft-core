@@ -1,3 +1,5 @@
+***** TinkerPop *****
+
 从零开始玩转图库:
 https://developer.aliyun.com/article/603694
 
@@ -10,14 +12,16 @@ https://blog.csdn.net/freewebsys/category_5580251.html
 图查询引擎TinkerPop:
 https://www.imbajin.com/2018-07-26-%E5%9B%BE%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8ETinkerpop
 
-Practical Gremlin: An Apache TinkerPop Tutorial:
-https://github.com/krlawrence/graph
+***** Gremlin *****
 
 Gremlin中文文档:
 http://tinkerpop-gremlin.cn
 
 深入学习图数据库语言Gremlin 系列:
 https://blog.csdn.net/javeme/article/details/82631834
+
+Practical Gremlin: An Apache TinkerPop Tutorial:
+https://github.com/krlawrence/graph
 
 图形数据库与 CRUD 操作:
 https://developer.ibm.com/zh/depmodels/cloud/articles/cl-graph-database-1
