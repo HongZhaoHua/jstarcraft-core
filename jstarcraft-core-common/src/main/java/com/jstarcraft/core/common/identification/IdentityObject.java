@@ -4,7 +4,7 @@ package com.jstarcraft.core.common.identification;
  * 标识对象
  * 
  * <pre>
- * 所有缓存 / 对象关系映射类型都需要实现此接口
+ * 可标识的对象
  * </pre>
  * 
  * @author Birdy
@@ -14,7 +14,7 @@ package com.jstarcraft.core.common.identification;
 public interface IdentityObject<K extends Comparable> extends Comparable<IdentityObject> {
 
     /**
-     * 获取缓存标识
+     * 获取标识
      * 
      * @return
      */
