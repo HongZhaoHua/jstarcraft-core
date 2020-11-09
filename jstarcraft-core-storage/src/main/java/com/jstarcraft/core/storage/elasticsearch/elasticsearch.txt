@@ -26,8 +26,14 @@ https://zhuanlan.zhihu.com/p/34674517
 http://mp.weixin.qq.com/mp/homepage?__biz=MzIxMjE3NjYwOQ==&hid=5&sn=b9c85139ca524fc7823379f4a2da99ba
 
 ***** 脚本 *****
-Elasticsearch Painless script编程:
-https://www.cnblogs.com/sanduzxcvbnm/p/12083590.html
+Elasticsearch: Painless script编程:
+https://elasticstack.blog.csdn.net/article/details/100576555
+Elasticsearch：Painless scripting 初级编程:
+https://elasticstack.blog.csdn.net/article/details/104206569
+Elasticsearch：Painless scripting 高级编程:
+https://elasticstack.blog.csdn.net/article/details/104221275
+Elasticsearch：Painless 编程调试:
+https://blog.csdn.net/UbuntuTouch/article/details/108315145
 
 ***** 嵌套 *****
 ElasticSearch-Nested嵌套类型解密:
