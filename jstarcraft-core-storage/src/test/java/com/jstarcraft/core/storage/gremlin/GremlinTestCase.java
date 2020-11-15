@@ -1,15 +1,16 @@
 package com.jstarcraft.core.storage.gremlin;
 
+import org.apache.tinkerpop.gremlin.driver.Client;
+import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.graphdb.database.StandardJanusGraph;
 import org.janusgraph.graphdb.idmanagement.IDManager;
 import org.junit.Assert;
 import org.junit.Test;
-
-
 
 public class GremlinTestCase {
 
@@ -30,11 +31,24 @@ public class GremlinTestCase {
         graph.close();
     }
 
+    /**
+     * <pre>
+     * ./gremlin-server.bat conf/gremlin-server-modern.yaml
+     * ./gremlin-server.sh conf/gremlin-server-modern.yaml
+     * </pre>
+     */
     @Test
     public void testTinkerGraph() {
-        TinkerGraph graph = TinkerGraph.open();
+        TinkerGraph graph = TinkerFactory.createModern();
         GraphTraversalSource traversal = graph.traversal();
+        Assert.assertEquals(6, traversal.V().count().next().intValue());
         graph.close();
+
+        Cluster cluster = Cluster.build("localhost").port(8182).create();
+        Client client = cluster.connect();
+        Assert.assertEquals(6, client.submit("g.V().count()").one().getInt());
+        cluster.close();
+
     }
 
 }
