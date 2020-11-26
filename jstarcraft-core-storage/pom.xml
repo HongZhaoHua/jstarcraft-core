@@ -134,6 +134,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-neo4j</artifactId>
+            <version>5.3.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-inmemory</artifactId>
             <optional>true</optional>

@@ -458,7 +458,7 @@
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-core</artifactId>
-                <version>3.2.3</version>
+                <version>3.2.17</version>
             </dependency>
 
             <!-- 资源框架依赖 -->
@@ -782,7 +782,7 @@
             <dependency>
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j-ogm-embedded-driver</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.17</version>
             </dependency>
 
             <dependency>

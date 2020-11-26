@@ -3,8 +3,6 @@ package com.jstarcraft.core.storage.neo4j;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.storage.neo4j.Neo4jMetadata;
-
 public class Neo4jMetadataTestCase {
 
     @Test
