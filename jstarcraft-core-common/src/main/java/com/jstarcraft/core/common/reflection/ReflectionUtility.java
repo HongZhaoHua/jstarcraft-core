@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import org.slf4j.Logger;
@@ -218,11 +219,14 @@ public abstract class ReflectionUtility extends ReflectionUtils {
     }
 
     public static void copyInstance(Object from, Object to) {
-        Map<String, Field> fields = getFields(to.getClass());
+        Map<String, Field> fromFields = getFields(from.getClass());
+        Map<String, Field> toFields = getFields(to.getClass());
         try {
-            for (Field field : fields.values()) {
-                Object value = field.get(from);
-                field.set(to, value);
+            for (Entry<String, Field> term : toFields.entrySet()) {
+                Field fromField = fromFields.get(term.getKey());
+                Field toField = term.getValue();
+                Object value = fromField.get(from);
+                toField.set(to, value);
             }
         } catch (Exception exception) {
             throw new RuntimeException(exception);
