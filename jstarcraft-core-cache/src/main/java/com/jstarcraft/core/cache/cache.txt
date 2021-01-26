@@ -26,6 +26,9 @@ https://www.jianshu.com/p/6a3514801ca6
 JCache (JSR107) Examples:
 https://github.com/dbrimley/jcache-examples
 
+AutoLoadCache 是基于AOP+Annotation等技术实现的高效的缓存管理解决方案，实现缓存与业务逻辑的解耦，并增加异步刷新及“拿来主义机制”，以适应高并发环境下的使用:
+https://github.com/qiujiayu/AutoLoadCache
+
 目前PersistenceStrategy思路的基本假设是在异步持久化过程中不存在缓存击穿,所以只检查删除.
 从完备性角度,存在一定问题.如果万一在异步持久化过程存在缓存击穿,则存在脏数据.
 
