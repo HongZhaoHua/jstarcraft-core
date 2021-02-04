@@ -225,7 +225,13 @@ public abstract class ReflectionUtility extends ReflectionUtils {
             for (Entry<String, Field> term : toFields.entrySet()) {
                 Field fromField = fromFields.get(term.getKey());
                 Field toField = term.getValue();
-                Object value = fromField.get(from);
+                Object value;
+                if (fromField.getType().equals(toField.getType())) {
+                    value = fromField.get(from);
+                } else {
+                    value = getInstance(toField.getType());
+                    copyInstance(fromField.get(from), value);
+                }
                 toField.set(to, value);
             }
         } catch (Exception exception) {
