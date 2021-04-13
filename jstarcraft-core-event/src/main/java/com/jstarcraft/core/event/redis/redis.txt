@@ -3,3 +3,6 @@ https://www.jianshu.com/p/d32b16f12f09
 
 Lua的字符串匹配与正则表达式:
 https://www.cnblogs.com/meamin9/p/4502461.html
+
+Rqueue: Redis Queue,Task Queue, Delayed Queue for Spring and Spring Boot:
+https://github.com/sonus21/rqueue
