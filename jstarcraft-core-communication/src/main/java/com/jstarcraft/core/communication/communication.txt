@@ -1,3 +1,6 @@
+HTTP状态码100、200、300、400、500、600的含义:
+https://blog.csdn.net/weixin_44299027/article/details/108297135
+
 MobileIMSDK一个专为移动端开发的开源原创即时通讯框架，超轻量级、高度提炼，完全基于UDP协议，支持iOS、Android、标准Java平台，服务端基于Mina和Netty编写:
 https://github.com/JackJiang2011/MobileIMSDK
 
@@ -19,8 +22,6 @@ ClientCommand注解的方法必须在客户端实现,支持异步模式.
 异步模式的方法支持ExecuteCommand注解.(参数与返回值).
 注意:如果异步模式的方法存在返回值,那么必须使用ExecuteCommand注解.
 	一次调用链中最多只能有一个ExecuteCommand.
-	
-
 
 内置机制:
 存在隐式同步方法(heartbeat signal),用于保持会话与连接.
