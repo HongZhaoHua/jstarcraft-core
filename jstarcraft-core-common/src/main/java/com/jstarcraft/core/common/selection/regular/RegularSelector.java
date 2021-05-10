@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.selection.regular;
 
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +34,8 @@ public class RegularSelector extends AbstractSelector<String> {
     }
 
     @Override
-    public Collection<String> selectContent(String content) {
-        Collection<String> elements = new LinkedList<>();
+    public List<String> selectContent(String content) {
+        List<String> elements = new LinkedList<>();
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {
             String element = matcher.group(group);

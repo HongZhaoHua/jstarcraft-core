@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.selection.css;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
@@ -24,7 +24,7 @@ public class CssSelector extends AbstractSelector<Element> {
     }
 
     @Override
-    public Collection<Element> selectContent(Element content) {
+    public List<Element> selectContent(Element content) {
         return Selector.select(query, content);
     }
 

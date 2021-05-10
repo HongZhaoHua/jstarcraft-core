@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.selection.jsonpath;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import org.noear.snack.ONode;
 
@@ -22,7 +22,7 @@ public class SnackJsonPathSelector extends JsonPathSelector<ONode> {
     }
 
     @Override
-    public Collection<ONode> selectContent(ONode content) {
+    public List<ONode> selectContent(ONode content) {
         content = content.select(query);
         return content.isArray() ? content.ary() : Arrays.asList(content);
     }

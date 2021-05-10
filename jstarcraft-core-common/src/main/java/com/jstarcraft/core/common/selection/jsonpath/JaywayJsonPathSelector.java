@@ -2,7 +2,7 @@ package com.jstarcraft.core.common.selection.jsonpath;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.Configuration.ConfigurationBuilder;
@@ -56,7 +56,7 @@ public class JaywayJsonPathSelector<T> extends JsonPathSelector<T> {
     }
 
     @Override
-    public Collection<T> selectContent(T content) {
+    public List<T> selectContent(T content) {
         EvaluationContext context = path.evaluate(content, content, configuration);
         Object nodes = ReflectionUtility.getField(valueResult, context);
         JsonProvider adapter = context.configuration().jsonProvider();

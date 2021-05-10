@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.selection;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 查询选择器
@@ -17,7 +17,7 @@ public interface QuerySelector<T> {
      * @param content
      * @return
      */
-    Collection<T> selectContent(T content);
+    List<T> selectContent(T content);
 
     /**
      * 获取查询

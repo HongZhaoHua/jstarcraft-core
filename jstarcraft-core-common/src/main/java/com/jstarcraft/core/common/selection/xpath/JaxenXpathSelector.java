@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.selection.xpath;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
@@ -31,9 +31,9 @@ public class JaxenXpathSelector<T> extends XpathSelector<T> {
     }
 
     @Override
-    public Collection<T> selectContent(T content) {
+    public List<T> selectContent(T content) {
         try {
-            return (Collection<T>) xpath.selectNodes(content);
+            return (List<T>) xpath.selectNodes(content);
         } catch (JaxenException exception) {
             throw new RuntimeException(exception);
         }
