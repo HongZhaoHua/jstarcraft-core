@@ -40,6 +40,9 @@ https://blog.csdn.net/mail_liuxing/article/details/99859503
 Java中的Mongodb单元测试:
 https://blog.csdn.net/kiwi_coder/article/details/37873093
 
+Fake implementation of the core MongoDB server in Java that can be used for integration tests.:
+https://github.com/bwaldvogel/mongo-java-server
+
 如何对依赖ZooKeeper的代码写单元测试:
 https://segmentfault.com/a/1190000012571788
 
