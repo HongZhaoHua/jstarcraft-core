@@ -1,5 +1,5 @@
 Lucene解析 - 基本概念:
-https://www.jianshu.com/p/fbb171e73721?from=timeline&isappinstalled=0
+https://zhuanlan.zhihu.com/p/35469104
 
 Lucene DocValues——没有看懂:
 https://www.cnblogs.com/bonelee/p/6669263.html
