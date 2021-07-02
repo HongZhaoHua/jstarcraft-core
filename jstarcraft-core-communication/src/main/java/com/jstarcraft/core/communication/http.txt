@@ -26,3 +26,6 @@ http://www.leftso.com/blog/404.html
 
 一些Spring MVC的使用技巧
 https://www.scienjus.com/spring-mvc-use-skill/
+
+Spring MVC 自定义参数解析器:
+https://blog.csdn.net/guanzhengyinqin/article/details/85255840
