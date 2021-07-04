@@ -1,0 +1,2 @@
+IBM Websphere MQ 使用详解:
+https://blog.csdn.net/qq_39722475/article/details/88654424
