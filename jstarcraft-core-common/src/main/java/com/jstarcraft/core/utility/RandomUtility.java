@@ -113,6 +113,20 @@ public final class RandomUtility {
     public static double randomDouble() {
         return randomDouble(Double.MAX_VALUE);
     }
+    
+    /**
+     * 洗牌
+     * 
+     * <pre>
+     * 通过随机与交换的方式实现打乱排序的目的.
+     * </pre>
+     * 
+     * @param datas
+     */
+    public static <T> void shuffle(boolean[] datas) {
+        int size = datas.length;
+        shuffle(datas, 0, size);
+    }
 
     /**
      * 洗牌
@@ -182,6 +196,28 @@ public final class RandomUtility {
     public static <T> void shuffle(T[] datas) {
         int size = datas.length;
         shuffle(datas, 0, size);
+    }
+
+    /**
+     * 洗牌
+     * 
+     * <pre>
+     * 通过随机与交换的方式实现打乱排序的目的.
+     * </pre>
+     * 
+     * @param datas
+     */
+    public static <T> void shuffle(boolean[] datas, int from, int to) {
+        int size = to - from;
+        if (size <= 1) {
+            return;
+        }
+        for (int index = from; index < to; index++) {
+            int random = RandomUtility.randomInteger(from, to);
+            boolean data = datas[index];
+            datas[index] = datas[random];
+            datas[random] = data;
+        }
     }
 
     /**
