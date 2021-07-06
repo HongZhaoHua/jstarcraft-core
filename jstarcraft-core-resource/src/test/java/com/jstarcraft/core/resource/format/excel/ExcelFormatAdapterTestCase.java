@@ -13,7 +13,7 @@ import com.jstarcraft.core.resource.ResourceManager;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 
 /**
- * XLSX适配器测试
+ * XLS适配器测试
  * 
  * @author Birdy
  */

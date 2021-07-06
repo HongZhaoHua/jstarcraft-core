@@ -4,7 +4,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 
-@ResourceConfiguration(prefix = "excel/", suffix = ".xlsx")
+@ResourceConfiguration(prefix = "excel/", suffix = ".xls")
 public class Biology {
 
     @ResourceId
