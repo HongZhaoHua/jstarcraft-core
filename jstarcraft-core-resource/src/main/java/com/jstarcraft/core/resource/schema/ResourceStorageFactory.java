@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.jstarcraft.core.resource.ResourceStorage;
 import com.jstarcraft.core.resource.format.FormatAdapter;
@@ -52,9 +52,9 @@ public class ResourceStorageFactory extends DefaultListableBeanFactory implement
         // TODO 将applicationContext设置为StorageManagerFactory的工厂.
         this.setParentBeanFactory(this.applicationContext);
         // 支持属性文件(*.properties)
-        Map<String, PropertyPlaceholderConfigurer> propertyConfigurers = this.applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class);
-        for (PropertyPlaceholderConfigurer ropertyConfigurer : propertyConfigurers.values()) {
-            ropertyConfigurer.postProcessBeanFactory(this);
+        Map<String, PropertySourcesPlaceholderConfigurer> propertyConfigurers = this.applicationContext.getBeansOfType(PropertySourcesPlaceholderConfigurer.class);
+        for (PropertySourcesPlaceholderConfigurer propertyConfigurer : propertyConfigurers.values()) {
+            propertyConfigurer.postProcessBeanFactory(this);
         }
     }
 
