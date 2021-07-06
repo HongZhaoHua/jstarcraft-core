@@ -2,6 +2,8 @@ package com.jstarcraft.core.resource.format.excel;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,17 +42,21 @@ public class ExcelFormatAdapterTestCase {
         assertThat(cat, CoreMatchers.notNullValue());
         assertThat(cat.getId(), CoreMatchers.is(1));
         assertThat(cat.getName(), CoreMatchers.is("Cat"));
+        assertThat(cat.getDescription()[1], CoreMatchers.notNullValue());
 
         assertThat(dog, CoreMatchers.notNullValue());
         assertThat(dog.getId(), CoreMatchers.is(2));
         assertThat(dog.getName(), CoreMatchers.is("Dog"));
+        assertThat(dog.getDescription()[1], CoreMatchers.nullValue());
 
         assertThat(tree, CoreMatchers.notNullValue());
         assertThat(tree.getId(), CoreMatchers.is(3));
         assertThat(tree.getName(), CoreMatchers.is("Tree"));
+        assertThat(tree.getDescription(), CoreMatchers.nullValue());
 
         assertThat(shrub, CoreMatchers.notNullValue());
         assertThat(shrub.getId(), CoreMatchers.is(4));
         assertThat(shrub.getName(), CoreMatchers.is("Shrub"));
+        assertThat(shrub.getDescription(), CoreMatchers.nullValue());
     }
 }

@@ -17,6 +17,9 @@ public class Biology {
     @ExcelProperty("fomula")
     private String fomula;
 
+    @ExcelProperty(value = "description", converter = ExcelJsonConverter.class)
+    private String[] description;
+
     public Integer getId() {
         return id;
     }
@@ -29,6 +32,10 @@ public class Biology {
         return fomula;
     }
 
+    public String[] getDescription() {
+        return description;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -39,6 +46,10 @@ public class Biology {
 
     public void setFomula(String fomula) {
         this.fomula = fomula;
+    }
+
+    public void setDescription(String[] description) {
+        this.description = description;
     }
 
 }
