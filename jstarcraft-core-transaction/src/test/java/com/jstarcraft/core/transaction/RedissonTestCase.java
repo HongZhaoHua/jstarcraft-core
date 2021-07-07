@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redisson.Redisson;
 import org.redisson.RedissonNode;
@@ -31,11 +33,26 @@ import org.slf4j.LoggerFactory;
 import com.jstarcraft.core.utility.RandomUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
+import redis.embedded.RedisServer;
+
 public class RedissonTestCase {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public final static double EPSILON = 1E-5;
+    
+    private static RedisServer redis;
+
+    @BeforeClass
+    public static void startRedis() {
+        redis = RedisServer.builder().port(6379).setting("maxmemory 1024M").build();
+        redis.start();
+    }
+
+    @AfterClass
+    public static void stopRedis() {
+        redis.stop();
+    }
 
     @Test
     public void testConnection() {

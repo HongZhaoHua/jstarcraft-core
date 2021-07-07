@@ -1,13 +1,29 @@
 package com.jstarcraft.core.transaction;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
+import redis.embedded.RedisServer;
 
 public class JedisTestCase {
+
+    private static RedisServer redis;
+
+    @BeforeClass
+    public static void startRedis() {
+        redis = RedisServer.builder().port(6379).setting("maxmemory 1024M").build();
+        redis.start();
+    }
+
+    @AfterClass
+    public static void stopRedis() {
+        redis.stop();
+    }
 
     @Test
     public void test() {
