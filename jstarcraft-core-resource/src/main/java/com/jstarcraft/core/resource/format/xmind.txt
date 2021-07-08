@@ -1,0 +1,11 @@
+xmind解析为json，对象，支持xmindzen，旧版xmind8:
+https://github.com/liufree/xmindparser-java
+
+Xmind思维导图转Excel格式的测试用例:
+https://github.com/sun-of-sun/XmindToExcelJava
+
+XMind 以及 Processon 思维导图转Markdown文本:
+https://github.com/NotInWine/xmind-to-md
+
+Parse xmind file to programmable data type (e.g. json, xml), support xmind legacy and xmind zen file types:
+https://github.com/tobyqin/xmindparser
