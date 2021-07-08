@@ -1,3 +1,6 @@
+Redis安装（Windows 最新版本redis 5.0.9，以及redis 4.0）:
+https://blog.csdn.net/qq_26373925/article/details/109269459
+
 Redis实现消息队列的4种方案:
 https://www.jianshu.com/p/d32b16f12f09
 
