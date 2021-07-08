@@ -45,7 +45,7 @@ public class RedissonTestCase {
 
     @BeforeClass
     public static void startRedis() {
-        redis = RedisServer.builder().port(6379).setting("maxmemory 1024M").build();
+        redis = RedisServer.builder().port(6379).setting("maxmemory 64M").build();
         redis.start();
     }
 
