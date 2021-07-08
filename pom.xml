@@ -831,6 +831,12 @@
                 <groupId>it.ozimov</groupId>
                 <artifactId>embedded-redis</artifactId>
                 <version>0.7.3</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- 桥接器:Slf4j使用Log4j2 -->
