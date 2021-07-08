@@ -15,7 +15,7 @@
         <!-- JStarCraft框架依赖 -->
         <dependency>
             <groupId>com.jstarcraft</groupId>
-            <artifactId>jstarcraft-core-script</artifactId>
+            <artifactId>jstarcraft-core-common</artifactId>
             <version>1.0</version>
         </dependency>
 
