@@ -16,6 +16,6 @@ public interface PathAdapter {
      * @param path
      * @return
      */
-    InputStream getStream(String path);
+    InputStream getStream(String path) throws Exception;
 
 }
