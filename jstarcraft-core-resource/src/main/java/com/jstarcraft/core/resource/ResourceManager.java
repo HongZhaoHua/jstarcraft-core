@@ -1,6 +1,5 @@
 package com.jstarcraft.core.resource;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,7 +67,6 @@ public class ResourceManager<K, V> extends Observable {
         this.clazz = clazz;
         ResourceConfiguration annotation = clazz.getAnnotation(ResourceConfiguration.class);
         StringBuilder buffer = new StringBuilder();
-        buffer.append(File.separator);
         buffer.append(annotation.prefix());
         buffer.append(clazz.getSimpleName());
         buffer.append(annotation.suffix());
