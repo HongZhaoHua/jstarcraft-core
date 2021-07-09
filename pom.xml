@@ -13,6 +13,7 @@
         <module>jstarcraft-core-common</module>
         <module>jstarcraft-core-communication</module>
         <module>jstarcraft-core-event</module>
+        <module>jstarcraft-core-io</module>
         <module>jstarcraft-core-monitor</module>
         <module>jstarcraft-core-resource</module>
         <module>jstarcraft-core-script</module>
