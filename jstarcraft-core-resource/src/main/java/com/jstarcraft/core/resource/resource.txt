@@ -49,6 +49,9 @@ https://blog.csdn.net/jingzi123456789/article/details/83409572
 Java中Apache下面FtpClient主动模式和被动模式:
 https://www.cnblogs.com/lcngu/p/7763754.html
 
+MockFtpServer - Providing a Fake/Stub FTP Server:
+https://mockftpserver.org/
+
 使用javaAPI操作hdfs:
 https://www.cnblogs.com/yanghuabin/p/7628088.html
 
