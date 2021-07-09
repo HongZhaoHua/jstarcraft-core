@@ -9,3 +9,9 @@ https://github.com/NotInWine/xmind-to-md
 
 Parse xmind file to programmable data type (e.g. json, xml), support xmind legacy and xmind zen file types:
 https://github.com/tobyqin/xmindparser
+
+xmind 转换成 excel:
+http://sunyongfeng.com/201704/programmer/python/xmind2excel
+
+如何将xmind转成Excel:
+https://www.muzijie.com/a2/k3lqzo5ge.html
