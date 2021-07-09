@@ -46,6 +46,9 @@ https://blog.csdn.net/qililong88/article/details/78023278
 FTP的主动模式和被动模式工作原理及抓包分析:
 https://blog.csdn.net/jingzi123456789/article/details/83409572
 
+Java中Apache下面FtpClient主动模式和被动模式:
+https://www.cnblogs.com/lcngu/p/7763754.html
+
 使用javaAPI操作hdfs:
 https://www.cnblogs.com/yanghuabin/p/7628088.html
 
