@@ -88,6 +88,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- ZooKeeper -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>
