@@ -57,3 +57,6 @@ https://www.cnblogs.com/lyy-2016/p/6122144.html
 
 简单的httpmock-MOCO:
 https://blog.csdn.net/j476091245/article/details/103170930
+
+Embedded S3 server for easy mocking:
+https://github.com/findify/s3mock
