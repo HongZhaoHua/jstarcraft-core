@@ -1,14 +1,7 @@
-package com.jstarcraft.core.storage.identification;
+package com.jstarcraft.core.common.identification;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import com.jstarcraft.core.common.identification.IdentityObject;
-
-@Entity
 public class MockObject implements IdentityObject<Long> {
 
-    @Id
     private Long id;
 
     private String firstName;

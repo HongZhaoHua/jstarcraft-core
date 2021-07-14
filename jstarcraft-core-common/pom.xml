@@ -45,6 +45,19 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
+        </dependency> 
+        
+        <!-- 标识框架依赖 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- 工具框架依赖 -->
@@ -242,11 +255,6 @@
             <artifactId>xom</artifactId>
             <version>1.3.5</version>
             <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
         </dependency>
 
         <!-- 测试框架依赖 -->

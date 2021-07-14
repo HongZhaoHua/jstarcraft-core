@@ -25,19 +25,6 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- 标识框架依赖 -->
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring</artifactId>

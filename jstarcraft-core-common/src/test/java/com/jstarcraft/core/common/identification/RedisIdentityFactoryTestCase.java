@@ -1,4 +1,4 @@
-package com.jstarcraft.core.storage.identification;
+package com.jstarcraft.core.common.identification;
 
 import org.junit.After;
 import org.junit.Before;

@@ -46,6 +46,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- MQTT框架依赖 -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mqtt</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- QMQ框架依赖 -->
         <dependency>
             <groupId>com.qunar.qmq</groupId>
@@ -59,13 +66,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- MQTT框架依赖 -->
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-mqtt</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- RabbitMQ框架依赖 -->
         <dependency>
             <groupId>com.rabbitmq</groupId>
@@ -76,6 +76,13 @@
         <dependency>
             <groupId>com.rabbitmq.jms</groupId>
             <artifactId>rabbitmq-jms</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Redis框架依赖 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
             <optional>true</optional>
         </dependency>
 

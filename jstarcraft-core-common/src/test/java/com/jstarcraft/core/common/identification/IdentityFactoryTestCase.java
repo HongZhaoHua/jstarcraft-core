@@ -1,4 +1,4 @@
-package com.jstarcraft.core.storage.identification;
+package com.jstarcraft.core.common.identification;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;

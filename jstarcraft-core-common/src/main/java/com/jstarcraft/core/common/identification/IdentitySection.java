@@ -1,4 +1,4 @@
-package com.jstarcraft.core.storage.identification;
+package com.jstarcraft.core.common.identification;
 
 /**
  * 标识分段
