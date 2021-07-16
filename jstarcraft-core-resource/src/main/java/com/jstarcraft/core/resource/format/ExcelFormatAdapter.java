@@ -27,20 +27,26 @@ public class ExcelFormatAdapter implements FormatAdapter {
 
     private final class ExcelFormatListener<E> extends AnalysisEventListener<E> {
 
+        private Class<E> clazz;
+
         /** 实例列表 */
         private List<E> instances = new LinkedList<>();
+
+        private ExcelFormatListener(Class<E> clazz) {
+            this.clazz = clazz;
+        }
 
         @Override
         public void onException(Exception exception, AnalysisContext context) {
             if (exception instanceof ExcelDataConvertException) {
                 ExcelDataConvertException excelDataConvertException = (ExcelDataConvertException) exception;
-                logger.error("遍历Excel第{}行,第{}列异常,数据为:{}", excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex(), excelDataConvertException.getCellData());
+                logger.error("遍历Excel[{}]第{}行,第{}列异常,数据为:{}", clazz.getName(), excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex(), excelDataConvertException.getCellData());
             }
         }
 
         @Override
         public void invokeHeadMap(Map<Integer, String> meta, AnalysisContext context) {
-            logger.info("遍历Excel元数据:{}", meta);
+            logger.info("遍历Excel[{}]元数据:{}", clazz.getName(), meta);
         }
 
         @Override
@@ -71,7 +77,7 @@ public class ExcelFormatAdapter implements FormatAdapter {
     @Override
     public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
         try {
-            ExcelFormatListener<E> listener = new ExcelFormatListener<>();
+            ExcelFormatListener<E> listener = new ExcelFormatListener<>(clazz);
             EasyExcel.read(stream, clazz, listener).headRowNumber(metaNumber).doReadAll();
             return listener.getInstances().iterator();
         } catch (Exception exception) {
