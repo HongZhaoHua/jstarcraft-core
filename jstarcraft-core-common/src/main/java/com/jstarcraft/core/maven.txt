@@ -12,3 +12,6 @@ https://www.cnblogs.com/aimqqroad-13/p/9645776.html
 
 如何将自己的开源项目发布到Maven中央仓库:
 https://blog.csdn.net/sinat_23290725/article/details/85018092
+
+发布Maven包的正确姿势:
+https://zhuanlan.zhihu.com/p/141676033
