@@ -4,6 +4,23 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.jstarcraft.core.script.beanshell.BeanShellExpressionTestCase;
+import com.jstarcraft.core.script.beanshell.BeanShellFunctionTestCase;
+import com.jstarcraft.core.script.groovy.GroovyExpressionTestCase;
+import com.jstarcraft.core.script.groovy.GroovyFunctionTestCase;
+import com.jstarcraft.core.script.js.JsExpressionTestCase;
+import com.jstarcraft.core.script.js.JsFunctionTestCase;
+import com.jstarcraft.core.script.kotlin.KotlinExpressionTestCase;
+import com.jstarcraft.core.script.kotlin.KotlinFunctionTestCase;
+import com.jstarcraft.core.script.lua.LuaExpressionTestCase;
+import com.jstarcraft.core.script.lua.LuaFunctionTestCase;
+import com.jstarcraft.core.script.mvel.MvelExpressionTestCase;
+import com.jstarcraft.core.script.mvel.MvelFunctionTestCase;
+import com.jstarcraft.core.script.python.PythonExpressionTestCase;
+import com.jstarcraft.core.script.python.PythonFunctionTestCase;
+import com.jstarcraft.core.script.ruby.RubyExpressionTestCase;
+import com.jstarcraft.core.script.ruby.RubyFunctionTestCase;
+
 /**
  * 脚本集成测试
  * 

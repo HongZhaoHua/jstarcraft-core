@@ -77,7 +77,7 @@ public class ScriptScope {
      * 
      * @return
      */
-    Map<String, Object> getAttributes() {
+    public Map<String, Object> getAttributes() {
         return scopeAttributes;
     }
 
@@ -86,7 +86,7 @@ public class ScriptScope {
      * 
      * @return
      */
-    ScriptScope copyScope() {
+    public ScriptScope copyScope() {
         ScriptScope scope = new ScriptScope();
         scope.scopeAttributes.putAll(scopeAttributes);
         return scope;
