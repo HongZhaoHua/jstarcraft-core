@@ -1,4 +1,4 @@
-package com.jstarcraft.cloud.platform;
+package com.jstarcraft.core.io;
 
 import java.time.Instant;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Birdy
  *
  */
-public class StorageMetadata {
+public class StreamMetadata {
 
     /** 修改 */
     private Instant updatedAt;

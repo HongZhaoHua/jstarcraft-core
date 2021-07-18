@@ -1,4 +1,4 @@
-package com.jstarcraft.cloud.platform;
+package com.jstarcraft.core.io;
 
 import java.io.InputStream;
 
@@ -8,18 +8,18 @@ import java.io.InputStream;
  * @author Birdy
  *
  */
-public class StorageResource {
+public class StreamResource {
 
-    private StorageMetadata metadata;
+    private StreamMetadata metadata;
 
     private InputStream stream;
 
-    public StorageResource(StorageMetadata metadata, InputStream stream) {
+    public StreamResource(StreamMetadata metadata, InputStream stream) {
         this.metadata = metadata;
         this.stream = stream;
     }
 
-    public StorageMetadata getMetadata() {
+    public StreamMetadata getMetadata() {
         return metadata;
     }
 

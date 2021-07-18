@@ -1,4 +1,4 @@
-package com.jstarcraft.cloud.platform;
+package com.jstarcraft.core.io;
 
 import java.util.Iterator;
 
@@ -8,33 +8,33 @@ import java.util.Iterator;
  * @author Birdy
  *
  */
-public interface StorageService {
+public interface StreamStorage {
 
     /**
-     * 创建仓库
+     * 创建流仓库
      * 
      * @param name
      */
     public void createStorage(String name);
 
     /**
-     * 删除仓库
+     * 删除流仓库
      * 
      * @param name
      */
     public void deleteStorage(String name);
 
     /**
-     * 保存资源
+     * 保存流资源
      * 
      * @param storage
      * @param key
      * @param resource
      */
-    public void saveResource(String storage, String key, StorageResource resource);
+    public void saveResource(String storage, String key, StreamResource resource);
 
     /**
-     * 废弃资源
+     * 废弃流资源
      * 
      * @param storage
      * @param key
@@ -42,7 +42,7 @@ public interface StorageService {
     public void waiveResource(String storage, String key);
 
     /**
-     * 检测资源
+     * 检测流资源
      * 
      * @param storage
      * @param key
@@ -50,24 +50,38 @@ public interface StorageService {
      */
     public boolean haveResource(String storage, String key);
 
-    public Iterator<StorageResource> iterateResources(String storage);
+    /**
+     * 遍历流资源
+     * 
+     * @param storage
+     * @return
+     */
+    public Iterator<StreamResource> iterateResources(String storage);
 
     /**
-     * 获取资源
+     * 获取流资源
      * 
      * @param storage
      * @param key
      * @return
      */
-    public StorageResource retrieveResource(String storage, String key);
+    public StreamResource retrieveResource(String storage, String key);
+    
+    /**
+     * 遍历流信息
+     * 
+     * @param storage
+     * @return
+     */
+    public Iterator<StreamMetadata> iterateMetadatas(String storage);
 
     /**
-     * 获取元信息
+     * 获取流信息
      * 
      * @param storage
      * @param key
      * @return
      */
-    public StorageMetadata retrieveMetadata(String storage, String key);
+    public StreamMetadata retrieveMetadata(String storage, String key);
 
 }
