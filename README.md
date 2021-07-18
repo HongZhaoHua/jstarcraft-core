@@ -128,6 +128,13 @@ JStarCraft Core框架各个模块之间的关系:
         * STOMP
         * Vert.x
 * 6.输入/输出(io)
+    * 流
+        * Disk
+        * FTP
+        * Git
+        * HDFS
+        * SVN
+        * ZooKeeper
 * 7.监控(monitor)
     * 链路(link)
         * 日志(log)
@@ -153,14 +160,12 @@ JStarCraft Core框架各个模块之间的关系:
         * XLSX
         * XML
         * YAML
-    * 路径与流
-        * Disk
-        * FTP
-        * Git
-        * HDFS
+    * 路径
+        * ClassPath
+        * Cloud
         * HTTP
-        * SVN
-        * ZooKeeper
+        * IO
+        * ZIP
 * 9.脚本(script)
     * BeanShell
     * Groovy
@@ -168,6 +173,7 @@ JStarCraft Core框架各个模块之间的关系:
     * Kotlin
     * Lua
     * MVEL
+    * PHP
     * Python
     * Ruby
 * [10.存储(storage)](https://github.com/HongZhaoHua/jstarcraft-core/wiki/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84)
