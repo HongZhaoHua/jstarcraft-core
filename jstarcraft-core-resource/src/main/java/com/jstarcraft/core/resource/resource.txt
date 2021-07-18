@@ -26,34 +26,3 @@ http://blog.csdn.net/goodkuang2012/article/details/7350985
 
 Java工具类：Excel导入导出、时间操作、文件上传等工具类:
 https://github.com/andyczy/czy-study-java-commons-utils
-
-Java操作SVN(实现文件的解锁、检出、更新及提交)---SVNKit学习示例:
-https://www.cnblogs.com/powerwu/articles/9718325.html
-
-Java操作Git简单实现:
-https://www.cnblogs.com/wozijisun/p/10396660.html
-
-FTP的Java操作全面实战:
-https://blog.csdn.net/haoranhaoshi/article/details/86922503
-
-JAVA操作FTP（FTP工具类）:
-https://blog.csdn.net/wangyingjief/article/details/106774587
-
-FTPClient的使用:
-https://blog.csdn.net/qililong88/article/details/78022994
-https://blog.csdn.net/qililong88/article/details/78023278
-
-FTP的主动模式和被动模式工作原理及抓包分析:
-https://blog.csdn.net/jingzi123456789/article/details/83409572
-
-Java中Apache下面FtpClient主动模式和被动模式:
-https://www.cnblogs.com/lcngu/p/7763754.html
-
-MockFtpServer - Providing a Fake/Stub FTP Server:
-https://mockftpserver.org/
-
-使用javaAPI操作hdfs:
-https://www.cnblogs.com/yanghuabin/p/7628088.html
-
-GitHub 拉取指定子目录:
-https://www.jianshu.com/p/20205df72001

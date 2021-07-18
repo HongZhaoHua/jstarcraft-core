@@ -1,0 +1,2 @@
+使用javaAPI操作hdfs:
+https://www.cnblogs.com/yanghuabin/p/7628088.html

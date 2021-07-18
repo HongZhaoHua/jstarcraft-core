@@ -1,0 +1,18 @@
+FTP的Java操作全面实战:
+https://blog.csdn.net/haoranhaoshi/article/details/86922503
+
+JAVA操作FTP（FTP工具类）:
+https://blog.csdn.net/wangyingjief/article/details/106774587
+
+FTPClient的使用:
+https://blog.csdn.net/qililong88/article/details/78022994
+https://blog.csdn.net/qililong88/article/details/78023278
+
+FTP的主动模式和被动模式工作原理及抓包分析:
+https://blog.csdn.net/jingzi123456789/article/details/83409572
+
+Java中Apache下面FtpClient主动模式和被动模式:
+https://www.cnblogs.com/lcngu/p/7763754.html
+
+MockFtpServer - Providing a Fake/Stub FTP Server:
+https://mockftpserver.org/
