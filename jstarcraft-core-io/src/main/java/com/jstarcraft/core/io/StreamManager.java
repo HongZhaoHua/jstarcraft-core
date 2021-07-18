@@ -1,6 +1,9 @@
 package com.jstarcraft.core.io;
 
+import java.io.InputStream;
 import java.util.Iterator;
+
+import com.jstarcraft.core.utility.KeyValue;
 
 /**
  * 流管理器
@@ -13,56 +16,40 @@ public interface StreamManager {
     /**
      * 保存流资源
      * 
-     * @param key
-     * @param resource
+     * @param path
+     * @param stream
      */
-    public void saveResource(String key, StreamResource resource);
+    public void saveResource(String path, InputStream stream);
 
     /**
      * 废弃流资源
      * 
-     * @param key
+     * @param path
      */
-    public void waiveResource(String key);
+    public void waiveResource(String path);
 
     /**
      * 检测流资源
      * 
-     * @param key
+     * @param path
      * @return
      */
-    public boolean haveResource(String key);
+    public boolean haveResource(String path);
 
     /**
      * 遍历流资源
      * 
-     * @param key
+     * @param path
      * @return
      */
-    public Iterator<StreamResource> iterateResources(String key);
+    public Iterator<KeyValue<String, InputStream>> iterateResources(String path);
 
     /**
      * 获取流资源
      * 
-     * @param key
+     * @param path
      * @return
      */
-    public StreamResource retrieveResource(String key);
-
-    /**
-     * 遍历流信息
-     * 
-     * @param key
-     * @return
-     */
-    public Iterator<StreamMetadata> iterateMetadatas(String key);
-
-    /**
-     * 获取流信息
-     * 
-     * @param key
-     * @return
-     */
-    public StreamMetadata retrieveMetadata(String key);
+    public InputStream retrieveResource(String path);
 
 }
