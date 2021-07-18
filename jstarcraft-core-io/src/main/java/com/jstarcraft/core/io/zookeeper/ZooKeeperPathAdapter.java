@@ -1,9 +1,11 @@
-package com.jstarcraft.core.resource.path;
+package com.jstarcraft.core.io.zookeeper;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.curator.framework.CuratorFramework;
+
+import com.jstarcraft.core.io.PathAdapter;
 
 public class ZooKeeperPathAdapter implements PathAdapter {
 

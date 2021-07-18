@@ -1,23 +1,25 @@
-package com.jstarcraft.core.resource.path;
+package com.jstarcraft.core.io.disk;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public class FilePathAdapter implements PathAdapter {
+import com.jstarcraft.core.io.PathAdapter;
+
+public class DiskPathAdapter implements PathAdapter {
 
     private File directory;
 
-    public FilePathAdapter(String directory) {
+    public DiskPathAdapter(String directory) {
         this(new File(directory));
     }
 
-    public FilePathAdapter(Path directory) {
+    public DiskPathAdapter(Path directory) {
         this(directory.toFile());
     }
 
-    public FilePathAdapter(File directory) {
+    public DiskPathAdapter(File directory) {
         this.directory = directory;
     }
 

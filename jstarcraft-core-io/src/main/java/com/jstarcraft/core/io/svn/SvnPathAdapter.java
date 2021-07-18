@@ -1,6 +1,8 @@
-package com.jstarcraft.core.resource.path;
+package com.jstarcraft.core.io.svn;
 
 import java.io.InputStream;
+
+import com.jstarcraft.core.io.PathAdapter;
 
 public class SvnPathAdapter implements PathAdapter {
 

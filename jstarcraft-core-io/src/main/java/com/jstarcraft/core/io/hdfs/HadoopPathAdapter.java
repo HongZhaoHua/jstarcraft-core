@@ -1,9 +1,11 @@
-package com.jstarcraft.core.resource.path;
+package com.jstarcraft.core.io.hdfs;
 
 import java.io.InputStream;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+
+import com.jstarcraft.core.io.PathAdapter;
 
 public class HadoopPathAdapter implements PathAdapter {
 
