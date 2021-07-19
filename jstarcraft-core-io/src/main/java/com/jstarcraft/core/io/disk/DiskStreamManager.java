@@ -35,6 +35,10 @@ public class DiskStreamManager implements StreamManager {
     @Override
     public void saveResource(String path, InputStream stream) {
         File file = new File(directory, path);
+        File directory = file.getParentFile();
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
         try (FileOutputStream resource = new FileOutputStream(file)) {
             byte[] bytes = new byte[BUFFER_SIZE];
             int size;
@@ -100,6 +104,9 @@ public class DiskStreamManager implements StreamManager {
     public InputStream retrieveResource(String path) {
         try {
             File file = new File(directory, path);
+            if (!file.exists() || !file.isFile()) {
+                return null;
+            }
             InputStream stream = new FileInputStream(file);
             return stream;
         } catch (Exception exception) {

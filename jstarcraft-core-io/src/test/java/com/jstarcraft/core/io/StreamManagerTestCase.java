@@ -16,7 +16,7 @@ public abstract class StreamManagerTestCase {
     @Test
     public void testHaveResource() throws Exception {
         StreamManager manager = getStreamManager();
-        String path = "path";
+        String path = "left/middle/right";
 
         {
             Assert.assertFalse(manager.haveResource(path));
