@@ -3,11 +3,11 @@ package com.jstarcraft.core.io;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.jstarcraft.core.utility.StringUtility;
-import com.nimbusds.jose.util.IOUtils;
 
 public abstract class StreamManagerTestCase {
 
@@ -30,7 +30,7 @@ public abstract class StreamManagerTestCase {
         }
 
         try (InputStream stream = manager.retrieveResource(path)) {
-            String content = IOUtils.readInputStreamToString(stream, StringUtility.CHARSET);
+            String content = IOUtils.readLines(stream, StringUtility.CHARSET).get(0);
             Assert.assertEquals(path, content);
         }
 

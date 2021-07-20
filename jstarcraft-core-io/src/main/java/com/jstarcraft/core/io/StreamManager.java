@@ -3,8 +3,6 @@ package com.jstarcraft.core.io;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import com.jstarcraft.core.utility.KeyValue;
-
 /**
  * 流管理器
  * 
@@ -35,7 +33,7 @@ public interface StreamManager {
      * @return
      */
     public boolean haveResource(String path);
-    
+
     /**
      * 获取流资源
      * 
@@ -50,8 +48,6 @@ public interface StreamManager {
      * @param path
      * @return
      */
-    public Iterator<KeyValue<String, InputStream>> iterateResources(String path);
-
-   
+    public Iterator<String> iterateResources(String path);
 
 }

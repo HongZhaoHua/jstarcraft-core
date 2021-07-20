@@ -11,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.jstarcraft.core.io.StreamManager;
 import com.jstarcraft.core.io.exception.StreamException;
-import com.jstarcraft.core.utility.KeyValue;
 
 public class DiskStreamManager implements StreamManager {
 
@@ -76,7 +75,7 @@ public class DiskStreamManager implements StreamManager {
         }
     }
 
-    private class DiskStreamIterator implements Iterator<KeyValue<String, InputStream>> {
+    private class DiskStreamIterator implements Iterator<String> {
 
         private Iterator<File> iterator;
 
@@ -90,14 +89,9 @@ public class DiskStreamManager implements StreamManager {
         }
 
         @Override
-        public KeyValue<String, InputStream> next() {
+        public String next() {
             File file = iterator.next();
-            try {
-                InputStream stream = new FileInputStream(file);
-                return new KeyValue<>(file.getName(), stream);
-            } catch (Exception exception) {
-                throw new StreamException(exception);
-            }
+            return file.getName();
         }
 
         @Override
@@ -108,9 +102,9 @@ public class DiskStreamManager implements StreamManager {
     }
 
     @Override
-    public Iterator<KeyValue<String, InputStream>> iterateResources(String path) {
-        File file = new File(directory, path);
-        Iterator<File> iterator = FileUtils.iterateFiles(file, null, null);
+    public Iterator<String> iterateResources(String path) {
+        File files = new File(directory, path);
+        Iterator<File> iterator = FileUtils.iterateFiles(files, null, null);
         return new DiskStreamIterator(iterator);
     }
 
