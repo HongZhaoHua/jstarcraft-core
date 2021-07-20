@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import com.jstarcraft.core.io.StreamManager;
 import com.jstarcraft.core.io.exception.StreamException;
@@ -58,7 +59,7 @@ public class DiskStreamManager implements StreamManager {
     @Override
     public boolean haveResource(String path) {
         File file = new File(directory, path);
-        return file.exists();
+        return file.isFile() && file.exists();
     }
 
     @Override
@@ -79,7 +80,10 @@ public class DiskStreamManager implements StreamManager {
 
         private Iterator<File> iterator;
 
-        private DiskStreamIterator(Iterator<File> iterator) {
+        private int index;
+
+        private DiskStreamIterator(File directory, Iterator<File> iterator) {
+            this.index = directory.toURI().getPath().length();
             this.iterator = iterator;
         }
 
@@ -91,7 +95,7 @@ public class DiskStreamManager implements StreamManager {
         @Override
         public String next() {
             File file = iterator.next();
-            return file.getName();
+            return file.toURI().getPath().substring(index);
         }
 
         @Override
@@ -104,8 +108,8 @@ public class DiskStreamManager implements StreamManager {
     @Override
     public Iterator<String> iterateResources(String path) {
         File files = new File(directory, path);
-        Iterator<File> iterator = FileUtils.iterateFiles(files, null, null);
-        return new DiskStreamIterator(iterator);
+        Iterator<File> iterator = FileUtils.iterateFiles(files, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+        return new DiskStreamIterator(directory, iterator);
     }
 
 }
