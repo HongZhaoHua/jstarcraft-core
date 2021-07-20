@@ -35,6 +35,14 @@ public interface StreamManager {
      * @return
      */
     public boolean haveResource(String path);
+    
+    /**
+     * 获取流资源
+     * 
+     * @param path
+     * @return
+     */
+    public InputStream retrieveResource(String path);
 
     /**
      * 遍历流资源
@@ -44,12 +52,6 @@ public interface StreamManager {
      */
     public Iterator<KeyValue<String, InputStream>> iterateResources(String path);
 
-    /**
-     * 获取流资源
-     * 
-     * @param path
-     * @return
-     */
-    public InputStream retrieveResource(String path);
+   
 
 }

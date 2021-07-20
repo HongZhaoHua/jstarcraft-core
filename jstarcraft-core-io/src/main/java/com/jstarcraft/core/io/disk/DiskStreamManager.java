@@ -62,6 +62,20 @@ public class DiskStreamManager implements StreamManager {
         return file.exists();
     }
 
+    @Override
+    public InputStream retrieveResource(String path) {
+        try {
+            File file = new File(directory, path);
+            if (!file.exists() || !file.isFile()) {
+                return null;
+            }
+            InputStream stream = new FileInputStream(file);
+            return stream;
+        } catch (Exception exception) {
+            throw new StreamException(exception);
+        }
+    }
+
     private class DiskStreamIterator implements Iterator<KeyValue<String, InputStream>> {
 
         private Iterator<File> iterator;
@@ -98,20 +112,6 @@ public class DiskStreamManager implements StreamManager {
         File file = new File(directory, path);
         Iterator<File> iterator = FileUtils.iterateFiles(file, null, null);
         return new DiskStreamIterator(iterator);
-    }
-
-    @Override
-    public InputStream retrieveResource(String path) {
-        try {
-            File file = new File(directory, path);
-            if (!file.exists() || !file.isFile()) {
-                return null;
-            }
-            InputStream stream = new FileInputStream(file);
-            return stream;
-        } catch (Exception exception) {
-            throw new StreamException(exception);
-        }
     }
 
 }
