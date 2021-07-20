@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Iterator;
 
@@ -39,7 +40,7 @@ public class DiskStreamManager implements StreamManager {
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        try (FileOutputStream resource = new FileOutputStream(file)) {
+        try (OutputStream resource = new FileOutputStream(file)) {
             byte[] bytes = new byte[BUFFER_SIZE];
             int size;
             while ((size = stream.read(bytes)) > 0) {
