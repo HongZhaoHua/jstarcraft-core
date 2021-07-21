@@ -50,14 +50,14 @@ public class InstantIdentityFactory implements IdentityFactory {
     }
 
     /**
-     * 阻塞到下一个毫秒,直到获得时间戳
+     * 等待到指定毫秒,获得时间戳
      * 
-     * @param last
+     * @param wait
      * @return
      */
-    private long waitInstant(long last) {
+    private long waitInstant(long wait) {
         long current = System.currentTimeMillis();
-        while (current <= last) {
+        while (current <= wait) {
             current = System.currentTimeMillis();
         }
         return current;
