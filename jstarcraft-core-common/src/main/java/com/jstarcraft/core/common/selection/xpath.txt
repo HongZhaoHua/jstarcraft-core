@@ -24,3 +24,6 @@ https://www.cnblogs.com/longqingyang/p/5577937.html
 
 Java 使用XOM对象数据序列化为XML、反序列化、Preferences相关操作小案例:
 https://blog.csdn.net/liangrui1988/article/details/34199951
+
+The gold standard Stax XML API implementation.:
+https://github.com/FasterXML/woodstox
