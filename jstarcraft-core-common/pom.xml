@@ -45,8 +45,8 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-        </dependency> 
-        
+        </dependency>
+
         <!-- 标识框架依赖 -->
         <dependency>
             <groupId>org.redisson</groupId>
@@ -64,6 +64,7 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -80,24 +81,28 @@
         <dependency>
             <groupId>net.time4j</groupId>
             <artifactId>time4j-base</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- 压缩解压 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- 7Z格式 -->
         <dependency>
             <groupId>org.tukaani</groupId>
             <artifactId>xz</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- RAR格式 -->
         <dependency>
             <groupId>com.github.junrar</groupId>
             <artifactId>junrar</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- CSV -->
@@ -157,6 +162,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-configuration2</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- NightConfig依赖 -->
@@ -164,12 +170,14 @@
             <groupId>com.electronwill.night-config</groupId>
             <artifactId>hocon</artifactId>
             <version>3.6.3</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.electronwill.night-config</groupId>
             <artifactId>toml</artifactId>
             <version>3.6.3</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- TOML -->
@@ -177,6 +185,7 @@
             <groupId>org.tomlj</groupId>
             <artifactId>tomlj</artifactId>
             <version>1.0.0</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- 选择项依赖 -->
@@ -194,6 +203,7 @@
             <artifactId>json-path</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>com-google-gson</artifactId>
