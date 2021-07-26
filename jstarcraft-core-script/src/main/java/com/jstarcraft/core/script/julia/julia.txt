@@ -1,0 +1,6 @@
+Julia for Java binding:
+https://github.com/rssdev10/julia4j
+https://github.com/rssdev10/julia4j/blob/master/src/test/java/Julia4JScriptingTest.java
+
+Julia 中文社区:
+https://cn.julialang.org/
