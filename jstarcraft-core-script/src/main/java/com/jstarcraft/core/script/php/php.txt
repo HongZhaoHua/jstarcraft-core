@@ -1,2 +1,6 @@
 Using PHP and Java in the Same App with PHP/Java Bridge:
 https://www.developer.com/java/using-php-and-java-in-the-same-app-with-php-java-bridge/
+
+PHP Java bridge:
+https://github.com/belgattitude/php-java-bridge
+http://php-java-bridge.sourceforge.net/pjb/index.php

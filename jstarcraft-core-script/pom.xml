@@ -56,7 +56,6 @@
             <groupId>io.soluble.pjb</groupId>
             <artifactId>php-java-bridge</artifactId>
             <version>7.1.3</version>
-            <type>pom</type>
         </dependency>
 
         <dependency>
