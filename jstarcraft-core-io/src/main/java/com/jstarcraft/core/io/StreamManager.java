@@ -50,4 +50,12 @@ public interface StreamManager {
      */
     public Iterator<String> iterateResources(String path);
 
+    /**
+     * 获取更新于
+     * 
+     * @param path
+     * @return
+     */
+    public long getUpdatedAt(String path);
+
 }

@@ -1,5 +1,6 @@
 package com.jstarcraft.core.io.hdfs;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
@@ -128,6 +129,20 @@ public class HdfsStreamManager implements StreamManager {
             Path uri = new Path(directory, path);
             RemoteIterator<LocatedFileStatus> iterator = system.listFiles(uri, true);
             return new HadoopStreamIterator(system.getFileStatus(directory), iterator);
+        } catch (Exception exception) {
+            throw new StreamException(exception);
+        }
+    }
+
+    @Override
+    public long getUpdatedAt(String path) {
+        try {
+            Path uri = new Path(directory, path);
+            if (system.exists(uri)) {
+                FileStatus status = system.getFileStatus(uri);
+                return status.getModificationTime();
+            }
+            return 0;
         } catch (Exception exception) {
             throw new StreamException(exception);
         }

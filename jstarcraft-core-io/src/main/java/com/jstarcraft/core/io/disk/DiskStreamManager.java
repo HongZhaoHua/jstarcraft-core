@@ -113,4 +113,13 @@ public class DiskStreamManager implements StreamManager {
         return new DiskStreamIterator(directory, iterator);
     }
 
+    @Override
+    public long getUpdatedAt(String path) {
+        File file = new File(directory, path);
+        if (!file.exists() || !file.isFile()) {
+            return file.lastModified();
+        }
+        return 0;
+    }
+
 }
