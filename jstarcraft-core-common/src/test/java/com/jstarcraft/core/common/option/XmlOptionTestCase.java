@@ -33,7 +33,6 @@ public class XmlOptionTestCase {
             Assert.assertEquals("Tree", option.getString("biology.phytology.biology[0].name"));
             Assert.assertEquals("4", option.getString("biology.phytology.biology[1].id"));
             Assert.assertEquals("Shrub", option.getString("biology.phytology.biology[1].name"));
-
         }
     }
 

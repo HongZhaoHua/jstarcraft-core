@@ -3,3 +3,6 @@ https://github.com/justdb/jackson-dataformat-toml
 
 TOML for Java:
 https://github.com/agrison/jtoml
+
+TOML 教程 - 可能是目前最好的配置文件格式：
+https://zhuanlan.zhihu.com/p/50412485
