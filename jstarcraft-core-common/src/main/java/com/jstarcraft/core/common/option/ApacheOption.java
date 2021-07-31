@@ -14,7 +14,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ApacheOption implements Option {
+public class ApacheOption implements TypeOption {
 
     private Configuration keyValues;
 
@@ -28,18 +28,8 @@ public class ApacheOption implements Option {
     }
 
     @Override
-    public BigDecimal getBigDecimal(String key) {
-        return keyValues.getBigDecimal(key);
-    }
-
-    @Override
     public BigInteger getBigInteger(String key, BigInteger instead) {
         return keyValues.getBigInteger(key, instead);
-    }
-
-    @Override
-    public BigInteger getBigInteger(String key) {
-        return keyValues.getBigInteger(key);
     }
 
     @Override
@@ -48,18 +38,8 @@ public class ApacheOption implements Option {
     }
 
     @Override
-    public Boolean getBoolean(String key) {
-        return keyValues.getBoolean(key);
-    }
-
-    @Override
     public Byte getByte(String key, Byte instead) {
         return keyValues.getByte(key, instead);
-    }
-
-    @Override
-    public Byte getByte(String key) {
-        return keyValues.getByte(key);
     }
 
     @Override
@@ -69,18 +49,8 @@ public class ApacheOption implements Option {
     }
 
     @Override
-    public Character getCharacter(String key) {
-        return getCharacter(key, null);
-    }
-
-    @Override
     public Double getDouble(String key, Double instead) {
         return keyValues.getDouble(key, instead);
-    }
-
-    @Override
-    public Double getDouble(String key) {
-        return keyValues.getDouble(key, null);
     }
 
     @Override
@@ -90,18 +60,8 @@ public class ApacheOption implements Option {
     }
 
     @Override
-    public <T extends Enum<T>> T getEnumeration(Class<T> clazz, String key) {
-        return getEnumeration(clazz, key, null);
-    }
-
-    @Override
     public Float getFloat(String key, Float instead) {
         return keyValues.getFloat(key, instead);
-    }
-
-    @Override
-    public Float getFloat(String key) {
-        return keyValues.getFloat(key, null);
     }
 
     @Override
@@ -110,28 +70,18 @@ public class ApacheOption implements Option {
     }
 
     @Override
-    public Integer getInteger(String key) {
-        return keyValues.getInteger(key, null);
-    }
-
-    @Override
     public Long getLong(String key, Long instead) {
         return keyValues.getLong(key, instead);
     }
 
     @Override
-    public Long getLong(String key) {
-        return keyValues.getLong(key, null);
+    public Short getShort(String key, Short instead) {
+        return keyValues.getShort(key, instead);
     }
 
     @Override
     public String getString(String key, String instead) {
         return keyValues.getString(key, instead);
-    }
-
-    @Override
-    public String getString(String key) {
-        return keyValues.getString(key);
     }
 
     @Override

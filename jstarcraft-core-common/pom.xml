@@ -165,6 +165,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- HOCON -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.4.1</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- NightConfig依赖 -->
         <dependency>
             <groupId>com.electronwill.night-config</groupId>

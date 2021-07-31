@@ -124,6 +124,17 @@ public interface StringOption extends Option {
     }
 
     @Override
+    default Short getShort(String key, Short instead) {
+        String value = getString(key);
+        return StringUtility.isBlank(value) ? instead : Short.valueOf(value);
+    }
+
+    @Override
+    default Short getShort(String key) {
+        return getShort(key, null);
+    }
+
+    @Override
     default String getString(String key, String instead) {
         String value = getString(key);
         return StringUtility.isBlank(value) ? instead : value;

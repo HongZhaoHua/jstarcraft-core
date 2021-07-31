@@ -52,6 +52,10 @@ public interface Option {
     Long getLong(String key, Long instead);
 
     Long getLong(String key);
+    
+    Short getShort(String key, Short instead);
+
+    Short getShort(String key);
 
     String getString(String key, String instead);
 
