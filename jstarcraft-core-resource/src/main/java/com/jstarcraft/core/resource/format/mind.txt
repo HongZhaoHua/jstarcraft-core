@@ -1,3 +1,12 @@
+如何使用Java解析XMind文件:
+https://www.jianshu.com/p/d2d8856a78dd
+
+XMind API 開發指令:
+https://actsmind.com/blog/support/xmind-api
+
+【xmind】 使用 Java 生成思维导图:
+https://zhuanlan.zhihu.com/p/95075913
+
 xmind解析为json，对象，支持xmindzen，旧版xmind8:
 https://github.com/liufree/xmindparser-java
 
