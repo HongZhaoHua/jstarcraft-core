@@ -1,6 +1,5 @@
 package com.jstarcraft.core.io.hdfs;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
