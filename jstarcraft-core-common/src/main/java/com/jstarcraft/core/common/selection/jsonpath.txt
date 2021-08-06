@@ -13,6 +13,12 @@ http://www.hackerav.com/?post=35451
 使用 JSONPath 解析 JSON 完整内容详解:
 https://www.cnblogs.com/wynjauu/articles/9556396.html
 
+A streaming JsonPath processor in Java:
+https://github.com/jsurfer/JsonSurfer
+
+JsonSurfer, 在Java中，一個流JsonPath處理器:
+https://hant.kaifa99.com/GitHub/article_125003
+
 noear::一个微型JSON框架:
 https://github.com/noear/snack3
 
