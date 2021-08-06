@@ -41,7 +41,9 @@ public class InstantIdentityFactory implements IdentityFactory {
 
     public InstantIdentityFactory(IdentityDefinition definition, int partition, Instant offsetInstant) {
         List<IdentitySection> sections = definition.getSections();
-        assert sections.size() == 3;
+        if (sections.size() != 3) {
+            throw new IllegalArgumentException();
+        }
         this.definition = definition;
         this.partition = partition;
         int sequenceBit = sections.get(2).getBit();

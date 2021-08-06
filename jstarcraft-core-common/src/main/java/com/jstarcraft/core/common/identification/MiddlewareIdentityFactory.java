@@ -40,7 +40,9 @@ public abstract class MiddlewareIdentityFactory implements IdentityFactory {
 
     protected MiddlewareIdentityFactory(IdentityDefinition definition, int partition, long step) {
         List<IdentitySection> sections = definition.getSections();
-        assert sections.size() == 2;
+        if (sections.size() != 2) {
+            throw new IllegalArgumentException();
+        }
         this.definition = definition;
         this.partition = partition;
         this.step = step;
