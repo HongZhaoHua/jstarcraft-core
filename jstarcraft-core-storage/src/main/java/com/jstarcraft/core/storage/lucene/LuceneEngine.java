@@ -118,7 +118,7 @@ public class LuceneEngine implements AutoCloseable {
      * 
      * @throws Exception
      */
-    void mergeManager() throws Exception {
+    public void mergeManager() throws Exception {
         writeLock.lock();
         TransienceManager newTransienceManager = new TransienceManager((IndexWriterConfig) BeanUtils.cloneBean(config), new ByteBuffersDirectory());
         TransienceManager oldTransienceManager = this.transienceManager;
