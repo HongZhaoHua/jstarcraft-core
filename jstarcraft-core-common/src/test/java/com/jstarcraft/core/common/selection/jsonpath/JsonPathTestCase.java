@@ -2,15 +2,12 @@ package com.jstarcraft.core.common.selection.jsonpath;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import org.jsfr.json.JsonSurfer;
 import org.jsfr.json.JsonSurferFastJson;
 import org.jsfr.json.JsonSurferGson;
 import org.jsfr.json.JsonSurferJackson;
 import org.jsfr.json.JsonSurferJsonSimple;
-import org.jsfr.json.compiler.JsonPathCompiler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.noear.snack.ONode;
@@ -89,51 +86,31 @@ public class JsonPathTestCase {
         try (InputStream stream = JsonPathTestCase.class.getResourceAsStream("jsonpath.json"); DataInputStream buffer = new DataInputStream(stream)) {
             String json = IoUtility.toString(stream, StringUtility.CHARSET);
             for (JsonSurfer adapter : adapters) {
-                Collection<Object> collection = new ArrayList<>();
+                JsonSurferJsonPathSelector selector;
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[0]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(1, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[0]", adapter);
+                Assert.assertEquals(1, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[0:3]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(3, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[0:3]", adapter);
+                Assert.assertEquals(3, selector.selectContent(json).size());
 
-//                Assert.assertEquals(3, adapter.collectAll(json, "$[-3:0]").size());
+//                selector = new JsonSurferJsonPathSelector("$[-3:0]", adapter);
+//                Assert.assertEquals(3, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$..name"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(3, collection.size());
+                selector = new JsonSurferJsonPathSelector("$..name", adapter);
+                Assert.assertEquals(3, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.age > 10)]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(2, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[?(@.age > 10)]", adapter);
+                Assert.assertEquals(2, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.age < 10)]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(1, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[?(@.age < 10)]", adapter);
+                Assert.assertEquals(1, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.sex == true)]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(2, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[?(@.sex == true)]", adapter);
+                Assert.assertEquals(2, selector.selectContent(json).size());
 
-                collection.clear();
-                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.sex == false)]"), (value, context) -> {
-                    collection.add(value);
-                }).buildAndSurf(json);
-                Assert.assertEquals(1, collection.size());
+                selector = new JsonSurferJsonPathSelector("$[?(@.sex == false)]", adapter);
+                Assert.assertEquals(1, selector.selectContent(json).size());
             }
         } catch (Exception exception) {
             exception.printStackTrace();
