@@ -6,3 +6,6 @@ https://github.com/lightbend/config
 
 Convert HOCON string into Java object:
 https://stackoverflow.com/questions/58288713/convert-hocon-string-into-java-object
+
+Typesafe Config Introduction:
+https://mincong.io/2019/12/08/typesafe-config/
