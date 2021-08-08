@@ -24,12 +24,14 @@ public class LuceneAccessorConfigurer {
 
     @Bean(name = "engine")
     public LuceneEngine getEngine() throws Exception {
-        IndexWriterConfig config = new IndexWriterConfig();
 
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        LuceneEngine engine = new LuceneEngine(config, path);
+        LuceneEngine engine = new LuceneEngine(() -> {
+            IndexWriterConfig config = new IndexWriterConfig();
+            return config;
+        }, path);
         return engine;
     }
 

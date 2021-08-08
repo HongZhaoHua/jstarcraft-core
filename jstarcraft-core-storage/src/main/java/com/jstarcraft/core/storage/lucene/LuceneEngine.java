@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.Query;
@@ -34,7 +34,7 @@ import it.unimi.dsi.fastutil.floats.FloatList;
 public class LuceneEngine implements AutoCloseable {
 
     /** 配置 */
-    private final IndexWriterConfig config;
+    private final Supplier<IndexWriterConfig> config;
 
     /** 瞬时化管理器 */
     private volatile TransienceManager transienceManager;
@@ -53,13 +53,13 @@ public class LuceneEngine implements AutoCloseable {
 
     private final Lock writeLock;
 
-    public LuceneEngine(IndexWriterConfig config, Path path) {
+    public LuceneEngine(Supplier<IndexWriterConfig> config, Path path) {
         try {
             this.config = config;
             Directory transienceDirectory = new ByteBuffersDirectory();
-            this.transienceManager = new TransienceManager((IndexWriterConfig) BeanUtils.cloneBean(config), transienceDirectory);
+            this.transienceManager = new TransienceManager(config.get(), transienceDirectory);
             Directory persistenceDirectory = FSDirectory.open(path);
-            this.persistenceManager = new PersistenceManager((IndexWriterConfig) BeanUtils.cloneBean(config), persistenceDirectory);
+            this.persistenceManager = new PersistenceManager(config.get(), persistenceDirectory);
             this.searcher = new LuceneSearcher(this.transienceManager, this.persistenceManager);
 
             this.semaphore = new AtomicInteger();
@@ -120,7 +120,7 @@ public class LuceneEngine implements AutoCloseable {
      */
     public void mergeManager() throws Exception {
         writeLock.lock();
-        TransienceManager newTransienceManager = new TransienceManager((IndexWriterConfig) BeanUtils.cloneBean(config), new ByteBuffersDirectory());
+        TransienceManager newTransienceManager = new TransienceManager(config.get(), new ByteBuffersDirectory());
         TransienceManager oldTransienceManager = this.transienceManager;
         try {
             lockWrite();

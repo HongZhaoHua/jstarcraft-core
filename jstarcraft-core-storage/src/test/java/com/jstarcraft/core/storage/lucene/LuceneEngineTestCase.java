@@ -18,18 +18,17 @@ import org.apache.lucene.search.TermQuery;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.storage.lucene.LuceneEngine;
-
 public class LuceneEngineTestCase {
 
     @Test
     public void testCRUD() throws Exception {
-        IndexWriterConfig config = new IndexWriterConfig();
-
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        LuceneEngine engine = new LuceneEngine(config, path);
+        LuceneEngine engine = new LuceneEngine(() -> {
+            IndexWriterConfig config = new IndexWriterConfig();
+            return config;
+        }, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
@@ -84,12 +83,13 @@ public class LuceneEngineTestCase {
 
     @Test
     public void testMerge() throws Exception {
-        IndexWriterConfig config = new IndexWriterConfig();
-
         Path path = Paths.get("./lucene");
         File file = path.toFile();
         FileUtils.deleteDirectory(file);
-        LuceneEngine engine = new LuceneEngine(config, path);
+        LuceneEngine engine = new LuceneEngine(() -> {
+            IndexWriterConfig config = new IndexWriterConfig();
+            return config;
+        }, path);
 
         for (int index = 0; index < 1000; index++) {
             String data = String.valueOf(index);
