@@ -27,6 +27,9 @@ public class MapIndexConverter implements IndexConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         // 兼容UniMi
         type = TypeUtility.refineType(type, Map.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);

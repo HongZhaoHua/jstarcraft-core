@@ -26,6 +26,9 @@ public class EnumerationSortConverter implements SortConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         indexables.add(new SortedDocValuesField(path, new BytesRef(data.toString())));
         return indexables;
     }

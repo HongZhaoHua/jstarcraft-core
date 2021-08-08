@@ -29,6 +29,9 @@ public class ObjectStoreConverter implements StoreConverter {
         character++;
         String to = path.substring(0, path.length() - 1) + character;
         indexables = indexables.subMap(from, true, to, false);
+        if (indexables.isEmpty()) {
+            return null;
+        }
         Class<?> clazz = TypeUtility.getRawType(type, null);
 
         try {
@@ -54,6 +57,9 @@ public class ObjectStoreConverter implements StoreConverter {
     @Override
     public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, Object instance) {
         NavigableMap<String, IndexableField> indexables = new TreeMap<>();
+        if (instance == null) {
+            return indexables;
+        }
         Class<?> clazz = TypeUtility.getRawType(type, null);
 
         try {

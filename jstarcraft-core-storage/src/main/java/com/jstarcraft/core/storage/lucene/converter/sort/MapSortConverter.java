@@ -24,6 +24,9 @@ public class MapSortConverter implements SortConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Type[] types = parameterizedType.getActualTypeArguments();
         throw new StorageException();

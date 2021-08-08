@@ -25,6 +25,9 @@ public class ArraySortConverter implements SortConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         Class<?> componentClass = null;
         Type componentType = null;
         if (type instanceof GenericArrayType) {

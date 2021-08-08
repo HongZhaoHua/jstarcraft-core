@@ -10,6 +10,11 @@ import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
 
 import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.exception.StorageQueryException;
@@ -17,12 +22,6 @@ import com.jstarcraft.core.storage.lucene.annotation.LuceneIndex;
 import com.jstarcraft.core.storage.lucene.annotation.LuceneTerm;
 import com.jstarcraft.core.storage.lucene.converter.IndexConverter;
 import com.jstarcraft.core.storage.lucene.converter.LuceneContext;
-
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
 
 /**
  * 字符串索引转换器
@@ -35,6 +34,9 @@ public class StringIndexConverter implements IndexConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         FieldType configuration = new FieldType();
         configuration.setIndexOptions(IndexOptions.DOCS);
         if (annotation.analyze()) {

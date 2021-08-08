@@ -25,6 +25,9 @@ public class ObjectSortConverter implements SortConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneSort annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         Class<?> clazz = TypeUtility.getRawType(type, null);
 
         try {

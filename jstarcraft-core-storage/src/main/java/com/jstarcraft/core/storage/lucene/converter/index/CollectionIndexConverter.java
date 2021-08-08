@@ -102,6 +102,9 @@ public class CollectionIndexConverter implements IndexConverter {
     @Override
     public Iterable<IndexableField> convert(LuceneContext context, String path, Field field, LuceneIndex annotation, Type type, Object data) {
         Collection<IndexableField> indexables = new LinkedList<>();
+        if (data == null) {
+            return indexables;
+        }
         // 兼容UniMi
         type = TypeUtility.refineType(type, Collection.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);

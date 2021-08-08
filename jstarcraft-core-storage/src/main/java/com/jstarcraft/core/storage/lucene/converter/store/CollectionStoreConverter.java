@@ -32,6 +32,9 @@ public class CollectionStoreConverter implements StoreConverter {
         character++;
         String to = path.substring(0, path.length() - 1) + character;
         indexables = indexables.subMap(from, true, to, false);
+        if (indexables.isEmpty()) {
+            return null;
+        }
         Class<?> clazz = TypeUtility.getRawType(type, null);
         // 兼容UniMi
         type = TypeUtility.refineType(type, Collection.class);
@@ -62,6 +65,9 @@ public class CollectionStoreConverter implements StoreConverter {
     @Override
     public NavigableMap<String, IndexableField> encode(LuceneContext context, String path, Field field, LuceneStore annotation, Type type, Object instance) {
         NavigableMap<String, IndexableField> indexables = new TreeMap<>();
+        if (instance == null) {
+            return indexables;
+        }
         // 兼容UniMi
         type = TypeUtility.refineType(type, Collection.class);
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
