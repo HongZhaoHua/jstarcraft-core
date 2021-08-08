@@ -257,14 +257,14 @@
 
         <dependency>
             <groupId>com.github.jsurfer</groupId>
-            <artifactId>jsurfer-jackson</artifactId>
+            <artifactId>jsurfer-fastjson</artifactId>
             <version>1.6.1</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.github.jsurfer</groupId>
-            <artifactId>jsurfer-fastjson</artifactId>
+            <artifactId>jsurfer-jackson</artifactId>
             <version>1.6.1</version>
             <optional>true</optional>
         </dependency>
