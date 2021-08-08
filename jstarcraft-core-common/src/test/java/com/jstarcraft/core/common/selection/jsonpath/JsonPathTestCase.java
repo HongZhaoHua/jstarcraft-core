@@ -2,7 +2,15 @@ package com.jstarcraft.core.common.selection.jsonpath;
 
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import org.jsfr.json.JsonSurfer;
+import org.jsfr.json.JsonSurferFastJson;
+import org.jsfr.json.JsonSurferGson;
+import org.jsfr.json.JsonSurferJackson;
+import org.jsfr.json.JsonSurferJsonSimple;
+import org.jsfr.json.compiler.JsonPathCompiler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.noear.snack.ONode;
@@ -62,6 +70,70 @@ public class JsonPathTestCase {
 
                 selector = new JaywayJsonPathSelector("$[?(@.sex == false)]", adapter);
                 Assert.assertEquals(1, selector.selectContent(root).size());
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new IllegalArgumentException(exception);
+        }
+    }
+
+    @Test
+    public void testJsonSurfer() {
+        JsonSurfer[] adapters = new JsonSurfer[] { JsonSurferGson.INSTANCE,
+
+                JsonSurferJackson.INSTANCE,
+
+                JsonSurferJsonSimple.INSTANCE,
+
+                JsonSurferFastJson.INSTANCE };
+        try (InputStream stream = JsonPathTestCase.class.getResourceAsStream("jsonpath.json"); DataInputStream buffer = new DataInputStream(stream)) {
+            String json = IoUtility.toString(stream, StringUtility.CHARSET);
+            for (JsonSurfer adapter : adapters) {
+                Collection<Object> collection = new ArrayList<>();
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[0]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(1, collection.size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[0:3]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(3, collection.size());
+
+//                Assert.assertEquals(3, adapter.collectAll(json, "$[-3:0]").size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$..name"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(3, collection.size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.age > 10)]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(2, collection.size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.age < 10)]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(1, collection.size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.sex == true)]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(2, collection.size());
+
+                collection.clear();
+                adapter.configBuilder().bind(JsonPathCompiler.compile("$[?(@.sex == false)]"), (value, context) -> {
+                    collection.add(value);
+                }).buildAndSurf(json);
+                Assert.assertEquals(1, collection.size());
             }
         } catch (Exception exception) {
             exception.printStackTrace();
