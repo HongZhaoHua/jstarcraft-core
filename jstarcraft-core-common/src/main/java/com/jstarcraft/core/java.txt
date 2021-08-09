@@ -44,3 +44,6 @@ https://www.jianshu.com/p/46b42f7f593c
 
 SLF4J - SLF4J与Java SPI:
 https://www.jianshu.com/p/6634999fb7fa
+
+解决Java中 while(Scanner.hasNext())一直为死循环的问题:
+https://blog.csdn.net/Rex_WUST/article/details/88424076
