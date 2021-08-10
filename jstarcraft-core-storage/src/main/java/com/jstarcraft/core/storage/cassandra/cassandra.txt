@@ -19,3 +19,6 @@ java：Cassandra入门与实战:
 https://blog.csdn.net/itcast_cn/article/details/107559490
 https://blog.csdn.net/itcast_cn/article/details/107559499
 https://blog.csdn.net/itcast_cn/article/details/107559525
+
+Embedded Cassandra Reference Documentation:
+https://nosan.github.io/embedded-cassandra/
