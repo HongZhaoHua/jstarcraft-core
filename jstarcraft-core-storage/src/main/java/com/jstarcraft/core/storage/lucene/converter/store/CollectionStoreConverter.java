@@ -52,7 +52,7 @@ public class CollectionStoreConverter implements StoreConverter {
             IndexableField indexable = indexables.get(path + ".size");
             int size = indexable.numericValue().intValue();
             for (int index = 0; index < size; index++) {
-                Object element = converter.decode(context, path + "[" + index + "]", field, annotation, elementType, indexables);
+                Object element = converter.decode(context, path + ".elements[" + index + "]", field, annotation, elementType, indexables);
                 collection.add(element);
             }
             return collection;
@@ -86,7 +86,7 @@ public class CollectionStoreConverter implements StoreConverter {
             indexables.put(path + ".size", indexable);
             int index = 0;
             for (Object element : collection) {
-                indexables.putAll(converter.encode(context, path + "[" + index + "]", field, annotation, elementType, element));
+                indexables.putAll(converter.encode(context, path + ".elements[" + index + "]", field, annotation, elementType, element));
                 index++;
             }
             return indexables;

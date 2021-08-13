@@ -134,38 +134,38 @@ public class LuceneMetadataTestCase {
                 Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
 
-            search = indexSearcher.search(new TermQuery(new Term("list[0].name", "protoss")), 1000);
+            search = indexSearcher.search(new TermQuery(new Term("list.name", "protoss")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
                 Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
-            search = indexSearcher.search(new TermQuery(new Term("list[0].name", "terran")), 1000);
+            search = indexSearcher.search(new TermQuery(new Term("list.name", "terran")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
                 Assert.assertEquals(terran, codec.decodeDocument(document));
             }
-            search = indexSearcher.search(new TermQuery(new Term("list[0].name", "zerg")), 1000);
+            search = indexSearcher.search(new TermQuery(new Term("list.name", "zerg")), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
                 Assert.assertEquals(zerg, codec.decodeDocument(document));
             }
 
-            search = indexSearcher.search(IntPoint.newExactQuery("map[0]", -1), 1000);
+            search = indexSearcher.search(IntPoint.newExactQuery("map", -1), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
                 Assert.assertEquals(protoss, codec.decodeDocument(document));
             }
-            search = indexSearcher.search(IntPoint.newExactQuery("map[0]", 0), 1000);
+            search = indexSearcher.search(IntPoint.newExactQuery("map", 0), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);
                 Assert.assertEquals(terran, codec.decodeDocument(document));
             }
-            search = indexSearcher.search(IntPoint.newExactQuery("map[0]", 1), 1000);
+            search = indexSearcher.search(IntPoint.newExactQuery("map", 1), 1000);
             Assert.assertEquals(1L, search.totalHits.value);
             for (ScoreDoc scoreDoc : search.scoreDocs) {
                 Document document = indexReader.document(scoreDoc.doc);

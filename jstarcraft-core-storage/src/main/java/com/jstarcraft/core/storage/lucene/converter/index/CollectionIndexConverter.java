@@ -157,12 +157,13 @@ public class CollectionIndexConverter implements IndexConverter {
             Specification specification = Specification.getSpecification(elementClazz);
             IndexConverter converter = context.getIndexConverter(specification);
 
-            int index = 0;
+            // 将Collection整体索引
+//            int index = 0;
             for (Object element : collection) {
-                for (IndexableField indexable : converter.convert(context, path + "[" + index + "]", field, annotation, elementType, element)) {
+                for (IndexableField indexable : converter.convert(context, path, field, annotation, elementType, element)) {
                     indexables.add(indexable);
                 }
-                index++;
+//                index++;
             }
             return indexables;
         } catch (Exception exception) {

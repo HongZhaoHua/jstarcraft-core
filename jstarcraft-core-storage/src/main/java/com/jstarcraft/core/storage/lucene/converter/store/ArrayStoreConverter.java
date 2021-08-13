@@ -52,7 +52,7 @@ public class ArrayStoreConverter implements StoreConverter {
         int size = indexable.numericValue().intValue();
         Object array = Array.newInstance(componentClass, size);
         for (int index = 0; index < size; index++) {
-            Object element = converter.decode(context, path + "[" + index + "]", field, annotation, componentType, indexables);
+            Object element = converter.decode(context, path + ".elements[" + index + "]", field, annotation, componentType, indexables);
             Array.set(array, index, element);
         }
         return array;
@@ -82,7 +82,7 @@ public class ArrayStoreConverter implements StoreConverter {
         indexables.put(path + ".size", indexable);
         for (int index = 0; index < size; index++) {
             Object element = Array.get(instance, index);
-            indexables.putAll(converter.encode(context, path + "[" + index + "]", field, annotation, componentType, element));
+            indexables.putAll(converter.encode(context, path + ".elements[" + index + "]", field, annotation, componentType, element));
         }
         return indexables;
     }
