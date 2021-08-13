@@ -22,9 +22,6 @@ import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.exception.StorageException;
 import com.jstarcraft.core.utility.KeyValue;
 
-import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import it.unimi.dsi.fastutil.floats.FloatList;
-
 /**
  * Lucene引擎
  * 
@@ -212,7 +209,7 @@ public class LuceneEngine implements AutoCloseable {
      * @param size
      * @return
      */
-    public KeyValue<List<Document>, FloatList> retrieveDocuments(Query query, Sort sort, int offset, int size) {
+    public List<KeyValue<Document, Float>> retrieveDocuments(Query query, Sort sort, int offset, int size) {
         try {
             readLock.lock();
             lockRead();
@@ -232,15 +229,13 @@ public class LuceneEngine implements AutoCloseable {
             end = search.length;
             size = end - begin;
             size = size < 0 ? 0 : size;
-            ArrayList<Document> documents = new ArrayList<>(size);
-            FloatList scores = new FloatArrayList(size);
+            ArrayList<KeyValue<Document, Float>> documents = new ArrayList<>(size);
             for (int index = begin; index < end; index++) {
                 ScoreDoc score = search[index];
                 Document document = this.searcher.doc(score.doc);
-                documents.add(document);
-                scores.add(score.score);
+                documents.add(new KeyValue<>(document, score.score));
             }
-            return new KeyValue<>(documents, scores);
+            return documents;
         } catch (Exception exception) {
             throw new StorageException(exception);
         } finally {
