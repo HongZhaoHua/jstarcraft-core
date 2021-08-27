@@ -1,0 +1,39 @@
+package com.jstarcraft.core.common.selection.css;
+
+import java.util.Collection;
+import java.util.List;
+
+import com.jstarcraft.core.common.selection.AbstractSelector;
+
+import jodd.csselly.CSSelly;
+import jodd.csselly.CssSelector;
+import jodd.lagarto.dom.Node;
+import jodd.lagarto.dom.NodeSelector;
+
+/**
+ * CSS选择器
+ * 
+ * <pre>
+ * 基于Jerry
+ * </pre>
+ * 
+ * @author Birdy
+ *
+ * @param <T>
+ */
+public class JerryCssSelector extends AbstractSelector<Node> {
+
+    private Collection<List<CssSelector>> css;
+
+    public JerryCssSelector(String query) {
+        super(query);
+        this.css = CSSelly.parse(query);
+    }
+
+    @Override
+    public List<Node> selectContent(Node content) {
+        NodeSelector selector = new NodeSelector(content);
+        return selector.select(css);
+    }
+
+}

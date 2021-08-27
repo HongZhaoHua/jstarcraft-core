@@ -204,6 +204,13 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-lagarto</artifactId>
+            <version>6.0.5</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- JSONPath -->
         <!-- Jayway依赖 -->
         <dependency>
