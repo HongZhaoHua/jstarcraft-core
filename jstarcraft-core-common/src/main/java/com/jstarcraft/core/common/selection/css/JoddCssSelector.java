@@ -14,18 +14,18 @@ import jodd.lagarto.dom.NodeSelector;
  * CSS选择器
  * 
  * <pre>
- * 基于Jerry
+ * 基于Jodd
  * </pre>
  * 
  * @author Birdy
  *
  * @param <T>
  */
-public class JerryCssSelector extends AbstractSelector<Node> {
+public class JoddCssSelector extends AbstractSelector<Node> {
 
     private Collection<List<CssSelector>> css;
 
-    public JerryCssSelector(String query) {
+    public JoddCssSelector(String query) {
         super(query);
         this.css = CSSelly.parse(query);
     }

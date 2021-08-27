@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import jodd.jerry.Jerry;
 
-public class JerryTestCase {
+public class JoddTestCase {
 
     @Test
     public void test() {
