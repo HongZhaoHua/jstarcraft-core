@@ -77,4 +77,9 @@ public class RubyFunction implements ScriptFunction {
         }
     }
 
+    @Override
+    public String toString() {
+        return function;
+    }
+
 }

@@ -62,5 +62,10 @@ public class KotlinFunction implements ScriptFunction {
             throw new ScriptExpressionException(exception);
         }
     }
+    
+    @Override
+    public String toString() {
+        return function;
+    }
 
 }

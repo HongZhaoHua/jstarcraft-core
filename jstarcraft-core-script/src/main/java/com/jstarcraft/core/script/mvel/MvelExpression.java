@@ -67,5 +67,10 @@ public class MvelExpression implements ScriptExpression {
     public <T> T doWith(Class<T> clazz) {
         return MVEL.executeExpression(script, threadHolder.get().scope.getAttributes(), clazz);
     }
+    
+    @Override
+    public String toString() {
+        return expression;
+    }
 
 }
