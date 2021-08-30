@@ -1,0 +1,5 @@
+Aviator——轻量级Java表达式求值引擎:
+https://developer.aliyun.com/article/608829
+
+Aviator 表达式求值引擎开源框架:
+https://www.cnblogs.com/csguo/p/7614893.html
