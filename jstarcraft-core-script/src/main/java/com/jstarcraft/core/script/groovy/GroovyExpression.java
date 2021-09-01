@@ -101,4 +101,9 @@ public class GroovyExpression implements ScriptExpression {
         }
     }
 
+    @Override
+    public String toString() {
+        return expression;
+    }
+
 }

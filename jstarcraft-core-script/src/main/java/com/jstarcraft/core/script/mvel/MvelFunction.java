@@ -81,5 +81,10 @@ public class MvelFunction implements ScriptFunction {
         holder.scope.deleteAttributes();
         return object;
     }
+    
+    @Override
+    public String toString() {
+        return function;
+    }
 
 }

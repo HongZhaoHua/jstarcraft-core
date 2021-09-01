@@ -101,5 +101,10 @@ public class PythonExpression implements ScriptExpression {
             throw new ScriptExpressionException(exception);
         }
     }
+    
+    @Override
+    public String toString() {
+        return expression;
+    }
 
 }

@@ -62,5 +62,10 @@ public class JsFunction implements ScriptFunction {
             throw new ScriptExpressionException(exception);
         }
     }
+    
+    @Override
+    public String toString() {
+        return function;
+    }
 
 }

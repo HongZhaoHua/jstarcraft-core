@@ -100,4 +100,9 @@ public class KotlinExpression implements ScriptExpression {
         }
     }
 
+    @Override
+    public String toString() {
+        return expression;
+    }
+
 }

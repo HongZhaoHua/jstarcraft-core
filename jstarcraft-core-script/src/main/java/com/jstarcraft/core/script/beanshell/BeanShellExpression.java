@@ -96,4 +96,9 @@ public class BeanShellExpression implements ScriptExpression {
         }
     }
 
+    @Override
+    public String toString() {
+        return expression;
+    }
+
 }
