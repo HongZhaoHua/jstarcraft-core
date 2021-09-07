@@ -46,7 +46,7 @@ public class ResourceManager<K, V> extends Observable {
     private final PathAdapter pathAdapter;
 
     /** 主键空间 */
-    private Map<K, V> instances = new LinkedHashMap<>();
+    private Map<K, V> resources = new LinkedHashMap<>();
     /** 单值索引空间 */
     private Map<String, Map<Object, V>> singles = new HashMap<String, Map<Object, V>>();
     /** 多值索引空间 */
@@ -100,13 +100,33 @@ public class ResourceManager<K, V> extends Observable {
         try {
             readLock.lock();
             checkState();
-            V value = instances.get(key);
-            if (isThrow && value == null) {
+            V instance = resources.get(key);
+            if (isThrow && instance == null) {
                 String message = StringUtility.format("仓储[{}]指定主键[{}]的实例不存在", clazz, key);
                 logger.error(message);
                 throw new StorageException(message);
             }
-            return value;
+            return instance;
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * 根据指定的主键获取对应的实例
+     * 
+     * @param keys
+     * @return
+     */
+    public List<V> getInstances(K... keys) {
+        try {
+            readLock.lock();
+            checkState();
+            List<V> instances = new ArrayList<>(keys.length);
+            for (int index = 0, size = keys.length; index < size; index++) {
+                instances.add(resources.get(keys[index]));
+            }
+            return instances;
         } finally {
             readLock.unlock();
         }
@@ -122,7 +142,7 @@ public class ResourceManager<K, V> extends Observable {
         try {
             readLock.lock();
             checkState();
-            return instances.containsKey(key);
+            return resources.containsKey(key);
         } finally {
             readLock.unlock();
         }
@@ -137,7 +157,7 @@ public class ResourceManager<K, V> extends Observable {
         try {
             readLock.lock();
             checkState();
-            return Collections.unmodifiableCollection(instances.values());
+            return Collections.unmodifiableCollection(resources.values());
         } finally {
             readLock.unlock();
         }
@@ -175,16 +195,15 @@ public class ResourceManager<K, V> extends Observable {
         try {
             readLock.lock();
             checkState();
-            Map<Object, List<V>> map = multiples.get(name);
-            if (map == null) {
+            Map<Object, List<V>> indexes = multiples.get(name);
+            if (indexes == null) {
                 return Collections.EMPTY_LIST;
             }
-            List<V> list = map.get(value);
-            if (list == null) {
+            List<V> instances = indexes.get(value);
+            if (instances == null) {
                 return Collections.EMPTY_LIST;
             }
-            ArrayList<V> indexes = new ArrayList<V>(list);
-            return indexes;
+            return new ArrayList<>(instances);
         } finally {
             readLock.unlock();
         }
@@ -198,12 +217,12 @@ public class ResourceManager<K, V> extends Observable {
             logger.error(message);
             throw new StorageException(message);
         }
-        if (instances.containsKey(key)) {
+        if (resources.containsKey(key)) {
             String message = StringUtility.format("仓储[{}]的实例[{}]主键存在冲突", clazz, instance);
             logger.error(message);
             throw new StorageException(message);
         }
-        instances.put(key, instance);
+        resources.put(key, instance);
 
         // 索引处理
         for (PropertyAccessor indexAccessor : indexAccessors.values()) {
@@ -260,7 +279,7 @@ public class ResourceManager<K, V> extends Observable {
             }
 
             // 防止由于IO异常仓储彻底失效.
-            instances.clear();
+            resources.clear();
             singles.clear();
             multiples.clear();
 
