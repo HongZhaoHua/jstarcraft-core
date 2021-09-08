@@ -16,7 +16,7 @@ public interface BitMap<T> {
 
     int capacity();
 
-    int size();
+    int count();
     
     T bits();
 

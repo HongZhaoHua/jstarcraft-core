@@ -11,14 +11,14 @@ public class IntegerMap implements BitMap<int[]> {
 
     private int capacity;
 
-    private int size;
+    private int count;
 
     public IntegerMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Integer.SIZE == 0 ? capacity / Integer.SIZE : capacity / Integer.SIZE + 1;
         this.bits = new int[elements];
         this.capacity = capacity;
-        this.size = 0;
+        this.count = 0;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class IntegerMap implements BitMap<int[]> {
         int column = index % Integer.SIZE;
         if (((bits[row] >>> column) & 1) == 0) {
             bits[row] |= (1 << column);
-            size++;
+            count++;
         }
     }
 
@@ -44,7 +44,7 @@ public class IntegerMap implements BitMap<int[]> {
         int column = index % Integer.SIZE;
         if (((bits[row] >>> column) & 1) == 1) {
             bits[row] &= ~(1 << column);
-            size--;
+            count--;
         }
     }
 
@@ -54,8 +54,8 @@ public class IntegerMap implements BitMap<int[]> {
     }
 
     @Override
-    public int size() {
-        return size;
+    public int count() {
+        return count;
     }
 
     @Override

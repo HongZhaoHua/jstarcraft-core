@@ -11,14 +11,14 @@ public class ByteMap implements BitMap<byte[]> {
 
     private int capacity;
 
-    private int size;
+    private int count;
 
     public ByteMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
         this.bits = new byte[elements];
         this.capacity = capacity;
-        this.size = 0;
+        this.count = 0;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ByteMap implements BitMap<byte[]> {
         int column = index % Byte.SIZE;
         if (((bits[row] >>> column) & 1) == 0) {
             bits[row] |= (1 << column);
-            size++;
+            count++;
         }
     }
 
@@ -44,7 +44,7 @@ public class ByteMap implements BitMap<byte[]> {
         int column = index % Byte.SIZE;
         if (((bits[row] >>> column) & 1) == 1) {
             bits[row] &= ~(1 << column);
-            size--;
+            count--;
         }
     }
 
@@ -54,8 +54,8 @@ public class ByteMap implements BitMap<byte[]> {
     }
 
     @Override
-    public int size() {
-        return size;
+    public int count() {
+        return count;
     }
 
     @Override

@@ -11,14 +11,14 @@ public class LongMap implements BitMap<long[]> {
 
     private int capacity;
 
-    private int size;
+    private int count;
 
     public LongMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Long.SIZE == 0 ? capacity / Long.SIZE : capacity / Long.SIZE + 1;
         this.bits = new long[elements];
         this.capacity = capacity;
-        this.size = 0;
+        this.count = 0;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LongMap implements BitMap<long[]> {
         int column = index % Long.SIZE;
         if (((bits[row] >>> column) & 1L) == 0L) {
             bits[row] |= (1L << column);
-            size++;
+            count++;
         }
     }
 
@@ -44,7 +44,7 @@ public class LongMap implements BitMap<long[]> {
         int column = index % Long.SIZE;
         if (((bits[row] >>> column) & 1L) == 1L) {
             bits[row] &= ~(1L << column);
-            size--;
+            count--;
         }
     }
 
@@ -54,8 +54,8 @@ public class LongMap implements BitMap<long[]> {
     }
 
     @Override
-    public int size() {
-        return size;
+    public int count() {
+        return count;
     }
 
     @Override
