@@ -10,6 +10,8 @@ import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
+import com.jstarcraft.core.common.bloomfilter.global.RedissonBloomFilter;
+
 import redis.embedded.RedisServer;
 
 public class GlobalBloomFilterTestCase extends BloomFilterTestCase {
@@ -50,7 +52,7 @@ public class GlobalBloomFilterTestCase extends BloomFilterTestCase {
 
     @Override
     protected BloomFilter getBloomFilter(int elments, float probability) {
-        BloomFilter bloomFilter = new GlobalBloomFilter(redisson, "bloom", elments, probability);
+        BloomFilter bloomFilter = new RedissonBloomFilter(redisson, "bloom", elments, probability);
         return bloomFilter;
     }
 

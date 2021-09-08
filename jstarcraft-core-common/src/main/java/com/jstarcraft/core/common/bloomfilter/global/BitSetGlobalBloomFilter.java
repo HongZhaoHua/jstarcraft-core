@@ -5,7 +5,8 @@ import org.redisson.api.RBitSet;
 import org.redisson.api.RBucket;
 import org.redisson.client.codec.ByteArrayCodec;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
+import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
+import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**
@@ -14,21 +15,13 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public class BitSetGlobalBloomFilter implements BloomFilter {
+public class BitSetGlobalBloomFilter extends AbstractBloomFilter<RBitSet, ByteMap> {
 
-    private RBitSet bits;
-
-    private RBucket<byte[]> bytes;
-
-    private int capacity;
-
-    private StringHashFunction[] functions;
+    private RBucket<byte[]> bucket;
 
     public BitSetGlobalBloomFilter(Redisson redisson, String name, int capacity, StringHashFunction... functions) {
-        this.bits = redisson.getBitSet(name);
-        this.bytes = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
-        this.capacity = capacity;
-        this.functions = functions;
+        super(capacity, redisson.getBitSet(name), functions);
+        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
     @Override
@@ -63,7 +56,7 @@ public class BitSetGlobalBloomFilter implements BloomFilter {
     }
 
     public byte[] getBytes() {
-        return bytes.get();
+        return bucket.get();
     }
 
 }

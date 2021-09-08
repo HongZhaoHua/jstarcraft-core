@@ -1,9 +1,12 @@
-package com.jstarcraft.core.common.bloomfilter;
+package com.jstarcraft.core.common.bloomfilter.global;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RBucket;
 import org.redisson.client.codec.ByteArrayCodec;
+
+import com.jstarcraft.core.common.bloomfilter.BloomFilter;
+import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 
 /**
  * 基于Redis的布隆过滤器
@@ -11,23 +14,23 @@ import org.redisson.client.codec.ByteArrayCodec;
  * @author Birdy
  *
  */
-public class GlobalBloomFilter implements BloomFilter {
+public class RedissonBloomFilter implements BloomFilter<ByteMap> {
 
     private RBloomFilter<String> bits;
 
-    private RBucket<byte[]> bytes;
+    private RBucket<byte[]> bucket;
 
-    public GlobalBloomFilter(Redisson redisson, String name) {
+    public RedissonBloomFilter(Redisson redisson, String name) {
         this.bits = redisson.getBloomFilter(name);
-        this.bytes = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
+        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
-    public GlobalBloomFilter(Redisson redisson, String name, int elments, float probability) {
+    public RedissonBloomFilter(Redisson redisson, String name, int elments, float probability) {
         this.bits = redisson.getBloomFilter(name);
         if (!this.bits.tryInit(elments, probability)) {
             throw new RuntimeException("布隆过滤器冲突");
         }
-        this.bytes = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
+        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class GlobalBloomFilter implements BloomFilter {
     }
 
     public byte[] getBytes() {
-        return bytes.get();
+        return bucket.get();
     }
 
 }

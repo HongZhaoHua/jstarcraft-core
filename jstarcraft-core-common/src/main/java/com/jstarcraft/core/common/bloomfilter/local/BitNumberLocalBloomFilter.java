@@ -3,8 +3,9 @@ package com.jstarcraft.core.common.bloomfilter.local;
 import java.math.BigInteger;
 import java.util.Random;
 
-import com.jstarcraft.core.common.bloomfilter.LocalBloomFilter;
+import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
+import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**
@@ -13,7 +14,7 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public class BitNumberLocalBloomFilter extends LocalBloomFilter<BigInteger> {
+public class BitNumberLocalBloomFilter extends AbstractBloomFilter<BigInteger, ByteMap> {
 
     public BitNumberLocalBloomFilter(int bitSize, StringHashFamily hashFamily, int hashSize, Random random) {
         super(bitSize, new BigInteger(new byte[bitSize / Byte.SIZE + (bitSize % Byte.SIZE == 0 ? 0 : 1)]), getFunctions(hashFamily, hashSize, random));

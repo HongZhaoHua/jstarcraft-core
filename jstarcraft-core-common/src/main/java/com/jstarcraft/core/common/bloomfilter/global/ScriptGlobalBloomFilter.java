@@ -11,7 +11,8 @@ import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
 import org.redisson.client.codec.ByteArrayCodec;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
+import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
+import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**
@@ -20,7 +21,7 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public class ScriptGlobalBloomFilter implements BloomFilter {
+public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMap> {
 
     private static String getBitLua;
 
@@ -62,28 +63,22 @@ public class ScriptGlobalBloomFilter implements BloomFilter {
         setBitLua = buffer.toString();
     }
 
-    private RScript script;
+    private RScript bits;
 
     private String getBit;
 
     private String setBit;
 
     private List<Object> keys;
-
-    private RBucket<byte[]> bytes;
-
-    private int capacity;
-
-    private StringHashFunction[] functions;
+    
+    private RBucket<byte[]> bucket;
 
     public ScriptGlobalBloomFilter(Redisson redisson, String name, int capacity, StringHashFunction... functions) {
-        this.script = redisson.getScript();
-        this.getBit = script.scriptLoad(getBitLua);
-        this.setBit = script.scriptLoad(setBitLua);
+        super(capacity, redisson.getScript(), functions);
+        this.getBit = bits.scriptLoad(getBitLua);
+        this.setBit = bits.scriptLoad(setBitLua);
         this.keys = Arrays.asList(name);
-        this.bytes = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
-        this.capacity = capacity;
-        this.functions = functions;
+        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
     private Integer[] values(String data) {
@@ -113,27 +108,27 @@ public class ScriptGlobalBloomFilter implements BloomFilter {
     @Override
     public boolean getBit(String data) {
         Integer[] values = values(data);
-        Integer count = script.evalSha(Mode.READ_WRITE, getBit, ReturnType.VALUE, keys, values);
+        Integer count = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.VALUE, keys, values);
         return count == 1;
     }
 
     @Override
     public int getBits(Collection<String> datas) {
         Integer[] values = values(datas);
-        Integer count = script.evalSha(Mode.READ_WRITE, getBit, ReturnType.VALUE, keys, values);
+        Integer count = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.VALUE, keys, values);
         return count;
     }
 
     @Override
     public void putBit(String data) {
         Integer[] values = values(data);
-        script.evalSha(Mode.READ_WRITE, setBit, ReturnType.VALUE, keys, values);
+        bits.evalSha(Mode.READ_WRITE, setBit, ReturnType.VALUE, keys, values);
     }
 
     @Override
     public void putBits(Collection<String> datas) {
         Integer[] values = values(datas);
-        script.evalSha(Mode.READ_WRITE, setBit, ReturnType.VALUE, keys, values);
+        bits.evalSha(Mode.READ_WRITE, setBit, ReturnType.VALUE, keys, values);
     }
 
     @Override
@@ -147,7 +142,7 @@ public class ScriptGlobalBloomFilter implements BloomFilter {
     }
 
     public byte[] getBytes() {
-        return bytes.get();
+        return bucket.get();
     }
 
 }

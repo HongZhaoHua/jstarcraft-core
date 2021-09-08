@@ -2,13 +2,15 @@ package com.jstarcraft.core.common.bloomfilter;
 
 import java.util.Collection;
 
+import com.jstarcraft.core.common.bloomfilter.bit.BitMap;
+
 /**
  * 布隆过滤器
  * 
  * @author Birdy
  *
  */
-public interface BloomFilter {
+public interface BloomFilter<M extends BitMap<?>> {
 
     boolean getBit(String data);
 

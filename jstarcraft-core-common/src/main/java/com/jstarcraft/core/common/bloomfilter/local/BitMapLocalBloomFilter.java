@@ -1,6 +1,6 @@
 package com.jstarcraft.core.common.bloomfilter.local;
 
-import com.jstarcraft.core.common.bloomfilter.LocalBloomFilter;
+import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
 import com.jstarcraft.core.common.bloomfilter.bit.BitMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
@@ -10,7 +10,7 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public abstract class BitMapLocalBloomFilter<T> extends LocalBloomFilter<BitMap<T>> {
+public abstract class BitMapLocalBloomFilter<T> extends AbstractBloomFilter<BitMap<T>, BitMap<T>> {
 
     protected BitMapLocalBloomFilter(int capacity, BitMap<T> bits, StringHashFunction... functions) {
         super(capacity, bits, functions);
