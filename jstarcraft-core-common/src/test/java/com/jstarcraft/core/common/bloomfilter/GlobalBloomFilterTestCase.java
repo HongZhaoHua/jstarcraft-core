@@ -10,9 +10,6 @@ import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
-import com.jstarcraft.core.common.bloomfilter.GlobalBloomFilter;
-
 import redis.embedded.RedisServer;
 
 public class GlobalBloomFilterTestCase extends BloomFilterTestCase {

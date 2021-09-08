@@ -5,8 +5,6 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
-
 public abstract class LocalBloomFilterTestCase extends BloomFilterTestCase {
 
     protected static Random random = new Random();

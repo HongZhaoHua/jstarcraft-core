@@ -3,8 +3,6 @@ package com.jstarcraft.core.common.bloomfilter;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
-
 public abstract class BloomFilterTestCase {
 
     protected abstract BloomFilter getBloomFilter(int elments, float probability);

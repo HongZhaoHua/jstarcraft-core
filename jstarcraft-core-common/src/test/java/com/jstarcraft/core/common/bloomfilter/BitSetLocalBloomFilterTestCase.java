@@ -1,7 +1,5 @@
 package com.jstarcraft.core.common.bloomfilter;
 
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
-import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
 import com.jstarcraft.core.common.bloomfilter.local.BitSetLocalBloomFilter;
 import com.jstarcraft.core.common.hash.HashUtility;
 
