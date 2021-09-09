@@ -3,9 +3,6 @@ package com.jstarcraft.core.common.bit;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.bit.IntegerMap;
-import com.jstarcraft.core.common.bit.LongMap;
-
 public class BitMapTestCase {
     
     @Test
