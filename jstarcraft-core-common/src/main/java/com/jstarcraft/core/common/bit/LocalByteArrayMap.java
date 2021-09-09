@@ -5,7 +5,7 @@ package com.jstarcraft.core.common.bit;
  * @author Birdy
  *
  */
-public class ByteMap implements BitMap<byte[]> {
+public class LocalByteArrayMap implements BitMap<byte[]> {
 
     private byte[] bits;
 
@@ -13,13 +13,13 @@ public class ByteMap implements BitMap<byte[]> {
 
     private int count;
 
-    protected ByteMap(byte[] bits, int capacity, int count) {
+    protected LocalByteArrayMap(byte[] bits, int capacity, int count) {
         this.bits = bits;
         this.capacity = capacity;
         this.count = count;
     }
 
-    public ByteMap(int capacity) {
+    public LocalByteArrayMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
         this.bits = new byte[elements];

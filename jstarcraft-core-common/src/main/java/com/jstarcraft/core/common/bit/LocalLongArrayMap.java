@@ -5,7 +5,7 @@ package com.jstarcraft.core.common.bit;
  * @author Birdy
  *
  */
-public class LongMap implements BitMap<long[]> {
+public class LocalLongArrayMap implements BitMap<long[]> {
 
     private long[] bits;
 
@@ -13,13 +13,13 @@ public class LongMap implements BitMap<long[]> {
 
     private int count;
 
-    protected LongMap(long[] bits, int capacity, int count) {
+    protected LocalLongArrayMap(long[] bits, int capacity, int count) {
         this.bits = bits;
         this.capacity = capacity;
         this.count = count;
     }
 
-    public LongMap(int capacity) {
+    public LocalLongArrayMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Long.SIZE == 0 ? capacity / Long.SIZE : capacity / Long.SIZE + 1;
         this.bits = new long[elements];

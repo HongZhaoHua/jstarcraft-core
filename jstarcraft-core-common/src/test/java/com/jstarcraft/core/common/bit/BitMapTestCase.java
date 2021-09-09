@@ -7,7 +7,7 @@ public class BitMapTestCase {
     
     @Test
     public void testByteMap() {
-        IntegerMap bits = new IntegerMap(Byte.SIZE);
+        LocalIntegerArrayMap bits = new LocalIntegerArrayMap(Byte.SIZE);
         Assert.assertEquals(Byte.SIZE, bits.capacity());
         Assert.assertEquals(0, bits.count());
         for (int index = 0; index < Byte.SIZE; index++) {
@@ -30,7 +30,7 @@ public class BitMapTestCase {
 
     @Test
     public void testIntegerMap() {
-        IntegerMap bits = new IntegerMap(Integer.SIZE);
+        LocalIntegerArrayMap bits = new LocalIntegerArrayMap(Integer.SIZE);
         Assert.assertEquals(Integer.SIZE, bits.capacity());
         Assert.assertEquals(0, bits.count());
         for (int index = 0; index < Integer.SIZE; index++) {
@@ -53,7 +53,7 @@ public class BitMapTestCase {
 
     @Test
     public void testLongMap() {
-        LongMap bits = new LongMap(Long.SIZE);
+        LocalLongArrayMap bits = new LocalLongArrayMap(Long.SIZE);
         Assert.assertEquals(Long.SIZE, bits.capacity());
         Assert.assertEquals(0, bits.count());
         for (int index = 0; index < Long.SIZE; index++) {

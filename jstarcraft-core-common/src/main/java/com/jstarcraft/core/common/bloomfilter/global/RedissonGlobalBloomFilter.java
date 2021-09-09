@@ -5,7 +5,7 @@ import org.redisson.api.RBloomFilter;
 import org.redisson.api.RBucket;
 import org.redisson.client.codec.ByteArrayCodec;
 
-import com.jstarcraft.core.common.bit.ByteMap;
+import com.jstarcraft.core.common.bit.LocalByteArrayMap;
 import com.jstarcraft.core.common.bloomfilter.BloomFilter;
 
 /**
@@ -14,7 +14,7 @@ import com.jstarcraft.core.common.bloomfilter.BloomFilter;
  * @author Birdy
  *
  */
-public class RedissonGlobalBloomFilter implements BloomFilter<ByteMap> {
+public class RedissonGlobalBloomFilter implements BloomFilter<LocalByteArrayMap> {
 
     private RBloomFilter<String> bits;
 

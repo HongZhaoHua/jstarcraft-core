@@ -5,7 +5,7 @@ package com.jstarcraft.core.common.bit;
  * @author Birdy
  *
  */
-public class IntegerMap implements BitMap<int[]> {
+public class LocalIntegerArrayMap implements BitMap<int[]> {
 
     private int[] bits;
 
@@ -13,14 +13,14 @@ public class IntegerMap implements BitMap<int[]> {
 
     private int count;
     
-    protected IntegerMap(int[] bits, int capacity, int count) {
+    protected LocalIntegerArrayMap(int[] bits, int capacity, int count) {
         this.bits = bits;
         this.capacity = capacity;
         this.count = count;
     }
 
 
-    public IntegerMap(int capacity) {
+    public LocalIntegerArrayMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Integer.SIZE == 0 ? capacity / Integer.SIZE : capacity / Integer.SIZE + 1;
         this.bits = new int[elements];

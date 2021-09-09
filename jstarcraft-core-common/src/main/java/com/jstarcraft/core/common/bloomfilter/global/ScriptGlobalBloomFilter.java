@@ -14,7 +14,7 @@ import org.redisson.client.codec.IntegerCodec;
 import org.redisson.client.protocol.RedisCommands;
 import org.redisson.command.CommandExecutor;
 
-import com.jstarcraft.core.common.bit.ByteMap;
+import com.jstarcraft.core.common.bit.LocalByteArrayMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
@@ -24,7 +24,7 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMap> {
+public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, LocalByteArrayMap> {
 
     private static String getBitLua;
 

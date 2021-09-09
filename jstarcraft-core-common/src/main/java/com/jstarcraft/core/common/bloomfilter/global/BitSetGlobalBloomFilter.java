@@ -3,7 +3,7 @@ package com.jstarcraft.core.common.bloomfilter.global;
 import org.redisson.Redisson;
 import org.redisson.api.RBitSet;
 
-import com.jstarcraft.core.common.bit.ByteMap;
+import com.jstarcraft.core.common.bit.LocalByteArrayMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
@@ -13,7 +13,7 @@ import com.jstarcraft.core.common.hash.StringHashFunction;
  * @author Birdy
  *
  */
-public class BitSetGlobalBloomFilter extends AbstractBloomFilter<RBitSet, ByteMap> {
+public class BitSetGlobalBloomFilter extends AbstractBloomFilter<RBitSet, LocalByteArrayMap> {
 
     public BitSetGlobalBloomFilter(Redisson redisson, String name, int capacity, StringHashFunction... functions) {
         super(capacity, redisson.getBitSet(name), functions);

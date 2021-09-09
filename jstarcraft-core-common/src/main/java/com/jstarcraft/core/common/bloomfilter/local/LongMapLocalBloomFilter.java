@@ -2,7 +2,7 @@ package com.jstarcraft.core.common.bloomfilter.local;
 
 import java.util.Random;
 
-import com.jstarcraft.core.common.bit.LongMap;
+import com.jstarcraft.core.common.bit.LocalLongArrayMap;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
 
 /**
@@ -14,7 +14,7 @@ import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
 public class LongMapLocalBloomFilter extends BitMapLocalBloomFilter<long[]> {
 
 	public LongMapLocalBloomFilter(int bitSize, StringHashFamily hashFamily, int hashSize, Random random) {
-		super(bitSize, new LongMap(bitSize), getFunctions(hashFamily, hashSize, random));
+		super(bitSize, new LocalLongArrayMap(bitSize), getFunctions(hashFamily, hashSize, random));
 	}
 
 }
