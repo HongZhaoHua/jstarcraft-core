@@ -2,7 +2,7 @@ package com.jstarcraft.core.common.bloomfilter;
 
 import java.util.Random;
 
-import com.jstarcraft.core.common.bloomfilter.bit.BitMap;
+import com.jstarcraft.core.common.bit.BitMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 public abstract class AbstractBloomFilter<T, M extends BitMap<?>> implements BloomFilter<M> {

@@ -2,8 +2,8 @@ package com.jstarcraft.core.common.bloomfilter.local;
 
 import java.util.Random;
 
+import com.jstarcraft.core.common.bit.LongMap;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
-import com.jstarcraft.core.common.bloomfilter.bit.LongMap;
 
 /**
  * 基于LongMap的布隆过滤器

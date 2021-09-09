@@ -5,8 +5,8 @@ import org.redisson.api.RBitSet;
 import org.redisson.api.RBucket;
 import org.redisson.client.codec.ByteArrayCodec;
 
+import com.jstarcraft.core.common.bit.ByteMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
-import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**

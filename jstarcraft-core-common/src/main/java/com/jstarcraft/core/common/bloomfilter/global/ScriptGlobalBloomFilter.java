@@ -11,8 +11,8 @@ import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
 import org.redisson.client.codec.ByteArrayCodec;
 
+import com.jstarcraft.core.common.bit.ByteMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
-import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**

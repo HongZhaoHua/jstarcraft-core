@@ -1,7 +1,7 @@
 package com.jstarcraft.core.common.bloomfilter.local;
 
+import com.jstarcraft.core.common.bit.BitMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
-import com.jstarcraft.core.common.bloomfilter.bit.BitMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**

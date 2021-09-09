@@ -2,8 +2,8 @@ package com.jstarcraft.core.common.bloomfilter.local;
 
 import java.util.Random;
 
+import com.jstarcraft.core.common.bit.ByteMap;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
-import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 
 /**
  * 基于ByteMap的布隆过滤器

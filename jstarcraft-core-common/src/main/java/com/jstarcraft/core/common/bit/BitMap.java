@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.bloomfilter.bit;
+package com.jstarcraft.core.common.bit;
 
 /**
  * 

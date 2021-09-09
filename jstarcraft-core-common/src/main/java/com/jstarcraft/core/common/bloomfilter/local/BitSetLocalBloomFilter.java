@@ -3,9 +3,9 @@ package com.jstarcraft.core.common.bloomfilter.local;
 import java.util.BitSet;
 import java.util.Random;
 
+import com.jstarcraft.core.common.bit.ByteMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
-import com.jstarcraft.core.common.bloomfilter.bit.ByteMap;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
 /**

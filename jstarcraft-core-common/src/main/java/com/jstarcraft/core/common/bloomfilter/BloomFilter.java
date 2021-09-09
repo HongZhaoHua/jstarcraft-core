@@ -2,7 +2,7 @@ package com.jstarcraft.core.common.bloomfilter;
 
 import java.util.Collection;
 
-import com.jstarcraft.core.common.bloomfilter.bit.BitMap;
+import com.jstarcraft.core.common.bit.BitMap;
 
 /**
  * 布隆过滤器
