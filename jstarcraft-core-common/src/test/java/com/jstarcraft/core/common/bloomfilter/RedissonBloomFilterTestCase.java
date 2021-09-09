@@ -12,7 +12,7 @@ import org.redisson.config.Config;
 
 import redis.embedded.RedisServer;
 
-public class RedissonGlobalBloomFilterTestCase extends BloomFilterTestCase {
+public class RedissonBloomFilterTestCase extends BloomFilterTestCase {
 
     private static RedisServer redis;
 
@@ -50,7 +50,7 @@ public class RedissonGlobalBloomFilterTestCase extends BloomFilterTestCase {
 
     @Override
     protected BloomFilter getBloomFilter(int elments, float probability) {
-        BloomFilter bloomFilter = new RedissonGlobalBloomFilter(redisson, "bloom", elments, probability);
+        BloomFilter bloomFilter = new RedissonBloomFilter(redisson, "bloom", elments, probability);
         return bloomFilter;
     }
 

@@ -1,46 +1,70 @@
 package com.jstarcraft.core.common.bloomfilter;
 
+import java.util.Random;
+
 import com.jstarcraft.core.common.bit.BitMap;
+import com.jstarcraft.core.common.hash.HashFunction;
 import com.jstarcraft.core.common.hash.StringHashFunction;
 
-/**
- * 基于BitMap的布隆过滤器
- * 
- * @author Birdy
- *
- */
-public abstract class BitMapBloomFilter<T> extends AbstractBloomFilter<BitMap<T>, BitMap<T>> {
+public class BitMapBloomFilter<E, M extends BitMap<?>> implements BloomFilter<E, M> {
 
-    protected BitMapBloomFilter(int capacity, BitMap<T> bits, StringHashFunction... functions) {
-        super(capacity, bits, functions);
+    protected M bits;
+
+    protected HashFunction<E>[] functions;
+
+    protected static StringHashFunction[] getFunctions(StringHashFamily hashFamily, int hashSize, Random random) {
+        StringHashFunction[] functions = new StringHashFunction[hashSize];
+        for (int index = 0; index < hashSize; index++) {
+            functions[index] = hashFamily.getHashFunction(random);
+        }
+        return functions;
+    }
+
+    public BitMapBloomFilter(M bits, HashFunction<E>... functions) {
+        this.bits = bits;
+        this.functions = functions;
     }
 
     @Override
-    public boolean getBit(String data) {
+    public int getElements(E... datas) {
+        int count = 0;
         int capacity = bits.capacity();
-        for (StringHashFunction function : functions) {
-            int hash = function.hash(data);
-            int index = Math.abs(hash % capacity);
-            if (!bits.get(index)) {
-                return false;
+        for (E data : datas) {
+            boolean hit = true;
+            for (HashFunction<E> function : functions) {
+                int hash = function.hash(data);
+                int index = Math.abs(hash % capacity);
+                if (!bits.get(index)) {
+                    hit = false;
+                }
+            }
+            if (hit) {
+                count++;
             }
         }
-        return true;
+        return count;
     }
 
     @Override
-    public void putBit(String data) {
+    public void putElements(E... datas) {
         int capacity = bits.capacity();
-        for (StringHashFunction function : functions) {
-            int hash = function.hash(data);
-            int index = Math.abs(hash % capacity);
-            bits.set(index);
+        for (E data : datas) {
+            for (HashFunction<E> function : functions) {
+                int hash = function.hash(data);
+                int index = Math.abs(hash % capacity);
+                bits.set(index);
+            }
         }
     }
 
     @Override
-    public int bitCount() {
-        return bits.count();
+    public int bitSize() {
+        return bits.capacity();
+    }
+
+    @Override
+    public int hashSize() {
+        return functions.length;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.jstarcraft.core.common.bloomfilter;
 
-import java.util.Collection;
-
 import com.jstarcraft.core.common.bit.BitMap;
 
 /**
@@ -10,31 +8,13 @@ import com.jstarcraft.core.common.bit.BitMap;
  * @author Birdy
  *
  */
-public interface BloomFilter<M extends BitMap<?>> {
+public interface BloomFilter<E, M extends BitMap<?>> {
 
-    boolean getBit(String data);
+    int getElements(E... datas);
 
-    default int getBits(Collection<String> datas) {
-        int hit = 0;
-        for (String data : datas) {
-            if (getBit(data)) {
-                hit++;
-            }
-        }
-        return hit;
-    }
-
-    void putBit(String data);
-
-    default void putBits(Collection<String> datas) {
-        for (String data : datas) {
-            putBit(data);
-        }
-    }
+    void putElements(E... datas);
 
     int bitSize();
-    
-    int bitCount();
 
     int hashSize();
 

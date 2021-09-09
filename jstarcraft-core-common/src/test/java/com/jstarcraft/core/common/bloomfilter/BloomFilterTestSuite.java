@@ -11,15 +11,9 @@ import com.jstarcraft.core.common.bit.BitMapTestCase;
 
         BitMapTestCase.class,
 
-        BitSetLocalBloomFilterTestCase.class,
+        RedissonBloomFilterTestCase.class,
 
-        RedissonGlobalBloomFilterTestCase.class,
-        
-        ByteMapBloomLocalFilterTestCase.class,
-
-        IntegerMapLocalBloomFilterTestCase.class,
-
-        LongMapLocalBloomFilterTestCase.class,
+        BitMapBloomLocalFilterTestCase.class,
 
 })
 public class BloomFilterTestSuite {

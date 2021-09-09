@@ -13,18 +13,18 @@ import com.jstarcraft.core.common.bit.LocalByteArrayMap;
  * @author Birdy
  *
  */
-public class RedissonGlobalBloomFilter implements BloomFilter<LocalByteArrayMap> {
+public class RedissonBloomFilter<E> implements BloomFilter<E, LocalByteArrayMap> {
 
-    private RBloomFilter<String> bits;
+    private RBloomFilter<E> bits;
 
     private RBucket<byte[]> bucket;
 
-    public RedissonGlobalBloomFilter(Redisson redisson, String name) {
+    public RedissonBloomFilter(Redisson redisson, String name) {
         this.bits = redisson.getBloomFilter(name);
         this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
-    public RedissonGlobalBloomFilter(Redisson redisson, String name, int elments, float probability) {
+    public RedissonBloomFilter(Redisson redisson, String name, int elments, float probability) {
         this.bits = redisson.getBloomFilter(name);
         if (!this.bits.tryInit(elments, probability)) {
             throw new RuntimeException("布隆过滤器冲突");
@@ -33,23 +33,26 @@ public class RedissonGlobalBloomFilter implements BloomFilter<LocalByteArrayMap>
     }
 
     @Override
-    public boolean getBit(String data) {
-        return bits.contains(data);
+    public int getElements(E... datas) {
+        int count = 0;
+        for (E data : datas) {
+            if (bits.contains(data)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
-    public void putBit(String data) {
-        bits.add(data);
+    public void putElements(E... datas) {
+        for (E data : datas) {
+            bits.add(data);
+        }
     }
 
     @Override
     public int bitSize() {
         return (int) bits.getSize();
-    }
-
-    @Override
-    public int bitCount() {
-        return (int) bits.count();
     }
 
     @Override
