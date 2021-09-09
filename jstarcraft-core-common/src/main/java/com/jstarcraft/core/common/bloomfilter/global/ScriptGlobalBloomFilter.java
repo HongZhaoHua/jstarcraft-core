@@ -79,8 +79,6 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
 
     private CommandExecutor executor;
 
-    private String name;
-
     public ScriptGlobalBloomFilter(Redisson redisson, String name, int capacity, StringHashFunction... functions) {
         super(capacity, redisson.getScript(), functions);
         this.getBit = bits.scriptLoad(getBitLua);
@@ -88,7 +86,6 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
         this.keys = Arrays.asList(name);
         this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
         this.executor = redisson.getCommandExecutor();
-        this.name = name;
     }
 
     private Integer[] values(String data) {
