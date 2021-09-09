@@ -1,5 +1,7 @@
 package com.jstarcraft.core.common.bit;
 
+import java.util.BitSet;
+
 import org.redisson.api.RBitSet;
 
 /**
@@ -12,6 +14,13 @@ public class GlobalBitSetMap implements BitMap<byte[]> {
     private RBitSet bits;
 
     private int capacity;
+
+    protected GlobalBitSetMap(RBitSet bits, byte[] bytes, int capacity) {
+        assert capacity > 0;
+        this.bits = bits;
+        this.capacity = capacity;
+        bits.set(BitSet.valueOf(bytes));
+    }
 
     public GlobalBitSetMap(RBitSet bits, int capacity) {
         assert capacity > 0;

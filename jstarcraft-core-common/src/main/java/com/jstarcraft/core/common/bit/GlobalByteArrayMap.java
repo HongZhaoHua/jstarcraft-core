@@ -74,6 +74,19 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
 
     private int capacity;
 
+    public GlobalByteArrayMap(Redisson redis, String name, byte[] bytes, int capacity) {
+        this.bits = redis.getScript();
+        this.executor = redis.getCommandExecutor();
+        this.name = name;
+        this.getBit = bits.scriptLoad(getBitLua);
+        this.setBit = bits.scriptLoad(setBitLua);
+        this.unsetBit = bits.scriptLoad(unsetBitLua);
+        this.keys = Arrays.asList(name);
+        this.capacity = capacity;
+        RFuture<Void> future = executor.readAsync(name, ByteArrayCodec.INSTANCE, RedisCommands.SET, name, bytes);
+        executor.get(future);
+    }
+
     public GlobalByteArrayMap(Redisson redis, String name, int capacity) {
         assert capacity > 0;
         this.bits = redis.getScript();
@@ -89,8 +102,8 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
     @Override
     public boolean get(int index) {
         Integer[] parameters = new Integer[] { index };
-        List<Integer> hits = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.MULTI, keys, parameters);
-        return hits.get(0) == 1;
+        List<Long> hits = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.MULTI, keys, parameters);
+        return hits.get(0) == 1L;
     }
 
     @Override
@@ -99,9 +112,9 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
         for (int index = 0, size = indexes.length; index < size; index++) {
             parameters[index] = indexes[index];
         }
-        List<Integer> hits = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.MULTI, keys, parameters);
+        List<Long> hits = bits.evalSha(Mode.READ_WRITE, getBit, ReturnType.MULTI, keys, parameters);
         for (int index = 0, size = indexes.length; index < size; index++) {
-            values[index] = hits.get(index) == 1;
+            values[index] = hits.get(index) == 1L;
         }
     }
 
@@ -142,8 +155,8 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
 
     @Override
     public int count() {
-        RFuture<Integer> future = executor.readAsync(name, IntegerCodec.INSTANCE, RedisCommands.BITCOUNT, name);
-        return executor.get(future);
+        RFuture<Long> future = executor.readAsync(name, IntegerCodec.INSTANCE, RedisCommands.BITCOUNT, name);
+        return executor.get(future).intValue();
     }
 
     @Override

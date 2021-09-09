@@ -24,6 +24,7 @@ import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
 import org.redisson.client.codec.Codec;
+import org.redisson.client.codec.StringCodec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 import org.redisson.config.RedissonNodeConfig;
@@ -40,7 +41,7 @@ public class RedissonTestCase {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public final static double EPSILON = 1E-5;
-    
+
     private static RedisServer redis;
 
     @BeforeClass
@@ -88,11 +89,11 @@ public class RedissonTestCase {
             median = data.get(lenght / 2);
         return median;
     }
-    
+
     @Test
     public void testEval() {
         // 注意此处的编解码器
-        Codec codec = new JsonJacksonCodec();
+        Codec codec = new StringCodec();
         Config configuration = new Config();
         configuration.setCodec(codec);
         configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
@@ -102,8 +103,12 @@ public class RedissonTestCase {
             redisson = (Redisson) Redisson.create(configuration);
 
             RScript script = redisson.getScript();
-            List<Object> res = script.eval(RScript.Mode.READ_ONLY, "return {1,true,3.3333,'\"foo\"',nil,'bar'}", RScript.ReturnType.MULTI, Collections.emptyList());
-            System.out.println(res);
+            List<Object> value = script.eval(RScript.Mode.READ_ONLY, "return {true, 2, 3.33, 'string' ,nil, 'test'}", RScript.ReturnType.MULTI, Collections.emptyList());
+            Assert.assertTrue(value.contains(1L));
+            Assert.assertTrue(value.contains(2L));
+            Assert.assertTrue(value.contains(3L));
+            Assert.assertTrue(value.contains("string"));
+            Assert.assertEquals(4, value.size());
         } catch (Exception exception) {
             logger.error(StringUtility.EMPTY, exception);
             Assert.fail();
