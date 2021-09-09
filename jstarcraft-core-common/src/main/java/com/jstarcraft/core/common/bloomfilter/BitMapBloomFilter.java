@@ -29,12 +29,23 @@ public class BitMapBloomFilter<E, M extends BitMap<?>> implements BloomFilter<E,
     public int getElements(E... datas) {
         int count = 0;
         int capacity = bits.capacity();
+        int size = datas.length * hashSize();
+        int[] indexes = new int[size];
+        boolean[] values = new boolean[size];
+        int cursor = 0;
         for (E data : datas) {
-            boolean hit = true;
             for (HashFunction<E> function : functions) {
                 int hash = function.hash(data);
                 int index = Math.abs(hash % capacity);
-                if (!bits.get(index)) {
+                indexes[cursor++] = index;
+            }
+        }
+        bits.get(indexes, values);
+        cursor = 0;
+        for (E data : datas) {
+            boolean hit = true;
+            for (HashFunction<E> function : functions) {
+                if (!values[cursor++]) {
                     hit = false;
                 }
             }
@@ -48,13 +59,17 @@ public class BitMapBloomFilter<E, M extends BitMap<?>> implements BloomFilter<E,
     @Override
     public void putElements(E... datas) {
         int capacity = bits.capacity();
+        int size = datas.length * hashSize();
+        int[] indexes = new int[size];
+        int cursor = 0;
         for (E data : datas) {
             for (HashFunction<E> function : functions) {
                 int hash = function.hash(data);
                 int index = Math.abs(hash % capacity);
-                bits.set(index);
+                indexes[cursor++] = index;
             }
         }
+        bits.set(indexes);
     }
 
     @Override
