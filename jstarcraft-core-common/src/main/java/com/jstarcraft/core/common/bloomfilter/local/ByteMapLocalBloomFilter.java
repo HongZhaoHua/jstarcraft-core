@@ -3,6 +3,7 @@ package com.jstarcraft.core.common.bloomfilter.local;
 import java.util.Random;
 
 import com.jstarcraft.core.common.bit.LocalByteArrayMap;
+import com.jstarcraft.core.common.bloomfilter.BitMapBloomFilter;
 import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
 
 /**
@@ -11,7 +12,7 @@ import com.jstarcraft.core.common.bloomfilter.StringHashFamily;
  * @author Birdy
  *
  */
-public class ByteMapLocalBloomFilter extends BitMapLocalBloomFilter<byte[]> {
+public class ByteMapLocalBloomFilter extends BitMapBloomFilter<byte[]> {
 
     public ByteMapLocalBloomFilter(int bitSize, StringHashFamily hashFamily, int hashSize, Random random) {
         super(bitSize, new LocalByteArrayMap(bitSize), getFunctions(hashFamily, hashSize, random));

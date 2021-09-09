@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.bloomfilter.global;
+package com.jstarcraft.core.common.bloomfilter;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
@@ -6,7 +6,6 @@ import org.redisson.api.RBucket;
 import org.redisson.client.codec.ByteArrayCodec;
 
 import com.jstarcraft.core.common.bit.LocalByteArrayMap;
-import com.jstarcraft.core.common.bloomfilter.BloomFilter;
 
 /**
  * 基于Redis的布隆过滤器
