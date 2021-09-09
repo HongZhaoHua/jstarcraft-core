@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.redisson.Redisson;
-import org.redisson.api.RBucket;
 import org.redisson.api.RFuture;
 import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
@@ -75,7 +74,7 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
 
     private List<Object> keys;
 
-    private RBucket<byte[]> bucket;
+    private String name;
 
     private CommandExecutor executor;
 
@@ -84,7 +83,7 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
         this.getBit = bits.scriptLoad(getBitLua);
         this.setBit = bits.scriptLoad(setBitLua);
         this.keys = Arrays.asList(name);
-        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
+        this.name = name;
         this.executor = redisson.getCommandExecutor();
     }
 
@@ -145,7 +144,7 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
 
     @Override
     public int bitCount() {
-        RFuture<Integer> future = executor.readAsync(bucket.getName(), IntegerCodec.INSTANCE, RedisCommands.BITCOUNT, bucket.getName());
+        RFuture<Integer> future = executor.readAsync(name, IntegerCodec.INSTANCE, RedisCommands.BITCOUNT, name);
         return executor.get(future);
     }
 
@@ -155,7 +154,8 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
     }
 
     public byte[] getBytes() {
-        return bucket.get();
+        RFuture<byte[]> future = executor.readAsync(name, ByteArrayCodec.INSTANCE, RedisCommands.GET, name);
+        return executor.get(future);
     }
 
 }
