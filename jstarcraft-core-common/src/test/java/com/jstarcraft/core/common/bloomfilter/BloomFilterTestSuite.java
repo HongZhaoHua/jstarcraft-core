@@ -7,9 +7,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 
-        RedissonBloomFilterTestCase.class,
-
         BitMapBloomLocalFilterTestCase.class,
+
+        RedissonBloomFilterTestCase.class,
 
 })
 public class BloomFilterTestSuite {
