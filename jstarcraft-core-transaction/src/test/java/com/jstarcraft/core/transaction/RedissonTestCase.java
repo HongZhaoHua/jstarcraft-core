@@ -88,6 +88,27 @@ public class RedissonTestCase {
             median = data.get(lenght / 2);
         return median;
     }
+    
+    @Test
+    public void testEval() {
+        // 注意此处的编解码器
+        Codec codec = new JsonJacksonCodec();
+        Config configuration = new Config();
+        configuration.setCodec(codec);
+        configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
+        Redisson redisson = null;
+
+        try {
+            redisson = (Redisson) Redisson.create(configuration);
+
+            RScript script = redisson.getScript();
+            List<Object> res = script.eval(RScript.Mode.READ_ONLY, "return {1,true,3.3333,'\"foo\"',nil,'bar'}", RScript.ReturnType.MULTI, Collections.emptyList());
+            System.out.println(res);
+        } catch (Exception exception) {
+            logger.error(StringUtility.EMPTY, exception);
+            Assert.fail();
+        }
+    }
 
     @Test
     public void testScript() {

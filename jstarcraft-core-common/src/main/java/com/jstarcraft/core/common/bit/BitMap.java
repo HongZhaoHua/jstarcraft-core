@@ -10,14 +10,10 @@ public interface BitMap<T> {
 
     boolean get(int index);
 
-    default int get(int[] indexes) {
-        int hit = 0;
-        for (int index : indexes) {
-            if (get(index)) {
-                hit++;
-            }
+    default void get(int[] indexes, boolean[] values) {
+        for (int index = 0, size = indexes.length; index < size; index++) {
+            values[index] = get(indexes[index]);
         }
-        return hit;
     }
 
     void set(int index);
