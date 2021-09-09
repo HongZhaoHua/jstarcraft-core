@@ -47,7 +47,12 @@ public class RedissonGlobalBloomFilter implements BloomFilter<ByteMap> {
     public int bitSize() {
         return (int) bits.getSize();
     }
-    
+
+    @Override
+    public int bitCount() {
+        return (int) bits.count();
+    }
+
     @Override
     public int hashSize() {
         return (int) bits.getHashIterations();

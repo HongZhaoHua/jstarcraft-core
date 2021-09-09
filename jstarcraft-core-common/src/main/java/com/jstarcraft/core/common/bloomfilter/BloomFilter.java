@@ -33,6 +33,8 @@ public interface BloomFilter<M extends BitMap<?>> {
     }
 
     int bitSize();
+    
+    int bitCount();
 
     int hashSize();
 

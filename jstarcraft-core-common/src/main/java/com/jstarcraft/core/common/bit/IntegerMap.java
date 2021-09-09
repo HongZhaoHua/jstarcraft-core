@@ -12,6 +12,13 @@ public class IntegerMap implements BitMap<int[]> {
     private int capacity;
 
     private int count;
+    
+    protected IntegerMap(int[] bits, int capacity, int count) {
+        this.bits = bits;
+        this.capacity = capacity;
+        this.count = count;
+    }
+
 
     public IntegerMap(int capacity) {
         assert capacity > 0;

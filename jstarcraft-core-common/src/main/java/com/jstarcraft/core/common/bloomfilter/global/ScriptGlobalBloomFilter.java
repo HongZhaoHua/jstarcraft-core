@@ -6,10 +6,14 @@ import java.util.List;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
+import org.redisson.api.RFuture;
 import org.redisson.api.RScript;
 import org.redisson.api.RScript.Mode;
 import org.redisson.api.RScript.ReturnType;
 import org.redisson.client.codec.ByteArrayCodec;
+import org.redisson.client.codec.IntegerCodec;
+import org.redisson.client.protocol.RedisCommands;
+import org.redisson.command.CommandExecutor;
 
 import com.jstarcraft.core.common.bit.ByteMap;
 import com.jstarcraft.core.common.bloomfilter.AbstractBloomFilter;
@@ -70,8 +74,12 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
     private String setBit;
 
     private List<Object> keys;
-    
+
     private RBucket<byte[]> bucket;
+
+    private CommandExecutor executor;
+
+    private String name;
 
     public ScriptGlobalBloomFilter(Redisson redisson, String name, int capacity, StringHashFunction... functions) {
         super(capacity, redisson.getScript(), functions);
@@ -79,6 +87,8 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
         this.setBit = bits.scriptLoad(setBitLua);
         this.keys = Arrays.asList(name);
         this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
+        this.executor = redisson.getCommandExecutor();
+        this.name = name;
     }
 
     private Integer[] values(String data) {
@@ -134,6 +144,12 @@ public class ScriptGlobalBloomFilter extends AbstractBloomFilter<RScript, ByteMa
     @Override
     public int bitSize() {
         return capacity;
+    }
+
+    @Override
+    public int bitCount() {
+        RFuture<Integer> future = executor.readAsync(bucket.getName(), IntegerCodec.INSTANCE, RedisCommands.BITCOUNT, bucket.getName());
+        return executor.get(future);
     }
 
     @Override

@@ -39,4 +39,9 @@ public abstract class BitMapLocalBloomFilter<T> extends AbstractBloomFilter<BitM
         }
     }
 
+    @Override
+    public int bitCount() {
+        return bits.count();
+    }
+
 }

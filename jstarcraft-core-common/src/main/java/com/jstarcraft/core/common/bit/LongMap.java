@@ -13,6 +13,12 @@ public class LongMap implements BitMap<long[]> {
 
     private int count;
 
+    protected LongMap(long[] bits, int capacity, int count) {
+        this.bits = bits;
+        this.capacity = capacity;
+        this.count = count;
+    }
+
     public LongMap(int capacity) {
         assert capacity > 0;
         int elements = capacity % Long.SIZE == 0 ? capacity / Long.SIZE : capacity / Long.SIZE + 1;

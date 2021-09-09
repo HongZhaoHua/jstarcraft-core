@@ -41,5 +41,10 @@ public class BitNumberLocalBloomFilter extends AbstractBloomFilter<BigInteger, B
             bits = bits.setBit(index);
         }
     }
+    
+    @Override
+    public int bitCount() {
+        return bits.bitCount();
+    }
 
 }

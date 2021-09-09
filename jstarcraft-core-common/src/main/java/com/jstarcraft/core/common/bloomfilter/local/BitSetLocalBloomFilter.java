@@ -40,5 +40,10 @@ public class BitSetLocalBloomFilter extends AbstractBloomFilter<BitSet, ByteMap>
             bits.set(index);
         }
     }
+    
+    @Override
+    public int bitCount() {
+        return bits.cardinality();
+    }
 
 }

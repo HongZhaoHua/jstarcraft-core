@@ -51,6 +51,11 @@ public class BitSetGlobalBloomFilter extends AbstractBloomFilter<RBitSet, ByteMa
     }
 
     @Override
+    public int bitCount() {
+        return (int) bits.cardinality();
+    }
+
+    @Override
     public int hashSize() {
         return functions.length;
     }
