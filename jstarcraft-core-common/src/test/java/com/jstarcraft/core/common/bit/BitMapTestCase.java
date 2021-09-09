@@ -139,7 +139,6 @@ public class BitMapTestCase {
                 Assert.assertEquals(0, bits.count());
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
             Assert.fail();
         } finally {
             redis.stop();
