@@ -13,19 +13,15 @@ public class LocalBitSetMap implements BitMap<byte[]> {
 
     private int capacity;
 
-    private int count;
-
-    protected LocalBitSetMap(BitSet bits, int capacity, int count) {
+    protected LocalBitSetMap(BitSet bits, int capacity) {
         this.bits = bits;
         this.capacity = capacity;
-        this.count = count;
     }
 
     public LocalBitSetMap(int capacity) {
         assert capacity > 0;
         this.bits = new BitSet(capacity);
         this.capacity = capacity;
-        this.count = 0;
     }
 
     @Override
@@ -50,7 +46,7 @@ public class LocalBitSetMap implements BitMap<byte[]> {
 
     @Override
     public int count() {
-        return count;
+        return bits.cardinality();
     }
 
     @Override
