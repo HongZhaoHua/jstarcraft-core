@@ -11,7 +11,7 @@ import org.redisson.api.RScript.ReturnType;
 import org.redisson.client.codec.ByteArrayCodec;
 import org.redisson.client.codec.IntegerCodec;
 import org.redisson.client.protocol.RedisCommands;
-import org.redisson.command.CommandExecutor;
+import org.redisson.command.CommandAsyncExecutor;
 
 /**
  * 
@@ -60,7 +60,7 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
 
     private RScript bits;
 
-    private CommandExecutor executor;
+    private CommandAsyncExecutor executor;
 
     private String name;
 
