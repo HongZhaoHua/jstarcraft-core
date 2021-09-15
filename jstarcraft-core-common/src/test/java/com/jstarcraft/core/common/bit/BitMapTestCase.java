@@ -11,73 +11,102 @@ import redis.embedded.RedisServer;
 
 public class BitMapTestCase {
 
+    private final static int size = 1000;
+
     @Test
-    public void testByteMap() {
-        LocalIntegerArrayMap bits = new LocalIntegerArrayMap(Byte.SIZE);
-        Assert.assertEquals(Byte.SIZE, bits.capacity());
+    public void testBitSetMap() {
+        LocalBitSetMap bits = new LocalBitSetMap(size);
+        Assert.assertEquals(size, bits.capacity());
         Assert.assertEquals(0, bits.count());
-        for (int index = 0; index < Byte.SIZE; index++) {
+        Assert.assertEquals(125, bits.bits().length);
+        bits.set(0);
+        Assert.assertEquals(125, bits.bits().length);
+        Assert.assertEquals(1, bits.count());
+        bits.set(0);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(size - 1);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(0);
+        Assert.assertEquals(0, bits.count());
+        for (int index = 0; index < size; index++) {
             Assert.assertFalse(bits.get(index));
             bits.set(index);
             Assert.assertTrue(bits.get(index));
             bits.unset(index);
             Assert.assertFalse(bits.get(index));
         }
+    }
 
+    @Test
+    public void testByteMap() {
+        LocalByteArrayMap bits = new LocalByteArrayMap(size);
+        Assert.assertEquals(size, bits.capacity());
+        Assert.assertEquals(0, bits.count());
+        Assert.assertEquals(125, bits.bits().length);
         bits.set(0);
+        Assert.assertEquals(125, bits.bits().length);
         Assert.assertEquals(1, bits.count());
         bits.set(0);
         Assert.assertEquals(1, bits.count());
-        bits.unset(Byte.SIZE - 1);
+        bits.unset(size - 1);
         Assert.assertEquals(1, bits.count());
         bits.unset(0);
         Assert.assertEquals(0, bits.count());
+        for (int index = 0; index < size; index++) {
+            Assert.assertFalse(bits.get(index));
+            bits.set(index);
+            Assert.assertTrue(bits.get(index));
+            bits.unset(index);
+            Assert.assertFalse(bits.get(index));
+        }
     }
 
     @Test
     public void testIntegerMap() {
-        LocalIntegerArrayMap bits = new LocalIntegerArrayMap(Integer.SIZE);
-        Assert.assertEquals(Integer.SIZE, bits.capacity());
+        LocalIntegerArrayMap bits = new LocalIntegerArrayMap(size);
+        Assert.assertEquals(size, bits.capacity());
         Assert.assertEquals(0, bits.count());
-        for (int index = 0; index < Integer.SIZE; index++) {
+        Assert.assertEquals(32, bits.bits().length);
+        bits.set(0);
+        Assert.assertEquals(32, bits.bits().length);
+        Assert.assertEquals(1, bits.count());
+        bits.set(0);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(size - 1);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(0);
+        Assert.assertEquals(0, bits.count());
+        for (int index = 0; index < size; index++) {
             Assert.assertFalse(bits.get(index));
             bits.set(index);
             Assert.assertTrue(bits.get(index));
             bits.unset(index);
             Assert.assertFalse(bits.get(index));
         }
-
-        bits.set(0);
-        Assert.assertEquals(1, bits.count());
-        bits.set(0);
-        Assert.assertEquals(1, bits.count());
-        bits.unset(Integer.SIZE - 1);
-        Assert.assertEquals(1, bits.count());
-        bits.unset(0);
-        Assert.assertEquals(0, bits.count());
     }
 
     @Test
     public void testLongMap() {
-        LocalLongArrayMap bits = new LocalLongArrayMap(Long.SIZE);
-        Assert.assertEquals(Long.SIZE, bits.capacity());
+        LocalLongArrayMap bits = new LocalLongArrayMap(size);
+        Assert.assertEquals(size, bits.capacity());
         Assert.assertEquals(0, bits.count());
-        for (int index = 0; index < Long.SIZE; index++) {
+        Assert.assertEquals(16, bits.bits().length);
+        bits.set(0);
+        Assert.assertEquals(16, bits.bits().length);
+        Assert.assertEquals(1, bits.count());
+        bits.set(0);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(size - 1);
+        Assert.assertEquals(1, bits.count());
+        bits.unset(0);
+        Assert.assertEquals(0, bits.count());
+        for (int index = 0; index < size; index++) {
             Assert.assertFalse(bits.get(index));
             bits.set(index);
             Assert.assertTrue(bits.get(index));
             bits.unset(index);
             Assert.assertFalse(bits.get(index));
         }
-
-        bits.set(0);
-        Assert.assertEquals(1, bits.count());
-        bits.set(0);
-        Assert.assertEquals(1, bits.count());
-        bits.unset(Long.SIZE - 1);
-        Assert.assertEquals(1, bits.count());
-        bits.unset(0);
-        Assert.assertEquals(0, bits.count());
     }
 
     @Test
@@ -96,47 +125,49 @@ public class BitMapTestCase {
             redisson = (Redisson) Redisson.create(configuration);
 
             {
-                GlobalByteArrayMap bits = new GlobalByteArrayMap(redisson, "bits", 1000);
-                Assert.assertEquals(1000, bits.capacity());
+                GlobalByteArrayMap bits = new GlobalByteArrayMap(redisson, "bits", size);
+                Assert.assertEquals(size, bits.capacity());
                 Assert.assertEquals(0, bits.count());
-                for (int index = 0; index < 1000; index++) {
+                Assert.assertEquals(125, bits.bits().length);
+                bits.set(0);
+                Assert.assertEquals(125, bits.bits().length);
+                Assert.assertEquals(1, bits.count());
+                bits.set(0);
+                Assert.assertEquals(1, bits.count());
+                bits.unset(size - 1);
+                Assert.assertEquals(1, bits.count());
+                bits.unset(0);
+                Assert.assertEquals(0, bits.count());
+                for (int index = 0; index < size; index++) {
                     Assert.assertFalse(bits.get(index));
                     bits.set(index);
                     Assert.assertTrue(bits.get(index));
                     bits.unset(index);
                     Assert.assertFalse(bits.get(index));
                 }
-
-                bits.set(0);
-                Assert.assertEquals(1, bits.count());
-                bits.set(0);
-                Assert.assertEquals(1, bits.count());
-                bits.unset(1000 - 1);
-                Assert.assertEquals(1, bits.count());
-                bits.unset(0);
-                Assert.assertEquals(0, bits.count());
             }
 
             {
-                GlobalBitSetMap bits = new GlobalBitSetMap(redisson.getBitSet("bits"), 1000);
-                Assert.assertEquals(1000, bits.capacity());
+                GlobalBitSetMap bits = new GlobalBitSetMap(redisson.getBitSet("bits"), size);
+                Assert.assertEquals(size, bits.capacity());
                 Assert.assertEquals(0, bits.count());
-                for (int index = 0; index < 1000; index++) {
+                Assert.assertEquals(125, bits.bits().length);
+                bits.set(0);
+                Assert.assertEquals(125, bits.bits().length);
+                Assert.assertEquals(1, bits.count());
+                bits.set(0);
+                Assert.assertEquals(1, bits.count());
+                bits.unset(size - 1);
+                Assert.assertEquals(1, bits.count());
+                bits.unset(0);
+                Assert.assertEquals(0, bits.count());
+                for (int index = 0; index < size; index++) {
                     Assert.assertFalse(bits.get(index));
                     bits.set(index);
                     Assert.assertTrue(bits.get(index));
                     bits.unset(index);
                     Assert.assertFalse(bits.get(index));
                 }
-
-                bits.set(0);
-                Assert.assertEquals(1, bits.count());
-                bits.set(0);
-                Assert.assertEquals(1, bits.count());
-                bits.unset(1000 - 1);
-                Assert.assertEquals(1, bits.count());
-                bits.unset(0);
-                Assert.assertEquals(0, bits.count());
             }
         } catch (Exception exception) {
             Assert.fail();

@@ -162,7 +162,13 @@ public class GlobalByteArrayMap implements BitMap<byte[]> {
     @Override
     public byte[] bits() {
         RFuture<byte[]> future = executor.readAsync(name, ByteArrayCodec.INSTANCE, RedisCommands.GET, name);
-        return executor.get(future);
+        byte[] from = executor.get(future);
+        int size = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
+        byte[] to = new byte[size];
+        if (from != null) {
+            System.arraycopy(from, 0, to, 0, from.length);
+        }
+        return to;
     }
 
 }

@@ -22,8 +22,8 @@ public class LocalIntegerArrayMap implements BitMap<int[]> {
 
     public LocalIntegerArrayMap(int capacity) {
         assert capacity > 0;
-        int elements = capacity % Integer.SIZE == 0 ? capacity / Integer.SIZE : capacity / Integer.SIZE + 1;
-        this.bits = new int[elements];
+        int size = capacity % Integer.SIZE == 0 ? capacity / Integer.SIZE : capacity / Integer.SIZE + 1;
+        this.bits = new int[size];
         this.capacity = capacity;
         this.count = 0;
     }

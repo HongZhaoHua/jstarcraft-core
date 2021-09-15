@@ -51,7 +51,11 @@ public class LocalBitSetMap implements BitMap<byte[]> {
 
     @Override
     public byte[] bits() {
-        return bits.toByteArray();
+        byte[] from = bits.toByteArray();
+        int size = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
+        byte[] to = new byte[size];
+        System.arraycopy(from, 0, to, 0, from.length);
+        return to;
     }
 
 }

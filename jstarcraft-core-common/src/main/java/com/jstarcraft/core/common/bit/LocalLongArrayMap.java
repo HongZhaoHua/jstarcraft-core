@@ -21,8 +21,8 @@ public class LocalLongArrayMap implements BitMap<long[]> {
 
     public LocalLongArrayMap(int capacity) {
         assert capacity > 0;
-        int elements = capacity % Long.SIZE == 0 ? capacity / Long.SIZE : capacity / Long.SIZE + 1;
-        this.bits = new long[elements];
+        int size = capacity % Long.SIZE == 0 ? capacity / Long.SIZE : capacity / Long.SIZE + 1;
+        this.bits = new long[size];
         this.capacity = capacity;
         this.count = 0;
     }

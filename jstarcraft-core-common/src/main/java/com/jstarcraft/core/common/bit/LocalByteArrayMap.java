@@ -21,8 +21,8 @@ public class LocalByteArrayMap implements BitMap<byte[]> {
 
     public LocalByteArrayMap(int capacity) {
         assert capacity > 0;
-        int elements = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
-        this.bits = new byte[elements];
+        int size = capacity % Byte.SIZE == 0 ? capacity / Byte.SIZE : capacity / Byte.SIZE + 1;
+        this.bits = new byte[size];
         this.capacity = capacity;
         this.count = 0;
     }
