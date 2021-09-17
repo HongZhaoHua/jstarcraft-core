@@ -117,7 +117,7 @@ public class RocketEventConsumer extends AbstractEventConsumer {
                     // TODO 需要防止路径冲突
                     String tag = type.getName();
                     tag = tag.replace(StringUtility.DOT, StringUtility.DASH);
-                    // 以service/topic/tag作为Group ID.
+                    // 以name/topic/tag作为Group ID.
                     DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(getGroup(type), hook, new AllocateMessageQueueAveragely(), hook != null ? true : false, null);
                     // 设置使用接入方式为阿里云，在使用云上消息轨迹的时候，需要设置此项，如果不开启消息轨迹功能，则运行不设置此项.
                     if (hook != null) {
