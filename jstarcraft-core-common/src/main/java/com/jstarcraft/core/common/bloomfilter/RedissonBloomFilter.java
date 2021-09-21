@@ -2,8 +2,6 @@ package com.jstarcraft.core.common.bloomfilter;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
-import org.redisson.api.RBucket;
-import org.redisson.client.codec.ByteArrayCodec;
 
 import com.jstarcraft.core.common.bit.LocalByteArrayMap;
 
@@ -17,11 +15,8 @@ public class RedissonBloomFilter<E> implements BloomFilter<E, LocalByteArrayMap>
 
     private RBloomFilter<E> bits;
 
-    private RBucket<byte[]> bucket;
-
     public RedissonBloomFilter(Redisson redisson, String name) {
         this.bits = redisson.getBloomFilter(name);
-        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
     public RedissonBloomFilter(Redisson redisson, String name, int elments, float probability) {
@@ -29,7 +24,6 @@ public class RedissonBloomFilter<E> implements BloomFilter<E, LocalByteArrayMap>
         if (!this.bits.tryInit(elments, probability)) {
             throw new RuntimeException("布隆过滤器冲突");
         }
-        this.bucket = redisson.getBucket(name, ByteArrayCodec.INSTANCE);
     }
 
     @Override
@@ -58,10 +52,6 @@ public class RedissonBloomFilter<E> implements BloomFilter<E, LocalByteArrayMap>
     @Override
     public int hashSize() {
         return (int) bits.getHashIterations();
-    }
-
-    public byte[] getBytes() {
-        return bucket.get();
     }
 
 }
