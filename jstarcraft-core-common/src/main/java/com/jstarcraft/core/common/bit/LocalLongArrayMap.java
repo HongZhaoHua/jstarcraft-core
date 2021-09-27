@@ -30,14 +30,14 @@ public class LocalLongArrayMap implements BitMap<long[]> {
     @Override
     public boolean get(int index) {
         int row = index / Long.SIZE;
-        int column = index % Long.SIZE;
+        int column = 63 - index % Long.SIZE;
         return ((bits[row] >>> column) & 1L) == 1L;
     }
 
     @Override
     public void set(int index) {
         int row = index / Long.SIZE;
-        int column = index % Long.SIZE;
+        int column = 63 - index % Long.SIZE;
         if (((bits[row] >>> column) & 1L) == 0L) {
             bits[row] |= (1L << column);
             count++;
@@ -47,7 +47,7 @@ public class LocalLongArrayMap implements BitMap<long[]> {
     @Override
     public void unset(int index) {
         int row = index / Long.SIZE;
-        int column = index % Long.SIZE;
+        int column = 63 - index % Long.SIZE;
         if (((bits[row] >>> column) & 1L) == 1L) {
             bits[row] &= ~(1L << column);
             count--;

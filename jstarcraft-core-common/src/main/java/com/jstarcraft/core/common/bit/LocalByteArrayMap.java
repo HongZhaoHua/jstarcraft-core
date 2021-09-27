@@ -30,14 +30,14 @@ public class LocalByteArrayMap implements BitMap<byte[]> {
     @Override
     public boolean get(int index) {
         int row = index / Byte.SIZE;
-        int column = index % Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
         return ((bits[row] >>> column) & 1) == 1;
     }
 
     @Override
     public void set(int index) {
         int row = index / Byte.SIZE;
-        int column = index % Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
         if (((bits[row] >>> column) & 1) == 0) {
             bits[row] |= (1 << column);
             count++;
@@ -47,7 +47,7 @@ public class LocalByteArrayMap implements BitMap<byte[]> {
     @Override
     public void unset(int index) {
         int row = index / Byte.SIZE;
-        int column = index % Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
         if (((bits[row] >>> column) & 1) == 1) {
             bits[row] &= ~(1 << column);
             count--;

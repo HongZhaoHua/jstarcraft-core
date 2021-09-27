@@ -12,13 +12,12 @@ public class LocalIntegerArrayMap implements BitMap<int[]> {
     private int capacity;
 
     private int count;
-    
+
     protected LocalIntegerArrayMap(int[] bits, int capacity, int count) {
         this.bits = bits;
         this.capacity = capacity;
         this.count = count;
     }
-
 
     public LocalIntegerArrayMap(int capacity) {
         assert capacity > 0;
@@ -31,14 +30,14 @@ public class LocalIntegerArrayMap implements BitMap<int[]> {
     @Override
     public boolean get(int index) {
         int row = index / Integer.SIZE;
-        int column = index % Integer.SIZE;
+        int column = 31 - index % Integer.SIZE;
         return ((bits[row] >>> column) & 1) == 1;
     }
 
     @Override
     public void set(int index) {
         int row = index / Integer.SIZE;
-        int column = index % Integer.SIZE;
+        int column = 31 - index % Integer.SIZE;
         if (((bits[row] >>> column) & 1) == 0) {
             bits[row] |= (1 << column);
             count++;
@@ -48,7 +47,7 @@ public class LocalIntegerArrayMap implements BitMap<int[]> {
     @Override
     public void unset(int index) {
         int row = index / Integer.SIZE;
-        int column = index % Integer.SIZE;
+        int column = 31 - index % Integer.SIZE;
         if (((bits[row] >>> column) & 1) == 1) {
             bits[row] &= ~(1 << column);
             count--;
