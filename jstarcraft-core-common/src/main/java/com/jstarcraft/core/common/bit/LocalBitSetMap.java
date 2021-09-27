@@ -26,16 +26,25 @@ public class LocalBitSetMap implements BitMap<byte[]> {
 
     @Override
     public boolean get(int index) {
+        int row = index / Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
+        index = row * Byte.SIZE + column;
         return bits.get(index);
     }
 
     @Override
     public void set(int index) {
+        int row = index / Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
+        index = row * Byte.SIZE + column;
         bits.set(index, true);
     }
 
     @Override
     public void unset(int index) {
+        int row = index / Byte.SIZE;
+        int column = 7 - index % Byte.SIZE;
+        index = row * Byte.SIZE + column;
         bits.set(index, false);
     }
 

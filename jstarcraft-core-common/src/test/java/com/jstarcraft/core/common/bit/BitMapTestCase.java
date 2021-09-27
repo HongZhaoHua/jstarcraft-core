@@ -14,6 +14,50 @@ public class BitMapTestCase {
     private final static int size = 1000;
 
     @Test
+    public void testBits() {
+        RedisServer redis = RedisServer.builder().port(6379).setting("maxmemory 64M").build();
+        redis.start();
+
+        // 注意此处的编解码器
+        Codec codec = new JsonJacksonCodec();
+        Config configuration = new Config();
+        configuration.setCodec(codec);
+        configuration.useSingleServer().setAddress("redis://127.0.0.1:6379");
+        Redisson redisson = null;
+
+        try {
+            redisson = (Redisson) Redisson.create(configuration);
+            LocalByteArrayMap localByteArrayMap = new LocalByteArrayMap(size);
+            LocalBitSetMap localBitSetMap = new LocalBitSetMap(size);
+            GlobalByteArrayMap globalByteArrayMap = new GlobalByteArrayMap(redisson, "globalByteArrayMap", size);
+            GlobalBitSetMap globalBitSetMap = new GlobalBitSetMap(redisson.getBitSet("globalBitSetMap"), size);
+            localByteArrayMap.set(0);
+            localBitSetMap.set(0);
+            globalByteArrayMap.set(0);
+            globalBitSetMap.set(0);
+            localByteArrayMap.set(1);
+            localBitSetMap.set(1);
+            globalByteArrayMap.set(1);
+            globalBitSetMap.set(1);
+            localByteArrayMap.set(7);
+            localBitSetMap.set(7);
+            globalByteArrayMap.set(7);
+            globalBitSetMap.set(7);
+            localByteArrayMap.set(8);
+            localBitSetMap.set(8);
+            globalByteArrayMap.set(8);
+            globalBitSetMap.set(8);
+            Assert.assertArrayEquals(globalByteArrayMap.bits(), localByteArrayMap.bits());
+            Assert.assertArrayEquals(globalByteArrayMap.bits(), localBitSetMap.bits());
+            Assert.assertArrayEquals(globalByteArrayMap.bits(), globalBitSetMap.bits());
+        } catch (Exception exception) {
+            Assert.fail();
+        } finally {
+            redis.stop();
+        }
+    }
+
+    @Test
     public void testBitSetMap() {
         LocalBitSetMap bits = new LocalBitSetMap(size);
         Assert.assertEquals(size, bits.capacity());
