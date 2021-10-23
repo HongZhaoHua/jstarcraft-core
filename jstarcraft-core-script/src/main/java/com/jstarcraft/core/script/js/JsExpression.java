@@ -26,6 +26,8 @@ public class JsExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "nashorn";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class JsHolder {
 
         private ScriptScope scope;
@@ -37,7 +39,6 @@ public class JsExpression implements ScriptExpression {
         private JsHolder(ScriptScope scope, String expression) {
             try {
                 this.scope = scope.copyScope();
-                ScriptEngineManager factory = new ScriptEngineManager();
                 ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
                 this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
                 Compilable compilable = (Compilable) engine;

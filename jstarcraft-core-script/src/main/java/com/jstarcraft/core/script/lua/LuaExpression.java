@@ -25,6 +25,8 @@ import com.jstarcraft.core.utility.StringUtility;
 public class LuaExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "luaj";
+    
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
 
     private class LuaHolder {
 
@@ -37,7 +39,6 @@ public class LuaExpression implements ScriptExpression {
         private LuaHolder(ScriptScope scope, String expression) {
             try {
                 this.scope = scope.copyScope();
-                ScriptEngineManager factory = new ScriptEngineManager();
                 ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
                 this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
                 Compilable compilable = (Compilable) engine;

@@ -22,6 +22,8 @@ import com.jstarcraft.core.utility.StringUtility;
 public class PhpFunction implements ScriptFunction {
 
     private final static String ENGINE_NAME = "php";
+    
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
 
     private String function;
 
@@ -43,7 +45,6 @@ public class PhpFunction implements ScriptFunction {
         buffer.append(function);
         this.function = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             engine.eval(this.function);
             this.engine = (Invocable) engine;

@@ -26,6 +26,8 @@ public class GroovyExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "groovy";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class GroovyHolder {
 
         private ScriptScope scope;
@@ -75,7 +77,6 @@ public class GroovyExpression implements ScriptExpression {
         this.scope = scope.copyScope();
         this.expression = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName(ENGINE_NAME);
             Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);

@@ -24,6 +24,8 @@ public class BeanShellExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "beanshell";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class BeanShellHolder {
 
         private ScriptScope scope;
@@ -73,7 +75,6 @@ public class BeanShellExpression implements ScriptExpression {
         buffer.append(expression);
         this.scope = scope.copyScope();
         this.expression = buffer.toString();
-        ScriptEngineManager factory = new ScriptEngineManager();
         this.engine = factory.getEngineByName(ENGINE_NAME);
         // 注意:BshScriptEngine在2.0b6版本没有支持Compilable接口.
     }

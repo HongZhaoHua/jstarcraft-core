@@ -26,10 +26,13 @@ public class RubyExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "ruby";
 
+    private final static ScriptEngineManager factory;
+
     static {
         // TODO 配置JRuby环境,参考org.jruby.embed.PropertyName
         System.setProperty("org.jruby.embed.localcontext.scope", "threadsafe");
         System.setProperty("org.jruby.embed.localvariable.behavior", "global");
+        factory = new ScriptEngineManager();
     }
 
     private class RubyHolder {
@@ -88,7 +91,6 @@ public class RubyExpression implements ScriptExpression {
         this.scope = scope.copyScope();
         this.expression = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName(ENGINE_NAME);
             Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);
@@ -113,7 +115,7 @@ public class RubyExpression implements ScriptExpression {
             throw new ScriptExpressionException(exception);
         }
     }
-    
+
     @Override
     public String toString() {
         return expression;

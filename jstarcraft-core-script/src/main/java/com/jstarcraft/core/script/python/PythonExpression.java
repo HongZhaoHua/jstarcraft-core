@@ -26,6 +26,8 @@ public class PythonExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "jython";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class PythonHolder {
 
         private ScriptScope scope;
@@ -37,7 +39,6 @@ public class PythonExpression implements ScriptExpression {
         private PythonHolder(ScriptScope scope, String expression) {
             try {
                 this.scope = scope.copyScope();
-                ScriptEngineManager factory = new ScriptEngineManager();
                 ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
                 this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
                 Compilable compilable = (Compilable) engine;
@@ -101,7 +102,7 @@ public class PythonExpression implements ScriptExpression {
             throw new ScriptExpressionException(exception);
         }
     }
-    
+
     @Override
     public String toString() {
         return expression;

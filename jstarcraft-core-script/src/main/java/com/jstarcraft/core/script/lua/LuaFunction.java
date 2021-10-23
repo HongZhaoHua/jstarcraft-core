@@ -26,6 +26,8 @@ public class LuaFunction implements ScriptFunction {
 
     private final static String ENGINE_NAME = "luaj";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class LuaHolder {
 
         private ScriptScope scope;
@@ -37,7 +39,6 @@ public class LuaFunction implements ScriptFunction {
         private LuaHolder(ScriptScope scope, String expression) {
             try {
                 this.scope = scope.copyScope();
-                ScriptEngineManager factory = new ScriptEngineManager();
                 ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
                 this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
                 Compilable compilable = (Compilable) engine;
@@ -103,7 +104,7 @@ public class LuaFunction implements ScriptFunction {
             throw new ScriptExpressionException(exception);
         }
     }
-    
+
     @Override
     public String toString() {
         return function;

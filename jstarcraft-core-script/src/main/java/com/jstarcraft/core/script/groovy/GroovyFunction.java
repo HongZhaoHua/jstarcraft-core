@@ -23,6 +23,8 @@ public class GroovyFunction implements ScriptFunction {
 
     private final static String ENGINE_NAME = "groovy";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private String function;
 
     private Invocable engine;
@@ -43,7 +45,6 @@ public class GroovyFunction implements ScriptFunction {
         buffer.append(function);
         this.function = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             engine.eval(this.function);
             this.engine = (Invocable) engine;
@@ -63,7 +64,7 @@ public class GroovyFunction implements ScriptFunction {
             throw new ScriptExpressionException(exception);
         }
     }
-    
+
     @Override
     public String toString() {
         return function;

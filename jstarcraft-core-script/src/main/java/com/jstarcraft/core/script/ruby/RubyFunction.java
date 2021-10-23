@@ -23,6 +23,8 @@ public class RubyFunction implements ScriptFunction {
 
     private final static String ENGINE_NAME = "ruby";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     static {
         // TODO 配置JRuby环境,参考org.jruby.embed.PropertyName
         System.setProperty("org.jruby.embed.localcontext.scope", "singleton");
@@ -56,7 +58,6 @@ public class RubyFunction implements ScriptFunction {
         buffer.append(function);
         this.function = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             engine.eval(this.function);
             this.engine = (Invocable) engine;

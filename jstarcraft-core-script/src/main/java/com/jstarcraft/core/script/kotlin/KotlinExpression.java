@@ -26,6 +26,8 @@ public class KotlinExpression implements ScriptExpression {
 
     private final static String ENGINE_NAME = "kotlin";
 
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
+
     private class KotlinHolder {
 
         private ScriptScope scope;
@@ -74,7 +76,6 @@ public class KotlinExpression implements ScriptExpression {
         this.scope = scope.copyScope();
         this.expression = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
             this.engine = factory.getEngineByName(ENGINE_NAME);
             Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);
