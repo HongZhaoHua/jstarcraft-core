@@ -1,6 +1,7 @@
 package com.jstarcraft.core.script.ruby;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.script.Compilable;
@@ -12,7 +13,6 @@ import javax.script.SimpleScriptContext;
 
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
-import com.jstarcraft.core.script.ScriptScope;
 import com.jstarcraft.core.script.exception.ScriptExpressionException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -35,43 +35,15 @@ public class RubyExpression implements ScriptExpression {
         factory = new ScriptEngineManager();
     }
 
-    private class RubyHolder {
-
-        private ScriptScope scope;
-
-        private javax.script.ScriptContext attributes;
-
-        private RubyHolder(ScriptScope scope, ScriptEngine engine) {
-            this.scope = scope.copyScope();
-            javax.script.ScriptContext context = engine.getContext();
-            this.attributes = new SimpleScriptContext();
-            this.attributes.setBindings(context.getBindings(javax.script.ScriptContext.GLOBAL_SCOPE), javax.script.ScriptContext.GLOBAL_SCOPE);
-            this.attributes.setWriter(context.getWriter());
-            this.attributes.setReader(context.getReader());
-            this.attributes.setErrorWriter(context.getErrorWriter());
-        }
-
-    }
-
-    private ThreadLocal<RubyHolder> threadHolder = new ThreadLocal<RubyHolder>() {
-
-        @Override
-        protected RubyHolder initialValue() {
-            RubyHolder holder = new RubyHolder(scope, engine);
-            return holder;
-        }
-
-    };
-
-    private ScriptScope scope;
-
     private String expression;
 
     private ScriptEngine engine;
 
+    private javax.script.ScriptContext attributes;
+
     private CompiledScript script;
 
-    public RubyExpression(ScriptContext context, ScriptScope scope, String expression) {
+    public RubyExpression(ScriptContext context, String expression) {
         String separator = System.getProperty("line.separator");
         StringBuilder buffer = new StringBuilder("require 'java'");
         buffer.append(separator);
@@ -88,10 +60,14 @@ public class RubyExpression implements ScriptExpression {
             buffer.append(separator);
         }
         buffer.append(expression);
-        this.scope = scope.copyScope();
         this.expression = buffer.toString();
         try {
             this.engine = factory.getEngineByName(ENGINE_NAME);
+            this.attributes = new SimpleScriptContext();
+            this.attributes.setBindings(engine.getContext().getBindings(javax.script.ScriptContext.GLOBAL_SCOPE), javax.script.ScriptContext.GLOBAL_SCOPE);
+            this.attributes.setWriter(engine.getContext().getWriter());
+            this.attributes.setReader(engine.getContext().getReader());
+            this.attributes.setErrorWriter(engine.getContext().getErrorWriter());
             Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
@@ -100,16 +76,10 @@ public class RubyExpression implements ScriptExpression {
     }
 
     @Override
-    public ScriptScope getScope() {
-        return threadHolder.get().scope;
-    }
-
-    @Override
-    public <T> T doWith(Class<T> clazz) {
+    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            RubyHolder holder = threadHolder.get();
-            holder.attributes.getBindings(javax.script.ScriptContext.ENGINE_SCOPE).putAll(holder.scope.getAttributes());
-            T object = (T) script.eval(holder.attributes);
+            attributes.getBindings(javax.script.ScriptContext.ENGINE_SCOPE).putAll(scope);
+            T object = (T) script.eval(attributes);
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);

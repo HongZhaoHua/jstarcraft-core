@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.ruby;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.ruby.RubyExpression;
 
 public class RubyExpressionTestCase extends ScriptExpressionTestCase {
 
@@ -17,26 +15,26 @@ public class RubyExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "$loader.loadClass('com.jstarcraft.core.script.MockObject')";
     
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        RubyExpression expression = new RubyExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        RubyExpression expression = new RubyExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        RubyExpression expression = new RubyExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        RubyExpression expression = new RubyExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        RubyExpression expression = new RubyExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        RubyExpression expression = new RubyExpression(context, fibonacci);
         return expression;
     }
     
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        RubyExpression expression = new RubyExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        RubyExpression expression = new RubyExpression(context, load);
         return expression;
     }
 

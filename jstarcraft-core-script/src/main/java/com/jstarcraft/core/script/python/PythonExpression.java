@@ -1,6 +1,7 @@
 package com.jstarcraft.core.script.python;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.script.Bindings;
@@ -12,7 +13,6 @@ import javax.script.ScriptException;
 
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
-import com.jstarcraft.core.script.ScriptScope;
 import com.jstarcraft.core.script.exception.ScriptExpressionException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -28,43 +28,15 @@ public class PythonExpression implements ScriptExpression {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-    private class PythonHolder {
-
-        private ScriptScope scope;
-
-        private Bindings attributes;
-
-        private CompiledScript script;
-
-        private PythonHolder(ScriptScope scope, String expression) {
-            try {
-                this.scope = scope.copyScope();
-                ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
-                this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
-                Compilable compilable = (Compilable) engine;
-                this.script = compilable.compile(expression);
-            } catch (ScriptException exception) {
-                throw new ScriptExpressionException(exception);
-            }
-        }
-
-    }
-
-    private ThreadLocal<PythonHolder> threadHolder = new ThreadLocal<PythonHolder>() {
-
-        @Override
-        protected PythonHolder initialValue() {
-            PythonHolder holder = new PythonHolder(scope, expression);
-            return holder;
-        }
-
-    };
-
-    private ScriptScope scope;
+   
 
     private String expression;
 
-    public PythonExpression(ScriptContext context, ScriptScope scope, String expression) {
+    private Bindings attributes;
+
+    private CompiledScript script;
+
+    public PythonExpression(ScriptContext context, String expression) {
         String separator = System.getProperty("line.separator");
         StringBuilder buffer = new StringBuilder();
         for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
@@ -80,21 +52,23 @@ public class PythonExpression implements ScriptExpression {
             buffer.append(separator);
         }
         buffer.append(expression);
-        this.scope = scope.copyScope();
         this.expression = buffer.toString();
-    }
-
-    @Override
-    public ScriptScope getScope() {
-        return threadHolder.get().scope;
-    }
-
-    @Override
-    public <T> T doWith(Class<T> clazz) {
         try {
-            PythonHolder holder = threadHolder.get();
-            holder.attributes.putAll(holder.scope.getAttributes());
-            CompiledScript script = holder.script;
+            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+            this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
+            Compilable compilable = (Compilable) engine;
+            this.script = compilable.compile(this.expression);
+        } catch (ScriptException exception) {
+            throw new ScriptExpressionException(exception);
+        }
+    }
+
+    
+
+    @Override
+    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
+        try {
+            attributes.putAll(scope);
             script.eval();
             T object = (T) script.getEngine().getContext().getAttribute("_data");
             return object;

@@ -2,6 +2,8 @@ package com.jstarcraft.core.script;
 
 import java.lang.reflect.Modifier;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,8 +16,6 @@ import org.junit.Test;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptExpressionTestCase {
-
-    protected ScriptScope scope = new ScriptScope();
 
     protected ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -38,13 +38,13 @@ public abstract class ScriptExpressionTestCase {
         }
     }
 
-    protected abstract ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope);
+    protected abstract ScriptExpression getMethodExpression(ScriptContext context);
 
-    protected abstract ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope);
+    protected abstract ScriptExpression getObjectExpression(ScriptContext context);
 
-    protected abstract ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope);
+    protected abstract ScriptExpression getFibonacciExpression(ScriptContext context);
 
-    protected abstract ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope);
+    protected abstract ScriptExpression getLoadExpression(ScriptContext context);
 
     @Test
     public void testMethod() throws Exception {
@@ -56,11 +56,11 @@ public abstract class ScriptExpressionTestCase {
                 context.useMethod(method.getName() + "Method", method);
             }
         });
-        ScriptExpression expression = getMethodExpression(context, scope);
-        ScriptScope scope = expression.getScope();
+        ScriptExpression expression = getMethodExpression(context);
+        Map<String, Object> scope = new HashMap<>();
         int number = 10;
-        scope.createAttribute("number", number);
-        Number fibonacci = expression.doWith(Number.class);
+        scope.put("number", number);
+        Number fibonacci = expression.doWith(Number.class, scope);
         Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
     }
 
@@ -69,11 +69,11 @@ public abstract class ScriptExpressionTestCase {
         ScriptContext context = new ScriptContext();
         context.useClass("Mock", MockObject.class);
         context.useClasses(Instant.class, MockEnumeration.class);
-        ScriptExpression expression = getObjectExpression(context, scope);
-        ScriptScope scope = expression.getScope();
-        scope.createAttribute("index", 0);
-        scope.createAttribute("size", 10);
-        MockObject object = expression.doWith(MockObject.class);
+        ScriptExpression expression = getObjectExpression(context);
+        Map<String, Object> scope = new HashMap<>();
+        scope.put("index", 0);
+        scope.put("size", 10);
+        MockObject object = expression.doWith(MockObject.class, scope);
         Assert.assertThat(object.getId(), CoreMatchers.equalTo(0));
         Assert.assertThat(object.getName(), CoreMatchers.equalTo("birdy"));
         Assert.assertThat(object.getChildren().size(), CoreMatchers.equalTo(10));
@@ -83,14 +83,13 @@ public abstract class ScriptExpressionTestCase {
     public void testSerial() throws Exception {
         int size = 50;
         ScriptContext context = new ScriptContext();
-        ScriptExpression expression = getFibonacciExpression(context, scope);
+        ScriptExpression expression = getFibonacciExpression(context);
         for (int index = 0; index < size; index++) {
             int number = index + 2;
-            ScriptScope scope = expression.getScope();
-            scope.createAttribute("size", number);
-            Number fibonacci = expression.doWith(Number.class);
+            Map<String, Object> scope = new HashMap<>();
+            scope.put("size", number);
+            Number fibonacci = expression.doWith(Number.class, scope);
             Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
-            scope.deleteAttributes();
         }
     }
 
@@ -99,15 +98,14 @@ public abstract class ScriptExpressionTestCase {
         int size = 10;
         CountDownLatch latch = new CountDownLatch(size);
         ScriptContext context = new ScriptContext();
-        ScriptExpression expression = getFibonacciExpression(context, scope);
+        ScriptExpression expression = getFibonacciExpression(context);
         for (int index = 0; index < size; index++) {
             int number = index + 2;
             executor.execute(() -> {
-                ScriptScope scope = expression.getScope();
-                scope.createAttribute("size", number);
-                Number fibonacci = expression.doWith(Number.class);
+                Map<String, Object> scope = new HashMap<>();
+                scope.put("size", number);
+                Number fibonacci = expression.doWith(Number.class, scope);
                 Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
-                scope.deleteAttributes();
                 latch.countDown();
             });
         }
@@ -119,10 +117,10 @@ public abstract class ScriptExpressionTestCase {
     @Test
     public void testLoad() {
         ScriptContext context = new ScriptContext();
-        ScriptExpression expression = getLoadExpression(context, scope);
-        ScriptScope scope = expression.getScope();
-        scope.createAttribute("loader", loader);
-        Assert.assertEquals(MockObject.class, expression.doWith(Class.class));
+        ScriptExpression expression = getLoadExpression(context);
+        Map<String, Object> scope = new HashMap<>();
+        scope.put("loader", loader);
+        Assert.assertEquals(MockObject.class, expression.doWith(Class.class, scope));
     }
 
 }

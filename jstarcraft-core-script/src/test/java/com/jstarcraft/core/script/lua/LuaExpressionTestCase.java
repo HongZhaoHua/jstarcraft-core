@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.lua;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.lua.LuaExpression;
 
 public class LuaExpressionTestCase extends ScriptExpressionTestCase {
 
@@ -17,26 +15,26 @@ public class LuaExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "return loader:loadClass(\"com.jstarcraft.core.script.MockObject\")";
 
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        LuaExpression expression = new LuaExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        LuaExpression expression = new LuaExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        LuaExpression expression = new LuaExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        LuaExpression expression = new LuaExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        LuaExpression expression = new LuaExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        LuaExpression expression = new LuaExpression(context, fibonacci);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        LuaExpression expression = new LuaExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        LuaExpression expression = new LuaExpression(context, load);
         return expression;
     }
 

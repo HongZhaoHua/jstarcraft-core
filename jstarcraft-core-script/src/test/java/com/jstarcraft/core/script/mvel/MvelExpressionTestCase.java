@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.mvel;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.mvel.MvelExpression;
 
 public class MvelExpressionTestCase extends ScriptExpressionTestCase {
 
@@ -17,26 +15,26 @@ public class MvelExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "loader.loadClass('com.jstarcraft.core.script.MockObject')";
 
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        MvelExpression expression = new MvelExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        MvelExpression expression = new MvelExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        MvelExpression expression = new MvelExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        MvelExpression expression = new MvelExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        MvelExpression expression = new MvelExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        MvelExpression expression = new MvelExpression(context, fibonacci);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        MvelExpression expression = new MvelExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        MvelExpression expression = new MvelExpression(context, load);
         return expression;
     }
 

@@ -1,6 +1,7 @@
 package com.jstarcraft.core.script.groovy;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.script.Compilable;
@@ -12,7 +13,6 @@ import javax.script.SimpleScriptContext;
 
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
-import com.jstarcraft.core.script.ScriptScope;
 import com.jstarcraft.core.script.exception.ScriptExpressionException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -28,43 +28,15 @@ public class GroovyExpression implements ScriptExpression {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-    private class GroovyHolder {
-
-        private ScriptScope scope;
-
-        private javax.script.ScriptContext attributes;
-
-        private GroovyHolder(ScriptScope scope, ScriptEngine engine) {
-            this.scope = scope.copyScope();
-            javax.script.ScriptContext context = engine.getContext();
-            this.attributes = new SimpleScriptContext();
-            this.attributes.setBindings(context.getBindings(javax.script.ScriptContext.GLOBAL_SCOPE), javax.script.ScriptContext.GLOBAL_SCOPE);
-            this.attributes.setWriter(context.getWriter());
-            this.attributes.setReader(context.getReader());
-            this.attributes.setErrorWriter(context.getErrorWriter());
-        }
-
-    }
-
-    private ThreadLocal<GroovyHolder> threadHolder = new ThreadLocal<GroovyHolder>() {
-
-        @Override
-        protected GroovyHolder initialValue() {
-            GroovyHolder holder = new GroovyHolder(scope, engine);
-            return holder;
-        }
-
-    };
-
-    private ScriptScope scope;
-
     private String expression;
 
     private ScriptEngine engine;
 
+    private javax.script.ScriptContext attributes;
+
     private CompiledScript script;
 
-    public GroovyExpression(ScriptContext context, ScriptScope scope, String expression) {
+    public GroovyExpression(ScriptContext context, String expression) {
         StringBuilder buffer = new StringBuilder();
         for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
             buffer.append(StringUtility.format("import {} as {}; ", keyValue.getValue().getName(), keyValue.getKey()));
@@ -74,11 +46,15 @@ public class GroovyExpression implements ScriptExpression {
             buffer.append(StringUtility.format("def {} = {}.&{}; ", keyValue.getKey(), keyValue.getValue().getDeclaringClass().getName(), keyValue.getValue().getName()));
         }
         buffer.append(expression);
-        this.scope = scope.copyScope();
         this.expression = buffer.toString();
         try {
             this.engine = factory.getEngineByName(ENGINE_NAME);
             Compilable compilable = (Compilable) engine;
+            this.attributes = new SimpleScriptContext();
+            this.attributes.setBindings(engine.getContext().getBindings(javax.script.ScriptContext.GLOBAL_SCOPE), javax.script.ScriptContext.GLOBAL_SCOPE);
+            this.attributes.setWriter(engine.getContext().getWriter());
+            this.attributes.setReader(engine.getContext().getReader());
+            this.attributes.setErrorWriter(engine.getContext().getErrorWriter());
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
@@ -86,16 +62,10 @@ public class GroovyExpression implements ScriptExpression {
     }
 
     @Override
-    public ScriptScope getScope() {
-        return threadHolder.get().scope;
-    }
-
-    @Override
-    public <T> T doWith(Class<T> clazz) {
+    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            GroovyHolder holder = threadHolder.get();
-            holder.attributes.getBindings(javax.script.ScriptContext.ENGINE_SCOPE).putAll(holder.scope.getAttributes());
-            T object = (T) script.eval(holder.attributes);
+            attributes.getBindings(javax.script.ScriptContext.ENGINE_SCOPE).putAll(scope);
+            T object = (T) script.eval(attributes);
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);

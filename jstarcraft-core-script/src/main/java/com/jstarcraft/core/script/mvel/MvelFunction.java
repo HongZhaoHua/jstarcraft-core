@@ -2,6 +2,8 @@ package com.jstarcraft.core.script.mvel;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.mvel2.MVEL;
@@ -9,7 +11,6 @@ import org.mvel2.ParserContext;
 
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptFunction;
-import com.jstarcraft.core.script.ScriptScope;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -20,38 +21,13 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class MvelFunction implements ScriptFunction {
 
-    private class MvelHolder {
-
-        private ScriptScope scope;
-
-        private MvelHolder(ScriptScope scope) {
-            this.scope = scope.copyScope();
-        }
-
-    }
-
-    private ThreadLocal<MvelHolder> threadHolder = new ThreadLocal<MvelHolder>() {
-
-        @Override
-        protected MvelHolder initialValue() {
-            MvelHolder holder = new MvelHolder(scope);
-            return holder;
-        }
-
-    };
-
-    private ScriptScope scope;
-
     private String function;
-
-    private String name;
 
     private Class<?>[] classes;
 
     private Serializable script;
 
     public MvelFunction(ScriptContext context, String function, String name, Class<?>... classes) {
-        this.scope = new ScriptScope();
         StringBuilder buffer = new StringBuilder(function);
         buffer.append(StringUtility.format(" {}(", name));
         for (int index = 0, size = classes.length; index < size; index++) {
@@ -59,7 +35,6 @@ public class MvelFunction implements ScriptFunction {
         }
         buffer.append(")");
         this.function = buffer.toString();
-        this.name = name;
         this.classes = classes;
         ParserContext parserContext = new ParserContext();
         for (Entry<String, Class<?>> keyValue : context.getClasses().entrySet()) {
@@ -73,15 +48,14 @@ public class MvelFunction implements ScriptFunction {
 
     @Override
     public <T> T doWith(Class<T> clazz, Object... arguments) {
-        MvelHolder holder = threadHolder.get();
+        Map<String, Object> scope = new HashMap<>();
         for (int index = 0, size = classes.length; index < size; index++) {
-            holder.scope.createAttribute(StringUtility.format("argument{}", index), arguments[index]);
+            scope.put(StringUtility.format("argument{}", index), arguments[index]);
         }
-        T object = (T) MVEL.executeExpression(script, threadHolder.get().scope.getAttributes(), clazz);
-        holder.scope.deleteAttributes();
+        T object = (T) MVEL.executeExpression(script, scope, clazz);
         return object;
     }
-    
+
     @Override
     public String toString() {
         return function;

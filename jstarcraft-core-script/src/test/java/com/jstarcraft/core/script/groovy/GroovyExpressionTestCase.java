@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.groovy;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.groovy.GroovyExpression;
 
 public class GroovyExpressionTestCase extends ScriptExpressionTestCase {
 
@@ -17,26 +15,26 @@ public class GroovyExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "loader.loadClass(\"com.jstarcraft.core.script.MockObject\")";
 
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        GroovyExpression expression = new GroovyExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        GroovyExpression expression = new GroovyExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        GroovyExpression expression = new GroovyExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        GroovyExpression expression = new GroovyExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        GroovyExpression expression = new GroovyExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        GroovyExpression expression = new GroovyExpression(context, fibonacci);
         return expression;
     }
     
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        GroovyExpression expression = new GroovyExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        GroovyExpression expression = new GroovyExpression(context, load);
         return expression;
     }
 

@@ -1,5 +1,8 @@
 package com.jstarcraft.core.script.python;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,8 +12,6 @@ import com.jstarcraft.core.script.MockObject;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.python.PythonExpression;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class PythonExpressionTestCase extends ScriptExpressionTestCase {
@@ -29,36 +30,36 @@ public class PythonExpressionTestCase extends ScriptExpressionTestCase {
     }
 
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        PythonExpression expression = new PythonExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        PythonExpression expression = new PythonExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        PythonExpression expression = new PythonExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        PythonExpression expression = new PythonExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        PythonExpression expression = new PythonExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        PythonExpression expression = new PythonExpression(context, fibonacci);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        PythonExpression expression = new PythonExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        PythonExpression expression = new PythonExpression(context, load);
         return expression;
     }
 
     @Test
     public void testLoad() {
         ScriptContext context = new ScriptContext();
-        ScriptExpression expression = getLoadExpression(context, scope);
-        ScriptScope scope = expression.getScope();
-        scope.createAttribute("loader", loader);
-        Assert.assertEquals(MockObject.class, expression.doWith(PyJavaType.class).getProxyType());
+        ScriptExpression expression = getLoadExpression(context);
+        Map<String, Object> scope = new HashMap<>();
+        scope.put("loader", loader);
+        Assert.assertEquals(MockObject.class, expression.doWith(PyJavaType.class, scope).getProxyType());
     }
 
 }

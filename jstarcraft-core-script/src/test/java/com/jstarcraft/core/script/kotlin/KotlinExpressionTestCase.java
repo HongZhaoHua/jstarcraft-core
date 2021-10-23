@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.kotlin;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.kotlin.KotlinExpression;
 
 public class KotlinExpressionTestCase extends ScriptExpressionTestCase {
     
@@ -17,26 +15,26 @@ public class KotlinExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "var loader = bindings[\"loader\"] as ClassLoader; loader.loadClass(\"com.jstarcraft.core.script.MockObject\")";
 
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        KotlinExpression expression = new KotlinExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        KotlinExpression expression = new KotlinExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        KotlinExpression expression = new KotlinExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        KotlinExpression expression = new KotlinExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        KotlinExpression expression = new KotlinExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        KotlinExpression expression = new KotlinExpression(context, fibonacci);
         return expression;
     }
     
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        KotlinExpression expression = new KotlinExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        KotlinExpression expression = new KotlinExpression(context, load);
         return expression;
     }
 

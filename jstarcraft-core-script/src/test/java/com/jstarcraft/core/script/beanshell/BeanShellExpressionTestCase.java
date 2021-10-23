@@ -3,8 +3,6 @@ package com.jstarcraft.core.script.beanshell;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptExpression;
 import com.jstarcraft.core.script.ScriptExpressionTestCase;
-import com.jstarcraft.core.script.ScriptScope;
-import com.jstarcraft.core.script.beanshell.BeanShellExpression;
 
 public class BeanShellExpressionTestCase extends ScriptExpressionTestCase {
 
@@ -17,26 +15,26 @@ public class BeanShellExpressionTestCase extends ScriptExpressionTestCase {
     private String load = "loader.loadClass(\"com.jstarcraft.core.script.MockObject\")";
     
     @Override
-    protected ScriptExpression getMethodExpression(ScriptContext context, ScriptScope scope) {
-        BeanShellExpression expression = new BeanShellExpression(context, scope, method);
+    protected ScriptExpression getMethodExpression(ScriptContext context) {
+        BeanShellExpression expression = new BeanShellExpression(context, method);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getObjectExpression(ScriptContext context, ScriptScope scope) {
-        BeanShellExpression expression = new BeanShellExpression(context, scope, object);
+    protected ScriptExpression getObjectExpression(ScriptContext context) {
+        BeanShellExpression expression = new BeanShellExpression(context, object);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getFibonacciExpression(ScriptContext context, ScriptScope scope) {
-        BeanShellExpression expression = new BeanShellExpression(context, scope, fibonacci);
+    protected ScriptExpression getFibonacciExpression(ScriptContext context) {
+        BeanShellExpression expression = new BeanShellExpression(context, fibonacci);
         return expression;
     }
 
     @Override
-    protected ScriptExpression getLoadExpression(ScriptContext context, ScriptScope scope) {
-        BeanShellExpression expression = new BeanShellExpression(context, scope, load);
+    protected ScriptExpression getLoadExpression(ScriptContext context) {
+        BeanShellExpression expression = new BeanShellExpression(context, load);
         return expression;
     }
 
