@@ -14,6 +14,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.jstarcraft.core.resource.exception.StorageException;
+import com.jstarcraft.core.utility.StringUtility;
 
 /**
  * Excel适配器
@@ -40,13 +41,16 @@ public class ExcelFormatAdapter implements FormatAdapter {
         public void onException(Exception exception, AnalysisContext context) {
             if (exception instanceof ExcelDataConvertException) {
                 ExcelDataConvertException excelDataConvertException = (ExcelDataConvertException) exception;
-                logger.error("遍历Excel[{}]第{}行,第{}列异常,数据为:{}", clazz.getName(), excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex(), excelDataConvertException.getCellData());
+                String message = StringUtility.format("遍历Excel[{}]第{}行,第{}列异常,数据为:{}", clazz.getName(), excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex(), excelDataConvertException.getCellData());
+                logger.error(message);
+                throw new StorageException(message, exception);
             }
         }
 
         @Override
         public void invokeHeadMap(Map<Integer, String> meta, AnalysisContext context) {
-            logger.info("遍历Excel[{}]元数据:{}", clazz.getName(), meta);
+            String message = StringUtility.format("遍历Excel[{}]元数据:{}", clazz.getName(), meta);
+            logger.info(message);
         }
 
         @Override
