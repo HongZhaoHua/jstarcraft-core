@@ -271,11 +271,12 @@ public class ResourceManager<K, V> extends Observable {
             writeLock.lock();
             state.set(false);
             LinkedList<V> objects = new LinkedList<>();
-            InputStream stream = pathAdapter.getStream(address);
-            Iterator<V> iterator = formatAdapter.iterator((Class) clazz, stream);
-            while (iterator.hasNext()) {
-                V object = iterator.next();
-                objects.add(object);
+            try (InputStream stream = pathAdapter.getStream(address)) {
+                Iterator<V> iterator = formatAdapter.iterator((Class) clazz, stream);
+                while (iterator.hasNext()) {
+                    V object = iterator.next();
+                    objects.add(object);
+                }
             }
 
             // 防止由于IO异常仓储彻底失效.
