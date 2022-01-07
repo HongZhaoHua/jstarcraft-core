@@ -27,7 +27,10 @@ public class LuaFunction implements ScriptFunction {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-  
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+
+    private final static Compilable compilable = (Compilable) engine;
+
     private String function;
 
     private String name;
@@ -56,9 +59,7 @@ public class LuaFunction implements ScriptFunction {
         this.name = name;
         this.classes = classes;
         try {
-            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
-            Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.function);
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
@@ -72,6 +73,7 @@ public class LuaFunction implements ScriptFunction {
                 attributes.put(StringUtility.format("argument{}", index), arguments[index]);
             }
             T object = (T) script.eval();
+            attributes.clear();
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);

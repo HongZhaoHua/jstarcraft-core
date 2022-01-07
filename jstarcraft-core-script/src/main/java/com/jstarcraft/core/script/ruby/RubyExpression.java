@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
@@ -35,11 +36,13 @@ public class RubyExpression implements ScriptExpression {
         factory = new ScriptEngineManager();
     }
 
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+
+    private final static Compilable compilable = (Compilable) engine;
+
     private String expression;
 
-    private ScriptEngine engine;
-
-    private javax.script.ScriptContext attributes;
+    private Bindings attributes;
 
     private CompiledScript script;
 
@@ -62,13 +65,7 @@ public class RubyExpression implements ScriptExpression {
         buffer.append(expression);
         this.expression = buffer.toString();
         try {
-            this.engine = factory.getEngineByName(ENGINE_NAME);
-            this.attributes = new SimpleScriptContext();
-            this.attributes.setBindings(engine.getContext().getBindings(javax.script.ScriptContext.GLOBAL_SCOPE), javax.script.ScriptContext.GLOBAL_SCOPE);
-            this.attributes.setWriter(engine.getContext().getWriter());
-            this.attributes.setReader(engine.getContext().getReader());
-            this.attributes.setErrorWriter(engine.getContext().getErrorWriter());
-            Compilable compilable = (Compilable) engine;
+            this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
@@ -78,8 +75,9 @@ public class RubyExpression implements ScriptExpression {
     @Override
     public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            attributes.getBindings(javax.script.ScriptContext.ENGINE_SCOPE).putAll(scope);
+            attributes.putAll(scope);
             T object = (T) script.eval(attributes);
+            attributes.clear();
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);

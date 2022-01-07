@@ -19,8 +19,6 @@ import com.jstarcraft.core.script.ScriptExpression;
  */
 public class MvelExpression implements ScriptExpression {
 
-   
-
     private String expression;
 
     private Serializable script;

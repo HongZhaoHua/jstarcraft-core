@@ -3,7 +3,6 @@ package com.jstarcraft.core.script.beanshell;
 import com.jstarcraft.core.script.ScriptContext;
 import com.jstarcraft.core.script.ScriptFunction;
 import com.jstarcraft.core.script.ScriptFunctionTestCase;
-import com.jstarcraft.core.script.beanshell.BeanShellFunction;
 
 public class BeanShellFunctionTestCase extends ScriptFunctionTestCase {
 

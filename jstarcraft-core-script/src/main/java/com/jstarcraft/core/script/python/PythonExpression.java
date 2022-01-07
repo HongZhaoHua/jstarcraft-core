@@ -28,7 +28,9 @@ public class PythonExpression implements ScriptExpression {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-   
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+
+    private final static Compilable compilable = (Compilable) engine;
 
     private String expression;
 
@@ -54,16 +56,12 @@ public class PythonExpression implements ScriptExpression {
         buffer.append(expression);
         this.expression = buffer.toString();
         try {
-            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
-            Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }
     }
-
-    
 
     @Override
     public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
@@ -71,6 +69,7 @@ public class PythonExpression implements ScriptExpression {
             attributes.putAll(scope);
             script.eval();
             T object = (T) script.getEngine().getContext().getAttribute("_data");
+            attributes.clear();
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);

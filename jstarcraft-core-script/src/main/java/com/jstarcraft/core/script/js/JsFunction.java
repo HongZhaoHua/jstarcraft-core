@@ -23,9 +23,13 @@ public class JsFunction implements ScriptFunction {
 
     private final static String ENGINE_NAME = "nashorn";
 
-    private String function;
+    private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-    private Invocable engine;
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+
+    private final static Invocable invocable = (Invocable) engine;
+
+    private String function;
 
     private String name;
 
@@ -42,10 +46,7 @@ public class JsFunction implements ScriptFunction {
         buffer.append(function);
         this.function = buffer.toString();
         try {
-            ScriptEngineManager factory = new ScriptEngineManager();
-            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             engine.eval(this.function);
-            this.engine = (Invocable) engine;
             this.name = name;
             this.classes = classes;
         } catch (ScriptException exception) {
@@ -56,13 +57,13 @@ public class JsFunction implements ScriptFunction {
     @Override
     public <T> T doWith(Class<T> clazz, Object... arguments) {
         try {
-            T object = (T) engine.invokeFunction(name, arguments);
+            T object = (T) invocable.invokeFunction(name, arguments);
             return object;
         } catch (Exception exception) {
             throw new ScriptExpressionException(exception);
         }
     }
-    
+
     @Override
     public String toString() {
         return function;

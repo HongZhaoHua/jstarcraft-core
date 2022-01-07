@@ -31,9 +31,11 @@ public class RubyFunction implements ScriptFunction {
         System.setProperty("org.jruby.embed.localvariable.behavior", "transient");
     }
 
-    private String function;
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
 
-    private Invocable engine;
+    private final static Invocable invocable = (Invocable) engine;
+
+    private String function;
 
     private String name;
 
@@ -58,9 +60,7 @@ public class RubyFunction implements ScriptFunction {
         buffer.append(function);
         this.function = buffer.toString();
         try {
-            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             engine.eval(this.function);
-            this.engine = (Invocable) engine;
             this.name = name;
             this.classes = classes;
         } catch (ScriptException exception) {
@@ -71,7 +71,7 @@ public class RubyFunction implements ScriptFunction {
     @Override
     public <T> T doWith(Class<T> clazz, Object... arguments) {
         try {
-            T object = (T) engine.invokeFunction(name, arguments);
+            T object = (T) invocable.invokeFunction(name, arguments);
             return object;
         } catch (Exception exception) {
             throw new ScriptExpressionException(exception);

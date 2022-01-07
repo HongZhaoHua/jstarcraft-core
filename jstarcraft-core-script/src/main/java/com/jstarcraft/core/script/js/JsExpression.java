@@ -28,6 +28,10 @@ public class JsExpression implements ScriptExpression {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
+    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+
+    private final static Compilable compilable = (Compilable) engine;
+
     private String expression;
 
     private Bindings attributes;
@@ -45,9 +49,7 @@ public class JsExpression implements ScriptExpression {
         buffer.append(expression);
         this.expression = buffer.toString();
         try {
-            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
             this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
-            Compilable compilable = (Compilable) engine;
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
@@ -59,6 +61,7 @@ public class JsExpression implements ScriptExpression {
         try {
             attributes.putAll(scope);
             T object = (T) script.eval();
+            attributes.clear();
             return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
