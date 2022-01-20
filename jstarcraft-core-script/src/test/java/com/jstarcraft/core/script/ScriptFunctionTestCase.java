@@ -3,6 +3,7 @@ package com.jstarcraft.core.script;
 import java.lang.reflect.Modifier;
 import java.time.Instant;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -14,8 +15,6 @@ import org.junit.Test;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptFunctionTestCase {
-
-    protected ExecutorService executor = Executors.newFixedThreadPool(10);
 
     protected static final ClassLoader loader = ScriptFunctionTestCase.class.getClassLoader();
 
@@ -87,15 +86,24 @@ public abstract class ScriptFunctionTestCase {
     @Test
     public void testParallel() throws Exception {
         int size = 50;
+        ExecutorService executor = Executors.newFixedThreadPool(size);
+        CyclicBarrier barrier = new CyclicBarrier(size);
         CountDownLatch latch = new CountDownLatch(size);
         ScriptContext context = new ScriptContext();
-        ScriptFunction function = getFibonacciFunction(context);
+        ScriptFunction left = getFibonacciFunction(context);
+        ScriptFunction right = getFibonacciFunction(context);
         for (int index = 0; index < size; index++) {
             int number = index + 2;
+            ScriptFunction function = index % 2 == 0 ? left : right;
             executor.execute(() -> {
-                Number fibonacci = function.doWith(Number.class, number);
-                Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
-                latch.countDown();
+                try {
+                    barrier.await();
+                    Number fibonacci = function.doWith(Number.class, number);
+                    Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
+                    latch.countDown();
+                } catch (Exception exception) {
+                    Assert.fail();
+                }
             });
         }
         latch.await();

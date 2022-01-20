@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +17,6 @@ import org.junit.Test;
 import com.jstarcraft.core.common.reflection.ReflectionUtility;
 
 public abstract class ScriptExpressionTestCase {
-
-    protected ExecutorService executor = Executors.newFixedThreadPool(10);
 
     protected static final ClassLoader loader = ScriptExpressionTestCase.class.getClassLoader();
 
@@ -95,18 +94,27 @@ public abstract class ScriptExpressionTestCase {
 
     @Test
     public void testParallel() throws Exception {
-        int size = 10;
+        int size = 50;
+        ExecutorService executor = Executors.newFixedThreadPool(size);
+        CyclicBarrier barrier = new CyclicBarrier(size);
         CountDownLatch latch = new CountDownLatch(size);
         ScriptContext context = new ScriptContext();
-        ScriptExpression expression = getFibonacciExpression(context);
+        ScriptExpression left = getFibonacciExpression(context);
+        ScriptExpression right = getFibonacciExpression(context);
         for (int index = 0; index < size; index++) {
             int number = index + 2;
+            ScriptExpression expression = index % 2 == 0 ? left : right;
             executor.execute(() -> {
-                Map<String, Object> scope = new HashMap<>();
-                scope.put("size", number);
-                Number fibonacci = expression.doWith(Number.class, scope);
-                Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
-                latch.countDown();
+                try {
+                    barrier.await();
+                    Map<String, Object> scope = new HashMap<>();
+                    scope.put("size", number);
+                    Number fibonacci = expression.doWith(Number.class, scope);
+                    Assert.assertThat(fibonacci.doubleValue(), CoreMatchers.equalTo(fibonacci(number)));
+                    latch.countDown();
+                } catch (Exception exception) {
+                    Assert.fail();
+                }
             });
         }
         latch.await();
