@@ -57,12 +57,14 @@ public class JsExpression implements ScriptExpression {
     }
 
     @Override
-    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
+    public <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            attributes.putAll(scope);
-            T object = (T) script.eval();
-            attributes.clear();
-            return object;
+            synchronized (engine) {
+                attributes.putAll(scope);
+                T object = (T) script.eval();
+                attributes.clear();
+                return object;
+            }
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }
