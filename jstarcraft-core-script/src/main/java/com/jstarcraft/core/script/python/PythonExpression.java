@@ -64,13 +64,15 @@ public class PythonExpression implements ScriptExpression {
     }
 
     @Override
-    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
+    public <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            attributes.putAll(scope);
-            script.eval();
-            T object = (T) script.getEngine().getContext().getAttribute("_data");
-            attributes.clear();
-            return object;
+            synchronized (engine) {
+                attributes.putAll(scope);
+                script.eval();
+                T object = (T) script.getEngine().getContext().getAttribute("_data");
+                attributes.clear();
+                return object;
+            }
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }

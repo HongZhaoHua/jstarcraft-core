@@ -53,13 +53,15 @@ public class BeanShellExpression implements ScriptExpression {
     }
 
     @Override
-    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
+    public <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         // BshScriptEngine似乎为非线程安全
         try {
-            attributes.putAll(scope);
-            T object = (T) engine.eval(expression, attributes);
-            attributes.clear();
-            return object;
+            synchronized (engine) {
+                attributes.putAll(scope);
+                T object = (T) engine.eval(expression, attributes);
+                attributes.clear();
+                return object;
+            }
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }
