@@ -67,14 +67,16 @@ public class LuaFunction implements ScriptFunction {
     }
 
     @Override
-    public synchronized <T> T doWith(Class<T> clazz, Object... arguments) {
+    public <T> T doWith(Class<T> clazz, Object... arguments) {
         try {
-            for (int index = 0, size = classes.length; index < size; index++) {
-                attributes.put(StringUtility.format("argument{}", index), arguments[index]);
+            synchronized (engine) {
+                for (int index = 0, size = classes.length; index < size; index++) {
+                    attributes.put(StringUtility.format("argument{}", index), arguments[index]);
+                }
+                T object = (T) script.eval();
+                attributes.clear();
+                return object;
             }
-            T object = (T) script.eval();
-            attributes.clear();
-            return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }

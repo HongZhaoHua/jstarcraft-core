@@ -28,10 +28,6 @@ public class KotlinExpression implements ScriptExpression {
 
     private final static ScriptEngineManager factory = new ScriptEngineManager();
 
-    private final static ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
-
-    private final static Compilable compilable = (Compilable) engine;
-
     private String expression;
 
     private Bindings attributes;
@@ -49,6 +45,8 @@ public class KotlinExpression implements ScriptExpression {
         buffer.append(expression);
         this.expression = buffer.toString();
         try {
+            ScriptEngine engine = factory.getEngineByName(ENGINE_NAME);
+            Compilable compilable = (Compilable) engine;
             this.attributes = engine.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
             this.script = compilable.compile(this.expression);
         } catch (ScriptException exception) {
@@ -59,9 +57,9 @@ public class KotlinExpression implements ScriptExpression {
     @Override
     public <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            synchronized (engine) {
+            synchronized (factory) {
                 attributes.putAll(scope);
-                T object = (T) script.eval(attributes);
+                T object = (T) script.eval();
                 attributes.clear();
                 return object;
             }
