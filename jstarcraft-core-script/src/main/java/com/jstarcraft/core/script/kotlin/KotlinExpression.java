@@ -55,14 +55,12 @@ public class KotlinExpression implements ScriptExpression {
     }
 
     @Override
-    public <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
+    public synchronized <T> T doWith(Class<T> clazz, Map<String, Object> scope) {
         try {
-            synchronized (factory) {
-                attributes.putAll(scope);
-                T object = (T) script.eval();
-                attributes.clear();
-                return object;
-            }
+            attributes.putAll(scope);
+            T object = (T) script.eval();
+            attributes.clear();
+            return object;
         } catch (ScriptException exception) {
             throw new ScriptExpressionException(exception);
         }
