@@ -40,7 +40,6 @@ public class JsonPathTestCase {
         // TODO 因为TapestryJsonProvider要求根元素必须为{},所以独立测试.
         try (InputStream stream = JsonPathTestCase.class.getResourceAsStream("jsonpath.json"); DataInputStream buffer = new DataInputStream(stream)) {
             String json = IoUtility.toString(stream, StringUtility.CHARSET);
-            System.out.println("xxxxx");
             for (JsonProvider adapter : adapters) {
                 Object root = adapter.parse(json);
                 JaywayJsonPathSelector selector;
@@ -99,7 +98,6 @@ public class JsonPathTestCase {
 
                 selector = new JsonSurferJsonPathSelector("$..name", adapter);
                 Assert.assertEquals(3, selector.selectContent(json).size());
-//                System.out.println(selector.selectContent(json).get(0).getClass());
 
                 selector = new JsonSurferJsonPathSelector("$[?(@.age > 10)]", adapter);
                 Assert.assertEquals(2, selector.selectContent(json).size());
