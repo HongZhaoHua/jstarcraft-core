@@ -169,4 +169,14 @@ public class JsonUtility {
         }
     }
 
+    public static String pretty(String json) {
+        try {
+            Object object = TYPE_CONVERTER.readValue(json, Object.class);
+            return TYPE_CONVERTER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (Exception exception) {
+            String message = StringUtility.format("将JSON字符串[{}]格式化时异常", json);
+            throw new RuntimeException(message, exception);
+        }
+    }
+
 }
