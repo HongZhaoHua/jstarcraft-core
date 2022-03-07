@@ -169,7 +169,13 @@ public class JsonUtility {
         }
     }
 
-    public static String pretty(String json) {
+    /**
+     * 格式化JSON
+     * 
+     * @param json
+     * @return
+     */
+    public static String prettyJson(String json) {
         try {
             Object object = TYPE_CONVERTER.readValue(json, Object.class);
             return TYPE_CONVERTER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
