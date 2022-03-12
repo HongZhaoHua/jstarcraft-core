@@ -80,6 +80,9 @@ public class StringUtility extends StringUtils {
     /** 单引号 */
     public static final String SINGLE_QUOTATION = "'";
 
+    /** 空格 */
+    public static final String SPACE = " ";
+
     /** 下划线 */
     public static final String UNDERSCORE = "_";
 
