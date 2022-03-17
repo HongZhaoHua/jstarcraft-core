@@ -135,16 +135,16 @@ public class JsonPathTestCase {
             selector = new SnackJsonPathSelector("$..name");
             Assert.assertEquals(3, selector.selectContent(root).size());
 
-            selector = new SnackJsonPathSelector("$[?(age > 10)]");
+            selector = new SnackJsonPathSelector("$[?(@.age > 10)]");
             Assert.assertEquals(2, selector.selectContent(root).size());
 
-            selector = new SnackJsonPathSelector("$[?(age < 10)]");
+            selector = new SnackJsonPathSelector("$[?(@.age < 10)]");
             Assert.assertEquals(1, selector.selectContent(root).size());
 
-            selector = new SnackJsonPathSelector("$[?(sex == 'true')]");
+            selector = new SnackJsonPathSelector("$[?(@.sex == 'true')]");
             Assert.assertEquals(2, selector.selectContent(root).size());
 
-            selector = new SnackJsonPathSelector("$[?(sex == 'false')]");
+            selector = new SnackJsonPathSelector("$[?(@.sex == 'false')]");
             Assert.assertEquals(1, selector.selectContent(root).size());
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception);
