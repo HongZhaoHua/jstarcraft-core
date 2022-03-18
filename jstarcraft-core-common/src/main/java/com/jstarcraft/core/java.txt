@@ -39,6 +39,9 @@ https://www.jianshu.com/p/807e6822292a
 很隐蔽的一个线程池死锁问题 CompletableFuture + ThreadPoolExecutor:
 https://blog.csdn.net/Siiiirius/article/details/107102724
 
+让Thread#stop方法无法终止你的线程:
+https://blog.csdn.net/weixin_38380858/article/details/106775010
+
 高级开发必须理解的Java中SPI机制:
 https://www.jianshu.com/p/46b42f7f593c
 
