@@ -12,12 +12,23 @@ import java.util.List;
 public interface QuerySelector<T> {
 
     /**
-     * 选择
+     * 选择单个
      * 
      * @param content
      * @return
      */
-    List<T> selectContent(T content);
+    default T selectSingle(T content) {
+        List<T> instances = selectMultiple(content);
+        return instances.isEmpty() ? null : instances.get(0);
+    }
+
+    /**
+     * 选择多个
+     * 
+     * @param content
+     * @return
+     */
+    List<T> selectMultiple(T content);
 
     /**
      * 获取查询

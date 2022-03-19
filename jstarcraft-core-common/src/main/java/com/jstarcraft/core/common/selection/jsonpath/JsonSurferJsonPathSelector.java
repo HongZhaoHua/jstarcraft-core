@@ -32,7 +32,7 @@ public class JsonSurferJsonPathSelector extends JsonPathSelector<String> {
     }
 
     @Override
-    public List<String> selectContent(String content) {
+    public List<String> selectMultiple(String content) {
         List<String> elements = new ArrayList<>();
         adapter.configBuilder().bind(path, (value, context) -> {
             if (value instanceof CharSequence) {

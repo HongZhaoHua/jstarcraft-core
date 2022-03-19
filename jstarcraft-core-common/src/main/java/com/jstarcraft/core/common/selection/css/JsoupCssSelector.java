@@ -30,7 +30,7 @@ public class JsoupCssSelector extends AbstractSelector<Element> {
     }
 
     @Override
-    public List<Element> selectContent(Element content) {
+    public List<Element> selectMultiple(Element content) {
         return Selector.select(css, content);
     }
 

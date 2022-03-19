@@ -34,7 +34,17 @@ public class RegularSelector extends AbstractSelector<String> {
     }
 
     @Override
-    public List<String> selectContent(String content) {
+    public String selectSingle(String content) {
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            String element = matcher.group(group);
+            return element;
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> selectMultiple(String content) {
         List<String> elements = new LinkedList<>();
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {

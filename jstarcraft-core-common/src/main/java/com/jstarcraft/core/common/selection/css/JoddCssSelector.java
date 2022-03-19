@@ -31,7 +31,7 @@ public class JoddCssSelector extends AbstractSelector<Node> {
     }
 
     @Override
-    public List<Node> selectContent(Node content) {
+    public List<Node> selectMultiple(Node content) {
         NodeSelector selector = new NodeSelector(content);
         return selector.select(css);
     }

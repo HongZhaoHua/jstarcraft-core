@@ -45,28 +45,28 @@ public class JsonPathTestCase {
                 JaywayJsonPathSelector selector;
 
                 selector = new JaywayJsonPathSelector("$[0]", adapter);
-                Assert.assertEquals(1, selector.selectContent(root).size());
+                Assert.assertEquals(1, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[0:3]", adapter);
-                Assert.assertEquals(3, selector.selectContent(root).size());
+                Assert.assertEquals(3, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[-3:0]", adapter);
-                Assert.assertEquals(3, selector.selectContent(root).size());
+                Assert.assertEquals(3, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$..name", adapter);
-                Assert.assertEquals(3, selector.selectContent(root).size());
+                Assert.assertEquals(3, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[?(@.age > 10)]", adapter);
-                Assert.assertEquals(2, selector.selectContent(root).size());
+                Assert.assertEquals(2, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[?(@.age < 10)]", adapter);
-                Assert.assertEquals(1, selector.selectContent(root).size());
+                Assert.assertEquals(1, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[?(@.sex == true)]", adapter);
-                Assert.assertEquals(2, selector.selectContent(root).size());
+                Assert.assertEquals(2, selector.selectMultiple(root).size());
 
                 selector = new JaywayJsonPathSelector("$[?(@.sex == false)]", adapter);
-                Assert.assertEquals(1, selector.selectContent(root).size());
+                Assert.assertEquals(1, selector.selectMultiple(root).size());
             }
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception);
@@ -88,28 +88,28 @@ public class JsonPathTestCase {
                 JsonSurferJsonPathSelector selector;
 
                 selector = new JsonSurferJsonPathSelector("$[0]", adapter);
-                Assert.assertEquals(1, selector.selectContent(json).size());
+                Assert.assertEquals(1, selector.selectMultiple(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$[0:3]", adapter);
-                Assert.assertEquals(3, selector.selectContent(json).size());
+                Assert.assertEquals(3, selector.selectMultiple(json).size());
 
 //                selector = new JsonSurferJsonPathSelector("$[-3:0]", adapter);
 //                Assert.assertEquals(3, selector.selectContent(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$..name", adapter);
-                Assert.assertEquals(3, selector.selectContent(json).size());
+                Assert.assertEquals(3, selector.selectMultiple(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$[?(@.age > 10)]", adapter);
-                Assert.assertEquals(2, selector.selectContent(json).size());
+                Assert.assertEquals(2, selector.selectMultiple(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$[?(@.age < 10)]", adapter);
-                Assert.assertEquals(1, selector.selectContent(json).size());
+                Assert.assertEquals(1, selector.selectMultiple(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$[?(@.sex == true)]", adapter);
-                Assert.assertEquals(2, selector.selectContent(json).size());
+                Assert.assertEquals(2, selector.selectMultiple(json).size());
 
                 selector = new JsonSurferJsonPathSelector("$[?(@.sex == false)]", adapter);
-                Assert.assertEquals(1, selector.selectContent(json).size());
+                Assert.assertEquals(1, selector.selectMultiple(json).size());
             }
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception);
@@ -124,28 +124,28 @@ public class JsonPathTestCase {
             SnackJsonPathSelector selector;
 
             selector = new SnackJsonPathSelector("$[0]");
-            Assert.assertEquals(1, selector.selectContent(root).size());
+            Assert.assertEquals(1, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[0:3]");
-            Assert.assertEquals(3, selector.selectContent(root).size());
+            Assert.assertEquals(3, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[-3:0]");
-            Assert.assertEquals(3, selector.selectContent(root).size());
+            Assert.assertEquals(3, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$..name");
-            Assert.assertEquals(3, selector.selectContent(root).size());
+            Assert.assertEquals(3, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[?(@.age > 10)]");
-            Assert.assertEquals(2, selector.selectContent(root).size());
+            Assert.assertEquals(2, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[?(@.age < 10)]");
-            Assert.assertEquals(1, selector.selectContent(root).size());
+            Assert.assertEquals(1, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[?(@.sex == 'true')]");
-            Assert.assertEquals(2, selector.selectContent(root).size());
+            Assert.assertEquals(2, selector.selectMultiple(root).size());
 
             selector = new SnackJsonPathSelector("$[?(@.sex == 'false')]");
-            Assert.assertEquals(1, selector.selectContent(root).size());
+            Assert.assertEquals(1, selector.selectMultiple(root).size());
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception);
         }

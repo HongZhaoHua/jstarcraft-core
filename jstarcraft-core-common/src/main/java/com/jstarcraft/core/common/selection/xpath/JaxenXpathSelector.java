@@ -31,7 +31,7 @@ public class JaxenXpathSelector<T> extends XpathSelector<T> {
     }
 
     @Override
-    public List<T> selectContent(T content) {
+    public List<T> selectMultiple(T content) {
         try {
             return (List<T>) xpath.selectNodes(content);
         } catch (JaxenException exception) {

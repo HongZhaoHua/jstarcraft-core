@@ -21,14 +21,14 @@ public class CssTestCase {
         Node document = Jerry.of(html).get(0);
         {
             JoddCssSelector selector = new JoddCssSelector("title");
-            List<Node> nodes = selector.selectContent(document);
+            List<Node> nodes = selector.selectMultiple(document);
             assertEquals(1, nodes.size());
             assertEquals("test &amp; title", nodes.get(0).getInnerHtml());
             assertEquals("test & title", nodes.get(0).getTextContent());
         }
         {
             JoddCssSelector selector = new JoddCssSelector("div");
-            List<Node> nodes = selector.selectContent(document);
+            List<Node> nodes = selector.selectMultiple(document);
             assertEquals(1, nodes.size());
             assertEquals("test &amp; <b>body</b>", nodes.get(0).getInnerHtml());
             assertEquals("test & body", nodes.get(0).getTextContent());
@@ -40,14 +40,14 @@ public class CssTestCase {
         Document document = Jsoup.parse(html);
         {
             JsoupCssSelector selector = new JsoupCssSelector("title");
-            List<Element> elements = selector.selectContent(document);
+            List<Element> elements = selector.selectMultiple(document);
             assertEquals(1, elements.size());
             assertEquals("test &amp; title", elements.get(0).html());
             assertEquals("test & title", elements.get(0).text());
         }
         {
             JsoupCssSelector selector = new JsoupCssSelector("div");
-            List<Element> elements = selector.selectContent(document);
+            List<Element> elements = selector.selectMultiple(document);
             assertEquals(1, elements.size());
             assertEquals("test &amp; <b>body</b>", elements.get(0).html());
             assertEquals("test & body", elements.get(0).text());

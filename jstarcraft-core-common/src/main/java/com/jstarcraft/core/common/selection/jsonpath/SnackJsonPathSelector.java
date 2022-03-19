@@ -22,7 +22,7 @@ public class SnackJsonPathSelector extends JsonPathSelector<ONode> {
     }
 
     @Override
-    public List<ONode> selectContent(ONode content) {
+    public List<ONode> selectMultiple(ONode content) {
         content = content.select(query);
         return content.isArray() ? content.ary() : Arrays.asList(content);
     }

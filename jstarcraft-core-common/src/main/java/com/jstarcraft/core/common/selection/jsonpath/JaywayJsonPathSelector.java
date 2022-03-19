@@ -56,7 +56,7 @@ public class JaywayJsonPathSelector<T> extends JsonPathSelector<T> {
     }
 
     @Override
-    public List<T> selectContent(T content) {
+    public List<T> selectMultiple(T content) {
         EvaluationContext context = path.evaluate(content, content, configuration);
         Object nodes = ReflectionUtility.getField(valueResult, context);
         JsonProvider adapter = context.configuration().jsonProvider();
