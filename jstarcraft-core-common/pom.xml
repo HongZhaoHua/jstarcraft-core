@@ -84,6 +84,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threeten-extra</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 压缩解压 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
