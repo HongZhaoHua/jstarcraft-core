@@ -3,7 +3,7 @@ package com.jstarcraft.core.common.bloomfilter;
 import com.jstarcraft.core.common.bit.BitMap;
 import com.jstarcraft.core.common.hash.HashFunction;
 
-public class BitMapBloomFilter<E, M extends BitMap<?>> implements BloomFilter<E, M> {
+public class BitMapBloomFilter<E, M extends BitMap<?>> implements BloomFilter<E> {
 
     protected M bits;
 

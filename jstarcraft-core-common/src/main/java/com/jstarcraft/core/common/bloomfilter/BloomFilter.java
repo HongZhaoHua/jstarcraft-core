@@ -8,7 +8,7 @@ import com.jstarcraft.core.common.bit.BitMap;
  * @author Birdy
  *
  */
-public interface BloomFilter<E, M extends BitMap<?>> {
+public interface BloomFilter<E> {
 
     int getElements(E... datas);
 

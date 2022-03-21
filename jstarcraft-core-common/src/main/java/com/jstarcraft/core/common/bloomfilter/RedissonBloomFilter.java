@@ -3,15 +3,13 @@ package com.jstarcraft.core.common.bloomfilter;
 import org.redisson.Redisson;
 import org.redisson.api.RBloomFilter;
 
-import com.jstarcraft.core.common.bit.LocalByteArrayMap;
-
 /**
  * 基于Redis的布隆过滤器
  * 
  * @author Birdy
  *
  */
-public class RedissonBloomFilter<E> implements BloomFilter<E, LocalByteArrayMap> {
+public class RedissonBloomFilter<E> implements BloomFilter<E> {
 
     private RBloomFilter<E> bits;
 
