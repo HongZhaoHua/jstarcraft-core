@@ -1,0 +1,11 @@
+Apache Commons JEXL 语法:
+https://ridikuius.github.io/Apache-Commons-JEXL3-%E8%AF%AD%E6%B3%95/
+
+Java如何使用JEXL实现动态表达式编译 附实例代码:
+https://www.w3cschool.cn/article/68775621.html
+
+Jexl表达式引擎-根据字符串动态执行JAVA.md:
+https://www.cnblogs.com/theory/p/13343829.html
+
+JEXL表达式引擎的使用:
+https://www.codeleading.com/article/55983672708/
