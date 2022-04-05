@@ -756,6 +756,13 @@
                 <version>1.2.0</version>
             </dependency>
 
+            <!-- JsoupXpath依赖 -->
+            <dependency>
+                <groupId>cn.wanghaomiao</groupId>
+                <artifactId>JsoupXpath</artifactId>
+                <version>2.5.1</version>
+            </dependency>
+
             <!-- 测试框架依赖 -->
             <dependency>
                 <groupId>junit</groupId>

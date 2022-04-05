@@ -329,6 +329,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- JsoupXpath依赖 -->
+        <dependency>
+            <groupId>cn.wanghaomiao</groupId>
+            <artifactId>JsoupXpath</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>
