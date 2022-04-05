@@ -10,7 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;
-import org.seimicrawler.xpath.JXDocument;
+import org.seimicrawler.xpath.JXNode;
 
 import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlElementNode;
 import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlNavigator;
@@ -56,27 +56,37 @@ public class XpathTestCase {
     }
 
     @Test
-    public void testJsoupXpath() throws Exception {
+    public void testSeimi() throws Exception {
         File file = new File(XpathTestCase.class.getResource("xpath.html").toURI());
         String html = FileUtils.readFileToString(file, StringUtility.CHARSET);
         Document document = Jsoup.parse(html);
+        JXNode root = new JXNode(document);
+        SeimiXpathSelector selector;
 
-        Assert.assertEquals(6, JXDocument.create(document).selN("//@id").size());
+        selector = new SeimiXpathSelector("//@id");
+        Assert.assertEquals(6, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(1, JXDocument.create(document).selN("//*[text()='title']").size());
+        selector = new SeimiXpathSelector("//*[text()='title']");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(1, JXDocument.create(document).selN("//*[@id='container']").size());
+        selector = new SeimiXpathSelector("//*[@id='container']");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(1, JXDocument.create(document).selN("//*[@id='container']/self::*").size());
+        selector = new SeimiXpathSelector("//*[@id='container']/self::*");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(1, JXDocument.create(document).selN("//*[@id='container']/parent::*").size());
+        selector = new SeimiXpathSelector("//*[@id='container']/parent::*");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
 
         // 此处包括html,body
-        Assert.assertEquals(2, JXDocument.create(document).selN("//*[@id='container']/ancestor::*").size());
+        selector = new SeimiXpathSelector("//*[@id='container']/ancestor::*");
+        Assert.assertEquals(2, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(5, JXDocument.create(document).selN("//*[@id='container']/child::*").size());
+        selector = new SeimiXpathSelector("//*[@id='container']/child::*");
+        Assert.assertEquals(5, selector.selectMultiple(root).size());
 
-        Assert.assertEquals(5, JXDocument.create(document).selN("//*[@id='container']/descendant::*").size());
+        selector = new SeimiXpathSelector("//*[@id='container']/descendant::*");
+        Assert.assertEquals(5, selector.selectMultiple(root).size());
     }
 
 }
