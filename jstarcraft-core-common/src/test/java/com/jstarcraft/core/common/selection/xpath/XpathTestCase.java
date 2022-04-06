@@ -12,8 +12,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.seimicrawler.xpath.JXNode;
 
-import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlElementNode;
-import com.jstarcraft.core.common.selection.xpath.jsoup.HtmlNavigator;
+import com.jstarcraft.core.common.selection.xpath.html.HtmlElementNode;
+import com.jstarcraft.core.common.selection.xpath.html.HtmlNavigator;
 import com.jstarcraft.core.utility.StringUtility;
 
 public class XpathTestCase {

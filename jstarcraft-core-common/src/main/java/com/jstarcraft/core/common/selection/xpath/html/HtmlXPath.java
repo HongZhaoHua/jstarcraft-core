@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.selection.xpath.jsoup;
+package com.jstarcraft.core.common.selection.xpath.html;
 
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
