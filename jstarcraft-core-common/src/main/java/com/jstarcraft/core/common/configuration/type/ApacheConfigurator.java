@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.apache.commons.configuration2.Configuration;
 
+import com.jstarcraft.core.common.configuration.TypeConfigurator;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
@@ -14,11 +15,11 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ApacheOption implements TypeOption {
+public class ApacheConfigurator implements TypeConfigurator {
 
     private Configuration keyValues;
 
-    public ApacheOption(Configuration keyValues) {
+    public ApacheConfigurator(Configuration keyValues) {
         this.keyValues = keyValues;
     }
 

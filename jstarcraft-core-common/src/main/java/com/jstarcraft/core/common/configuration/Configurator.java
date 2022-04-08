@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  */
 // TODO 考虑改名Option
-public interface Option {
+public interface Configurator {
 
     BigDecimal getBigDecimal(String key, BigDecimal instead);
 

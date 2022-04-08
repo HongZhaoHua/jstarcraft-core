@@ -9,7 +9,7 @@ import java.math.BigInteger;
  * @author Birdy
  *
  */
-public interface TypeOption extends Option {
+public interface TypeConfigurator extends Configurator {
 
     @Override
     default BigDecimal getBigDecimal(String key) {

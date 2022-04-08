@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.string;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -6,18 +6,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import com.jstarcraft.core.common.configuration.StringConfigurator;
+
 /**
  * Properties配置器
  * 
  * @author Birdy
  *
  */
-public class PropertyOption implements StringOption {
+public class PropertyConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
 
-    public PropertyOption(String properties) {
+    public PropertyConfigurator(String properties) {
         Properties keyValues = new Properties();
         try (BufferedReader buffer = new BufferedReader(new StringReader(properties))) {
             keyValues.load(buffer);

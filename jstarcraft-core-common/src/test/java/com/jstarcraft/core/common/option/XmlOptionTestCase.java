@@ -6,7 +6,7 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.jstarcraft.core.common.configuration.XmlOption;
+import com.jstarcraft.core.common.configuration.string.XmlConfigurator;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -16,7 +16,7 @@ public class XmlOptionTestCase {
     public void test() throws Exception {
         try (InputStream stream = XmlOptionTestCase.class.getResourceAsStream("Biology.xml")) {
             String xml = IoUtility.toString(stream, StringUtility.CHARSET);
-            XmlOption option = new XmlOption(xml);
+            XmlConfigurator option = new XmlConfigurator(xml);
             int index = 0;
             Iterator<String> keys = option.getKeys();
             while (keys.hasNext()) {

@@ -1,8 +1,10 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.string;
 
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import com.jstarcraft.core.common.configuration.StringConfigurator;
 
 /**
  * 捆绑配置器
@@ -10,20 +12,20 @@ import java.util.ResourceBundle;
  * @author Birdy
  *
  */
-public class BundleOption implements StringOption {
+public class BundleConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private ResourceBundle keyValues;
 
-    public BundleOption(String name) {
+    public BundleConfigurator(String name) {
         this.keyValues = ResourceBundle.getBundle(name);
     }
 
-    public BundleOption(String name, Locale locale) {
+    public BundleConfigurator(String name, Locale locale) {
         this.keyValues = ResourceBundle.getBundle(name, locale);
     }
 
-    public BundleOption(ResourceBundle keyValues) {
+    public BundleConfigurator(ResourceBundle keyValues) {
         this.keyValues = keyValues;
     }
 

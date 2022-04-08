@@ -11,7 +11,7 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public interface StringOption extends Option {
+public interface StringConfigurator extends Configurator {
 
     @Override
     default BigDecimal getBigDecimal(String key, BigDecimal instead) {

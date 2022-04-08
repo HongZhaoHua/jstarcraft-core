@@ -1,10 +1,11 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.jstarcraft.core.common.configuration.TypeConfigurator;
 import com.jstarcraft.core.utility.StringUtility;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException.Missing;
@@ -16,11 +17,11 @@ import com.typesafe.config.ConfigValue;
  * @author Birdy
  *
  */
-public class HoconOption implements TypeOption {
+public class HoconConfigurator implements TypeConfigurator {
 
     private Config keyValues;
 
-    public HoconOption(Config keyValues) {
+    public HoconConfigurator(Config keyValues) {
         this.keyValues = keyValues;
     }
 

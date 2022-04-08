@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.string;
 
 import java.io.StringReader;
 import java.util.Iterator;
@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.jstarcraft.core.common.configuration.StringConfigurator;
 import com.jstarcraft.core.utility.StringUtility;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -25,7 +26,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
  * @author Birdy
  *
  */
-public class XmlOption implements StringOption {
+public class XmlConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -93,7 +94,7 @@ public class XmlOption implements StringOption {
         }
     }
 
-    public XmlOption(String xml) {
+    public XmlConfigurator(String xml) {
         this.keyValues = new LinkedHashMap<>();
         xml = xml.replaceAll("\\r", "").replaceAll("\\n", "").replaceAll("\\t", "");
         try {

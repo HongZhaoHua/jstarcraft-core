@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.string;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -9,17 +9,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.jstarcraft.core.common.conversion.yaml.YamlUtility;
+import com.jstarcraft.core.common.configuration.StringConfigurator;
+import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.common.reflection.TypeUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
 /**
- * YAML配置器
+ * JSON配置器
  * 
  * @author Birdy
  *
  */
-public class YamlOption implements StringOption {
+public class JsonConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -47,10 +48,10 @@ public class YamlOption implements StringOption {
         }
     }
 
-    public YamlOption(String yaml) {
+    public JsonConfigurator(String json) {
         this.keyValues = new LinkedHashMap<>();
         Type type = TypeUtility.parameterize(LinkedHashMap.class, String.class, Object.class);
-        flatten(StringUtility.EMPTY, YamlUtility.string2Object(yaml, type), keyValues);
+        flatten(StringUtility.EMPTY, JsonUtility.string2Object(json, type), keyValues);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.configuration;
+package com.jstarcraft.core.common.configuration.string;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -10,9 +10,10 @@ import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
+import com.jstarcraft.core.common.configuration.StringConfigurator;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class TomlOption implements StringOption {
+public class TomlConfigurator implements StringConfigurator {
 
     /** 配置项 */
     private Map<String, String> keyValues;
@@ -44,7 +45,7 @@ public class TomlOption implements StringOption {
         }
     }
 
-    public TomlOption(String toml) {
+    public TomlConfigurator(String toml) {
         this.keyValues = new LinkedHashMap<>();
         TomlTable table = Toml.parse(toml);
         flatten(StringUtility.EMPTY, table, keyValues);
