@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.option;
+package com.jstarcraft.core.common.configuration;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -10,11 +10,11 @@ import com.jstarcraft.core.common.configuration.string.XmlConfigurator;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.utility.StringUtility;
 
-public class XmlOptionTestCase {
+public class XmlConfiguratorTestCase {
 
     @Test
     public void test() throws Exception {
-        try (InputStream stream = XmlOptionTestCase.class.getResourceAsStream("Biology.xml")) {
+        try (InputStream stream = XmlConfiguratorTestCase.class.getResourceAsStream("Biology.xml")) {
             String xml = IoUtility.toString(stream, StringUtility.CHARSET);
             XmlConfigurator option = new XmlConfigurator(xml);
             int index = 0;
