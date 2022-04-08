@@ -6,3 +6,6 @@ http://www.zhuanhuanqi.com/danwei/danwei.html
 
 五险一金及税后工资计算器:
 http://salarycalculator.sinaapp.com
+
+理财计算器:
+https://data.eastmoney.com/money/calc/CurrentDeposit.html
