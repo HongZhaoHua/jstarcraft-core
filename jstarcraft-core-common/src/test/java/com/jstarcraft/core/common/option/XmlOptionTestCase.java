@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.jstarcraft.core.common.configuration.XmlOption;
 import com.jstarcraft.core.common.io.IoUtility;
 import com.jstarcraft.core.utility.StringUtility;
 

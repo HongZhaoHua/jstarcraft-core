@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.option;
+package com.jstarcraft.core.common.configuration;
 
 import java.lang.reflect.Type;
 import java.util.Collection;

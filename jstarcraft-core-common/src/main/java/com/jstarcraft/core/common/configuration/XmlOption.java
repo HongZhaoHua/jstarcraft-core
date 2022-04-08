@@ -1,4 +1,4 @@
-package com.jstarcraft.core.common.option;
+package com.jstarcraft.core.common.configuration;
 
 import java.io.StringReader;
 import java.util.Iterator;
