@@ -26,6 +26,14 @@ public class FileXpathTestCase {
             List<FileNode> nodes = (List) xpath.evaluate(root);
             Assert.assertEquals(1, nodes.size());
         }
+        {
+            FileXPath xpath = new FileXPath("//xpath/@parentFile/xpath");
+            List<FileNode> nodes = (List) xpath.evaluate(root);
+            Assert.assertEquals(1, nodes.size());
+            for (FileNode node : nodes) {
+                Assert.assertEquals("xpath", node.getName());
+            }
+        }
         // 测试组件节点
         {
             FileXPath xpath = new FileXPath("//xpath.html");
