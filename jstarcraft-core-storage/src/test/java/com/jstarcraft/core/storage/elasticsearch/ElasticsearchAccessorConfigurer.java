@@ -14,10 +14,10 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import com.jstarcraft.core.storage.elasticsearch.converter.InstantToNumberConverter;
 import com.jstarcraft.core.storage.elasticsearch.converter.NumberToInstantConverter;
@@ -45,7 +45,7 @@ public class ElasticsearchAccessorConfigurer {
         List<Converter> converters = new ArrayList<>();
         converters.add(new NumberToInstantConverter());
         converters.add(new InstantToNumberConverter());
-        MongoCustomConversions conversion = new MongoCustomConversions(converters);
+        ElasticsearchCustomConversions conversion = new ElasticsearchCustomConversions(converters);
         MappingElasticsearchConverter converter = new MappingElasticsearchConverter(new SimpleElasticsearchMappingContext());
         converter.setConversions(conversion);
         converter.afterPropertiesSet();
