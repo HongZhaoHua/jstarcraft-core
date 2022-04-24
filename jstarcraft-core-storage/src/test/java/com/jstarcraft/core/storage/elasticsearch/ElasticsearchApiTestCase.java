@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpHost;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsRequest;
 import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsResponse;
 import org.elasticsearch.action.admin.cluster.storedscripts.DeleteStoredScriptRequest;
@@ -33,8 +33,10 @@ import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMet
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -52,6 +54,7 @@ import org.springframework.data.elasticsearch.repository.support.ElasticsearchRe
 import org.springframework.data.elasticsearch.repository.support.SimpleElasticsearchRepository;
 
 import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
+import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 
 public class ElasticsearchApiTestCase {
 
@@ -73,25 +76,25 @@ public class ElasticsearchApiTestCase {
         elasticClient.close();
     }
 
-//    @BeforeClass
-//    public static void startEmbeddedElastic() throws IOException, InterruptedException {
-//        elasticServer = EmbeddedElastic.builder().withElasticVersion("6.8.8")
-//
-//                .withSetting(PopularProperties.HTTP_PORT, EMBEDDED_ELASTIC_PORT)
-//
-//                .withStartTimeout(2, TimeUnit.MINUTES)
-//
-//                .build()
-//
-//                .start();
-//    }
-//
-//    @AfterClass
-//    public static void stopEmbeddedElastic() {
-//        if (elasticServer != null) {
-//            elasticServer.stop();
-//        }
-//    }
+    @BeforeClass
+    public static void startEmbeddedElastic() throws IOException, InterruptedException {
+        elasticServer = EmbeddedElastic.builder().withElasticVersion("6.8.8")
+
+                .withSetting(PopularProperties.HTTP_PORT, EMBEDDED_ELASTIC_PORT)
+
+                .withStartTimeout(2, TimeUnit.MINUTES)
+
+                .build()
+
+                .start();
+    }
+
+    @AfterClass
+    public static void stopEmbeddedElastic() {
+        if (elasticServer != null) {
+            elasticServer.stop();
+        }
+    }
 
     @Test
     public void testRoute() {
