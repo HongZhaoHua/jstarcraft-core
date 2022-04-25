@@ -1,6 +1,27 @@
 一张图看懂encodeURI、encodeURIComponent、decodeURI、decodeURIComponent的区别:
 https://juejin.cn/post/6844903454599544839
 
+精讲RestTemplate第1篇-在Spring或非Spring环境下如何使用:
+https://zimug.blog.csdn.net/article/details/107705070
+精讲RestTemplate第2篇-多种底层HTTP客户端类库的切换:
+https://zimug.blog.csdn.net/article/details/107755368
+精讲RestTemplate第3篇-GET请求使用方法详解:
+https://zimug.blog.csdn.net/article/details/107805889
+精讲RestTemplate第4篇-POST请求方法使用详解:
+https://zimug.blog.csdn.net/article/details/107889564
+精讲RestTemplate第5篇-DELETE、PUT等请求方法使用详解:
+https://zimug.blog.csdn.net/article/details/107909654
+精讲RestTemplate第6篇-文件上传下载与大文件流式下载:
+https://zimug.blog.csdn.net/article/details/107948815
+精讲RestTemplate第7篇-自定义请求失败异常处理:
+https://zimug.blog.csdn.net/article/details/107995909
+精讲RestTemplate第8篇-请求失败自动重试机制:
+https://zimug.blog.csdn.net/article/details/108019319
+精讲RestTemplate第9篇-如何通过HTTP Basic Auth认证:
+https://zimug.blog.csdn.net/article/details/108035688
+精讲RestTemplate第10篇-使用代理作为跳板发送请求:
+https://zimug.blog.csdn.net/article/details/108068502
+
 【WEB系列】RestTemplate之urlencode参数解析异常全程分析（填坑篇）:
 https://spring.hhui.top/spring-blog/2019/03/27/190327-Spring-RestTemplate%E4%B9%8Burlencode%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%E5%BC%82%E5%B8%B8%E5%85%A8%E7%A8%8B%E5%88%86%E6%9E%90/
 
