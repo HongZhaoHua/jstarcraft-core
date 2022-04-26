@@ -49,6 +49,12 @@ https://segmentfault.com/a/1190000012571788
 JMeter：菜鸟入门到进阶系列:
 https://www.cnblogs.com/imyalost/p/7062784.html?utm_source=itdadao&utm_medium=referral
 
+测试高级进阶技能系列 - Jmeter:
+https://www.cnblogs.com/poloyy/category/1746599.html
+
+FiddlerUseScript:
+https://github.com/gitjayzhen/FiddlerUseScript
+
 SpringMVC之单元测试(MockMvc)-独立测试:
 https://www.cnblogs.com/xd03122049/p/6001457.html
 
