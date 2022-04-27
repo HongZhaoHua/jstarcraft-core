@@ -39,9 +39,9 @@ public class StringIndexConverter implements IndexConverter {
         }
         FieldType configuration = new FieldType();
         configuration.setIndexOptions(IndexOptions.DOCS);
-        if (annotation.analyze()) {
-            configuration.setTokenized(true);
-
+        if (!annotation.analyze()) {
+            configuration.setTokenized(false);
+        } else {
             LuceneTerm negative = annotation.negative();
             if (negative.offset()) {
                 configuration.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
