@@ -54,4 +54,9 @@ public class RegularSelector extends AbstractSelector<String> {
         return elements;
     }
 
+    public Matcher matchContent(String content) {
+        Matcher matcher = pattern.matcher(content);
+        return matcher;
+    }
+
 }
