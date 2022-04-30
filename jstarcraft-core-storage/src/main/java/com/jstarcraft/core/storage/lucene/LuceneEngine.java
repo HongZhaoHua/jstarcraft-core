@@ -2,6 +2,8 @@ package com.jstarcraft.core.storage.lucene;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -209,7 +211,7 @@ public class LuceneEngine implements AutoCloseable {
      * @param size
      * @return
      */
-    public List<KeyValue<Document, Float>> retrieveDocuments(Query query, Sort sort, int offset, int size) {
+    public List<KeyValue<Document, Float>> retrieveDocuments(Query query, Sort sort, int offset, int size, String... fields) {
         try {
             readLock.lock();
             lockRead();
@@ -232,7 +234,7 @@ public class LuceneEngine implements AutoCloseable {
             ArrayList<KeyValue<Document, Float>> documents = new ArrayList<>(size);
             for (int index = begin; index < end; index++) {
                 ScoreDoc score = search[index];
-                Document document = this.searcher.doc(score.doc);
+                Document document = fields.length == 0 ? searcher.doc(score.doc) : searcher.doc(score.doc, new HashSet<>(Arrays.asList(fields)));
                 documents.add(new KeyValue<>(document, score.score));
             }
             return documents;
@@ -253,7 +255,7 @@ public class LuceneEngine implements AutoCloseable {
      * @param offset
      * @param size
      */
-    public void iterateDocuments(StorageIterator<Document> iterator, Query query, Sort sort, int offset, int size) {
+    public void iterateDocuments(StorageIterator<Document> iterator, Query query, Sort sort, int offset, int size, String... fields) {
         try {
             readLock.lock();
             lockRead();
@@ -273,7 +275,7 @@ public class LuceneEngine implements AutoCloseable {
             end = search.length;
             for (int index = begin; index < end; index++) {
                 ScoreDoc score = search[index];
-                Document document = this.searcher.doc(score.doc);
+                Document document = fields.length == 0 ? searcher.doc(score.doc) : searcher.doc(score.doc, new HashSet<>(Arrays.asList(fields)));
                 iterator.iterate(document);
             }
         } catch (Exception exception) {
