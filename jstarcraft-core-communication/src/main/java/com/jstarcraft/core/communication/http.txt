@@ -1,6 +1,9 @@
 一张图看懂encodeURI、encodeURIComponent、decodeURI、decodeURIComponent的区别:
 https://juejin.cn/post/6844903454599544839
 
+[踩坑系列]URLEncode 中对 空格的编码有 “+”和“%20”两种:
+https://www.cnblogs.com/zhengxl5566/p/10783422.html
+
 精讲RestTemplate第1篇-在Spring或非Spring环境下如何使用:
 https://zimug.blog.csdn.net/article/details/107705070
 精讲RestTemplate第2篇-多种底层HTTP客户端类库的切换:
