@@ -29,20 +29,22 @@ import org.seimicrawler.xpath.exception.XpathSyntaxErrorException;
  */
 public class SeimiXpathSelector extends XpathSelector<JXNode> {
 
+    private ParseTree tree;
+    
     public SeimiXpathSelector(String query) {
         super(query);
+        CharStream stream = CharStreams.fromString(query);
+        XpathLexer lexer = new XpathLexer(stream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        XpathParser parser = new XpathParser(tokens);
+        parser.setErrorHandler(new DoFailOnErrorHandler());
+        this.tree = parser.main();
     }
 
     @Override
     public List<JXNode> selectMultiple(JXNode content) {
         Elements elements = new Elements(content.asElement());
         try {
-            CharStream stream = CharStreams.fromString(query);
-            XpathLexer lexer = new XpathLexer(stream);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            XpathParser parser = new XpathParser(tokens);
-            parser.setErrorHandler(new DoFailOnErrorHandler());
-            ParseTree tree = parser.main();
             XpathProcessor processor = new XpathProcessor(elements);
             XValue value = processor.visit(tree);
             if (value == null) {
