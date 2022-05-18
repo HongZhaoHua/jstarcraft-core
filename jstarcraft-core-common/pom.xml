@@ -336,6 +336,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Xsoup依赖 -->
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>xsoup</artifactId>
+            <version>0.3.2</version>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>

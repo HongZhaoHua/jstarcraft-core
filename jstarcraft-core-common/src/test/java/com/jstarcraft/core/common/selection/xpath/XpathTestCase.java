@@ -89,4 +89,22 @@ public class XpathTestCase {
         Assert.assertEquals(5, selector.selectMultiple(root).size());
     }
 
+    @Test
+    public void testXsoup() throws Exception {
+        File file = new File(XpathTestCase.class.getResource("xpath.html").toURI());
+        String html = FileUtils.readFileToString(file, StringUtility.CHARSET);
+        Document root = Jsoup.parse(html);
+        XsoupXpathSelector selector;
+
+        // 必须通过元素获取属性
+        selector = new XsoupXpathSelector("//div/@id");
+        Assert.assertEquals(6, selector.selectMultiple(root).size());
+
+        selector = new XsoupXpathSelector("//title/text()");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
+
+        selector = new XsoupXpathSelector("//*[@id='container']");
+        Assert.assertEquals(1, selector.selectMultiple(root).size());
+    }
+
 }
