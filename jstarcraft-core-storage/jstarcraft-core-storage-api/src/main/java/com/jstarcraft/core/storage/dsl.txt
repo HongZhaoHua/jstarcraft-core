@@ -1,0 +1,8 @@
+QueryDSL通用查询框架学习目录:
+https://www.jianshu.com/p/99a5ec5c3bd5
+
+QueryDSL 核心技术:
+https://gitee.com/hengboy/querydsl
+
+Querydsl:
+https://github.com/querydsl/querydsl

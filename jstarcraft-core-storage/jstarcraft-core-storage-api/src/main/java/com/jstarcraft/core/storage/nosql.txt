@@ -1,0 +1,8 @@
+NoSQL 之于大数据:
+https://mp.weixin.qq.com/s?__biz=MzAwOTcyNzA0OQ==&mid=2658970142&idx=1&sn=fdd43a7c1bd0e3a2fa45cfe8edf15926&scene=21
+
+A JPA 2.1 compliant Polyglot Object-Datastore Mapping Library for NoSQL Datastores:
+https://github.com/Impetus/Kundera
+
+NoSQL Unit is a JUnit extension that helps you write NoSQL unit tests:
+https://github.com/lordofthejars/nosql-unit

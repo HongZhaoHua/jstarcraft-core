@@ -1,0 +1,9 @@
+BDB常用配置总结:
+想查找JE的配置属性,建议在EnvironmentConfig类,EnvironmentMutableConfig类,EnvironmentParams类中查找解释.
+http://zizihaier.iteye.com/blog/1157251
+
+BerkeleyDB-JE:
+https://www.iteye.com/category/112496
+
+Oracle Berkeley DB Java Edition:
+https://docs.oracle.com/cd/E17277_02/html/index.html
