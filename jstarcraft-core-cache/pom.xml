@@ -39,6 +39,34 @@
         </dependency>
 
         <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-berkeley</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-hibernate</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-mongo</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-mybatis</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <scope>test</scope>

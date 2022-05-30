@@ -19,6 +19,12 @@
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-mongo</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <!-- 事务框架依赖 -->
         <!-- Cassandra -->
         <dependency>
