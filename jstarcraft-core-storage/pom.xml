@@ -21,7 +21,6 @@
         <module>jstarcraft-core-storage-mongo</module>
         <module>jstarcraft-core-storage-mybatis</module>
         <module>jstarcraft-core-storage-neo4j</module>
-        <module>jstarcraft-core-storage-test</module>
     </modules>
 
     <dependencyManagement>
