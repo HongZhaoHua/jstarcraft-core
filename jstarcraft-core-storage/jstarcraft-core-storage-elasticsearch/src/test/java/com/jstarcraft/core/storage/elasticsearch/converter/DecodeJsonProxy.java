@@ -21,7 +21,9 @@ import javassist.NotFoundException;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.Descriptor;
 import javassist.bytecode.MethodInfo;
-import javassist.bytecode.SignatureAttribute;
+import javassist.bytecode.SignatureAttribute.ClassSignature;
+import javassist.bytecode.SignatureAttribute.ClassType;
+import javassist.bytecode.SignatureAttribute.TypeArgument;
 
 /**
  * 代理转换器
@@ -125,20 +127,27 @@ public class DecodeJsonProxy {
         CtClass source = classPool.get(AbstractConverter.class.getName());
         CtClass result = classPool.makeClass("com.jstarcraft.core.storage.elasticsearch.converter." + clazz.getSimpleName() + CLASS_SUFFIX);
         result.setSuperclass(source);
-        SignatureAttribute.ClassSignature signature = new SignatureAttribute.ClassSignature(null,
+        ClassSignature signature = new ClassSignature(null,
 
-                new SignatureAttribute.ClassType(AbstractConverter.class.getName(),
+                new ClassType(AbstractConverter.class.getName(),
 
-                        new SignatureAttribute.TypeArgument[] {
+                        new TypeArgument[] {
 
-                                new SignatureAttribute.TypeArgument(
+                                new TypeArgument(new ClassType("java.lang.String")),
 
-                                        new SignatureAttribute.ClassType("java.lang.String")),
+                                new TypeArgument(new ClassType(clazz.getName())) }),
 
-                                new SignatureAttribute.TypeArgument(
+                new ClassType[] {
 
-                                        new SignatureAttribute.ClassType(clazz.getName())) }),
-                null);
+                        new ClassType(Converter.class.getName(),
+
+                                new TypeArgument[] {
+
+                                        new TypeArgument(new ClassType("java.lang.String")),
+
+                                        new TypeArgument(new ClassType(clazz.getName())) })
+
+                });
         result.setGenericSignature(signature.encode());
         return result;
     }
