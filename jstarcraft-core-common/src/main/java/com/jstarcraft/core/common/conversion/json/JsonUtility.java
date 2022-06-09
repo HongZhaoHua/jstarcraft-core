@@ -23,6 +23,8 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  */
 public class JsonUtility {
+    
+    public static final JsonUtility Instance = new JsonUtility();
 
     /** 类型转换器(基于Jackson) */
     private static final JsonMapper TYPE_CONVERTER = new JsonMapper();

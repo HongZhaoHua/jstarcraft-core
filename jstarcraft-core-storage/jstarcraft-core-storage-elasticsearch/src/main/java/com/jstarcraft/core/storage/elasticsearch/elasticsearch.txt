@@ -1,3 +1,6 @@
+版本对照
+https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/
+
 ElasticSearch7.3 Windows 环境搭建:
 https://blog.csdn.net/diaobatian/article/details/98476301
 

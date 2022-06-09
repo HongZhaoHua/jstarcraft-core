@@ -76,13 +76,13 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <!-- 缓存框架依赖 -->
@@ -192,13 +192,13 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webflux</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
@@ -333,7 +333,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <!-- 资源框架依赖 -->
@@ -646,7 +646,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>

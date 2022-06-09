@@ -19,6 +19,11 @@
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+
         <!-- 存储框架依赖 -->
         <!-- 文档型存储框架依赖 -->
         <dependency>

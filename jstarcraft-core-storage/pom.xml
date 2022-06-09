@@ -83,7 +83,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
@@ -96,43 +96,43 @@
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-codecs</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-highlighter</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-suggest</artifactId>
-                <version>8.4.0</version>
+                <version>8.6.2</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-elasticsearch</artifactId>
-                <version>4.0.1.RELEASE</version>
+                <version>4.1.15</version>
             </dependency>
 
             <dependency>

@@ -1,0 +1,5 @@
+javassist操作（接口泛型）:
+https://blog.csdn.net/yy954744913/article/details/121642211
+
+使用 Javassist 运行时生成泛型子类:
+https://yanbin.blog/leverage-javassist-generate-generic-subclass/
