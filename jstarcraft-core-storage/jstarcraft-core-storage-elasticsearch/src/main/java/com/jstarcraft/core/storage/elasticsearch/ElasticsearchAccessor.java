@@ -12,6 +12,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -38,6 +40,8 @@ import com.jstarcraft.core.storage.exception.StorageException;
  *
  */
 public class ElasticsearchAccessor implements StorageAccessor {
+
+    protected static final Logger logger = LoggerFactory.getLogger(ElasticsearchAccessor.class);
 
     /** 元数据集合 */
     private HashMap<Class<?>, ElasticsearchMetadata> metadatas = new HashMap<>();
@@ -77,6 +81,8 @@ public class ElasticsearchAccessor implements StorageAccessor {
             repository.save(object);
             return true;
         } catch (Exception exception) {
+            logger.error("创建对象异常", exception);
+            exception.printStackTrace();
             return false;
         }
     }
@@ -88,6 +94,7 @@ public class ElasticsearchAccessor implements StorageAccessor {
             repository.deleteById(id);
             return true;
         } catch (Exception exception) {
+            logger.error("删除对象异常", exception);
             return false;
         }
     }
@@ -99,6 +106,7 @@ public class ElasticsearchAccessor implements StorageAccessor {
             repository.delete(object);
             return true;
         } catch (Exception exception) {
+            logger.error("删除对象异常", exception);
             return false;
         }
     }
@@ -110,6 +118,7 @@ public class ElasticsearchAccessor implements StorageAccessor {
             repository.save(object);
             return true;
         } catch (Exception exception) {
+            logger.error("更新对象异常", exception);
             return false;
         }
     }

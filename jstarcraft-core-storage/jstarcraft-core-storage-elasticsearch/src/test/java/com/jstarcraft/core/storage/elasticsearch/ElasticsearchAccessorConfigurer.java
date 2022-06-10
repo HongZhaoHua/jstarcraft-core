@@ -23,8 +23,6 @@ import com.jstarcraft.core.common.conversion.json.JsonUtility;
 import com.jstarcraft.core.storage.elasticsearch.converter.AbstractConverter;
 import com.jstarcraft.core.storage.elasticsearch.converter.DecodeJsonProxy;
 import com.jstarcraft.core.storage.elasticsearch.converter.EncodeJsonProxy;
-import com.jstarcraft.core.storage.elasticsearch.converter.InstantToNumberConverter;
-import com.jstarcraft.core.storage.elasticsearch.converter.NumberToInstantConverter;
 
 @Configuration
 public class ElasticsearchAccessorConfigurer {
@@ -74,8 +72,8 @@ public class ElasticsearchAccessorConfigurer {
     @Bean(name = "accessor")
     public ElasticsearchAccessor getAccessor(RestHighLevelClient factory, Collection<Class<?>> classes) {
         List<Converter> converters = new ArrayList<>();
-        converters.add(new NumberToInstantConverter());
-        converters.add(new InstantToNumberConverter());
+//        converters.add(new LongToInstantConverter());
+//        converters.add(new InstantToLongConverter());
         for (Class<?> clazz : classes) {
             buildConverters(converters, clazz);
         }

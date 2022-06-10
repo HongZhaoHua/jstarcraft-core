@@ -2,6 +2,9 @@ package com.jstarcraft.core.storage.elasticsearch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
+import lombok.ToString;
+
+@ToString
 public class NestObject {
 
     private long id;

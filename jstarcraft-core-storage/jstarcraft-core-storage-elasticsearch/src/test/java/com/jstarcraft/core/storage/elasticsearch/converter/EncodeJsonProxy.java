@@ -86,9 +86,6 @@ public class EncodeJsonProxy {
                 return (Constructor<T>) constructors.get(clazz);
             }
             Class current = buildeConverterClass(clazz);
-            for (Constructor constructor : current.getConstructors()) {
-                System.out.println(constructor.getParameterCount());
-            }
             Constructor<T> constructor = current.getConstructor(Class.class);
             constructors.put(clazz, constructor);
             return constructor;

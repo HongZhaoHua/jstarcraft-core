@@ -6,13 +6,17 @@ import java.util.LinkedList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
 
+import lombok.ToString;
+
 @Document(indexName = "elasticsearch")
+@ToString
 public class MockObject implements IdentityObject<Integer> {
 
     @Id
@@ -23,7 +27,7 @@ public class MockObject implements IdentityObject<Integer> {
 
     private int money;
 
-    @Field(type = FieldType.Long)
+    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
     private Instant instant;
 
     @Field(type = FieldType.Keyword)
@@ -48,6 +52,7 @@ public class MockObject implements IdentityObject<Integer> {
 
     public void setName(String name) {
         this.name = name;
+        this.version++;
     }
 
     public int getMoney() {
