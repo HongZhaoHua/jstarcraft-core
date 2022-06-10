@@ -111,7 +111,7 @@ public class EncodeJsonProxy {
      * 代理类
      * 
      * <pre>
-     * public class [clazz.name]$ENHANCED extends [clazz.name] implements CacheObject {
+     * public class {clazz.name}_DECODE_CONVERTER extends AbstractConverter<clazz.name, String> implements Converter<clazz.name, String> {
      * }
      * </pre>
      * 
@@ -153,7 +153,7 @@ public class EncodeJsonProxy {
      * 代理构造器
      * 
      * <pre>
-     * public [proxyClass.name](Class _clazz) {
+     * public {proxyClass.name}(Class _clazz) {
      *     this._clazz = _clazz;
      * }
      * </pre>
@@ -194,7 +194,7 @@ public class EncodeJsonProxy {
      * 
      * <pre>
      * public Object convert(Object instance) {
-     *     return JsonUtility.string2Object(instance, this._clazz);
+     *     return JsonUtility.object2String(instance);
      * }
      * </pre>
      * 
