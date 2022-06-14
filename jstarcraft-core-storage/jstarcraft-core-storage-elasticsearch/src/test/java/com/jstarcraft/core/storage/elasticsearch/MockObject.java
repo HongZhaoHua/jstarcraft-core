@@ -13,10 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
 
-import lombok.ToString;
-
 @Document(indexName = "elasticsearch")
-@ToString
 public class MockObject implements IdentityObject<Integer> {
 
     @Id
@@ -106,6 +103,11 @@ public class MockObject implements IdentityObject<Integer> {
             instance.children.add(NestObject.instanceOf(index, childrenName));
         }
         return instance;
+    }
+
+    @Override
+    public String toString() {
+        return "MockObject [id=" + id + ", name=" + name + ", money=" + money + ", instant=" + instant + ", race=" + race + ", children=" + children + "]";
     }
 
 }

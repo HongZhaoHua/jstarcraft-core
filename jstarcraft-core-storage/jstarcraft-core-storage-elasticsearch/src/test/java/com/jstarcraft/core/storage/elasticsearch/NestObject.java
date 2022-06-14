@@ -2,9 +2,6 @@ package com.jstarcraft.core.storage.elasticsearch;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import lombok.ToString;
-
-@ToString
 public class NestObject {
 
     private long id;
@@ -47,6 +44,11 @@ public class NestObject {
         instance.id = id;
         instance.name = name;
         return instance;
+    }
+
+    @Override
+    public String toString() {
+        return "NestObject [id=" + id + ", name=" + name + "]";
     }
 
 }
