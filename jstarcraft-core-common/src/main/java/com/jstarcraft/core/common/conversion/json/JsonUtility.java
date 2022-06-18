@@ -7,6 +7,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -37,6 +38,7 @@ public class JsonUtility {
 
     static {
         TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        TYPE_CONVERTER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         TYPE_MODULE = new JavaTimeModule();
         TYPE_CONVERTER.registerModule(TYPE_MODULE);
     }
