@@ -1,3 +1,9 @@
+Hibernate继承注解:
+https://www.cnblogs.com/hvicen/p/6337871.html
+
+Hibernate 实体映射的继承关系:
+https://www.cnblogs.com/hvicen/p/6337871.html
+
 Hibernate HQL[DEPRECATION] Encountered positional parameter 占位符问题:
 https://blog.csdn.net/bin594505536/article/details/45622673
 
