@@ -6,3 +6,18 @@ https://www.dazhuanlan.com/2019/12/27/5e05894aae157
 
 Jackson features:
 https://github.com/FasterXML/jackson-databind/wiki/JacksonFeatures
+
+【Jackson精解第1篇】JSON数据处理框架-序列化与反序列化核心用法:
+https://blog.csdn.net/hanxiaotongtong/article/details/108634752
+【Jackson精解第2篇】URL及日期等特殊数据格式处理-JSON框架:
+https://blog.csdn.net/hanxiaotongtong/article/details/108689953
+【Jackson精解第3篇】属性序列化自定义与字母表排序-JSON框架:
+https://blog.csdn.net/hanxiaotongtong/article/details/108702143
+【Jackson精解第4篇】@JacksonInject与@JsonAlias注解:
+https://blog.csdn.net/hanxiaotongtong/article/details/108723080
+【Jackson精解第5篇】@JsonCreator自定义反序列化函数-JSON框架:
+https://blog.csdn.net/hanxiaotongtong/article/details/108745009
+Jaskson精讲第6篇-自定义JsonSerialize与Deserialize实现数据类型转换:
+https://zhuanlan.zhihu.com/p/258708146
+【Jackson精讲第7篇】-类继承关系下的JSON序列化与反序列化JsonTypeInfo:
+https://blog.csdn.net/hanxiaotongtong/article/details/108841591
