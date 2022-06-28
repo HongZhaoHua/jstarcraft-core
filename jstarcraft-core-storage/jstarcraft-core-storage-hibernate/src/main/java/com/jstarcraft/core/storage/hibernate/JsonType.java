@@ -66,6 +66,9 @@ public class JsonType implements UserType {
             return null;
         }
         String json = resultSet.getString(names[0]);
+        if (json == null) {
+            return null;
+        }
         String columnName = getColumnName(resultSet, names[0]);
         String fieldName = getFieldName(object.getClass(), columnName);
         Type type = null;
