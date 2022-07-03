@@ -56,7 +56,7 @@ public class HibernateAccessor implements StorageAccessor {
 
     // 内置查询
     /** DELETE Class clazz WHERE clazz.field = ? */
-    private final static String DELETE_HQL = "DELETE {} clazz WHERE clazz.{} = ?0";
+    private final static String DELETE_HQL = "DELETE FROM {} clazz WHERE clazz.{} = ?0";
 
     /** 查询指定范围的最大主键标识 */
     private final static String MAXIMUM_ID = "SELECT MAX(clazz.{}) FROM {} clazz WHERE clazz.{} BETWEEN ?0 AND ?1";

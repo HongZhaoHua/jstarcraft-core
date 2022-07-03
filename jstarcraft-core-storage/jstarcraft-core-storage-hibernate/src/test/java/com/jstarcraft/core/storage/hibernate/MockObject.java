@@ -24,13 +24,13 @@ import com.jstarcraft.core.utility.StringUtility;
 @Table(indexes = { @Index(columnList = "name") })
 @NamedQueries({
 
-        @NamedQuery(name = MockObject.QUERY_MONEY_2_ID, query = "select clazz.id, clazz.name from MockObject clazz where clazz.money >= :from and clazz.money < :to"),
+        @NamedQuery(name = MockObject.QUERY_MONEY_2_ID, query = "SELECT clazz.id, clazz.name FROM MockObject clazz WHERE clazz.money >= :from AND clazz.money < :to"),
 
-        @NamedQuery(name = MockObject.QUERY_NAME_2_ID, query = "select clazz.id, clazz.name from MockObject clazz where clazz.name = ?0"),
+        @NamedQuery(name = MockObject.QUERY_NAME_2_ID, query = "SELECT clazz.id, clazz.name FROM MockObject clazz WHERE clazz.name = ?0"),
 
-        @NamedQuery(name = MockObject.UPDATE_MONEY_BY_ID, query = "update MockObject clazz set clazz.money=:money where clazz.id=:id"),
+        @NamedQuery(name = MockObject.UPDATE_MONEY_BY_ID, query = "UPDATE MockObject clazz SET clazz.money = :money WHERE clazz.id = :id"),
 
-        @NamedQuery(name = MockObject.DELETE_ALL, query = "delete from MockObject clazz"), })
+        @NamedQuery(name = MockObject.DELETE_ALL, query = "DELETE FROM MockObject clazz"), })
 public class MockObject implements IdentityObject<Integer> {
 
     public static final String QUERY_MONEY_2_ID = "MockObject.query_money_2_id";
