@@ -17,6 +17,9 @@ public enum ConditionType {
     /** x in values */
     In(1, Integer.MAX_VALUE),
 
+    /** like x */
+    Like(0, 1),
+
     /** x < to */
     Lower(1, 2),
 
