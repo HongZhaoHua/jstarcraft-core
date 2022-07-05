@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -92,6 +93,19 @@ public class JsonUtility {
     public static <T> T string2Object(String json, Type type) {
         try {
             return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
+        } catch (Exception exception) {
+            String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
+            throw new RuntimeException(message, exception);
+        }
+    }
+
+    public static String json2String(JsonNode node) {
+        return node.toString();
+    }
+
+    public static JsonNode string2Json(String json) {
+        try {
+            return TYPE_CONVERTER.readTree(json);
         } catch (Exception exception) {
             String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
             throw new RuntimeException(message, exception);
