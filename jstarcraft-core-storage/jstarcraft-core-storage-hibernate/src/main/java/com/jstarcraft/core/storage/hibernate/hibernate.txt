@@ -1,3 +1,6 @@
+jpa下hibernate的ddl-auto的各种属性:
+https://www.jsnds.cn/2016/08/21/162200.html
+
 Hibernate继承注解:
 https://www.cnblogs.com/hvicen/p/6337871.html
 
