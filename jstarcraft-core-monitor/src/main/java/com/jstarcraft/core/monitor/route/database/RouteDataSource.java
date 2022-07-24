@@ -34,7 +34,7 @@ public class RouteDataSource extends AbstractDataSource {
     /** 读写锁 */
     private ReadWriteLock lock = new ReentrantReadWriteLock();
 
-    public RouteDataSource(RouteStrategy strategy, HashMap<String, DataSource> dataSources) {
+    public RouteDataSource(RouteStrategy strategy, Map<String, DataSource> dataSources) {
         this.strategy = strategy;
         this.keys = Arrays.asList(dataSources.keySet().toArray(new String[dataSources.size()]));
         this.dataSources = new HashMap<>(dataSources);
