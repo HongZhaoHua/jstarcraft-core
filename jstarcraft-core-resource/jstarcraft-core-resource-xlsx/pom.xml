@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>jstarcraft-core-resource-excel</artifactId>
+    <artifactId>jstarcraft-core-resource-xlsx</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

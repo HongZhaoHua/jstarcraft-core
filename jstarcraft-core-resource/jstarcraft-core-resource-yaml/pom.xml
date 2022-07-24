@@ -20,6 +20,11 @@
         </dependency>
 
         <!-- 资源框架依赖 -->
+        <!-- 格式框架依赖 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
 
         <!-- 测试框架依赖 -->
         <dependency>
