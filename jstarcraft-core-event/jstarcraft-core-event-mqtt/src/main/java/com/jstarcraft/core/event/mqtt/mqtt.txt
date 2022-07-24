@@ -1,0 +1,55 @@
+物联网:
+https://blog.csdn.net/anxianfeng55555/category_7776149.html
+
+##### MQTT 3.1.1 #####
+MQTT 3.1.1 协议中文版:
+http://mqtt.p2hp.com/mqtt311
+
+MQTT Part 1 简介:
+https://www.jianshu.com/p/da8e03d8ab08
+MQTT Part 2 发布和订阅:
+https://www.jianshu.com/p/967cc509dd27
+MQTT Part 3 客户端，中间人（Broker），建立连接:
+https://www.jianshu.com/p/ff77386467e1
+MQTT Part 4 发布，订阅和退订:
+https://www.jianshu.com/p/bcf87deb0628
+MQTT Part 5 主题和最佳实践:
+https://www.jianshu.com/p/fd8b379225fe
+MQTT Part 6 服务质量 0、1、2:
+https://www.jianshu.com/p/a8502ad9d014
+MQTT Part 7 持久会话和消息队列:
+https://www.jianshu.com/p/379b5dbb6233
+MQTT Part 8 保留消息:
+https://www.jianshu.com/p/701ef52c62fd
+MQTT Part 9 遗嘱:
+https://www.jianshu.com/p/816b1475bed6
+MQTT Part 10 心跳和客户端替换:
+https://www.jianshu.com/p/0d8c63b1bcab
+MQTT Part 11 基于WebSockets的MQTT:
+https://www.jianshu.com/p/210063a3e9dc
+
+MQTT协议从服务端到客户端详解:
+https://www.jianshu.com/p/3d5b487c6860
+
+##### MQTT 5.0 #####
+
+MQTT 5.0 协议中文版:
+http://mqtt.p2hp.com/mqtt-5-0
+
+MQTT 协议:
+https://www.emqx.io/cn/blog/category/mqtt-protocol
+
+Vert.x MQTT:
+https://vertx.io/docs/vertx-mqtt/java/
+
+Eclipse Paho Java Client:
+https://github.com/eclipse/paho.mqtt.java
+
+Java MQTT 客户端之 Paho:
+https://www.cnblogs.com/victorbu/p/13328574.html
+
+使用eclipse paho在java端实现MQTT消息的收发（客户端与服务端实例）:
+https://www.cnblogs.com/swp520lmg/articles/8707173.html
+
+SpringMVC+Spring+Mybatis框架整合MQTT通信协议+ActiveMQ作为中间件进行消息的发布与订阅:
+https://blog.csdn.net/qq_34178998/article/details/93158429

@@ -1,0 +1,35 @@
+Vert.x官方示例:
+https://github.com/vert-x3/vertx-examples
+https://github.com/vert-x3/vertx-guide-for-java-devs
+
+Java API 版本的Vert.x Core 手册:
+https://github.com/quanke/vert-x-core-manual-for-java
+
+Vert.x 官方文档中文翻译:
+https://github.com/VertxChina/vertx-translation-chinese
+
+Vert.x Java开发指南:
+https://blog.csdn.net/elinespace/article/details/80373294
+https://blog.csdn.net/elinespace/article/details/80377709
+https://blog.csdn.net/elinespace/article/details/80381261
+https://blog.csdn.net/elinespace/article/details/80470153
+https://blog.csdn.net/elinespace/article/details/80470846
+https://blog.csdn.net/elinespace/article/details/80558824
+https://blog.csdn.net/elinespace/article/details/80559368
+https://blog.csdn.net/elinespace/article/details/80663688
+https://blog.csdn.net/elinespace/article/details/80675371
+https://blog.csdn.net/elinespace/article/details/80711513
+https://blog.csdn.net/elinespace/article/details/80717135
+https://blog.csdn.net/elinespace/article/details/80781526
+
+在Java中构建响应式微服务系统:
+https://blog.csdn.net/elinespace/article/details/80785654
+https://blog.csdn.net/elinespace/article/details/80793365
+https://blog.csdn.net/elinespace/article/details/82531072
+
+Vert.x系列:
+https://my.oschina.net/u/2382040/blog/1926203
+https://my.oschina.net/u/2382040/blog/3024868
+https://my.oschina.net/u/2382040/blog/3029310
+https://my.oschina.net/u/2382040/blog/3026728
+https://my.oschina.net/u/2382040/blog/3030394

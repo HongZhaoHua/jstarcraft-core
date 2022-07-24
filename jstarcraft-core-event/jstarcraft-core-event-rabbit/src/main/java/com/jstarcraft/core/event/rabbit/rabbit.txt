@@ -1,0 +1,27 @@
+Windows10环境下的RabbitMQ安装步骤:
+https://www.cnblogs.com/saryli/p/9729591.html
+
+Installing on Windows:
+https://www.rabbitmq.com/install-windows.html
+
+A JVM library to use RabbitMQ as an embedded service:
+https://github.com/AlejandroRivera/embedded-rabbitmq
+
+嵌入式的RabbitMQ开源库包:
+https://www.jdon.com/48409
+
+理解RabbitMQ中的AMQP-0-9-1模型:
+https://www.cnblogs.com/throwable/p/12275645.html
+
+Rabbit指南:
+https://blog.csdn.net/weixin_43533358/category_8270622.html
+
+java操作RabbitMQ(原生java客户端amqp-client):
+https://blog.csdn.net/u010904188/article/details/81066040
+
+RabbitMQ Java客户端API指南:
+https://www.cnblogs.com/xinxiucan/p/8041423.html
+https://www.cnblogs.com/xinxiucan/p/8041431.html
+
+RabbitMQ之方法详解:
+https://blog.csdn.net/yaomingyang/article/details/102636657

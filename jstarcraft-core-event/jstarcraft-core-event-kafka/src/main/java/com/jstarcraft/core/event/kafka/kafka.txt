@@ -1,0 +1,58 @@
+Windows安装Kafka 2.10:
+https://www.jianshu.com/p/66d89376d9cd
+
+A library that provides an in-memory Kafka instance to run your tests against:
+https://github.com/embeddedkafka/embedded-kafka
+
+This library wraps Kafka's embedded test cluster, allowing you to more easily create and run integration tests using JUnit against a "real" kafka server running within the context of your tests. No need to stand up an external kafka cluster:
+https://github.com/salesforce/kafka-junit
+
+单元测试之embedded-kafka:
+https://www.jianshu.com/p/66ed08b3f155
+
+Apache Kafka系列:
+http://www.itrensheng.com/categories/kafka
+
+Kafka核心设计与实践原理总结:
+https://blog.csdn.net/wk52525/article/details/96985534
+https://blog.csdn.net/wk52525/article/details/98070770
+
+Kafka从入门到实践:
+https://mp.weixin.qq.com/s?__biz=MzIxMjY0NzA0Mg==&mid=2247484049&idx=1&sn=466e9993a069dabc35b02f2ca23b5d8f
+
+Kafka中文教程:
+https://www.orchome.com/kafka/index
+
+Apache Kafka 教程:
+https://www.w3cschool.cn/apache_kafka/
+
+Kafka入门教程轻松学:
+https://blog.csdn.net/liyiming2017/article/details/82790040
+https://blog.csdn.net/liyiming2017/article/details/82790574
+https://blog.csdn.net/liyiming2017/article/details/82805479
+https://blog.csdn.net/liyiming2017/article/details/82843036
+https://blog.csdn.net/liyiming2017/article/details/82867765
+https://blog.csdn.net/liyiming2017/article/details/82968550
+https://blog.csdn.net/liyiming2017/article/details/82984638
+https://blog.csdn.net/liyiming2017/article/details/82986606
+
+Kafka 新版生产者 API:
+https://www.jianshu.com/p/6e6c8ea297ca
+
+Kafka 新版消费者 API:
+https://www.jianshu.com/p/48eddba198fa
+https://www.jianshu.com/p/6c7055b84de7
+https://www.jianshu.com/p/a4c1d281b66a
+https://www.jianshu.com/p/6e89db47c116
+
+Kafka 主题管理 API:
+https://www.jianshu.com/p/0d319bc8c4e3
+
+Kafka 自定义分区器:
+https://www.jianshu.com/p/9e213cdd21a5
+
+Kafka 自定义序列化器和反序列化器:
+https://www.jianshu.com/p/45d56cd39572
+
+Kafka下的生产消费者模式与订阅发布模式:
+https://blog.csdn.net/zwgdft/article/details/54633105
