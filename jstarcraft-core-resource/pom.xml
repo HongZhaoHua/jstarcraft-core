@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>jstarcraft-core-resource</artifactId>
+     <artifactId>jstarcraft-core-resource</artifactId>
     <packaging>pom</packaging>
 
     <modules>
