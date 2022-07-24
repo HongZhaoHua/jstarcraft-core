@@ -28,12 +28,12 @@ public class CsvFormatAdapterTestCase {
     @Autowired
     private ResourceStorage storage;
     @ResourceAccessor
-    private ResourceManager<Integer, Person> manager;
+    private ResourceManager<Integer, CsvPerson> manager;
     @ResourceAccessor("2")
-    private Person person;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
+    private CsvPerson person;
+    @ResourceAccessor(value = "2", clazz = CsvPerson.class, property = "sex")
     private boolean sex;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "description")
+    @ResourceAccessor(value = "2", clazz = CsvPerson.class, property = "description")
     private String description;
 
     /**
@@ -68,10 +68,10 @@ public class CsvFormatAdapterTestCase {
      */
     @Test
     public void testIndex() {
-        List<Person> ageIndex = manager.getMultiple(Person.INDEX_AGE, 32);
+        List<CsvPerson> ageIndex = manager.getMultiple(CsvPerson.INDEX_AGE, 32);
         Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-        Person birdy = manager.getSingle(Person.INDEX_NAME, "Birdy");
+        CsvPerson birdy = manager.getSingle(CsvPerson.INDEX_NAME, "Birdy");
         Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 

@@ -11,7 +11,7 @@ import com.jstarcraft.core.resource.annotation.ResourceId;
 @ResourceConfiguration(prefix = "xml/", suffix = ".xml")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Biology {
+public class XmlBiology {
 
     @ResourceId
     @XmlAttribute

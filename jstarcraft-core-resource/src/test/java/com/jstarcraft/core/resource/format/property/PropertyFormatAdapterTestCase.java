@@ -28,12 +28,12 @@ public class PropertyFormatAdapterTestCase {
     @Autowired
     private ResourceStorage storage;
     @ResourceAccessor
-    private ResourceManager<Integer, Person> manager;
+    private ResourceManager<Integer, PropertyPerson> manager;
     @ResourceAccessor("2")
-    private Person person;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
+    private PropertyPerson person;
+    @ResourceAccessor(value = "2", clazz = PropertyPerson.class, property = "sex")
     private boolean sex;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "description")
+    @ResourceAccessor(value = "2", clazz = PropertyPerson.class, property = "description")
     private String description;
 
     /**
@@ -68,10 +68,10 @@ public class PropertyFormatAdapterTestCase {
      */
     @Test
     public void testIndex() {
-        List<Person> ageIndex = manager.getMultiple(Person.INDEX_AGE, 32);
+        List<PropertyPerson> ageIndex = manager.getMultiple(PropertyPerson.INDEX_AGE, 32);
         Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-        Person birdy = manager.getSingle(Person.INDEX_NAME, "Birdy");
+        PropertyPerson birdy = manager.getSingle(PropertyPerson.INDEX_NAME, "Birdy");
         Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 

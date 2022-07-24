@@ -22,21 +22,21 @@ import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 public class XlsxFormatAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceManager<Integer, Biology> manager;
+    private ResourceManager<Integer, XlsxBiology> manager;
 
     @ResourceAccessor("1")
-    private Biology cat;
+    private XlsxBiology cat;
     @ResourceAccessor("2")
-    private Biology dog;
+    private XlsxBiology dog;
     @ResourceAccessor("3")
-    private Biology tree;
+    private XlsxBiology tree;
     @ResourceAccessor("4")
-    private Biology shrub;
+    private XlsxBiology shrub;
 
     @ResourceAccessor(value = "0", necessary = false)
-    private Biology ignore;
+    private XlsxBiology ignore;
     @ResourceAccessor(value = "5", necessary = false)
-    private Biology unknow;
+    private XlsxBiology unknow;
 
     @Test
     public void testXlsx() {

@@ -22,21 +22,21 @@ import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 public class XmlFormatAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceManager<Integer, Biology> manager;
+    private ResourceManager<Integer, XmlBiology> manager;
 
     @ResourceAccessor("1")
-    private Biology cat;
+    private XmlBiology cat;
     @ResourceAccessor("2")
-    private Biology dog;
+    private XmlBiology dog;
     @ResourceAccessor("3")
-    private Biology tree;
+    private XmlBiology tree;
     @ResourceAccessor("4")
-    private Biology shrub;
+    private XmlBiology shrub;
 
     @ResourceAccessor(value = "0", necessary = false)
-    private Biology ignore;
+    private XmlBiology ignore;
     @ResourceAccessor(value = "5", necessary = false)
-    private Biology unknow;
+    private XmlBiology unknow;
 
     @Test
     public void testXml() {

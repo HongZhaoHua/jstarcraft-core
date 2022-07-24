@@ -12,7 +12,7 @@ import com.jstarcraft.core.utility.StringUtility;
 
 @ResourceConfiguration(prefix = "csv/", suffix = ".csv")
 @CsvConfiguration({ "id", "name", "age", "sex", "object", "array", "map", "list", "childId" })
-public class Person {
+public class CsvPerson {
 
     public static final String INDEX_NAME = "name";
     public static final String INDEX_AGE = "age";

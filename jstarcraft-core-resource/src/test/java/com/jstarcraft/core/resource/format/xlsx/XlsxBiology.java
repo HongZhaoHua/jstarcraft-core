@@ -4,7 +4,7 @@ import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 
 @ResourceConfiguration(prefix = "xlsx/", suffix = ".xlsx")
-public class Biology {
+public class XlsxBiology {
 
     @ResourceId
     private Integer id;

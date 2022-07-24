@@ -24,16 +24,16 @@ import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 public class ExcelFormatAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceManager<Integer, Biology> manager;
+    private ResourceManager<Integer, ExcelBiology> manager;
 
     @ResourceAccessor("1")
-    private Biology cat;
+    private ExcelBiology cat;
     @ResourceAccessor("2")
-    private Biology dog;
+    private ExcelBiology dog;
     @ResourceAccessor("3")
-    private Biology tree;
+    private ExcelBiology tree;
     @ResourceAccessor("4")
-    private Biology shrub;
+    private ExcelBiology shrub;
 
     @Test
     public void testExcel() {

@@ -46,12 +46,12 @@ public class JsonFormatAdapterTestCase {
     @Autowired
     private ResourceStorage storage;
     @ResourceAccessor
-    private ResourceManager<Integer, Person> manager;
+    private ResourceManager<Integer, JsonPerson> manager;
     @ResourceAccessor("2")
-    private Person person;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "sex")
+    private JsonPerson person;
+    @ResourceAccessor(value = "2", clazz = JsonPerson.class, property = "sex")
     private boolean sex;
-    @ResourceAccessor(value = "2", clazz = Person.class, property = "description")
+    @ResourceAccessor(value = "2", clazz = JsonPerson.class, property = "description")
     private String description;
 
     /**
@@ -80,16 +80,16 @@ public class JsonFormatAdapterTestCase {
      */
     @Test
     public void testIndex() {
-        List<Person> ageIndex = manager.getMultiple(Person.INDEX_AGE, 32);
+        List<JsonPerson> ageIndex = manager.getMultiple(JsonPerson.INDEX_AGE, 32);
         Assert.assertThat(ageIndex.size(), CoreMatchers.equalTo(2));
 
-        Person birdy = manager.getSingle(Person.INDEX_NAME, "Birdy");
+        JsonPerson birdy = manager.getSingle(JsonPerson.INDEX_NAME, "Birdy");
         Assert.assertThat(birdy, CoreMatchers.equalTo(manager.getInstance(1, false)));
     }
 
-    private static final String oldFileName = "Person-old.json";
-    private static final String personFileName = "Person.json";
-    private static final String newFileName = "Person-new.json";
+    private static final String oldFileName = "JsonPerson-old.json";
+    private static final String personFileName = "JsonPerson.json";
+    private static final String newFileName = "JsonPerson-new.json";
 
     private void setMonitor() {
         try {
@@ -100,7 +100,7 @@ public class JsonFormatAdapterTestCase {
             HashMap<WatchKey, Path> paths = new HashMap<>();
             {
                 File file = new File(this.getClass().getResource(personFileName).toURI());
-                classes.put(file.getAbsolutePath(), Person.class);
+                classes.put(file.getAbsolutePath(), JsonPerson.class);
                 directories.add(file.getParentFile());
             }
 
@@ -169,7 +169,7 @@ public class JsonFormatAdapterTestCase {
             FileUtils.copyFile(newFile, personFile);
             Thread.sleep(1000);
             // 验证索引是否修改
-            Collection<Person> persons = manager.getMultiple(Person.INDEX_AGE, 10);
+            Collection<JsonPerson> persons = manager.getMultiple(JsonPerson.INDEX_AGE, 10);
             Assert.assertThat(persons.size(), CoreMatchers.equalTo(3));
             // 验证访问器是否修改
             Assert.assertThat(person.getAge(), CoreMatchers.equalTo(10));

@@ -11,7 +11,7 @@ import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 
 @ResourceConfiguration(prefix = "yaml/", suffix = ".yml")
-public class Person {
+public class YamlPerson {
 
     public static final String INDEX_NAME = "name";
     public static final String INDEX_AGE = "age";
@@ -37,10 +37,10 @@ public class Person {
 
     private Integer childId;
 
-    Person() {
+    YamlPerson() {
     }
 
-    public Person(Integer id, String name, int age, boolean sex, KeyValue<Integer, String> object, KeyValue<Integer, String>[] array, HashMap<String, KeyValue<Integer, String>> map, ArrayList<KeyValue<Integer, String>> list) {
+    public YamlPerson(Integer id, String name, int age, boolean sex, KeyValue<Integer, String> object, KeyValue<Integer, String>[] array, HashMap<String, KeyValue<Integer, String>> map, ArrayList<KeyValue<Integer, String>> list) {
         this.id = id;
         this.name = name;
         this.age = age;
