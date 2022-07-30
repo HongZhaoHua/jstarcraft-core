@@ -22,9 +22,9 @@ import com.jstarcraft.core.utility.StringUtility;
  * @author Birdy
  *
  */
-public class ExcelFormatAdapter implements FormatAdapter {
+public class XlsFormatAdapter implements FormatAdapter {
 
-    private final static Logger logger = LoggerFactory.getLogger(ExcelFormatAdapter.class);
+    private final static Logger logger = LoggerFactory.getLogger(XlsFormatAdapter.class);
 
     private final class ExcelFormatListener<E> extends AnalysisEventListener<E> {
 
@@ -70,11 +70,11 @@ public class ExcelFormatAdapter implements FormatAdapter {
 
     private int metaNumber;
 
-    public ExcelFormatAdapter() {
+    public XlsFormatAdapter() {
         this(1);
     }
 
-    public ExcelFormatAdapter(int metaNumber) {
+    public XlsFormatAdapter(int metaNumber) {
         this.metaNumber = metaNumber;
     }
 

@@ -2,8 +2,6 @@ package com.jstarcraft.core.resource.format.excel;
 
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,48 +13,52 @@ import com.jstarcraft.core.resource.ResourceManager;
 import com.jstarcraft.core.resource.annotation.ResourceAccessor;
 
 /**
- * XLS适配器测试
+ * XLSX适配器测试
  * 
  * @author Birdy
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class ExcelFormatAdapterTestCase {
+public class XlsxFormatAdapterTestCase {
 
     @ResourceAccessor
-    private ResourceManager<Integer, ExcelBiology> manager;
+    private ResourceManager<Integer, XlsxBiology> manager;
 
     @ResourceAccessor("1")
-    private ExcelBiology cat;
+    private XlsxBiology cat;
     @ResourceAccessor("2")
-    private ExcelBiology dog;
+    private XlsxBiology dog;
     @ResourceAccessor("3")
-    private ExcelBiology tree;
+    private XlsxBiology tree;
     @ResourceAccessor("4")
-    private ExcelBiology shrub;
+    private XlsxBiology shrub;
+
+    @ResourceAccessor(value = "0", necessary = false)
+    private XlsxBiology ignore;
+    @ResourceAccessor(value = "5", necessary = false)
+    private XlsxBiology unknow;
 
     @Test
-    public void testExcel() {
+    public void testXlsx() {
         Assert.assertThat(manager.getAll().size(), CoreMatchers.equalTo(4));
 
         assertThat(cat, CoreMatchers.notNullValue());
         assertThat(cat.getId(), CoreMatchers.is(1));
         assertThat(cat.getName(), CoreMatchers.is("Cat"));
-        assertThat(cat.getDescription()[1], CoreMatchers.notNullValue());
 
         assertThat(dog, CoreMatchers.notNullValue());
         assertThat(dog.getId(), CoreMatchers.is(2));
         assertThat(dog.getName(), CoreMatchers.is("Dog"));
-        assertThat(dog.getDescription()[1], CoreMatchers.nullValue());
 
         assertThat(tree, CoreMatchers.notNullValue());
         assertThat(tree.getId(), CoreMatchers.is(3));
         assertThat(tree.getName(), CoreMatchers.is("Tree"));
-        assertThat(tree.getDescription(), CoreMatchers.nullValue());
 
         assertThat(shrub, CoreMatchers.notNullValue());
         assertThat(shrub.getId(), CoreMatchers.is(4));
         assertThat(shrub.getName(), CoreMatchers.is("Shrub"));
-        assertThat(shrub.getDescription(), CoreMatchers.nullValue());
+
+        assertThat(ignore, CoreMatchers.nullValue());
+        assertThat(unknow, CoreMatchers.nullValue());
     }
 }

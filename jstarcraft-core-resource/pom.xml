@@ -17,7 +17,6 @@
         <module>jstarcraft-core-resource-excel</module>
         <module>jstarcraft-core-resource-json</module>
         <module>jstarcraft-core-resource-property</module>
-        <module>jstarcraft-core-resource-xlsx</module>
         <module>jstarcraft-core-resource-xml</module>
         <module>jstarcraft-core-resource-yaml</module>
     </modules>

@@ -14,7 +14,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.jstarcraft.com/core/resource
 http://www.jstarcraft.com/core/resource/resource.xsd">
 
-    <bean id="formatAdapter" class="com.jstarcraft.core.resource.format.ExcelFormatAdapter">
+    <bean id="formatAdapter" class="com.jstarcraft.core.resource.format.XlsFormatAdapter">
         <constructor-arg value="2" />
     </bean>
 
@@ -25,7 +25,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
     <!-- 仓储管理器配置 -->
     <resource:configuration id="resourceStorage" format="formatAdapter" path="pathAdapter">
         <resource:scan>
-            <resource:package name="com.jstarcraft.core.resource.format.excel" />
+            <resource:class name="com.jstarcraft.core.resource.format.excel.XlsBiology" />
         </resource:scan>
     </resource:configuration>
 

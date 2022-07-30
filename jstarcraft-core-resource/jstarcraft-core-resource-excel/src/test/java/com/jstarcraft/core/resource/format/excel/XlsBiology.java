@@ -5,7 +5,7 @@ import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
 
 @ResourceConfiguration(prefix = "excel/", suffix = ".xls")
-public class ExcelBiology {
+public class XlsBiology {
 
     @ResourceId
     @ExcelProperty("id")
