@@ -17,9 +17,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.util.CloseableIterator;
 
 import com.jstarcraft.core.common.identification.IdentityObject;
+import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageAccessor;
 import com.jstarcraft.core.storage.StorageCondition;
-import com.jstarcraft.core.storage.ConditionType;
 import com.jstarcraft.core.storage.StorageIterator;
 import com.jstarcraft.core.storage.StorageMetadata;
 import com.jstarcraft.core.storage.StoragePagination;

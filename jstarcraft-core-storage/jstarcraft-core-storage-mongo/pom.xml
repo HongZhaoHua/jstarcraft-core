@@ -26,6 +26,11 @@
             <artifactId>spring-data-mongodb</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+
         <!-- 测试框架依赖 -->
         <dependency>
             <groupId>junit</groupId>
