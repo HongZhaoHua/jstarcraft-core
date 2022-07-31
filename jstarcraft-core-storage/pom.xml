@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
-                <version>2.2.13.RELEASE</version>
+                <version>3.3.5</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.springframework</groupId>
