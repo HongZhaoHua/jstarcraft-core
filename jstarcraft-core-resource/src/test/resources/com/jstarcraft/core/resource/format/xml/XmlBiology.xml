@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+    <xmlBiology id="1">
+        <name>Cat</name>
+    </xmlBiology>
+    <xmlBiology id="2">
+        <name>Dog</name>
+    </xmlBiology>
+    <xmlBiology id="3">
+        <name>Tree</name>
+    </xmlBiology>
+    <xmlBiology id="4">
+        <name>Shrub</name>
+    </xmlBiology>
+</xml>

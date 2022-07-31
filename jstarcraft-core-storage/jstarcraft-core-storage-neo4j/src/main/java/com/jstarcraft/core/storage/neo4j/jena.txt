@@ -1,0 +1,15 @@
+Jena 简介-通过 Jena Semantic Web Framework 在 Jave 应用程序中使用 RDF 模型:
+https://www.cnblogs.com/peizhe123/p/4708038.html
+
+Jena学习笔记:
+https://www.jianshu.com/p/2709946c2f76
+https://www.jianshu.com/p/f93fdc1a4f68
+
+Apache Jena入门:
+https://blog.csdn.net/qq_22938671/article/details/89070995
+
+Jena RDF API 使用教程:
+https://blog.csdn.net/u013007703/article/details/94591600
+
+RDF 教程:
+https://www.w3school.com.cn/rdf/index.asp

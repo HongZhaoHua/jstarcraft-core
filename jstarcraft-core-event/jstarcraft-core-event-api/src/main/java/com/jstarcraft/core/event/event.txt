@@ -1,0 +1,28 @@
+企业集成模式:
+https://www.enterpriseintegrationpatterns.com/patterns/messaging
+
+消息队列的两种模式:
+https://www.cnblogs.com/jackytang/p/9011051.html
+
+ActiveMQ的详细说明,queue/topic的区别(精选):
+https://www.cnblogs.com/lemon-flm/p/7676047.html
+
+JMS、AMQP和MQTT主要特性:
+https://www.cnblogs.com/zhangyu1024/p/6138166.html
+
+一文读懂XMPP/DDS/MQTT/AMQP/REST/HTTP协议的区别:
+https://www.eefocus.com/communication/393583
+
+物联网通信协议——比较-MQTT、 DDS、 AMQP、XMPP、 JMS、 REST、 CoAP:
+https://www.cnblogs.com/saryli/p/9742709.html
+
+----- 整合各种消息 -----
+
+Artemis AMQP/MQTT/OpenWire/STOMP 示例:
+https://github.com/apache/activemq-artemis/tree/master/examples/protocols
+
+The pub/sub library for node backed by Redis, MongoDB, AMQP (RabbitMQ), ZeroMQ, MQTT (Mosquitto) or just plain node!:
+https://github.com/moscajs/ascoltatori
+
+Node.js globbing for amqp-like topics:
+https://github.com/davedoesdev/qlobber

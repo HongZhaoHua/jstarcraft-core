@@ -157,7 +157,7 @@ abstract class JavassistProxy implements ProxyTransformer {
      * 代理类
      * 
      * <pre>
-     * public class [clazz.name]$ENHANCED extends [clazz.name] implements CacheObject {
+     * public class {clazz.name}_PROXY extends {clazz.name} implements CacheObject {
      * }
      * </pre>
      * 
@@ -178,7 +178,7 @@ abstract class JavassistProxy implements ProxyTransformer {
      * 代理构造器
      * 
      * <pre>
-     * public [proxyClass.name]([clazz.name] _object, CacheManager _manager) {
+     * public {proxyClass.name}({clazz.name} _object, CacheManager _manager) {
      *     this._object = _object;
      *     this._manager = _manager;
      * }
@@ -203,7 +203,7 @@ abstract class JavassistProxy implements ProxyTransformer {
      * 代理缓存字段
      * 
      * <pre>
-     * private final [clazz.name] _object;
+     * private final {clazz.name} _object;
      * private final CacheManager _manager;
      * </pre>
      * 

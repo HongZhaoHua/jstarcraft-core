@@ -1,0 +1,5 @@
+HugeGraph Database core component, including graph engine, API, and built-in backends:
+https://hugegraph.github.io/hugegraph-doc
+
+图系统-HugeGraph:
+https://www.imbajin.com/tags/hugegraph

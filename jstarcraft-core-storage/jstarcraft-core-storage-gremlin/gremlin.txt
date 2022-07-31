@@ -1,0 +1,39 @@
+***** TinkerPop *****
+
+TinkerPop3 Gremlin 学习笔记:
+https://blog.csdn.net/m0_37204491/article/details/80312278
+
+从零开始玩转图库:
+https://developer.aliyun.com/article/603694
+
+TinkerPop3 中文文档翻译:
+https://blog.csdn.net/knightjya/article/details/104060494
+
+图数数据库引擎TinkerPop:
+https://blog.csdn.net/freewebsys/category_5580251.html
+
+图查询引擎TinkerPop:
+https://www.imbajin.com/2018-07-26-%E5%9B%BE%E8%AE%A1%E7%AE%97%E5%BC%95%E6%93%8ETinkerpop
+
+***** Gremlin *****
+
+Gremlin中文文档:
+http://tinkerpop-gremlin.cn
+
+深入学习图数据库语言Gremlin 系列:
+https://blog.csdn.net/javeme/article/details/82631834
+
+Practical Gremlin: An Apache TinkerPop Tutorial:
+https://github.com/krlawrence/graph
+
+图形数据库与 CRUD 操作:
+https://developer.ibm.com/zh/depmodels/cloud/articles/cl-graph-database-1
+
+Spring Data Gremlin:
+https://github.com/Microsoft/spring-data-gremlin
+
+An ORM / OGM for the Apache TinkerPop graph stack:
+https://github.com/Syncleus/Ferma
+
+An Object Graph Mapping Library For Gremlin:
+https://github.com/karthicks/gremlin-ogm

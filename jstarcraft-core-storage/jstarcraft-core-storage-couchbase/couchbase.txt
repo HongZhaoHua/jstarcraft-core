@@ -1,0 +1,5 @@
+Couchbase Enterprise vs. Community Edition vs. Couchbase Cloud:
+https://www.couchbase.com/products/editions
+
+Feature set: CouchDB vs. Couchbase:
+https://www.couchbase.com/comparing-couchbase-vs-couchdb

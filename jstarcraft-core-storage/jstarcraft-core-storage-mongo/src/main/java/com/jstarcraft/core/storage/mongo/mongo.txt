@@ -1,0 +1,17 @@
+MongoDB 教程:
+https://www.runoob.com/mongodb/mongodb-tutorial.html
+
+Spring-Data-Mongo 2.X 基本使用的演示，用于笔记链接:
+https://gitee.com/assad/spring-data-mongo-sample
+
+A Guide to Queries in Spring Data MongoDB:
+http://www.baeldung.com/queries-in-spring-data-mongodb
+
+Spring Data MongoDB - Reference Documentation:
+https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/
+
+MongoTemplate使用Cursor处理大数量的数据:
+https://blog.csdn.net/ClementAD/article/details/55210973
+
+Spring Data MongoDB:
+https://blog.csdn.net/congcong68/article/category/5681741

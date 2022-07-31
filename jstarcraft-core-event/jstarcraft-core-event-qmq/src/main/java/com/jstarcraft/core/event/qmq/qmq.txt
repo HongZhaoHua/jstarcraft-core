@@ -1,0 +1,25 @@
+QMQ是去哪儿网内部广泛使用的消息中间件:
+https://github.com/qunarcorp/qmq
+
+谈谈QMQ的实现:
+https://www.dazhuanlan.com/2019/12/09/5dedee6792fe6
+
+去哪儿网消息队列设计与实现:
+https://www.infoq.cn/article/b4VPvP3m8DA-PM7ZqMGZ
+
+注意:
+部署QMQ过程中,所有ip:port的ip都不能使用localhost或者127.0.0.1
+
+init.sql使用数据库:
+DROP DATABASE IF EXISTS `qmq_produce`;
+CREATE DATABASE `qmq_produce`;
+Use `qmq_produce`;
+
+tools.cmd使用参数:
+{ip}通过ipconfig命令获取
+{hostname}通过hostname命令获取
+AddBroker --metaserver={ip}:8080 --token=token --brokerGroup=groupName --role=0 --hostname={hostname} --ip={ip} --servePort=20881 --syncPort=20882
+
+broker.properties使用参数:
+{ip}通过ipconfig命令获取
+meta.server.endpoint={ip}:8080/meta/address

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mybatis="http://www.jstarcraft.com/core/storage/mybatis"
+    xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.jstarcraft.com/core/storage/mybatis
+http://www.jstarcraft.com/core/storage/mybatis/mybatis.xsd">
+
+    <!-- 配置文件配置 -->
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>/com/jstarcraft/core/storage/mybatis/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 数据源配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <!-- 访问器配置 -->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:/com/jstarcraft/core/storage/mybatis/mybatis-config.xml" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="com.jstarcraft.core.storage.mybatis" />
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="h2" />
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
+
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+
+    <mybatis:configuration id="myBatisAccessor" template="sqlSessionTemplate">
+        <mybatis:scan>
+            <mybatis:package name="com.jstarcraft.core.storage.mybatis" />
+        </mybatis:scan>
+    </mybatis:configuration>
+
+    <!-- 事务配置 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- Hibernate配置 -->
+    <bean id="physicalNamingStrategy" class="com.jstarcraft.core.storage.hibernate.Camel2SnakeStrategy">
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="physicalNamingStrategy" ref="physicalNamingStrategy" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.jstarcraft.core.storage.mybatis" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="current_session_context_class">thread</prop>
+                <prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

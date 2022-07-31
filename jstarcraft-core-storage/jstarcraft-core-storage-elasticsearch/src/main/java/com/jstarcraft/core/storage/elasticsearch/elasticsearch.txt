@@ -1,0 +1,78 @@
+版本对照
+https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/
+
+Spring Boot整合Elasticsearch详细教程！官方工具类该如何使用？一篇文章搞定！:
+https://juejin.cn/post/6976253744342122504
+
+ElasticSearch7.3 Windows 环境搭建:
+https://blog.csdn.net/diaobatian/article/details/98476301
+
+ElasticSearch官方:
+https://www.elastic.co/guide/index.html
+https://www.elastic.co/guide/cn/index.html
+
+ElasticSearch 7 教程:
+https://www.kaifaxueyuan.com/server/elasticsearch7.html
+
+Elasticsearch Java API 很全的整理以及架构剖析:
+https://www.cnblogs.com/laoqing/p/11693144.html
+
+ElasticSearch实战系列:
+https://www.cnblogs.com/xuwujing/tag/elasticsearch
+
+Elasticsearch技术研讨:
+https://zhuanlan.zhihu.com/Elasticsearch
+
+Elasticsearch内核解析:
+https://zhuanlan.zhihu.com/p/34680841
+https://zhuanlan.zhihu.com/p/34669354
+https://zhuanlan.zhihu.com/p/34674517
+
+系统学Elasticsearch:
+http://mp.weixin.qq.com/mp/homepage?__biz=MzIxMjE3NjYwOQ==&hid=5&sn=b9c85139ca524fc7823379f4a2da99ba
+
+Easy-Es是一款简化ElasticSearch搜索引擎操作的开源框架,简化CRUD操作,可以更好的帮助开发者减轻开发负担
+
+底层采用Es官方提供的RestHighLevelClient,保证其原生性能及拓展性:
+https://github.com/dromara/easy-es/blob/main/README-ZH.md
+
+***** 脚本 *****
+Elasticsearch: Painless script编程:
+https://elasticstack.blog.csdn.net/article/details/100576555
+Elasticsearch：Painless scripting 初级编程:
+https://elasticstack.blog.csdn.net/article/details/104206569
+Elasticsearch：Painless scripting 高级编程:
+https://elasticstack.blog.csdn.net/article/details/104221275
+Elasticsearch：Painless 编程调试:
+https://blog.csdn.net/UbuntuTouch/article/details/108315145
+
+***** 嵌套 *****
+ElasticSearch-Nested嵌套类型解密:
+https://www.shenyanchao.cn/blog/2019/01/10/elasticsearch-nested
+
+干货 | Elasticsearch Nested类型深入详解:
+https://blog.csdn.net/laoyang360/article/details/82950393
+
+***** 向量检索 *****
+Elasticsearch：基于Vector的打分:
+https://elasticstack.blog.csdn.net/article/details/103651068
+
+***** 分片与路由 *****
+Elasticsearch之四种查询类型:
+https://yq.aliyun.com/articles/553839
+
+ElasticSearch 分片(Shards)的详解:
+https://www.jianshu.com/p/03e427fb5586
+
+Elasticsearch 集群分配多少分片合理:
+https://www.jianshu.com/p/297e13045605
+
+Elasticsearch Routing 路由详解:
+https://blog.csdn.net/ZYC88888/article/details/100727714
+
+***** 模板 *****
+初探 Elasticsearch Index Template（索引模板):
+https://www.jianshu.com/p/1f67e4436c37
+
+Elasticsearch 6 教程
+https://www.cnblogs.com/shoufeng/tag/Elasticsearch

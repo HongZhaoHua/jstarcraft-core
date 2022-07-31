@@ -15,7 +15,13 @@
         <!-- JStarCraft框架依赖 -->
         <dependency>
             <groupId>com.jstarcraft</groupId>
-            <artifactId>jstarcraft-core-storage</artifactId>
+            <artifactId>jstarcraft-core-storage-hibernate</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jstarcraft</groupId>
+            <artifactId>jstarcraft-core-storage-mongo</artifactId>
             <version>1.0</version>
         </dependency>
 

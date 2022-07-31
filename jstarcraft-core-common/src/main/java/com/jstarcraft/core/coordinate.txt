@@ -1,0 +1,17 @@
+各种经纬度坐标系转换-百度坐标系、火星坐标系、国际坐标系:
+https://blog.csdn.net/doulejian/article/details/70155080
+
+各坐标系简介与转换。包括WGS84（地球坐标系）、GCJ02（火星坐标系）和BD09（百度坐标系）:
+https://github.com/JourWon/coordinate-transform
+
+火星坐标、百度坐标、WGS84坐标转换代码（JS版）:
+https://www.jianshu.com/p/0eb4cbfa44ad
+
+地图经纬度转换（百度，高德，谷歌，Leaflet）:
+https://blog.csdn.net/weixin_42116924/article/details/117816754
+
+地理坐标系转换工具:
+https://github.com/hujiulong/gcoord
+
+JavaScript library to transform coordinates from one coordinate system to another, including datum transformations:
+https://github.com/proj4js/proj4js

@@ -1,0 +1,37 @@
+- id: 1
+  name: "Birdy"
+  age: 32
+  sex: true
+  childId: 2 
+
+- id: 2
+  name: "Mickey"
+  age: 6
+  sex: true
+  object:
+    key: 1
+    value: "1"
+  array:
+  - key: 0
+    value: "0"
+  - key: 1
+    value: "1"
+  map:
+    1:
+      key: 1
+      value: "1"
+    2:
+      key: 2
+      value: "2"
+  list:
+  - key: 0
+    value: "0"
+  - key: 1
+    value: "1"
+  childId: 2
+
+- id: 3
+  name: "Wolfy"
+  age: 32
+  sex: false
+  childId: 2

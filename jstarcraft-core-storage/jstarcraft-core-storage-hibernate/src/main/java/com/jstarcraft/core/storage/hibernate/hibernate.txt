@@ -1,0 +1,17 @@
+jpa下hibernate的ddl-auto的各种属性:
+https://www.jsnds.cn/2016/08/21/162200.html
+
+Hibernate继承注解:
+https://www.cnblogs.com/hvicen/p/6337871.html
+
+Hibernate 实体映射的继承关系:
+https://www.cnblogs.com/hvicen/p/6337871.html
+
+Hibernate HQL[DEPRECATION] Encountered positional parameter 占位符问题:
+https://blog.csdn.net/bin594505536/article/details/45622673
+
+How to map camelCase properties to snake_case column names with Hibernate
+https://vladmihalcea.com/map-camel-case-properties-snake-case-column-names-hibernate
+
+Hibernate5 ImplicitNamingStrategy与PhysicalNamingStrategy:
+https://blog.csdn.net/u010351766/article/details/108405066

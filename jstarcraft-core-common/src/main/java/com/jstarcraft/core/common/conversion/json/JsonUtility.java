@@ -7,8 +7,10 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -24,6 +26,8 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 public class JsonUtility {
 
+    public static final JsonUtility Instance = new JsonUtility();
+
     /** 类型转换器(基于Jackson) */
     private static final JsonMapper TYPE_CONVERTER = new JsonMapper();
 
@@ -35,7 +39,16 @@ public class JsonUtility {
 
     static {
         TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        TYPE_CONVERTER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         TYPE_MODULE = new JavaTimeModule();
+
+//        TYPE_MODULE.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//        TYPE_MODULE.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        TYPE_MODULE.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+//        TYPE_MODULE.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//        TYPE_MODULE.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        TYPE_MODULE.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
         TYPE_CONVERTER.registerModule(TYPE_MODULE);
     }
 
@@ -80,6 +93,19 @@ public class JsonUtility {
     public static <T> T string2Object(String json, Type type) {
         try {
             return (T) TYPE_CONVERTER.readValue(json, TYPE_FACTORY.constructType(type));
+        } catch (Exception exception) {
+            String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
+            throw new RuntimeException(message, exception);
+        }
+    }
+
+    public static String json2String(JsonNode node) {
+        return node.toString();
+    }
+
+    public static JsonNode string2Json(String json) {
+        try {
+            return TYPE_CONVERTER.readTree(json);
         } catch (Exception exception) {
             String message = StringUtility.format("将JSON字符串[{}]转换为对象时异常", json);
             throw new RuntimeException(message, exception);

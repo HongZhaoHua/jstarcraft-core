@@ -14,6 +14,7 @@ import com.jstarcraft.core.codec.exception.CodecException;
 import com.jstarcraft.core.codec.specification.CodecDefinition;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * XML格式编解码器
@@ -39,6 +40,8 @@ public class XmlContentCodec implements ContentCodec {
     public XmlContentCodec(CodecDefinition definition, XStream typeConverter) {
         this.codecDefinition = definition;
         this.typeConverter = typeConverter;
+        // 支持任意类型
+        typeConverter.addPermission(AnyTypePermission.ANY);
     }
 
     @Override

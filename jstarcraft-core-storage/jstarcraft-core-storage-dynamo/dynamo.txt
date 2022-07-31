@@ -1,0 +1,2 @@
+Amazon DynamoDB开发人员指南:
+https://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/developerguide/Introduction.html

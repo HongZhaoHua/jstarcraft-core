@@ -76,13 +76,13 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <!-- 缓存框架依赖 -->
@@ -103,7 +103,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-avro</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- BSON -->
@@ -117,7 +117,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-cbor</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- Hessian -->
@@ -131,7 +131,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-ion</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- Kryo -->
@@ -158,7 +158,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-protobuf</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- Thrift -->
@@ -172,33 +172,33 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-xml</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.17</version>
+                <version>1.4.19</version>
             </dependency>
 
             <!-- YAML -->
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- 通讯框架依赖 -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webflux</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
@@ -333,155 +333,9 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
-
-            <!-- 存储框架依赖 -->
-            <!-- 键值型存储框架依赖 -->
-            <dependency>
-                <groupId>com.sleepycat</groupId>
-                <artifactId>je</artifactId>
-                <version>18.3.12</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase-client</artifactId>
-                <version>2.2.3</version>
-            </dependency>
-
-            <!-- 关系型存储框架依赖 -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>5.4.2.Final</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-java8</artifactId>
-                <version>5.4.2.Final</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>5.2.8.RELEASE</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-
-            <!-- 文档型存储框架依赖 -->
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-core</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-codecs</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers-common</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-queryparser</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-highlighter</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-suggest</artifactId>
-                <version>8.4.0</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-elasticsearch</artifactId>
-                <version>4.0.1.RELEASE</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-mongodb</artifactId>
-                <version>2.2.2.RELEASE</version>
-            </dependency>
-
-            <!-- 图型存储框架依赖 -->
-            <dependency>
-                <groupId>org.neo4j</groupId>
-                <artifactId>neo4j</artifactId>
-                <version>3.5.13</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.lucene</groupId>
-                        <artifactId>lucene-core</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>org.apache.lucene</groupId>
-                        <artifactId>lucene-analyzers-common</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>org.apache.lucene</groupId>
-                        <artifactId>lucene-codecs</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>org.apache.lucene</groupId>
-                        <artifactId>lucene-queryparser</artifactId>
-                    </exclusion>
-
-                    <exclusion>
-                        <groupId>org.apache.lucene</groupId>
-                        <artifactId>lucene-highlighter</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.neo4j</groupId>
-                <artifactId>neo4j-ogm-core</artifactId>
-                <version>3.2.17</version>
-            </dependency>
-
-            <!-- 资源框架依赖 -->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>4.0.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>4.0.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>easyexcel</artifactId>
-                <version>2.2.10</version>
-            </dependency>
-
+            
             <!-- 脚本框架依赖 -->
             <dependency>
                 <groupId>org.apache-extras.beanshell</groupId>
@@ -557,7 +411,7 @@
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                <version>7.6.2</version>
+                <version>7.7.1</version>
             </dependency>
 
             <!-- etcd -->
@@ -578,7 +432,7 @@
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
-                <version>3.15.2</version>
+                <version>3.17.4</version>
             </dependency>
 
             <dependency>
@@ -610,7 +464,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-configuration2</artifactId>
-                <version>2.7</version>
+                <version>2.8.0</version>
             </dependency>
 
             <dependency>
@@ -642,7 +496,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
-                <version>1.20</version>
+                <version>1.21</version>
             </dependency>
 
             <!-- 7Z格式 -->
@@ -700,19 +554,25 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.13.3</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>2.11.2</version>
+                <version>2.13.3</version>
             </dependency>
 
             <!-- CRON -->
@@ -725,6 +585,10 @@
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-simple</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -732,7 +596,7 @@
             <dependency>
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
-                <version>1.13.1</version>
+                <version>1.15.2</version>
             </dependency>
 
             <!-- JSONPath -->
@@ -773,7 +637,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>5.2.8.RELEASE</version>
+                <version>5.3.13</version>
             </dependency>
 
             <dependency>
@@ -797,7 +661,7 @@
             <dependency>
                 <groupId>de.flapdoodle.embed</groupId>
                 <artifactId>de.flapdoodle.embed.mongo</artifactId>
-                <version>2.2.0</version>
+                <version>3.4.8</version>
             </dependency>
 
             <dependency>

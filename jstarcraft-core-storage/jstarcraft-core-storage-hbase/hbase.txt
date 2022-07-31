@@ -1,0 +1,25 @@
+几张图看懂列式存储:
+https://blog.csdn.net/dc_726/article/details/41143175
+
+HBase - 安装(Windows):
+https://www.cnblogs.com/yangfansaily/p/12254743.html
+
+五分钟轻松了解Hbase面向列的存储:
+https://www.cnblogs.com/lixinjie/p/five-minutes-glance-at-hbase.html
+
+Spring Boot项目中使用最新版HBase Java API操作HBase 2.x详解:
+https://www.zifangsky.cn/1286.html
+
+HBase Java API: hbase-client:
+https://blog.csdn.net/vbirdbest/article/details/88410954
+
+HBase ORM:
+https://flipkart-incubator.github.io/hbase-orm/
+https://github.com/flipkart-incubator/hbase-orm
+
+Simplehbase is a lightweight ORM framework between java app and hbase:
+https://github.com/alibaba/simplehbase/wiki
+https://github.com/alibaba/simplehbase
+
+使用Kundera JPA操作HBase:
+https://blog.csdn.net/weixin_41122339/article/details/82114722

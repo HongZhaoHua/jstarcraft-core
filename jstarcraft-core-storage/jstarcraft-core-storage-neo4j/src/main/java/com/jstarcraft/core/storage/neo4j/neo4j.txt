@@ -1,0 +1,48 @@
+图算法系列:
+http://neo4j.com.cn/user/feng_neo4j/topics
+
+知新温故,从知识图谱到图数据库:
+https://blog.csdn.net/wireless_com/article/details/86486289
+
+一文了解各大图数据库查询语言（Gremlin vs Cypher vs nGQL）:
+https://www.jianshu.com/p/7a10e572501a
+
+ArangoDB、Neo4j、OrientDB单机性能比较:
+https://www.jianshu.com/p/38b70768380c
+
+主流图数据库Neo4J、ArangoDB、OrientDB综合对比:
+https://www.jianshu.com/p/6cab7a150755
+
+ArangoDB 教程:
+https://www.it1352.com/OnLineTutorial/arangodb/index.html
+
+OrientDB 教程:
+https://www.w3cschool.cn/orientdb
+
+Neo4j教程:
+https://www.w3cschool.cn/neo4j
+https://www.cnblogs.com/ljhdo/tag/Neo4j
+
+Neo4j图数据库管理系统开发笔记:
+https://www.cnblogs.com/shangbingbing/p/5026146.html
+https://www.cnblogs.com/shangbingbing/p/5026740.html
+https://www.cnblogs.com/shangbingbing/p/5028764.html
+https://www.cnblogs.com/shangbingbing/p/5028791.html
+
+图形数据库 Neo4j 开发实战:
+https://www.ibm.com/developerworks/cn/java/j-lo-neo4j
+
+Neo4j官方文档:
+https://neo4j.com/docs
+
+Spring Data Neo4J:
+https://spring.io/projects/spring-data-neo4j
+
+Neo4j-OGM - An Object Graph Mapping Library for Neo4j:
+https://neo4j.com/docs/ogm-manual/current
+
+通过Spring Data Neo4J操作您的图形数据库:
+https://www.cnblogs.com/loveis715/p/5425790.html
+
+GraphAware Neo4j Recommendation Engine:
+https://github.com/graphaware/neo4j-reco

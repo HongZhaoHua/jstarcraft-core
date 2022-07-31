@@ -1,0 +1,17 @@
+SQL语言分类DDL、DML、DQL、TCL、DCL:
+https://blog.csdn.net/pengpengpeng85/article/details/78764787
+
+Mybatis Plugin 以及Druid Filer 改写SQL:
+https://www.cnblogs.com/larva-zhh/p/12191531.html
+
+JSqlParser parses an SQL statement and translate it into a hierarchy of Java classes. The generated hierarchy can be navigated using the Visitor Pattern:
+https://github.com/JSQLParser/JSqlParser
+
+使用JSqlParser替换SQL语句中的表名:
+http://xfenglin.com/a/12008491585.html
+
+基于antlr4 解析器，支持spark sql, tidb sql, flink sql, Spark/flink jar 运行命令解析器:
+https://github.com/melin/dataworker-sql-parser
+
+parse sql into elasticsearch dsl with antlr4:
+https://github.com/iamazy/elasticsearch-sql

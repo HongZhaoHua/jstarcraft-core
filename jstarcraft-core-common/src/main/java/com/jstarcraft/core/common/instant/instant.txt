@@ -1,3 +1,6 @@
+ISO-8601 如何解读:
+https://blog.csdn.net/huyuchengus/article/details/119690107
+
 Java日期时间API系列:
 https://www.cnblogs.com/xkzhangsanx/category/1448577.html
 
@@ -21,3 +24,6 @@ https://blog.csdn.net/MariaOzawa/article/details/104329172
 
 How do I parse RFC 3339 datetimes with Java?:
 https://stackoverflow.com/questions/6038136/how-do-i-parse-rfc-3339-datetimes-with-java
+
+根据经纬度计算时区:
+https://blog.csdn.net/fct2001140269/article/details/86513925
