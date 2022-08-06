@@ -64,7 +64,6 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
