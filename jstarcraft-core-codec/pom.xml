@@ -99,9 +99,9 @@
 
         <!-- TOML -->
         <dependency>
-            <groupId>com.teesoft</groupId>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-toml</artifactId>
-            <version>1.0</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- XML -->
