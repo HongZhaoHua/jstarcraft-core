@@ -1,4 +1,4 @@
-package com.jstarcraft.core.monitor.route.database;
+package com.jstarcraft.core.monitor.route;
 
 import java.util.LinkedList;
 import java.util.List;

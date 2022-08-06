@@ -1,4 +1,4 @@
-package com.jstarcraft.core.monitor.route.database;
+package com.jstarcraft.core.monitor.route;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
