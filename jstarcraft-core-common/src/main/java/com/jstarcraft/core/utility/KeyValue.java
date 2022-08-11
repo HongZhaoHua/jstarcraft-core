@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
 
 /**
@@ -42,6 +43,7 @@ public class KeyValue<K, V> {
      * 
      * @param term
      */
+    @JsonIgnore
     public void setKeyValue(Entry<K, V> term) {
         this.key = term.getKey();
         this.value = term.getValue();
