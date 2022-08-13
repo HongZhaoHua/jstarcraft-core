@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.security;
 
+import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -80,6 +81,28 @@ public class SecurityUtility {
             String message = StringUtility.format("[{}]:十六进制转换为字节异常", data);
             throw new RuntimeException(message, exception);
         }
+    }
+
+    /**
+     * 字节转换为任意进制
+     * 
+     * @param data
+     * @param radix
+     * @return
+     */
+    public static String byte2Radix(byte[] data, int radix) {
+        return new BigInteger(1, data).toString(radix);
+    }
+
+    /**
+     * 任意进制转换为字节
+     * 
+     * @param data
+     * @param radix
+     * @return
+     */
+    public static byte[] radix2Byte(String data, int radix) {
+        return new BigInteger(data, radix).toByteArray();
     }
 
     /**
