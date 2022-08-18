@@ -79,3 +79,8 @@ Java嵌入式数据库H2学习总结(二)——在Web应用程序中使用H2数�
 https://www.cnblogs.com/xdp-gacl/p/4171278.html
 Java嵌入式数据库H2学习总结(三)——在Web应用中嵌入H2数据库
 https://www.cnblogs.com/xdp-gacl/p/4190424.html
+
+构建H2数据库
+java -classpath h2*.jar org.h2.tools.Script -user sa -password "" -url jdbc:h2:~/database
+启动H2数据库
+java -classpath h2*.jar org.h2.tools.Server -tcp -tcpPort 9092 -tcpAllowOthers -web -webPort 8082 -webAllowOthers
