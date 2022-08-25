@@ -266,7 +266,7 @@ public class ResourceManager<K, V> extends Observable {
         return list;
     }
 
-    void load() {
+    public void load() {
         try {
             writeLock.lock();
             state.set(false);
