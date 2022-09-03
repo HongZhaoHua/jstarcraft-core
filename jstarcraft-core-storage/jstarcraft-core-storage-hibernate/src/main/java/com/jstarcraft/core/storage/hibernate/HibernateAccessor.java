@@ -25,6 +25,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.metamodel.spi.MetamodelImplementor;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,8 @@ import com.jstarcraft.core.utility.StringUtility;
  */
 @Transactional
 public class HibernateAccessor implements StorageAccessor {
+
+    protected static final Logger logger = LoggerFactory.getLogger(HibernateAccessor.class);
 
     private static final int BATCH_SIZE = 1000;
 
@@ -151,6 +155,10 @@ public class HibernateAccessor implements StorageAccessor {
                     session.save(object);
                     return true;
                 } catch (Exception exception) {
+                    if (logger.isErrorEnabled()) {
+                        String message = StringUtility.format("构建实例[{}]:[{}]异常", clazz, object.getId());
+                        logger.error(message, exception);
+                    }
                     return false;
                 }
             }
@@ -164,10 +172,18 @@ public class HibernateAccessor implements StorageAccessor {
 
             @Override
             public Boolean doInHibernate(Session session) throws HibernateException {
-                String hql = deleteHqls.get(clazz);
-                Query<?> query = session.createQuery(hql);
-                query.setParameter(0, id);
-                return query.executeUpdate() > 0;
+                try {
+                    String hql = deleteHqls.get(clazz);
+                    Query<?> query = session.createQuery(hql);
+                    query.setParameter(0, id);
+                    return query.executeUpdate() > 0;
+                } catch (Exception exception) {
+                    if (logger.isErrorEnabled()) {
+                        String message = StringUtility.format("删除实例[{}]:[{}]异常", clazz, id);
+                        logger.error(message, exception);
+                    }
+                    return false;
+                }
             }
 
         });
@@ -183,6 +199,10 @@ public class HibernateAccessor implements StorageAccessor {
                     session.delete(object);
                     return true;
                 } catch (Exception exception) {
+                    if (logger.isErrorEnabled()) {
+                        String message = StringUtility.format("删除实例[{}]:[{}]异常", clazz, object.getId());
+                        logger.error(message, exception);
+                    }
                     return false;
                 }
             }
@@ -200,6 +220,10 @@ public class HibernateAccessor implements StorageAccessor {
                     session.update(object);
                     return true;
                 } catch (Exception exception) {
+                    if (logger.isErrorEnabled()) {
+                        String message = StringUtility.format("更新实例[{}]:[{}]异常", clazz, object.getId());
+                        logger.error(message, exception);
+                    }
                     return false;
                 }
             }
