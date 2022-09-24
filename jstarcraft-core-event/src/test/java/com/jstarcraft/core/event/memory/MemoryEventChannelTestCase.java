@@ -20,8 +20,6 @@ public class MemoryEventChannelTestCase extends EventChannelTestCase {
 
     private ThreadPoolExecutor pool;
 
-    
-
     @Before
     public void start() {
         NameThreadFactory factory = new NameThreadFactory("EventBus");
@@ -45,7 +43,6 @@ public class MemoryEventChannelTestCase extends EventChannelTestCase {
         logger.info("事件总已停止");
     }
 
-    
     @Override
     protected EventChannel getEventChannel(EventMode mode) {
         switch (mode) {
