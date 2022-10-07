@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.instant;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,6 +12,7 @@ import org.threeten.extra.DayOfMonth;
 import org.threeten.extra.DayOfYear;
 import org.threeten.extra.Days;
 import org.threeten.extra.Hours;
+import org.threeten.extra.Interval;
 import org.threeten.extra.Minutes;
 import org.threeten.extra.Months;
 import org.threeten.extra.PeriodDuration;
@@ -23,6 +25,16 @@ public class ThreeTenTestCase {
 
     LocalDateTime first = LocalDateTime.parse("2017-07-03T10:15:30", DateTimeFormatter.ISO_DATE_TIME);
     LocalDateTime second = LocalDateTime.parse("2011-08-08T12:15:10", DateTimeFormatter.ISO_DATE_TIME);
+
+    @Test
+    public void testInterval() {
+        Instant startA = Instant.parse("2018-08-01T00:00:00Z");
+        Instant stopA = Instant.parse("2018-08-10T00:00:00Z");
+        Instant startB = Instant.parse("2018-07-30T00:00:00Z");
+        Instant stopB = Instant.parse("2018-08-02T00:00:00Z");
+        Interval areaA = Interval.of(startA, stopA);
+        Interval areaB = Interval.of(startB, stopB);
+    }
 
     @Test
     public void testAmPm() {
