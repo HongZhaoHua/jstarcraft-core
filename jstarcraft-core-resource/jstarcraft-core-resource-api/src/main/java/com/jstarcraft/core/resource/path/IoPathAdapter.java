@@ -21,4 +21,9 @@ public class IoPathAdapter implements PathAdapter {
         return stream;
     }
 
+    public long getVersion(String path) {
+        long version = manager.getUpdatedAt(directory + path);
+        return version;
+    }
+
 }

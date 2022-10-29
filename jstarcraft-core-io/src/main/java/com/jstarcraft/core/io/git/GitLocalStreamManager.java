@@ -138,8 +138,8 @@ public class GitLocalStreamManager implements StreamManager {
                 return time.to(TimeUnit.MILLISECONDS);
             }
             return 0;
-        } catch (Exception e) {
-            throw new StreamException(e);
+        } catch (Exception exception) {
+            throw new StreamException(exception);
         }
     }
 
