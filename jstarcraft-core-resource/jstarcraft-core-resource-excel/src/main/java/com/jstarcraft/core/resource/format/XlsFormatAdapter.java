@@ -28,14 +28,17 @@ public class XlsFormatAdapter implements FormatAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(XlsFormatAdapter.class);
 
-    private final class ExcelFormatListener<E> extends AnalysisEventListener<E> {
+    public final static class ExcelFormatListener<E> extends AnalysisEventListener<E> {
 
         private Class<E> clazz;
 
         /** 实例列表 */
         private List<E> instances = new LinkedList<>();
 
-        private ExcelFormatListener(Class<E> clazz) {
+        /** 实例列表 */
+        private List<CellExtra> extras = new LinkedList<>();
+
+        public ExcelFormatListener(Class<E> clazz) {
             this.clazz = clazz;
         }
 
@@ -66,18 +69,19 @@ public class XlsFormatAdapter implements FormatAdapter {
          */
         @Override
         public void extra(CellExtra extra, AnalysisContext context) {
-            CellExtraTypeEnum type = extra.getType();
-            String text = extra.getText();
-            Integer rowIndex = extra.getRowIndex();
-            Integer columnIndex = extra.getColumnIndex();
+            extras.add(extra);
         }
 
         @Override
         public void doAfterAllAnalysed(AnalysisContext context) {
         }
 
-        List<E> getInstances() {
+        public List<E> getInstances() {
             return instances;
+        }
+
+        public List<CellExtra> getExtras() {
+            return extras;
         }
 
     }
