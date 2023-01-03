@@ -82,6 +82,7 @@ https://www.cnblogs.com/xdp-gacl/p/4190424.html
 
 安装H2数据库
 http://www.h2database.com/html/download.html
+jdbc:h2:D:/target/database/develop;AUTO_SERVER=TRUE
 构建H2数据库
 java -classpath h2*.jar org.h2.tools.Script -user sa -password "" -url jdbc:h2:~/database
 启动H2数据库
