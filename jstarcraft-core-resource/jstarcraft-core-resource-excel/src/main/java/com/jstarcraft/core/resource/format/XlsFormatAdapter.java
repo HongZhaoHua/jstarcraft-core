@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
+import com.alibaba.excel.metadata.CellExtra;
 import com.jstarcraft.core.resource.exception.StorageException;
 import com.jstarcraft.core.utility.StringUtility;
 
@@ -26,14 +28,17 @@ public class XlsFormatAdapter implements FormatAdapter {
 
     private final static Logger logger = LoggerFactory.getLogger(XlsFormatAdapter.class);
 
-    private final class ExcelFormatListener<E> extends AnalysisEventListener<E> {
+    public final static class ExcelFormatListener<E> extends AnalysisEventListener<E> {
 
         private Class<E> clazz;
 
         /** 实例列表 */
         private List<E> instances = new LinkedList<>();
 
-        private ExcelFormatListener(Class<E> clazz) {
+        /** 实例列表 */
+        private List<CellExtra> extras = new LinkedList<>();
+
+        public ExcelFormatListener(Class<E> clazz) {
             this.clazz = clazz;
         }
 
@@ -58,12 +63,25 @@ public class XlsFormatAdapter implements FormatAdapter {
             instances.add(data);
         }
 
+        /**
+         * 读取额外信息
+         * https://easyexcel.opensource.alibaba.com/docs/current/quickstart/read#%E9%A2%9D%E5%A4%96%E4%BF%A1%E6%81%AF%E6%89%B9%E6%B3%A8%E8%B6%85%E9%93%BE%E6%8E%A5%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E4%BF%A1%E6%81%AF%E8%AF%BB%E5%8F%96
+         */
+        @Override
+        public void extra(CellExtra extra, AnalysisContext context) {
+            extras.add(extra);
+        }
+
         @Override
         public void doAfterAllAnalysed(AnalysisContext context) {
         }
 
-        List<E> getInstances() {
+        public List<E> getInstances() {
             return instances;
+        }
+
+        public List<CellExtra> getExtras() {
+            return extras;
         }
 
     }
@@ -82,7 +100,13 @@ public class XlsFormatAdapter implements FormatAdapter {
     public <E> Iterator<E> iterator(Class<E> clazz, InputStream stream) {
         try {
             ExcelFormatListener<E> listener = new ExcelFormatListener<>(clazz);
-            EasyExcel.read(stream, clazz, listener).headRowNumber(metaNumber).doReadAll();
+            EasyExcel.read(stream, clazz, listener).headRowNumber(metaNumber)
+                    // 读取批注,默认不读取
+                    .extraRead(CellExtraTypeEnum.COMMENT)
+                    // 读取超链接,默认不读取
+                    .extraRead(CellExtraTypeEnum.HYPERLINK)
+                    // 读取合并单元,默认不读取
+                    .extraRead(CellExtraTypeEnum.MERGE).doReadAll();
             return listener.getInstances().iterator();
         } catch (Exception exception) {
             throw new StorageException("遍历Excel异常", exception);
