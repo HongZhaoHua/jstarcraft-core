@@ -1,3 +1,6 @@
+HTTP请求报头中的referer:
+https://cxid.gitee.io/2021/05/27/%E7%BD%91%E7%BB%9C-HTTP-referer/
+
 一张图看懂encodeURI、encodeURIComponent、decodeURI、decodeURIComponent的区别:
 https://juejin.cn/post/6844903454599544839
 
