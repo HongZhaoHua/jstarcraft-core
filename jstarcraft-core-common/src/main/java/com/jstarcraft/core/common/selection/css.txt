@@ -1,6 +1,9 @@
 CSS 选择器参考手册:
 https://www.w3school.com.cn/cssref/css_selectors.asp
 
+CSS父级选择器 :has():
+https://blog.csdn.net/qq_40738077/article/details/127302494
+
 jsoup: Java HTML Parser, with best of DOM, CSS, and jquery:
 https://github.com/jhy/jsoup
 
