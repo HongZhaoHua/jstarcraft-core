@@ -1,3 +1,6 @@
+Java解析URL的方法:
+https://tongfu.net/home/35/blog/513587.html
+
 HTTP请求报头中的referer:
 https://cxid.gitee.io/2021/05/27/%E7%BD%91%E7%BB%9C-HTTP-referer/
 
