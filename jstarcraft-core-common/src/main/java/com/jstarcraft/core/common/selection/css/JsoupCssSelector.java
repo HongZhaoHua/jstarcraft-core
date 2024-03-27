@@ -7,8 +7,6 @@ import org.jsoup.select.Evaluator;
 import org.jsoup.select.QueryParser;
 import org.jsoup.select.Selector;
 
-import com.jstarcraft.core.common.selection.AbstractSelector;
-
 /**
  * CSS选择器
  * 
@@ -20,7 +18,7 @@ import com.jstarcraft.core.common.selection.AbstractSelector;
  *
  * @param <T>
  */
-public class JsoupCssSelector extends AbstractSelector<Element> {
+public class JsoupCssSelector extends CssSelector<Element> {
 
     private Evaluator css;
     
