@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.security.captcha;
 
+import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 
 public interface Captcha {
@@ -7,7 +8,7 @@ public interface Captcha {
     /**
      * 创建验证码，实现类需同时生成随机验证码字符串和验证码图片
      */
-    void createCode();
+    BufferedImage createCode();
 
     /**
      * 获取验证码的文字内容

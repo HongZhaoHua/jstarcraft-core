@@ -34,7 +34,7 @@ public class LineCaptcha extends AbstractCaptcha {
     // Constructor end
 
     @Override
-    public RenderedImage createImage(String code) {
+    public BufferedImage createImage(String code) {
         // 图像buffer
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         final Graphics2D g = GraphicsUtility.createGraphics(image, this.background == null ? Color.WHITE : this.background);

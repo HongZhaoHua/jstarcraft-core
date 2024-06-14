@@ -21,9 +21,9 @@ public class CircleCaptcha extends AbstractCaptcha {
     /**
      * 构造
      *
-     * @param width     图片宽
-     * @param height    图片高
-     * @param count 字符个数
+     * @param width  图片宽
+     * @param height 图片高
+     * @param count  字符个数
      */
     public CircleCaptcha(int width, int height, int count) {
         this(width, height, count, 15);
@@ -42,7 +42,7 @@ public class CircleCaptcha extends AbstractCaptcha {
     }
 
     @Override
-    public RenderedImage createImage(String code) {
+    public BufferedImage createImage(String code) {
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         final Graphics2D g = GraphicsUtility.createGraphics(image, this.background == null ? Color.WHITE : this.background);
 

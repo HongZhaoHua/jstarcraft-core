@@ -3,7 +3,7 @@ package com.jstarcraft.core.common.security.captcha;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.image.RenderedImage;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -93,11 +93,13 @@ public abstract class AbstractCaptcha implements Captcha {
     }
 
     @Override
-    public void createCode() {
+    public BufferedImage createCode() {
         generateCode();
         try (ByteArrayOutputStream bytes = new ByteArrayOutputStream(); ImageOutputStream stream = ImageIO.createImageOutputStream(bytes)) {
-            ImageIO.write(createImage(this.code), IMAGE_TYPE_JPG, stream);
+            BufferedImage image = createImage(this.code);
+            ImageIO.write(image, IMAGE_TYPE_JPG, stream);
             this.bytes = bytes.toByteArray();
+            return image;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -118,7 +120,7 @@ public abstract class AbstractCaptcha implements Captcha {
      * @param code 验证码
      * @return Image
      */
-    protected abstract RenderedImage createImage(String code);
+    protected abstract BufferedImage createImage(String code);
 
     @Override
     public String getCode() {
