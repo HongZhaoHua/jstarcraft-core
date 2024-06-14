@@ -113,7 +113,20 @@ public final class RandomUtility {
     public static double randomDouble() {
         return randomDouble(Double.MAX_VALUE);
     }
-    
+
+    public static String randomString(String base, int size) {
+        if (StringUtility.isBlank(base) || size < 1) {
+            throw new IllegalArgumentException();
+        }
+        final StringBuilder buffer = new StringBuilder(size);
+        int range = base.length();
+        for (int index = 0; index < size; index++) {
+            int random = randomInteger(range);
+            buffer.append(base.charAt(random));
+        }
+        return buffer.toString();
+    }
+
     /**
      * 洗牌
      * 
