@@ -10,16 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LineCaptcha extends AbstractCaptcha {
 
     /**
-     * 构造，默认5位验证码，150条干扰线
-     *
-     * @param width  图片宽
-     * @param height 图片高
-     */
-    public LineCaptcha(int width, int height) {
-        this(width, height, 5, 150);
-    }
-
-    /**
      * 构造
      *
      * @param width     图片宽
@@ -27,8 +17,8 @@ public class LineCaptcha extends AbstractCaptcha {
      * @param codeCount 字符个数
      * @param lineCount 干扰线条数
      */
-    public LineCaptcha(int width, int height, int count, int interfere) {
-        super(width, height, count, interfere);
+    public LineCaptcha(int width, int height, CodeGenerator generator, int interfere) {
+        super(width, height, generator, interfere);
     }
     // --------------------------------------------------------------------
     // Constructor end

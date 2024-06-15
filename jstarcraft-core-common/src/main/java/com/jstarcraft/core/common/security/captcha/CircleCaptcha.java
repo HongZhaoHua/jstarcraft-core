@@ -11,34 +11,13 @@ public class CircleCaptcha extends AbstractCaptcha {
     /**
      * 构造
      *
-     * @param width  图片宽
-     * @param height 图片高
-     */
-    public CircleCaptcha(int width, int height) {
-        this(width, height, 5);
-    }
-
-    /**
-     * 构造
-     *
-     * @param width  图片宽
-     * @param height 图片高
-     * @param count  字符个数
-     */
-    public CircleCaptcha(int width, int height, int count) {
-        this(width, height, count, 15);
-    }
-
-    /**
-     * 构造
-     *
      * @param width          图片宽
      * @param height         图片高
      * @param codeCount      字符个数
      * @param interfereCount 验证码干扰元素个数
      */
-    public CircleCaptcha(int width, int height, int count, int interfere) {
-        super(width, height, count, interfere);
+    public CircleCaptcha(int width, int height, CodeGenerator generator, int interfere) {
+        super(width, height, generator, interfere);
     }
 
     @Override

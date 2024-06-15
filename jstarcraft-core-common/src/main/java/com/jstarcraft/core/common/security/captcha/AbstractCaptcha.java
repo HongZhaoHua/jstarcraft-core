@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 
 import com.jstarcraft.core.common.io.IoUtility;
+import com.jstarcraft.core.utility.KeyValue;
 
 public abstract class AbstractCaptcha implements Captcha {
 
@@ -64,18 +65,6 @@ public abstract class AbstractCaptcha implements Captcha {
     protected AlphaComposite textAlpha;
 
     /**
-     * 构造，使用随机验证码生成器生成验证码
-     *
-     * @param width          图片宽
-     * @param height         图片高
-     * @param codeCount      字符个数
-     * @param interfereCount 验证码干扰元素个数
-     */
-    public AbstractCaptcha(int width, int height, int codeCount, int interfereCount) {
-        this(width, height, new RandomGenerator(codeCount), interfereCount);
-    }
-
-    /**
      * 构造
      *
      * @param width          图片宽
@@ -111,7 +100,8 @@ public abstract class AbstractCaptcha implements Captcha {
      * @since 3.3.0
      */
     protected void generateCode() {
-        this.code = generator.generate();
+        KeyValue<String, String> keyValue = generator.generate();
+        this.code = keyValue.getKey();
     }
 
     /**
@@ -128,11 +118,6 @@ public abstract class AbstractCaptcha implements Captcha {
             createCode();
         }
         return this.code;
-    }
-
-    @Override
-    public boolean verify(String userInputCode) {
-        return this.generator.verify(getCode(), userInputCode);
     }
 
     @Override

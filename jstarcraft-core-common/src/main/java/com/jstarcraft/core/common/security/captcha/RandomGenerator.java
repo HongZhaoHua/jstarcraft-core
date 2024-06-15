@@ -1,5 +1,6 @@
 package com.jstarcraft.core.common.security.captcha;
 
+import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.RandomUtility;
 
 public class RandomGenerator extends AbstractGenerator {
@@ -16,20 +17,17 @@ public class RandomGenerator extends AbstractGenerator {
     /**
      * 构造
      *
-     * @param base 基础字符集合，用于随机获取字符串的字符集合
-     * @param length  生成验证码长度
+     * @param base   基础字符集合，用于随机获取字符串的字符集合
+     * @param length 生成验证码长度
      */
     public RandomGenerator(String base, int length) {
         super(base, length);
     }
 
     @Override
-    public String generate() {
-        return RandomUtility.randomString(this.base, this.length);
+    public KeyValue<String, String> generate() {
+        String code = RandomUtility.randomString(this.base, this.length);
+        return new KeyValue<>(code, code);
     }
 
-    @Override
-    public boolean verify(String code, String userInputCode) {
-        return code.equalsIgnoreCase(userInputCode);
-    }
 }

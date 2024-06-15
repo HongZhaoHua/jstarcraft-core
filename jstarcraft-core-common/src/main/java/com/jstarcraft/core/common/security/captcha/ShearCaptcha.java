@@ -4,32 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 
 import com.jstarcraft.core.utility.RandomUtility;
 
 public class ShearCaptcha extends AbstractCaptcha {
-
-    /**
-     * 构造
-     *
-     * @param width  图片宽
-     * @param height 图片高
-     */
-    public ShearCaptcha(int width, int height) {
-        this(width, height, 5);
-    }
-
-    /**
-     * 构造
-     *
-     * @param width     图片宽
-     * @param height    图片高
-     * @param codeCount 字符个数
-     */
-    public ShearCaptcha(int width, int height, int count) {
-        this(width, height, count, 4);
-    }
 
     /**
      * 构造
@@ -39,8 +17,8 @@ public class ShearCaptcha extends AbstractCaptcha {
      * @param codeCount 字符个数
      * @param thickness 干扰线宽度
      */
-    public ShearCaptcha(int width, int height, int count, int interfere) {
-        super(width, height, count, interfere);
+    public ShearCaptcha(int width, int height, CodeGenerator generator, int interfere) {
+        super(width, height, generator, interfere);
     }
 
     @Override

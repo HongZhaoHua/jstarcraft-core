@@ -18,14 +18,6 @@ public interface Captcha {
     String getCode();
 
     /**
-     * 验证验证码是否正确，建议忽略大小写
-     *
-     * @param userInputCode 用户输入的验证码
-     * @return 是否与生成的一直
-     */
-    boolean verify(String userInputCode);
-
-    /**
      * 将验证码写出到目标流中
      *
      * @param out 目标流
