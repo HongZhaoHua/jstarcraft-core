@@ -9,7 +9,7 @@ public class MathGenerator implements CodeGenerator {
     private static final String operators = "+-";
 
     /** 参与计算数字最大长度 */
-    private final int numberLength;
+    private final int length;
 
     /**
      * 构造
@@ -21,10 +21,10 @@ public class MathGenerator implements CodeGenerator {
     /**
      * 构造
      * 
-     * @param numberLength 参与计算最大数字位数
+     * @param length 参与计算最大数字位数
      */
-    public MathGenerator(int numberLength) {
-        this.numberLength = numberLength;
+    public MathGenerator(int length) {
+        this.length = length;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class MathGenerator implements CodeGenerator {
         }
         StringBuilder buffer = new StringBuilder()
 
-                .append(StringUtility.rightPad(String.valueOf(left), this.numberLength, StringUtility.SPACE))
+                .append(StringUtility.rightPad(String.valueOf(left), this.length, StringUtility.SPACE))
 
                 .append(operator)
 
-                .append(StringUtility.leftPad(String.valueOf(right), this.numberLength, StringUtility.SPACE))
+                .append(StringUtility.leftPad(String.valueOf(right), this.length, StringUtility.SPACE))
 
                 .append('=');
         String key = buffer.toString();
@@ -66,7 +66,7 @@ public class MathGenerator implements CodeGenerator {
      * @return 验证码长度
      */
     public int getLength() {
-        return this.numberLength * 2 + 2;
+        return this.length * 2 + 2;
     }
 
     /**
@@ -75,7 +75,7 @@ public class MathGenerator implements CodeGenerator {
      * @return 最大值
      */
     private int getLimit() {
-        return Integer.parseInt("1" + StringUtility.repeat('0', this.numberLength));
+        return Integer.parseInt("1" + StringUtility.repeat('0', this.length));
     }
 
 }

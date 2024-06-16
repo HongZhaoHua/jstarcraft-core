@@ -24,13 +24,13 @@ public class ShearCaptcha extends AbstractCaptcha {
     @Override
     public BufferedImage createImage(String code) {
         final BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g = GraphicsUtility.createGraphics(image, this.background == null ? Color.WHITE : this.background);
+        final Graphics2D g = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
 
         // 画字符串
         drawString(g, code);
 
         // 扭曲
-        shear(g, this.width, this.height, this.background == null ? Color.WHITE : this.background);
+        shear(g, this.width, this.height, this.color == null ? Color.WHITE : this.color);
         // 画干扰线
         drawInterfere(g, 0, RandomUtility.randomInteger(this.height) + 1, this.width, RandomUtility.randomInteger(this.height) + 1, this.interfere, GraphicsUtility.randomColor());
 
@@ -47,8 +47,8 @@ public class ShearCaptcha extends AbstractCaptcha {
      */
     private void drawString(Graphics2D g, String code) {
         // 指定透明度
-        if (null != this.textAlpha) {
-            g.setComposite(this.textAlpha);
+        if (null != this.transparency) {
+            g.setComposite(this.transparency);
         }
         GraphicsUtility.drawStringColourful(g, code, this.font, this.width, this.height);
     }

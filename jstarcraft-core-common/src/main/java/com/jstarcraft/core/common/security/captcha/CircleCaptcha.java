@@ -23,7 +23,7 @@ public class CircleCaptcha extends AbstractCaptcha {
     @Override
     public BufferedImage createImage(String code) {
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g = GraphicsUtility.createGraphics(image, this.background == null ? Color.WHITE : this.background);
+        final Graphics2D g = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
 
         // 随机画干扰圈圈
         drawInterfere(g);
@@ -44,8 +44,8 @@ public class CircleCaptcha extends AbstractCaptcha {
      */
     private void drawString(Graphics2D g, String code) {
         // 指定透明度
-        if (null != this.textAlpha) {
-            g.setComposite(this.textAlpha);
+        if (null != this.transparency) {
+            g.setComposite(this.transparency);
         }
         GraphicsUtility.drawStringColourful(g, code, this.font, this.width, this.height);
     }

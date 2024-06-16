@@ -16,16 +16,16 @@ import com.jstarcraft.core.utility.KeyValue;
 
 public abstract class AbstractCaptcha implements Captcha {
 
-    // 图形交换格式
-    public static final String IMAGE_TYPE_GIF = "gif";
-    // 联合照片专家组
-    public static final String IMAGE_TYPE_JPG = "jpg";
     // 英文Bitmap（位图）的简写，它是Windows操作系统中的标准图像文件格式
-    public static final String IMAGE_TYPE_BMP = "bmp";
+    public static final String IMAGE_FORMAT_BMP = "bmp";
+    // 图形交换格式
+    public static final String IMAGE_FORMAT_GIF = "gif";
+    // 联合照片专家组
+    public static final String IMAGE_FORMAT_JPG = "jpg";
     // 可移植网络图形
-    public static final String IMAGE_TYPE_PNG = "png";
+    public static final String IMAGE_FORMAT_PNG = "png";
     // Photoshop的专用格式Photoshop
-    public static final String IMAGE_TYPE_PSD = "psd";
+    public static final String IMAGE_FORMAT_PSD = "psd";
 
     /**
      * 图片的宽度
@@ -58,11 +58,11 @@ public abstract class AbstractCaptcha implements Captcha {
     /**
      * 背景色
      */
-    protected Color background;
+    protected Color color;
     /**
      * 文字透明度
      */
-    protected AlphaComposite textAlpha;
+    protected AlphaComposite transparency;
 
     /**
      * 构造
@@ -86,7 +86,7 @@ public abstract class AbstractCaptcha implements Captcha {
         generateCode();
         try (ByteArrayOutputStream bytes = new ByteArrayOutputStream(); ImageOutputStream stream = ImageIO.createImageOutputStream(bytes)) {
             BufferedImage image = createImage(this.code);
-            ImageIO.write(image, IMAGE_TYPE_JPG, stream);
+            ImageIO.write(image, IMAGE_FORMAT_JPG, stream);
             this.bytes = bytes.toByteArray();
             return image;
         } catch (IOException exception) {
@@ -176,7 +176,7 @@ public abstract class AbstractCaptcha implements Captcha {
      * @since 4.1.22
      */
     public void setBackground(Color background) {
-        this.background = background;
+        this.color = background;
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class AbstractCaptcha implements Captcha {
      * @since 4.5.17
      */
     public void setTextAlpha(float textAlpha) {
-        this.textAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha);
+        this.transparency = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, textAlpha);
     }
 
 }
