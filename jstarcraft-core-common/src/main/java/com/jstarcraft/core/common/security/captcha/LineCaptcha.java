@@ -17,23 +17,23 @@ public class LineCaptcha extends AbstractCaptcha {
      * @param codeCount 字符个数
      * @param lineCount 干扰线条数
      */
-    public LineCaptcha(int width, int height, CodeGenerator generator, int interfere) {
-        super(width, height, generator, interfere);
+    public LineCaptcha(int width, int height, int interfere) {
+        super(width, height, interfere);
     }
     // --------------------------------------------------------------------
     // Constructor end
 
     @Override
-    public BufferedImage createImage(String code) {
+    public BufferedImage generateImage(String content) {
         // 图像buffer
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
+        final Graphics2D graphics = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
 
         // 干扰线
-        drawInterfere(g);
+        drawInterfere(graphics);
 
         // 字符串
-        drawString(g, code);
+        drawString(graphics, content);
 
         return image;
     }
@@ -43,32 +43,32 @@ public class LineCaptcha extends AbstractCaptcha {
     /**
      * 绘制字符串
      *
-     * @param g    {@link Graphics}画笔
-     * @param code 验证码
+     * @param graphics    {@link Graphics}画笔
+     * @param content 验证码
      */
-    private void drawString(Graphics2D g, String code) {
+    private void drawString(Graphics2D graphics, String content) {
         // 指定透明度
         if (null != this.transparency) {
-            g.setComposite(this.transparency);
+            graphics.setComposite(this.transparency);
         }
-        GraphicsUtility.drawStringColourful(g, code, this.font, this.width, this.height);
+        GraphicsUtility.drawStringColourful(graphics, content, this.font, this.width, this.height);
     }
 
     /**
      * 绘制干扰线
      *
-     * @param g {@link Graphics2D}画笔
+     * @param graphics {@link Graphics2D}画笔
      */
-    private void drawInterfere(Graphics2D g) {
+    private void drawInterfere(Graphics2D graphics) {
         final ThreadLocalRandom random = ThreadLocalRandom.current();
         // 干扰线
-        for (int i = 0; i < this.interfere; i++) {
+        for (int index = 0; index < this.interfere; index++) {
             int xs = random.nextInt(width);
             int ys = random.nextInt(height);
             int xe = xs + random.nextInt(width / 8);
             int ye = ys + random.nextInt(height / 8);
-            g.setColor(GraphicsUtility.randomColor());
-            g.drawLine(xs, ys, xe, ye);
+            graphics.setColor(GraphicsUtility.randomColor());
+            graphics.drawLine(xs, ys, xe, ye);
         }
     }
 }

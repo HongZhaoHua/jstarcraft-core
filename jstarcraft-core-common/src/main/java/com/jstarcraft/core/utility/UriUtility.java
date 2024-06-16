@@ -15,23 +15,23 @@ public class UriUtility {
      *     data:[&lt;mime type&gt;][;charset=&lt;charset&gt;][;&lt;encoding&gt;],&lt;encoded data&gt;
      * </pre>
      *
-     * @param mimeType 可选项（null表示无），数据类型（image/png、text/plain等）
+     * @param mime 可选项（null表示无），数据类型（image/png、text/plain等）
      * @param charset  可选项（null表示无），源文本的字符集编码方式
-     * @param encoding 数据编码方式（US-ASCII，BASE64等）
+     * @param codec 数据编码方式（US-ASCII，BASE64等）
      * @param data     编码后的数据
      * @return Data URI字符串
      * @since 5.3.6
      */
-    public static String getDataUri(String mimeType, Charset charset, String encoding, String data) {
+    public static String getDataUri(String mime, Charset charset, String codec, String data) {
         final StringBuilder builder = new StringBuilder("data:");
-        if (StringUtility.isNotBlank(mimeType)) {
-            builder.append(mimeType);
+        if (StringUtility.isNotBlank(mime)) {
+            builder.append(mime);
         }
         if (null != charset) {
             builder.append(";charset=").append(charset.name());
         }
-        if (StringUtility.isNotBlank(encoding)) {
-            builder.append(';').append(encoding);
+        if (StringUtility.isNotBlank(codec)) {
+            builder.append(';').append(codec);
         }
         builder.append(',').append(data);
 

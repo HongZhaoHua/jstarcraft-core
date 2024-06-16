@@ -16,20 +16,20 @@ public class CircleCaptcha extends AbstractCaptcha {
      * @param codeCount      字符个数
      * @param interfereCount 验证码干扰元素个数
      */
-    public CircleCaptcha(int width, int height, CodeGenerator generator, int interfere) {
-        super(width, height, generator, interfere);
+    public CircleCaptcha(int width, int height, int interfere) {
+        super(width, height, interfere);
     }
 
     @Override
-    public BufferedImage createImage(String code) {
+    public BufferedImage generateImage(String content) {
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
+        final Graphics2D graphics = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
 
         // 随机画干扰圈圈
-        drawInterfere(g);
+        drawInterfere(graphics);
 
         // 画字符串
-        drawString(g, code);
+        drawString(graphics, content);
 
         return image;
     }
@@ -42,12 +42,12 @@ public class CircleCaptcha extends AbstractCaptcha {
      * @param g    {@link Graphics2D}画笔
      * @param code 验证码
      */
-    private void drawString(Graphics2D g, String code) {
+    private void drawString(Graphics2D graphics, String content) {
         // 指定透明度
         if (null != this.transparency) {
-            g.setComposite(this.transparency);
+            graphics.setComposite(this.transparency);
         }
-        GraphicsUtility.drawStringColourful(g, code, this.font, this.width, this.height);
+        GraphicsUtility.drawStringColourful(graphics, content, this.font, this.width, this.height);
     }
 
     /**
@@ -55,12 +55,12 @@ public class CircleCaptcha extends AbstractCaptcha {
      *
      * @param g {@link Graphics2D}
      */
-    private void drawInterfere(Graphics2D g) {
+    private void drawInterfere(Graphics2D graphics) {
         final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        for (int i = 0; i < this.interfere; i++) {
-            g.setColor(GraphicsUtility.randomColor());
-            g.drawOval(random.nextInt(width), random.nextInt(height), random.nextInt(height >> 1), random.nextInt(height >> 1));
+        for (int index = 0; index < this.interfere; index++) {
+            graphics.setColor(GraphicsUtility.randomColor());
+            graphics.drawOval(random.nextInt(width), random.nextInt(height), random.nextInt(height >> 1), random.nextInt(height >> 1));
         }
     }
 

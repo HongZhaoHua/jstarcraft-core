@@ -17,22 +17,22 @@ public class ShearCaptcha extends AbstractCaptcha {
      * @param codeCount 字符个数
      * @param thickness 干扰线宽度
      */
-    public ShearCaptcha(int width, int height, CodeGenerator generator, int interfere) {
-        super(width, height, generator, interfere);
+    public ShearCaptcha(int width, int height, int interfere) {
+        super(width, height, interfere);
     }
 
     @Override
-    public BufferedImage createImage(String code) {
+    public BufferedImage generateImage(String content) {
         final BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-        final Graphics2D g = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
+        final Graphics2D graphics = GraphicsUtility.createGraphics(image, this.color == null ? Color.WHITE : this.color);
 
         // 画字符串
-        drawString(g, code);
+        drawString(graphics, content);
 
         // 扭曲
-        shear(g, this.width, this.height, this.color == null ? Color.WHITE : this.color);
+        shear(graphics, this.width, this.height, this.color == null ? Color.WHITE : this.color);
         // 画干扰线
-        drawInterfere(g, 0, RandomUtility.randomInteger(this.height) + 1, this.width, RandomUtility.randomInteger(this.height) + 1, this.interfere, GraphicsUtility.randomColor());
+        drawInterfere(graphics, 0, RandomUtility.randomInteger(this.height) + 1, this.width, RandomUtility.randomInteger(this.height) + 1, this.interfere, GraphicsUtility.randomColor());
 
         return image;
     }
@@ -42,51 +42,51 @@ public class ShearCaptcha extends AbstractCaptcha {
     /**
      * 绘制字符串
      *
-     * @param g    {@link Graphics}画笔
-     * @param code 验证码
+     * @param graphics    {@link Graphics}画笔
+     * @param content 验证码
      */
-    private void drawString(Graphics2D g, String code) {
+    private void drawString(Graphics2D graphics, String content) {
         // 指定透明度
         if (null != this.transparency) {
-            g.setComposite(this.transparency);
+            graphics.setComposite(this.transparency);
         }
-        GraphicsUtility.drawStringColourful(g, code, this.font, this.width, this.height);
+        GraphicsUtility.drawStringColourful(graphics, content, this.font, this.width, this.height);
     }
 
     /**
      * 扭曲
      *
-     * @param g     {@link Graphics}
+     * @param graphics     {@link Graphics}
      * @param w1    w1
      * @param h1    h1
      * @param color 颜色
      */
-    private void shear(Graphics g, int w1, int h1, Color color) {
-        shearX(g, w1, h1, color);
-        shearY(g, w1, h1, color);
+    private void shear(Graphics graphics, int w1, int h1, Color color) {
+        shearX(graphics, w1, h1, color);
+        shearY(graphics, w1, h1, color);
     }
 
     /**
      * X坐标扭曲
      *
-     * @param g     {@link Graphics}
+     * @param graphics     {@link Graphics}
      * @param w1    宽
      * @param h1    高
      * @param color 颜色
      */
-    private void shearX(Graphics g, int w1, int h1, Color color) {
+    private void shearX(Graphics graphics, int w1, int h1, Color color) {
 
         int period = RandomUtility.randomInteger(this.width);
 
         int frames = 1;
         int phase = RandomUtility.randomInteger(2);
 
-        for (int i = 0; i < h1; i++) {
-            double d = (double) (period >> 1) * Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
-            g.copyArea(0, i, w1, 1, (int) d, 0);
-            g.setColor(color);
-            g.drawLine((int) d, i, 0, i);
-            g.drawLine((int) d + w1, i, w1, i);
+        for (int index = 0; index < h1; index++) {
+            double d = (double) (period >> 1) * Math.sin((double) index / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
+            graphics.copyArea(0, index, w1, 1, (int) d, 0);
+            graphics.setColor(color);
+            graphics.drawLine((int) d, index, 0, index);
+            graphics.drawLine((int) d + w1, index, w1, index);
         }
 
     }
@@ -94,12 +94,12 @@ public class ShearCaptcha extends AbstractCaptcha {
     /**
      * Y坐标扭曲
      *
-     * @param g     {@link Graphics}
+     * @param graphics     {@link Graphics}
      * @param w1    宽
      * @param h1    高
      * @param color 颜色
      */
-    private void shearY(Graphics g, int w1, int h1, Color color) {
+    private void shearY(Graphics graphics, int w1, int h1, Color color) {
 
         int period = RandomUtility.randomInteger(this.height >> 1);
 
@@ -107,11 +107,11 @@ public class ShearCaptcha extends AbstractCaptcha {
         int phase = 7;
         for (int i = 0; i < w1; i++) {
             double d = (double) (period >> 1) * Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
-            g.copyArea(i, 0, 1, h1, 0, (int) d);
-            g.setColor(color);
+            graphics.copyArea(i, 0, 1, h1, 0, (int) d);
+            graphics.setColor(color);
             // 擦除原位置的痕迹
-            g.drawLine(i, (int) d, i, 0);
-            g.drawLine(i, (int) d + h1, i, h1);
+            graphics.drawLine(i, (int) d, i, 0);
+            graphics.drawLine(i, (int) d + h1, i, h1);
         }
 
     }
@@ -119,7 +119,7 @@ public class ShearCaptcha extends AbstractCaptcha {
     /**
      * 干扰线
      *
-     * @param g         {@link Graphics}
+     * @param graphics         {@link Graphics}
      * @param x1        x1
      * @param y1        y1
      * @param x2        x2
@@ -128,10 +128,10 @@ public class ShearCaptcha extends AbstractCaptcha {
      * @param c         颜色
      */
     @SuppressWarnings("SameParameterValue")
-    private void drawInterfere(Graphics g, int x1, int y1, int x2, int y2, int thickness, Color c) {
+    private void drawInterfere(Graphics graphics, int x1, int y1, int x2, int y2, int thickness, Color c) {
 
         // The thick line is in fact a filled polygon
-        g.setColor(c);
+        graphics.setColor(c);
         int dX = x2 - x1;
         int dY = y2 - y1;
         // line length
@@ -161,7 +161,7 @@ public class ShearCaptcha extends AbstractCaptcha {
         xPoints[3] = x2 + dx;
         yPoints[3] = y2 + dy;
 
-        g.fillPolygon(xPoints, yPoints, 4);
+        graphics.fillPolygon(xPoints, yPoints, 4);
     }
 
 }

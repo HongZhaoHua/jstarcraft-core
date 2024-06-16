@@ -14,6 +14,7 @@ import com.jstarcraft.core.common.security.captcha.Captcha;
 import com.jstarcraft.core.common.security.captcha.CircleCaptcha;
 import com.jstarcraft.core.common.security.captcha.CodeGenerator;
 import com.jstarcraft.core.common.security.captcha.MathGenerator;
+import com.jstarcraft.core.utility.KeyValue;
 
 public class CaptchaTestCase {
 
@@ -26,8 +27,9 @@ public class CaptchaTestCase {
         // 窗体居中
         frame.setLocationRelativeTo(null);
         CodeGenerator generator = new MathGenerator(2);
-        Captcha captcha = new CircleCaptcha(300, 100, generator, 5);
-        BufferedImage image = captcha.createCode();
+        KeyValue<String, String> keyValue = generator.generate();
+        Captcha captcha = new CircleCaptcha(300, 100, 5);
+        BufferedImage image = captcha.generateImage(keyValue.getKey());
         JLabel label = new JLabel(new ImageIcon(image));
         frame.getContentPane().add(label, BorderLayout.CENTER);
         frame.setVisible(true);
