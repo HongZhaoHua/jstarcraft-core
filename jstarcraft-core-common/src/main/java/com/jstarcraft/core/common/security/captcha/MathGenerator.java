@@ -40,6 +40,11 @@ public class MathGenerator implements CodeGenerator {
             break;
         }
         case "-": {
+            if (left < right) {
+                int exchage = left;
+                left = right;
+                right = exchage;
+            }
             value = left - right;
             break;
         }
