@@ -20,14 +20,6 @@
         </dependency>
 
         <!-- IO框架依赖 -->
-        <!-- FastDFS -->
-        <dependency>
-            <groupId>org.csource</groupId>
-            <artifactId>fastdfs-client-java</artifactId>
-            <version>1.32-SNAPSHOT</version>
-            <optional>true</optional>
-        </dependency>
-
         <!-- FTP -->
         <dependency>
             <groupId>commons-net</groupId>
