@@ -1,11 +1,13 @@
 package com.jstarcraft.core.utility;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -86,6 +88,10 @@ public class StringUtility extends StringUtils {
     /** 下划线 */
     public static final String UNDERSCORE = "_";
 
+    private static final String prefix = "${";
+
+    private static final String suffix = "}";
+
     /**
      * 使用指定参数格式化指定模板,并转换为字符串
      * 
@@ -96,6 +102,18 @@ public class StringUtility extends StringUtils {
     public static final String format(String template, Object... parameters) {
         FormattingTuple formatter = MessageFormatter.arrayFormat(template, parameters);
         return formatter.getMessage();
+    }
+
+    /**
+     * 使用指定参数格式化指定模板,并转换为字符串
+     * 
+     * @param template
+     * @param parameters
+     * @return
+     */
+    public static final String format(String template, Map<String, String> paramters) {
+        StringSubstitutor substitutor = new StringSubstitutor(paramters, prefix, suffix);
+        return substitutor.replace(template);
     }
 
     /**
