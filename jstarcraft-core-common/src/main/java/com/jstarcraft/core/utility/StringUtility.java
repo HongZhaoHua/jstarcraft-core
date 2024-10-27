@@ -88,7 +88,7 @@ public class StringUtility extends StringUtils {
     /** 下划线 */
     public static final String UNDERSCORE = "_";
 
-    private static final String prefix = "${";
+    private static final String prefix = "@{";
 
     private static final String suffix = "}";
 

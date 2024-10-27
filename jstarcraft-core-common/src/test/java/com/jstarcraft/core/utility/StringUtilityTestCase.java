@@ -9,7 +9,7 @@ public class StringUtilityTestCase {
 
     @Test
     public void testFormat() throws Exception {
-        String template = "${province}${city}";
+        String template = "@{province}@{city}";
         HashMap<String, String> paramters = new HashMap<>();
         paramters.put("province", "广东省");
         paramters.put("city", "广州市");
