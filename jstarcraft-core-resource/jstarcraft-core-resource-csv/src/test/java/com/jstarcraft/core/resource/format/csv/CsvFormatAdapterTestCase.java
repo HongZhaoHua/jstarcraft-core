@@ -33,8 +33,6 @@ public class CsvFormatAdapterTestCase {
     private CsvPerson person;
     @ResourceAccessor(value = "2", clazz = CsvPerson.class, property = "sex")
     private boolean sex;
-    @ResourceAccessor(value = "2", clazz = CsvPerson.class, property = "description")
-    private String description;
 
     /**
      * 测试仓储访问器
@@ -51,16 +49,9 @@ public class CsvFormatAdapterTestCase {
 
         // 检查实例访问
         Assert.assertThat(person.isSex(), CoreMatchers.equalTo(sex));
-        KeyValue<?, ?> keyValue = new KeyValue<>("key", "value");
-        Assert.assertThat(person.getObject(), CoreMatchers.equalTo(keyValue));
-        keyValue = new KeyValue<>(1, "1");
-        Assert.assertThat(person.getArray()[1], CoreMatchers.equalTo(keyValue));
-        Assert.assertThat(person.getMap().get("1"), CoreMatchers.equalTo(keyValue));
-        Assert.assertThat(person.getList().get(1), CoreMatchers.equalTo(keyValue));
 
         // 检查属性访问
         Assert.assertTrue(sex);
-        Assert.assertThat(description, CoreMatchers.notNullValue());
     }
 
     /**

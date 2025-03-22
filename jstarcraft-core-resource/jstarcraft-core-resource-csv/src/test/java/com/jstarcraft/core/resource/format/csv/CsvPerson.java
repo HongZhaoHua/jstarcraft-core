@@ -3,6 +3,7 @@ package com.jstarcraft.core.resource.format.csv;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.jstarcraft.core.common.conversion.csv.annotation.CsvConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
@@ -11,32 +12,25 @@ import com.jstarcraft.core.utility.KeyValue;
 import com.jstarcraft.core.utility.StringUtility;
 
 @ResourceConfiguration(prefix = "csv/", suffix = ".csv")
-@CsvConfiguration({ "id", "name", "age", "sex", "object", "array", "map", "list", "childId" })
 public class CsvPerson {
 
     public static final String INDEX_NAME = "name";
     public static final String INDEX_AGE = "age";
 
     @ResourceId
+    @ExcelProperty("id")
     private Integer id;
 
     @ResourceIndex(name = INDEX_NAME, unique = true)
+    @ExcelProperty("name")
     private String name;
 
     @ResourceIndex(name = INDEX_AGE, unique = false)
+    @ExcelProperty("age")
     private int age;
 
+    @ExcelProperty("sex")
     private boolean sex;
-
-    private KeyValue<String, String> object;
-
-    private KeyValue<Integer, String>[] array;
-
-    private HashMap<String, KeyValue<Integer, String>> map;
-
-    private ArrayList<KeyValue<Integer, String>> list;
-
-    private Integer childId;
 
     public Integer getId() {
         return id;
@@ -54,28 +48,20 @@ public class CsvPerson {
         return sex;
     }
 
-    public KeyValue<String, String> getObject() {
-        return object;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public KeyValue<Integer, String>[] getArray() {
-        return array;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public HashMap<String, KeyValue<Integer, String>> getMap() {
-        return map;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public ArrayList<KeyValue<Integer, String>> getList() {
-        return list;
-    }
-
-    public Integer getChildId() {
-        return childId;
-    }
-
-    public String getDescription() {
-        return StringUtility.reflect(this);
+    public void setSex(boolean sex) {
+        this.sex = sex;
     }
 
 }

@@ -3,6 +3,7 @@ package com.jstarcraft.core.resource.format.excel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.jstarcraft.core.resource.annotation.ResourceConfiguration;
 import com.jstarcraft.core.resource.annotation.ResourceId;
+import com.jstarcraft.core.resource.format.excel.ExcelJsonConverter;
 
 @ResourceConfiguration(prefix = "excel/", suffix = ".xls")
 public class XlsBiology {

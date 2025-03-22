@@ -16,6 +16,7 @@ http://www.jstarcraft.com/core/resource/resource.xsd">
 
     <bean id="formatAdapter" class="com.jstarcraft.core.resource.format.CsvFormatAdapter">
         <constructor-arg value="," />
+        <constructor-arg value="1" />
     </bean>
 
     <bean id="pathAdapter" class="com.jstarcraft.core.resource.path.ClassPathAdapter">
