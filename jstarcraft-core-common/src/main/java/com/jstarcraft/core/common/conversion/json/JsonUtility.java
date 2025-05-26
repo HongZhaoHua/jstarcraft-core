@@ -40,6 +40,7 @@ public class JsonUtility {
     static {
         TYPE_CONVERTER.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
         TYPE_CONVERTER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        TYPE_CONVERTER.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
         TYPE_MODULE = new JavaTimeModule();
 
 //        TYPE_MODULE.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
