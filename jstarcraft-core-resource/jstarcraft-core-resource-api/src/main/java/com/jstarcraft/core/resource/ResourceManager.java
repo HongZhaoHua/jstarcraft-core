@@ -163,6 +163,23 @@ public class ResourceManager<K, V> extends Observable {
         }
     }
 
+    public <T> Collection<T> getIndexes(String name) {
+        try {
+            readLock.lock();
+            checkState();
+            Map indexes = singles.get(name);
+            if (indexes == null) {
+                indexes = multiples.get(name);
+            }
+            if (indexes == null) {
+                throw new IllegalArgumentException("索引不存在");
+            }
+            return indexes.keySet();
+        } finally {
+            readLock.unlock();
+        }
+    }
+
     /**
      * 根据指定的值获取对应的单值索引
      * 
